@@ -1,0 +1,19 @@
+# Backend
+backend/target/
+backend/*.log
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/.idea/
+backend/*.iml
+backend/.vscode/
+
+# Frontend
+frontend/my-app/node_modules/
+frontend/my-app/dist/
+frontend/my-app/out-tsc/
+frontend/my-app/npm-debug.log*
+frontend/my-app/yarn-debug.log*
+frontend/my-app/yarn-error.log*
+frontend/my-app/.vscode/
+frontend/my-app/.idea/
