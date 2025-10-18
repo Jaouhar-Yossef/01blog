@@ -19,9 +19,9 @@ public class Application {
             return "Hello from 01blog server!";
         }
 
-        // @GetMapping("/ysf")
-        // public String hi() {
-        //     return "hi ysf from 01blog server!";
-        // }
+        @GetMapping("/api/message")
+        public String getMessage() {
+            return "Hello from Spring Boot!";
+        }
     }
 }

@@ -1,12 +1,21 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, signal } from '@angular/core';
+import { MessageService } from './message';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
-export class App {
-  protected readonly title = signal('my-app');
+
+export class App implements OnInit {
+  message = signal('');
+
+  constructor(private messageService: MessageService) {}
+
+  ngOnInit() {
+    this.messageService.getMessage().subscribe({
+      next: (data) => this.message.set(data),
+      error: (err) => console.error('Error:', err),
+    });
+  }
 }
