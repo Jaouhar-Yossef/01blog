@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MessageService {
-  private apiUrl = 'http://localhost:8080/api/message'; // رابط الـ Spring Boot
+  private apiUrl = 'http://localhost:8080/api/message';
 
   constructor(private http: HttpClient) {}
 

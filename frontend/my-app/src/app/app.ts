@@ -1,10 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { MessageService } from './message';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  standalone: true, 
+  imports: [RouterModule],
+  template: `<router-outlet></router-outlet>`,
 })
 
 export class App implements OnInit {
