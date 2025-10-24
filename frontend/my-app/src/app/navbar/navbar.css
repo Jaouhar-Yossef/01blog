@@ -1,10 +1,6 @@
-.nav-link {
-  color: white;           
-  transition: color 0.3s, transform 0.2s;
-}
-
-.nav-link:hover {
-  color: #0dcaf0;           
-  transform: scale(1.05);    
-  text-decoration: underline; 
+.nav {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  background-color: rgb(32, 27, 27);
 }
