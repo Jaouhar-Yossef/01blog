@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background: linear-gradient(to bottom,  #043c52, #96989c); 
+    /* background-image: url("./app/../../public/img6.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; */
+    overflow: hidden;
+    padding: 0%;
+    margin: 0%;
+    height: 100vh;
+}

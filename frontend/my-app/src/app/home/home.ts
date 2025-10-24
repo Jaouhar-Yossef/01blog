@@ -2,11 +2,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Navbar } from '../navbar/navbar'; 
 
 @Component({
   selector: 'app-home',
   standalone: true,  
-  imports: [CommonModule],
+  imports: [CommonModule , Navbar],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
