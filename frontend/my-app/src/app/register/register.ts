@@ -7,9 +7,18 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'app-register',
     templateUrl: './register.html',
       standalone: true, 
-        imports: [FormsModule, HttpClientModule],
+      imports: [FormsModule, HttpClientModule],
+      styleUrls: ['./register.css'],
 })
 export class RegisterComponent {
+
+  showPassword = false;
+
+  onClickCircle() {
+    this.showPassword = !this.showPassword;
+  }
+
+
   private apiUrl = 'http://localhost:8080/register';
 
   username: string = '';
