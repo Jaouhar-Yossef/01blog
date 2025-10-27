@@ -24,19 +24,19 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
 }
 
-
-.book .form-section {
+.book .formregister {
   position: relative;
   width: 50%;
   height: 80%;
   background-color: rgba(32, 27, 27, 0.603);
+  /* background-color: rgba(214, 214, 214, 0.26); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
   border-radius: 20px;
-
   overflow: hidden;
+  /* display: none; */
 }
 
 .form-overlay {
@@ -60,7 +60,7 @@
   }
 }
 
-.form-section > *:not(.form-overlay) {
+.formregister > *:not(.form-overlay) {
   position: relative;
   z-index: 3;
   opacity: 0;
@@ -80,7 +80,7 @@
 }
 
 
-.form-section h2 {
+.formregister h2 {
   text-align: center;
   color: aliceblue;
   font-size: 40px;
@@ -201,17 +201,6 @@
 }
 
 
-/* 
-.line-container {
-  width: 40px;     
-  height: 1px;
-  background-color: #ffffff;
-  position: absolute;
-  z-index: 999;
-  border-radius: 2px;
-} */
-
-
 .line-container {
   position: absolute;
   top: 0;           
@@ -227,15 +216,193 @@
   width: 0%;  
 }
 
-
-
 .forloginbtn {
   color: #00bfff;
   border-bottom: solid #00bfff 0.5px;
 }
 
-
 .forloginbtn:hover {
   color: #5b6ccc;
   border-bottom: solid #5b6ccc 0.5px;
+}
+
+
+/*
+this is for login
+*/
+
+.book .formlogin {
+  position: relative;
+  width: 50%;
+  height: 80%;
+  background-color: rgba(32, 27, 27, 0.603);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 20px;
+  gap: 20px;
+  display: none;
+  overflow: hidden;
+}
+
+.form-overlay1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 2;
+  animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.formlogin > *:not(.form-overlay1) {
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  animation: showContent1 2s forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes showContent1 {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.formlogin h2 {
+  text-align: center;
+  color: aliceblue;
+  font-size: 40px;
+  font-weight: bolder;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input-group5 {
+  display: flex;
+  justify-content: center;
+}
+
+.input-group5 input {
+  width: 80%;
+  border: none;                
+  border-bottom: 2px solid #fff; 
+  background: transparent;      
+  padding: 8px 0;                
+  color: #fff;                  
+  font-size: 18px;
+  outline: none;                 
+  transition: border-color 0.3s;
+  text-align: center;
+}
+
+.input-group5  input:focus {
+  border-bottom-color: #00bfff;
+}
+
+
+
+.btn-SignUp1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  height: 40px;
+}
+
+.SignUp1 {
+  width: 30%;
+  border-radius: 8px;
+  background-color: #0f275a;
+  font-size: 16px;
+  color: aliceblue;
+  font-weight: bolder;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.SignUp1:hover {
+  background-color: #00bfff;
+}
+
+
+.forlogin1 {
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  font-size: 18px;
+}
+
+
+.circle4 {
+  width: 30px;         
+  height: 20px;          
+  border-radius: 50%;      
+  display: flex;
+  border-top: #ffffff solid;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* background-color: red; */
+  top: -10%;
+  left: 80%; 
+  
+}
+
+
+
+.circle5 {
+  width: 10px;         
+  height: 6px;          
+  border-radius: 50%;      
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: #ffffff;
+  border-top: #ffffff;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+}
+
+
+
+.line-container1 {
+  position: absolute;
+  top: 0;           
+  left: 25%;        
+  width: 75%;      
+  height: 2px;
+  background-color: #ffffff;
+  transform: rotate(30deg);
+  transform-origin: top left; 
+}
+
+.line-container1.active {  
+  width: 0%;  
 }

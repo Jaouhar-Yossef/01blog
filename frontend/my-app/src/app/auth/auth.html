@@ -1,39 +1,58 @@
 <div class="RegisterComponent">
-  <div class="book">      
-        <div class="form-section">
-           <div class="form-overlay"></div> 
+  <div class="book">
+
+                    <div class="formregister" #formregister>
+                         <div class="form-overlay"></div> 
+                          <h2>Create Account</h2>
+                          <div class="input-group1">
+                            <input maxlength="15" type="text" placeholder="Enter your FirstName:">
+                            <input maxlength="15" type="text" placeholder="Enter your LastName:">
+                          </div>
+                          <div class="input-group">
+                            <input maxlength="15" type="text" placeholder="Enter your userName:">
+                          </div>
+                          <div class="input-group">
+                            <input maxlength="40" type="email" placeholder="Enter your email:">
+                          </div>
+                          <div class="input-group1">
+                            <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
+                            <div class="circle"  (click)="onClickCircle()" >
+                                  <div class="circle2"></div>
+                                  <div class="line-container" [class.active]="showPassword" ></div>
+                            </div>
+                            <input maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Confirm password:">
+                          </div>
+            
+                          <div class="btn-SignUp">
+                            <button class="SignUp">Sign Up</button>
+                          </div>
+                          
+                          <div class="forlogin">
+                            Already have an account? <p class="forloginbtn" (click)="toLogin()">Login here</p>
+                          </div>
+                    </div>
+
+         <div class="formlogin" #formlogin>
+              <div class="form-overlay1"></div> 
               <h2>Create Account</h2>
-              <div class="input-group1">
-                <input maxlength="15" type="text" placeholder="Enter your FirstName:">
-                <input maxlength="15" type="text" placeholder="Enter your LastName:">
-              </div>
-              <div class="input-group">
-                <input maxlength="15" type="text" placeholder="Enter your userName:">
-              </div>
-              <div class="input-group">
+              <div class="input-group5">
                 <input maxlength="40" type="email" placeholder="Enter your email:">
               </div>
-              <div class="input-group1">
-                <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
-                <div class="circle"  (click)="onClickCircle()" >
-                      <div class="circle2"></div>
-                      <div class="line-container" [class.active]="showPassword" ></div>
+              <div class="input-group5">
+                <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:">
+              </div>
+               <div class="circle4"  (click)="onClickCircle()" >
+                      <div class="circle5"></div>
+                      <div class="line-container1" [class.active]="showPassword" ></div>
                 </div>
-                <input maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Confirm password:">
+              <div class="btn-SignUp1">
+                <button class="SignUp1">Sign In</button>
               </div>
-
-              <div class="btn-SignUp">
-                <button class="SignUp">Sign Up</button>
+                
+              <div class="forlogin">
+                You don't have an account? <p class="forloginbtn" (click)="toLogin()">Login here</p>
               </div>
-              
-              <div class="forlogin" ngIf="Login">
-                Already have an account? <p class="forloginbtn" (click)="toLogin()">Login here</p>
-              </div>
-
-               <div class="forlogin" *ngIf="!Login">
-                <p class="forloginbtn" (click)="toLogin()">Sign-Up here</p>
-              </div>
-
         </div>
+
   </div>
 </div>

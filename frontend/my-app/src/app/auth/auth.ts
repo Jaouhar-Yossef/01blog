@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,15 +14,27 @@ export class AuthComponent {
 
   showPassword = false;
 
-  
   onClickCircle() {
     this.showPassword = !this.showPassword;
   }
+  @ViewChild('formlogin') formlogin!: ElementRef;
+  @ViewChild('formregister') formregister!: ElementRef;
+
  
   Login = false;
 
   toLogin() {
-    this.Login = !this.Login;
+    if  (!this.Login) {
+      this.formlogin.nativeElement.style.display = 'none';
+      this.formregister.nativeElement.style.display = 'block';
+      this.formregister.nativeElement.style.gap = '20px';
+      this.Login = true;
+    } else {
+      this.formlogin.nativeElement.style.display = 'block';
+      this.formlogin.nativeElement.style.gap = '20px';
+      this.formregister.nativeElement.style.display = 'none';
+      this.Login = false;
+    }
   }
 
 
