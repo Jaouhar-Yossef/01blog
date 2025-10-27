@@ -1,89 +1,16 @@
-.RegisterComponent {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(11, 13, 31);
-}
-
-
-.book {
-  width: 50%;
-  height: 70vh;
-  background-image: url('../../assets/img3.jpg');
-  background-size: cover; 
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 8px;
-  display: flex;                 
-  justify-content: flex-end;      
-  align-items: center;       
-  border-radius: 8px;
-  padding-right: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-}
-
-
-.book .form-section {
-  position: relative;
-  width: 50%;
-  height: 80%;
-  background-color: rgba(32, 27, 27, 0.603);
-  display: flex;
+.register {
+    display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
-  border-radius: 20px;
-
-  overflow: hidden;
-}
-
-.form-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+  align-items: center;
   width: 100%;
   height: 100%;
-  background-color: black;
-  z-index: 2;
-  animation: fadeOut 2s forwards;
+  gap: 15px;
 }
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-}
-
-.form-section > *:not(.form-overlay) {
-  position: relative;
-  z-index: 3;
-  opacity: 0;
-  animation: showContent 2s forwards;
-  animation-delay: 0.8s;
-}
-
-@keyframes showContent {
-  0% {
-    opacity: 0;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-.form-section h2 {
+h2 {
   text-align: center;
   color: aliceblue;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bolder;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -137,10 +64,12 @@
   justify-content: center;
   margin-top: 5px;
   height: 40px;
+
+    width: 30%;
 }
 
 .SignUp {
-  width: 30%;
+  width: 100%;
   border-radius: 8px;
   background-color: #0f275a;
   font-size: 16px;
@@ -200,18 +129,6 @@
   margin-bottom: 5px;
 }
 
-
-/* 
-.line-container {
-  width: 40px;     
-  height: 1px;
-  background-color: #ffffff;
-  position: absolute;
-  z-index: 999;
-  border-radius: 2px;
-} */
-
-
 .line-container {
   position: absolute;
   top: 0;           
@@ -225,5 +142,44 @@
 
 .line-container.active {  
   width: 0%;  
+}
+
+.forloginbtn {
+  color: #00bfff;
+  border-bottom: solid #00bfff 0.5px;
+}
+
+.forloginbtn:hover {
+  color: #5b6ccc;
+  border-bottom: solid #5b6ccc 0.5px;
+}
+
+
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.rules label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rules input[type="checkbox"] {
+  accent-color: #00b894;
+  transform: scale(1.1);
+}
+
+.rules strong {
+  color: #00b894;
 }
 

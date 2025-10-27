@@ -1,5 +1,26 @@
-<div class="RegisterComponent">
-  <div class="book">      
-       
-  </div>
+<div class="login">
+          <h2>Log-in</h2>
+          <div class="input-group">
+            <input maxlength="40" type="email" placeholder="Enter your email:">
+          </div>
+
+          <div class="input-group">
+            <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
+          </div>
+
+           <div class="circle3"  (click)="onClickCircle()" >
+                  <div class="circle4"></div>
+                  <div class="line-container2" [class.active]="showPassword" ></div>
+            </div>
+          
+          <div class="btn-Signin">
+            <button class="Signin">Sign In</button>
+          </div>
+
+
+          <div class="forlogin">
+            You don't have an account? 
+             <p class="forloginbtn" (click)="goToRegister()">Register here</p>
+          </div>   
 </div>
+  

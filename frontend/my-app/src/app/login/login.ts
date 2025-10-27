@@ -1,17 +1,21 @@
-import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-login',
-      standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  standalone: true,
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
   showPassword = false;
+
+  @Output() switchForm = new EventEmitter<void>();
+
   onClickCircle() {
     this.showPassword = !this.showPassword;
+  }
+
+  goToRegister() {
+    this.switchForm.emit();
   }
 }

@@ -1,33 +1,48 @@
-<div class="RegisterComponent">
-  <div class="book">      
-        <div class="form-section">
-           <div class="form-overlay"></div> 
-              <h2>Create Account</h2>
-              <div class="input-group1">
-                <input maxlength="15" type="text" placeholder="Enter your FirstName:">
-                <input maxlength="15" type="text" placeholder="Enter your LastName:">
-              </div>
-              <div class="input-group">
-                <input maxlength="15" type="text" placeholder="Enter your userName:">
-              </div>
-              <div class="input-group">
-                <input maxlength="40" type="email" placeholder="Enter your email:">
-              </div>
-              <div class="input-group1">
-                <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
-                <div class="circle"  (click)="onClickCircle()" >
-                      <div class="circle2"></div>
-                      <div class="line-container" [class.active]="showPassword" ></div>
-                </div>
-                <input maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Confirm password:">
-              </div>
+<div class="register">
+               <h2>Create Account</h2>
+               <div class="input-group1">
+                 <input (input)="checkFirstName()"  [(ngModel)]="firstname" maxlength="15" minlength="3" type="text" placeholder="Enter your FirstName:">
+                 <input (input)="checkLastName()" [(ngModel)]="lastname" maxlength="15" minlength="3" type="text" placeholder="Enter your LastName:">
+               </div>
+               <div class="input-group">
+                 <input  (input)="checkUserName()" [(ngModel)]="username"  minlength="3" maxlength="15" type="text" placeholder="Enter your userName:">
+               </div>
+               <div class="input-group">
+                 <input maxlength="50" [(ngModel)]="email"  (input)="checkEmail()"  type="email" placeholder="Enter your email:">
+               </div>
+               <div class="input-group1">
+                 <input   [(ngModel)]="passWord" (input)="checkPassword()" maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
+                 <div class="circle"  (click)="onClickCircle()" >
+                       <div class="circle2"></div>
+                       <div class="line-container" [class.active]="showPassword" ></div>
+                 </div>
+                 <input (input)="checkPassword()" [(ngModel)]="ConfirmPassWord"  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Confirm password:">
+               </div>
+              
+                <div class="rules">
+                   <label>
+                     <input type="checkbox"   [checked]="isfilled"/>
+                    All fields must be <strong>filled</strong>
+                  </label>
 
-              <div class="btn-SignUp">
-                <button class="SignUp">Sign Up</button>
-              </div>
-              <div class="forlogin">
-                Already have an account? <a href="/login">Login here</a>
-              </div>
-        </div>
-  </div>
+                  <label>
+                    <input type="checkbox" [checked]="ispassWordValid" />
+                    Password must be at least <strong>6 characters</strong>
+                  </label>
+                
+                  <label>
+                    <input type="checkbox" [checked]="isEmailValid" />
+                      Email must be like <strong>example@gmail.com</strong>
+                  </label>
+                </div>
+
+
+
+               <div class="btn-SignUp">
+                    <button class="SignUp" (click)="check()">Sign Up</button> <!--  // -->
+               </div>
+               
+               <div class="forlogin">
+    Already have an account? 
+    <p class="forloginbtn" (click)="goToLogin()">Login here</p>
 </div>

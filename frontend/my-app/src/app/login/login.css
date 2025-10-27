@@ -1,72 +1,27 @@
-.form-section1 {
-  position: relative;
-  width: 50%;
-  height: 80%;
-  background-color: rgba(32, 27, 27, 0.603);
+.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: 20px;
-  gap: 20px;
-  display: none;
-  overflow: hidden;
-}
-
-.form-overlay1 {
-  position: absolute;
-  top: 0;
-  left: 0;
+  align-items: center;
   width: 100%;
   height: 100%;
-  background-color: black;
-  z-index: 2;
-  animation: fadeOut 2s forwards;
+  gap: 20px;
 }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-}
-
-.form-section1 > *:not(.form-overlay1) {
-  position: relative;
-  z-index: 3;
-  opacity: 0;
-  animation: showContent1 2s forwards;
-  animation-delay: 0.8s;
-}
-
-@keyframes showContent1 {
-  0% {
-    opacity: 0;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-.form-section1 h2 {
+h2 {
   text-align: center;
   color: aliceblue;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bolder;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.input-group5 {
+.input-group {
   display: flex;
   justify-content: center;
 }
 
-.input-group5 input {
+.input-group input {
   width: 80%;
   border: none;                
   border-bottom: 2px solid #fff; 
@@ -79,21 +34,42 @@
   text-align: center;
 }
 
-.input-group5  input:focus {
+.input-group  input:focus , .input-group1 input:focus {
   border-bottom-color: #00bfff;
 }
 
 
+.input-group1  {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-.btn-SignUp1 {
+.input-group1 input {
+  width: 80%;
+  border: none;                
+  border-bottom: 2px solid #fff; 
+  background: transparent;      
+  padding: 8px 0;                
+  color: #fff;                  
+  font-size: 18px;
+  outline: none;                 
+  transition: border-color 0.3s;
+  margin-right: 5px;
+  margin-left: 5px;
+  text-align: center;
+}
+
+.btn-Signin {
   display: flex;
   justify-content: center;
   margin-top: 5px;
   height: 40px;
+  width: 30%;
 }
 
-.SignUp1 {
-  width: 30%;
+.Signin {
+  width: 100%;
   border-radius: 8px;
   background-color: #0f275a;
   font-size: 16px;
@@ -102,12 +78,12 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.SignUp1:hover {
+.Signin:hover {
   background-color: #00bfff;
 }
 
 
-.forlogin1 {
+.forlogin {
   color: aliceblue;
   display: flex;
   justify-content: center;
@@ -126,28 +102,25 @@
   font-size: 18px;
 }
 
-
-.circle4 {
-  width: 30px;         
-  height: 20px;          
-  border-radius: 50%;      
+.circle3 {
+  width: 25px;         
+  height: 15px;          
+  border-radius: 100%;      
   display: flex;
   border-top: #ffffff solid;
   justify-content: center;
   align-items: center;
-  position: relative;
-  /* background-color: red; */
-  top: -10%;
-  left: 80%; 
-  
+  position: relative;  
+  top: -15%;
+  left: 35%;
 }
 
 
 
-.circle5 {
-  width: 10px;         
-  height: 6px;          
-  border-radius: 50%;      
+.circle4 {
+  width: 8px;         
+  height: 5px;          
+  border-radius: 60%;      
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,18 +131,28 @@
 }
 
 
-
-.line-container1 {
+.line-container2 {
   position: absolute;
   top: 0;           
   left: 25%;        
-  width: 75%;      
+  width: 65%;      
   height: 2px;
   background-color: #ffffff;
   transform: rotate(30deg);
   transform-origin: top left; 
 }
 
-.line-container1.active {  
+.line-container2.active {  
   width: 0%;  
 }
+
+.forloginbtn {
+  color: #00bfff;
+  border-bottom: solid #00bfff 0.5px;
+}
+
+.forloginbtn:hover {
+  color: #5b6ccc;
+  border-bottom: solid #5b6ccc 0.5px;
+}
+

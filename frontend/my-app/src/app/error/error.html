@@ -1,0 +1,3 @@
+ <div  class="error-box" *ngIf="errorService.message()" [ngClass]="errorService.type()">
+      {{ errorService.message() }}
+</div>

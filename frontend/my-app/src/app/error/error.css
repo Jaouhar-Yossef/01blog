@@ -1,0 +1,37 @@
+.error-box {
+  position: fixed;
+  top: 90%;
+  right: 4%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 9999;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  color: white;
+  transition: all 0.3s ease;
+  animation: slideInFromRight 0.5s forwards;
+}
+
+/* الأنيميشن للظهور من اليمين */
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* الألوان حسب النوع */
+.error-box.error {
+  background-color: #f44336; /* أحمر */
+}
+
+.error-box.success {
+  background-color: #4caf50; /* أخضر */
+}
+
+.error-box.warning {
+  background-color: #ff9800; /* برتقالي */
+}
