@@ -7,6 +7,7 @@
   background-color: rgb(11, 13, 31);
 }
 
+
 .book {
   width: 50%;
   height: 70vh;
@@ -22,6 +23,7 @@
   padding-right: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
 }
+
 
 .book .form-section {
   position: relative;
@@ -104,11 +106,31 @@
   text-align: center;
 }
 
-.input-group  input:focus {
+.input-group  input:focus , .input-group1 input:focus {
   border-bottom-color: #00bfff;
 }
 
 
+.input-group1  {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-group1 input {
+  width: 80%;
+  border: none;                
+  border-bottom: 2px solid #fff; 
+  background: transparent;      
+  padding: 8px 0;                
+  color: #fff;                  
+  font-size: 18px;
+  outline: none;                 
+  transition: border-color 0.3s;
+  margin-right: 5px;
+  margin-left: 5px;
+  text-align: center;
+}
 
 .btn-SignUp {
   display: flex;
@@ -153,18 +175,14 @@
 
 
 .circle {
-  width: 30px;         
+  width: 40px;         
   height: 20px;          
   border-radius: 50%;      
   display: flex;
   border-top: #ffffff solid;
   justify-content: center;
   align-items: center;
-  position: relative;
-  /* background-color: red; */
-  top: -10%;
-  left: 80%; 
-  
+    position: relative;  
 }
 
 
@@ -183,6 +201,16 @@
 }
 
 
+/* 
+.line-container {
+  width: 40px;     
+  height: 1px;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 999;
+  border-radius: 2px;
+} */
+
 
 .line-container {
   position: absolute;
@@ -199,3 +227,15 @@
   width: 0%;  
 }
 
+
+
+.forloginbtn {
+  color: #00bfff;
+  border-bottom: solid #00bfff 0.5px;
+}
+
+
+.forloginbtn:hover {
+  color: #5b6ccc;
+  border-bottom: solid #5b6ccc 0.5px;
+}

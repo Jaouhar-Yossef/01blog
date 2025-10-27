@@ -3,30 +3,22 @@
         <div class="form-section">
            <div class="form-overlay"></div> 
               <h2>Create Account</h2>
-              <div class="input-group1">
-                <input maxlength="15" type="text" placeholder="Enter your FirstName:">
-                <input maxlength="15" type="text" placeholder="Enter your LastName:">
-              </div>
-              <div class="input-group">
-                <input maxlength="15" type="text" placeholder="Enter your userName:">
-              </div>
               <div class="input-group">
                 <input maxlength="40" type="email" placeholder="Enter your email:">
               </div>
-              <div class="input-group1">
+              <div class="input-group">
                 <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
-                <div class="circle"  (click)="onClickCircle()" >
+               
+              </div>
+               <div class="circle"  (click)="onClickCircle()" >
                       <div class="circle2"></div>
                       <div class="line-container" [class.active]="showPassword" ></div>
                 </div>
-                <input maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Confirm password:">
-              </div>
-
               <div class="btn-SignUp">
-                <button class="SignUp">Sign Up</button>
+                <button class="SignUp">Sign In</button>
               </div>
               <div class="forlogin">
-                Already have an account? <a href="/login">Login here</a>
+                You don't have an account? <a href="/register">Sign-Up here</a>
               </div>
         </div>
   </div>
