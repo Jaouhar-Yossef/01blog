@@ -2,32 +2,30 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  background-color: rgb(11, 13, 31);
+  background-image: url('../../assets/img13.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 
-.book {
-  width: 60%;
+.RegisterComponent .book {
+  width: 50%;
   height: 75vh;
-  background-image: url('../../assets/img3.jpg');
-  background-size: cover; 
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 8px;
-  display: flex;                 
+  display: flex;
   justify-content: flex-end;
-  align-items: center;       
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+  padding-right: 5%;
+  border-radius: 8px;
 }
 
 
 
 .formregister {
   position: relative;
-  width: 55%;
+  width: 85%;
   height: 88%;
   background-color: rgba(32, 27, 27, 0.603);
   display: flex;
@@ -58,3 +56,150 @@
   }
 }
 
+
+@media (max-width: 1199px) and (min-width: 992px) {
+  .RegisterComponent .book {
+    width: 75%;
+    height: 80vh;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 8px;
+    padding-right: 5%;
+    border-radius: 8px;
+  }
+
+  .formregister {
+    position: relative;
+    width: 90%;
+    height: 88%;
+    background-color: rgba(32, 27, 27, 0.603);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-right: 5%;
+  }
+}
+
+/* 📱 Tablets landscape (768px to 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .RegisterComponent .book {
+    width: 95%;
+    height: 80vh;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 8px;
+    padding-right: 5%;
+    border-radius: 8px;
+  }
+
+  .formregister {
+    position: relative;
+    width: 90%;
+    height: 88%;
+    background-color: rgba(32, 27, 27, 0.603);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-right: 5%;
+  }
+}
+
+/* 📱 Tablets portrait / large phones (576px to 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+   .RegisterComponent .book {
+    width: 95%;
+    height: 80vh;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 8px;
+    padding-right: 5%;
+    border-radius: 8px;
+  }
+
+  .formregister {
+    position: relative;
+    width: 90%;
+    height: 88%;
+    background-color: rgba(32, 27, 27, 0.603);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-right: 5%;
+  }
+}
+
+/* 📱 Mobile phones (up to 575px) */
+@media (max-width: 575px) {
+   .RegisterComponent .book {
+    width: 95%;
+    height: 85vh;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 8px;
+    padding-right: 5%;
+    border-radius: 8px;
+  }
+
+  .formregister {
+    position: relative;
+    width: 90%;
+    height: 99%;
+    background-color: rgba(32, 27, 27, 0.603);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-right: 5%;
+  }
+}
+
+/* 📱 Small mobile phones (up to 400px) */
+@media (max-width: 450px) {
+   .RegisterComponent .book {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border-radius: 8px;
+    margin: 0%;
+    padding: 0%;
+    margin-left: 10px;
+    margin-right: 0%;
+  }
+
+  .formregister {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(32, 27, 27, 0.603);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
+
+
+
+@media (max-width: 375px) {
+  /* styles for iPhone SE and similar small screens */
+   .RegisterComponent .book {
+    width: 100%;
+    height: 95vh;
+  }
+}

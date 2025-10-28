@@ -14,10 +14,13 @@ h2 {
   font-weight: bolder;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+h2:hover {
+  color: rgba(240, 248, 255, 0.603); 
+}
 .input-group {
   display: flex;
   justify-content: center;
+  
 }
 
 .input-group input {
@@ -27,10 +30,11 @@ h2 {
   background: transparent;      
   padding: 8px 0;                
   color: #fff;                  
-  font-size: 18px;
+  font-size: 20px;
   outline: none;                 
   transition: border-color 0.3s;
   text-align: center;
+  cursor: pointer;
 }
 
 .input-group  input:focus , .input-group1 input:focus {
@@ -51,12 +55,13 @@ h2 {
   background: transparent;      
   padding: 8px 0;                
   color: #fff;                  
-  font-size: 18px;
+  font-size: 20px;
   outline: none;                 
   transition: border-color 0.3s;
   margin-right: 5px;
   margin-left: 5px;
   text-align: center;
+  cursor: pointer;
 }
 
 .btn-SignUp {
@@ -64,33 +69,25 @@ h2 {
   justify-content: center;
   margin-top: 5px;
   height: 40px;
-
-    width: 30%;
+  width: 40%;
 }
 
 .SignUp {
   width: 100%;
-  border-radius: 8px;
-  background-color: #0f275a;
+  border: none;
+  border-radius: 15px;
+  /* background-color: #00b8936c; */
+  background-color: #525857; /*marouan color*/
   font-size: 16px;
   color: aliceblue;
   font-weight: bolder;
   font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
 }
 
 .SignUp:hover {
-  background-color: #00bfff;
+  background-color: #00bfff63;
 }
-
-
-.forlogin {
-  color: aliceblue;
-  display: flex;
-  justify-content: center;
-}
-
-
-
 
 .toggle-password {
   position: absolute;
@@ -111,7 +108,8 @@ h2 {
   border-top: #ffffff solid;
   justify-content: center;
   align-items: center;
-    position: relative;  
+  position: relative;
+  cursor: pointer;  
 }
 
 
@@ -144,9 +142,17 @@ h2 {
   width: 0%;  
 }
 
+.forlogin {
+  font-size: 18px;
+  display: flex;
+  color: #fff;
+}
+
 .forloginbtn {
   color: #00bfff;
   border-bottom: solid #00bfff 0.5px;
+  cursor: pointer;
+
 }
 
 .forloginbtn:hover {
@@ -157,17 +163,23 @@ h2 {
 
 
 .rules {
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
   background: rgba(255, 255, 255, 0.1);
   padding: 8px 10px;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 18px;
   color: #fff;
   backdrop-filter: blur(6px);
+  margin-top:3%;
+  padding-top: 20px;
 }
 
+.rules input[disabled] {
+  opacity: 1;
+}
 .rules label {
   display: flex;
   align-items: center;
@@ -176,10 +188,224 @@ h2 {
 
 .rules input[type="checkbox"] {
   accent-color: #00b894;
-  transform: scale(1.1);
+  transform: scale(1)
 }
 
 .rules strong {
   color: #00b894;
 }
+
+/* 🖥️ Large desktops (1200px and above) */
+@media (min-width: 1200px) {
+  
+}
+
+/* 💻 Laptops / small desktops (992px to 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+  }
+}
+
+/* 📱 Tablets landscape (768px to 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+   .register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 13px;
+  }
+
+  .rules {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    backdrop-filter: blur(6px);
+    margin-top:2%;
+    padding-top: 15px;
+  }
+}
+
+/* 📱 Tablets portrait / large phones (576px to 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+  }
+
+  h2 {
+    text-align: center;
+    color: aliceblue;
+    font-size: 32px;
+    font-weight: bolder;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .input-group input {
+    width: 75%;
+    font-size: 18px;
+  }
+
+  .input-group1 {
+    width: 80%;
+  }
+  .input-group1 input {
+    font-size: 18px; 
+  }
+  .rules {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    backdrop-filter: blur(6px);
+    margin-top:2%;
+    padding-top: 15px;
+  }
+}
+
+/* 📱 Mobile phones (up to 575px) */
+@media (max-width: 575px) {
+
+  .register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+  }
+
+  h2 {
+    text-align: center;
+    color: aliceblue;
+    font-size: 28px;
+    font-weight: bolder;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .input-group input {
+    width: 75%;
+    font-size: 16px;
+  }
+
+  .input-group1 {
+    width: 90%;
+    display: block;
+     text-align: center;
+  }
+  .input-group1 input {
+    font-size: 16px; 
+  }
+
+
+
+.circle {
+  width: 25px;         
+  height: 18px;          
+  border-radius: 50%;      
+  display: flex;
+  border-top: #ffffff solid;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  cursor: pointer;
+  top: 47%;
+  left: 80%;
+}
+
+/**/
+
+.circle2 {
+  width: 10px;         
+  height: 6px;          
+  border-radius: 50%;      
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: #ffffff;
+  border-top: #ffffff;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.line-container {
+  position: absolute;
+  top: 0;           
+  left: 25%;        
+  width: 75%;      
+  height: 2px;
+  background-color: #ffffff;
+  transform: rotate(30deg);
+  transform-origin: top left; 
+}
+
+.line-container.active {  
+  width: 0%;  
+}
+/**/
+  .rules {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #fff;
+    backdrop-filter: blur(6px);
+    margin-top:2%;
+    padding-top: 15px;
+  }
+
+
+
+  .forlogin {
+    font-size: 17px;
+    display: flex;
+    color: #fff;
+  }
+
+}
+
+/* 📱 Small mobile phones (up to 400px) */
+@media (max-width: 450px) {
+  .forlogin {
+    font-size: 15px;
+    display: flex;
+    color: #fff;
+  }
+
+   .rules {   
+    font-size: 13px;
+   
+  }
+}
+
 
