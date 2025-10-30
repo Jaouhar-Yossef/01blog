@@ -1,13 +1,18 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-
+import { ErrorService } from '../error/error.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
+  imports: [CommonModule, FormsModule ],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
   showPassword = false;
+  
+  constructor(private errorService: ErrorService) {}
 
   @Output() switchForm = new EventEmitter<void>();
 
@@ -18,4 +23,28 @@ export class LoginComponent {
   goToRegister() {
     this.switchForm.emit();
   }
+
+  password: string = ''
+  email: string = ''
+  emailRegex: RegExp = /^[^\s@]{3,}@[^\s@]{2,}\.[^\s@]{2,}$/;
+
+  check() {
+    if (this.email.trim() == '' || this.password.trim() == ''  ) {
+      this.errorService.showMessage('All fields must be filled!', 'error');
+      return
+    }
+    if (!this.emailRegex.test(this.email.trim())) {
+      this.errorService.showMessage('Email must be like example@gmail.com', 'error');
+      return
+    }
+
+    if (this.password.trim().length < 6) {
+      this.errorService.showMessage('Password must be at least 6 characters', 'error');
+      return
+    }
+  }
+
+
+//   Please enter a valid email
+// Password must be at least 6 characters
 }

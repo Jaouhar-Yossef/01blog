@@ -28,6 +28,7 @@ export class AuthComponent implements AfterViewInit {
       const video = this.bgVideo.nativeElement as HTMLVideoElement;
 
       if (video && typeof video.play === 'function') {
+        video.volume = 0;
         video.muted = true;
         video.play().catch(err => console.warn('Autoplay blocked:', err));
       } else {

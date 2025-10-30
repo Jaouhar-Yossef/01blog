@@ -1,26 +1,28 @@
 <div class="login">
-          <h2>Log-in</h2>
-          <div class="input-group">
-            <input maxlength="40" type="email" placeholder="Enter your email:">
+        <h2>Log-in</h2>
+        <div class="input-group">
+          <input [(ngModel)]="email" maxlength="50" type="email" placeholder="Enter your email:">
+        </div>
+        <div class="input-group">
+          <input [(ngModel)]="password" maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
+        </div>
+         <div class="circle3"  (click)="onClickCircle()" >
+                <div class="circle4"></div>
+                <div class="line-container2" [class.active]="showPassword" ></div>
           </div>
-
-          <div class="input-group">
-            <input  maxlength="20" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password:" >
+        
+        <div class="btn-Signin">
+          <button class="Signin" (click)="check()">Sign In</button>
+        </div>
+        <div class="forregister">
+          <div class="linksgoto">
+              <span>You don't have an account?</span>
+              <p class="forregisterbtn" (click)="goToRegister()">Register here</p>
           </div>
-
-           <div class="circle3"  (click)="onClickCircle()" >
-                  <div class="circle4"></div>
-                  <div class="line-container2" [class.active]="showPassword" ></div>
-            </div>
-          
-          <div class="btn-Signin">
-            <button class="Signin">Sign In</button>
+          <div class="linksgoto">
+              <span>Go back to the home</span>
+              <a class="forregisterbtn" href="/">Go Home</a>
           </div>
-
-
-          <div class="forregister">
-            You don't have an account? 
-             <p class="forregisterbtn" (click)="goToRegister()">Register here</p>
-          </div>   
+        </div>   
 </div>
   

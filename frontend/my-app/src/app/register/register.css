@@ -77,7 +77,7 @@ h2:hover {
   border: none;
   border-radius: 15px;
   /* background-color: #00b8936c; */
-  background-color: #525857; /*marouan color*/
+  background-color: #045d6dd0; /*marouan color*/
   font-size: 16px;
   color: aliceblue;
   font-weight: bolder;
@@ -144,20 +144,24 @@ h2:hover {
 
 .forlogin {
   font-size: 18px;
-  display: flex;
   color: #fff;
 }
 
 .forloginbtn {
   color: #00bfff;
   border-bottom: solid #00bfff 0.5px;
+  text-decoration: none;
   cursor: pointer;
-
 }
 
 .forloginbtn:hover {
   color: #5b6ccc;
   border-bottom: solid #5b6ccc 0.5px;
+}
+
+.linksgoto {
+  display: flex;
+  justify-content: center;
 }
 
 
@@ -195,12 +199,7 @@ h2:hover {
   color: #00b894;
 }
 
-/* 🖥️ Large desktops (1200px and above) */
-@media (min-width: 1200px) {
-  
-}
 
-/* 💻 Laptops / small desktops (992px to 1199px) */
 @media (max-width: 1199px) and (min-width: 992px) {
   .register {
     display: flex;
@@ -388,24 +387,39 @@ h2:hover {
 
   .forlogin {
     font-size: 17px;
-    display: flex;
-    color: #fff;
   }
 
 }
 
-/* 📱 Small mobile phones (up to 400px) */
 @media (max-width: 450px) {
   .forlogin {
     font-size: 15px;
-    display: flex;
-    color: #fff;
   }
 
    .rules {   
-    font-size: 13px;
-   
+    display: none;
+  }
+
+
+  .circle {
+    width: 25px;         
+    height: 18px;          
+    border-radius: 50%;      
+    display: flex;
+    border-top: #ffffff solid;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    top: 58%;
+    left: 80%;
   }
 }
+/* 📱 Small mobile phones (up to 400px) */
+@media (max-width: 270px) {
+   .forlogin {
+    font-size: 12px;
+  }
 
+}
 

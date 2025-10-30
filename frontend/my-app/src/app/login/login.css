@@ -54,7 +54,7 @@ h2:hover {
   width: 100%;
   border: none;
   border-radius: 15px;
-  background-color: #00b8936c;
+  background-color: #045d6dd0;
   font-size: 16px;
   color: aliceblue;
   font-weight: bolder;
@@ -123,12 +123,13 @@ h2:hover {
 
 .forregister {
   font-size: 18px;
-  display: flex;
+  display: block;
   color: #fff;
 }
 .forregisterbtn {
   color: #00bfff;
   border-bottom: solid #00bfff 0.5px;
+  text-decoration: none;
 }
 
 .forregisterbtn:hover {
@@ -137,3 +138,79 @@ h2:hover {
   cursor: pointer;
 }
 
+.linksgoto {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .forregister {
+    font-size: 16px;
+  }
+
+}
+
+@media (max-width: 450px) {
+  .input-group input {
+    font-size: 16px;
+    width: 75%;
+  }
+
+
+
+ .circle3 {
+   cursor: pointer;
+   width: 25px;         
+   height: 15px;          
+   border-radius: 100%;      
+   display: flex;
+   border-top: #ffffff solid;
+   justify-content: center;
+   align-items: center;
+   position: relative;  
+   top: -15%;
+   left: 35%;
+ }
+ 
+ 
+ 
+ .circle4 {
+   width: 8px;         
+   height: 5px;          
+   border-radius: 60%;      
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-bottom: #ffffff;
+   border-top: #ffffff;
+   background-color: #ffffff;
+   margin-bottom: 5px;
+ }
+ 
+ 
+ .line-container2 {
+   position: absolute;
+   top: -10%;           
+   left: 28%;        
+   width: 65%;      
+   height: 2px;
+   background-color: #ffffff;
+   transform: rotate(30deg);
+   transform-origin: top left; 
+ }
+
+ .forregister {
+  font-size: 16px;
+  display: block;
+  color: #fff;
+}
+}
+
+
+@media (max-width: 330px) {
+   .forregister {
+    font-size: 13px;
+    display: block;
+    color: #fff;
+  }
+}
