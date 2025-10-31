@@ -1,5 +1,7 @@
 package com.RunController;
 
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +21,9 @@ public class RunController {
     }
 
 
-    @PostMapping("/register")
-    public String registerUser(@RequestBody UserDTO user) {
-        System.out.println("Received user: " + user.getName() + ", " + user.getEmail());
-        return "User registered successfully: " + user.getName();
+    @PostMapping("/auth/register")
+    public Map<String, String> registerUser(@RequestBody UserDTO user) {
+        System.out.println("Received user: " + user.getUsername() + ", " + user.getEmail());
+        return Map.of("message", "User registered successfully: " + user.getUsername());
     }
-
 }

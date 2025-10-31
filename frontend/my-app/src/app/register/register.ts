@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 import { ErrorService } from '../error/error.service';
-
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +17,10 @@ export class RegisterComponent {
   @Output() switchForm = new EventEmitter<void>();
 
 
-  constructor(private errorService: ErrorService) {}
+  constructor(
+    private errorService: ErrorService,
+    private authService: AuthService
+  ) {}
 
 
   onClickCircle() {
@@ -144,6 +147,8 @@ export class RegisterComponent {
       if (!this.checkError()) {
         return
       }
+
+      this.fetchRegister()
       
     }
     checkError (): boolean {
@@ -151,8 +156,40 @@ export class RegisterComponent {
           this.errorService.showMessage(this.error, 'error');
           return false
       } else {
-        this.errorService.showMessage('All fields are valid!', 'success');
         return true
       }
     }
+
+
+    
+  isLoading = false;
+  fetchRegister() {
+    const data = {
+      username: this.username.trim(),
+      firstname: this.firstname.trim(),
+      lastname: this.lastname.trim(),
+      email: this.email.trim(),
+      password: this.passWord.trim(),
+    };
+
+    this.isLoading = true;
+
+    this.authService.register(data).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        console.log('Registration success:', res);
+        this.errorService.showMessage('Registration successful!', 'success');
+        // يمكنك هنا تحويل المستخدم إلى صفحة login:
+        // this.switchForm.emit();
+        
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Registration failed:', err);
+        this.errorService.showMessage('Failed to register. Try again.', 'error');
+      }
+    });
+  }
+
 }

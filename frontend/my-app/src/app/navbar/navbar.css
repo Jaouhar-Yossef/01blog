@@ -1,6 +1,51 @@
 .nav {
   display: flex;
-  justify-content: center;
-  width: 80%;
-  background-color: rgb(32, 27, 27);
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
+  color: white;
+  margin-top: 10px;
+  padding: 1%;
 }
+
+
+.title {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.title p {
+  margin-left: 40%;
+  font-size: 35px;
+  font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
+  font-weight: bolder;
+  
+
+}
+.book {
+  position: absolute;
+  top: 10%; 
+  width: 60px;
+  left: 25%;
+  transform: translateX(50%);
+  animation: fall 1.5s ease-in forwards;
+  border-radius: 10px;
+}
+
+@keyframes fall {
+  0% {
+    top: -150px;
+    transform: translateX(-50%) rotate(0deg);
+  }
+  80% {
+    top: 2vh;
+    transform: translateX(-50%) rotate(15deg);
+  }
+  100% {
+    top: 5vh;
+    transform: translateX(-50%) rotate(0deg);
+  }
+}
+
