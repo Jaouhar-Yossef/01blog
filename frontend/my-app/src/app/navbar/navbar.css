@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6vh;
+  height: 100%;
   color: white;
   margin-top: 10px;
   padding: 1%;
@@ -10,7 +10,7 @@
 
 
 .title {
-  width: 30%;
+  width: 20%;
   display: flex;
   justify-content: flex-end;
   height: 100%;
@@ -49,3 +49,37 @@
   }
 }
 
+
+.rightnavbar {
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  height:  100%;
+}
+
+.divsearch {
+  /* background-color: aqua; */
+  height: 80%;
+  width: 35%;
+}
+
+.divsearch .search {
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+  background-color: white;
+  border: none;
+  padding: 5%;
+  font-size: 18 px;
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+  outline: none;
+} 
+.divsearch .search:hover {
+
+
+}
+
+.SingUp {
+
+}
