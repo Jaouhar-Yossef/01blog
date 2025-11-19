@@ -23,26 +23,20 @@ app-navbar {
 
 .divcontenthome {
   display: flex;
-  width: 100%;
+  width: 80%;
   height: calc(100vh - 8vh);
+  /* background-color: red; */
 }
 
-/* Sidebar / header area */
-.divheader {
-  display: flex;
-  color: white;
-  align-items: center;
-  justify-content: center;
 
-}
 
 /* Main content */
 .devcontent {
-  width: 80%;
+  width: 100%;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 
+.devcontent div {
+  display: block;
+}

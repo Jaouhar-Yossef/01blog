@@ -1,6 +1,6 @@
 .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 100%;
   color: white;
@@ -11,10 +11,12 @@
 
 .title {
   width: 30%;
+  /* background-color: red; */
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
+  
 }
 
 .title p {
@@ -23,13 +25,14 @@
 
   font-weight: bolder;
   /* background-color: red; */
+  margin-top: 8px;
   width: 100%;
 }
 .book {
   position: absolute;
   top: 10%; 
   width: 60px;
-  left: 5%;
+  left: 10%;
   transform: translateX(50%);
   animation: fall 1.5s ease-in forwards;
   border-radius: 10px;
@@ -52,47 +55,20 @@
 
 
 .rightnavbar {
-  width: 69%;
+  width: 60%;
+  /* background-color: blue; */
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   height:  100%;
-}
-
-.divsearch {
-  height: 100%;
-  width: 50%;
-}
-
-.divsearch .search {
-  height: 70%;
-  width: 100%;
-  border-radius: 25px;
-  background-color: #ffffff62;
-  border: none;
-  padding: 5%;
-  margin: 1%;
-  font-size: 18 px;
-  font-family: 'Courier New', Courier, monospace;
-  color: black;
-  outline: none;
-} 
-.divsearch .search:hover {
-   background-color: rgb(255, 255, 255);
-   cursor: pointer;
+  padding-right: 10%;
 }
 
 
-.navbar-links {
-  width: 40%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 20px; 
-  font-family: "Merriweather", "Open Sans", serif;
-  font-weight: bolder;
+.rightnavbar .notification {
+  margin-left: 20px;
+  margin-right: 20px;
 }
-
 
 .button-account {
   display: flex;
@@ -128,4 +104,64 @@
 
 .signin-btn:hover {
   background-color: #0056b3;
+}
+
+
+.divNotification {
+  /* background-color: red; */
+  width: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.notification {
+  width: 30px;
+  height: 30px;
+  /* background-color: aliceblue; */
+  border-radius: 10px;
+}
+
+
+.notification1 {
+  width: 30px;
+  height: 30px;
+  background-color: aliceblue;
+  border-radius: 10px;
+}
+
+
+.notificationsetting {
+   width: 40px;
+  height: 40px;
+}
+
+.search-compact {
+  display:flex;
+  width:60%; 
+  border-radius:12px;
+  overflow:hidden; 
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+.search-compact input {
+  flex:1;
+  padding:12px;
+  border:0;
+  outline:none;
+  font-size:14px; 
+}
+
+.search-compact button {
+  width: 20%;
+  border:0; background:linear-gradient(90deg,#2b8cff,#6ea8ff);
+  color:#fff; cursor:pointer; 
+  font-weight:600; 
+}
+
+.search-compact button:hover { 
+  background: #5773ce ;
+  color:#fff;
+  font-weight:600; 
 }

@@ -1,0 +1,12 @@
+.setting {
+    background-color: rgb(37, 37, 37);
+    position: fixed;
+    right: 2%;  
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+    z-index: 999;
+    top: 10%;
+    left: 78%;
+    height: 70vh;
+    width: 20%;
+    border-radius: 20px;
+}
