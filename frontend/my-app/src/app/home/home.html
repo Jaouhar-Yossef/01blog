@@ -1,29 +1,15 @@
 <div class="home">
-  
     <div class="divnavbar">
         <app-navbar></app-navbar>
     </div>
-
     <div class="divcontenthome">
         <div class="devcontent">
-
-            <div>
-                hhhe  
-            </div> 
-             <div>
-                hhhe  
+            <div *ngIf="userRegistered(); else notRegistered">
+                Welcome back! You are registered.
             </div>
-            <div>
-                hhhe  
-            </div> 
-            <div>
-                hhhe  
-            </div>  
-            <div>
-                hhhe  
-            </div>
+            <ng-template #notRegistered>
+                Please register to continue.
+            </ng-template>
         </div>
     </div>
-
-  
 </div>

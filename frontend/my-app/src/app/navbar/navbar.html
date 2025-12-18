@@ -1,34 +1,43 @@
 <div class="nav">
-  <div class="title">
+  <div class="imgtitle">
     <img src="../../assets/img4.jpeg" class="book">
+  </div>
+  <div class="title">
     <p>Welcome to 01-blog</p>
+  </div>
 
+
+
+   <div class="rightnavbar" *ngIf="userRegistered(); else righ_register">
+
+    <div class="search-compact" >
+      <input type="search" id="compact" placeholder="Search for somethings..." />
+      <button >Search</button>
+    </div>
+    
+    <div class="divNotification">
+      <!-- <img class="notification" src="../../assets/notification2.png" alt=""> -->
+      <img class="notification" src="../../assets/images/notification-icon.png" alt="">
+      <!-- <img class="notification1" src="../../assets/night-mode.png" alt=""> -->
+      <img class="notification notificationsetting" (click)="toggleSettings()"  src="../../assets/images/hideMenu.svg" alt="">
+      @if (showSettings) {
+        <app-setting></app-setting>
+      }
+    </div>
+
+  </div>
   
 
-  </div>
-  <div class="rightnavbar">
-
-      <div class="search-compact">
-        <input type="search" id="compact" placeholder="Search for somethings..." />
-        <button>Search</button>
-      </div>
-
-      <!--     
-        <div class="button-account">
-          <button class="btn signin-btn">Sign In</button>
-          <button class="btn signup-btn">Sign Up</button>
-        </div> -->
-        <div class="divNotification">
-            <!-- <img class="notification" src="../../assets/notification2.png" alt=""> -->
-            <img class="notification" src="../../assets/images/notification-icon.png" alt="">
-            <!-- <img class="notification1" src="../../assets/night-mode.png" alt=""> -->
-            <img class="notification notificationsetting" (click)="toggleSettings()"  src="../../assets/images/hideMenu.svg" alt="">
-            @if (showSettings) {
-              <app-setting></app-setting>
-            }
-      </div>
-
-      
-  </div>
+  <ng-template #righ_register>
+    <div class="button-account" class="rightnavbarnoregister" >
+        <button class="btn signin-btn">Sign In
+          <img class="notification" src="../../assets/images/notification-icon.png" alt="">
+        </button>
+        <button class="btn signup-btn">Sign Up
+          <img class="notification" src="../../assets/images/notification-icon.png" alt="">
+        </button>
+    </div>
+  </ng-template>
+ 
 </div>
 

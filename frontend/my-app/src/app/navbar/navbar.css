@@ -1,6 +1,5 @@
 .nav {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 100%;
   color: white;
@@ -10,8 +9,7 @@
 
 
 .title {
-  width: 30%;
-  /* background-color: red; */
+  width: 20%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -24,9 +22,14 @@
   font-family: "Merriweather", "Open Sans", serif;
 
   font-weight: bolder;
-  /* background-color: red; */
   margin-top: 8px;
   width: 100%;
+}
+
+
+.imgtitle {
+  width: 10%;
+  background-color: red;
 }
 .book {
   position: absolute;
@@ -54,9 +57,9 @@
 }
 
 
+
 .rightnavbar {
-  width: 60%;
-  /* background-color: blue; */
+  width: 70%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,40 +73,64 @@
   margin-right: 20px;
 }
 
+.rightnavbarnoregister {
+   width: 50%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 100%;
+}
+
 .button-account {
   display: flex;
   gap: 15px;
+  height: 100%;
+  background-color: red;
   justify-content: center;
   align-items: center;
 }
 
 .btn {
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 15px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   border: none;
   transition: 0.3s;
+  height: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-right: 10px;
 }
 
 
 .signup-btn {
-  background-color: #007bff;
-  color: white;
+  
+  /* background-color: #045cbb; */
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  /* color: white; */
 }
 
 .signup-btn:hover {
-  background-color: #0056b3;
+  background-color: #066cda;
 }
 
 .signin-btn {
-  background-color: #007bff;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+
+  /* background-color: #045cbb;
+  color: white; */
 }
 
 .signin-btn:hover {
-  background-color: #0056b3;
+  background-color: #066cda;
 }
 
 
@@ -139,7 +166,7 @@
 
 .search-compact {
   display:flex;
-  width:60%; 
+  width:50%; 
   border-radius:12px;
   overflow:hidden; 
   box-shadow:0 6px 18px rgba(0,0,0,0.06);
@@ -150,7 +177,8 @@
   padding:12px;
   border:0;
   outline:none;
-  font-size:14px; 
+  font-size:12px;
+  height: 40%;
 }
 
 .search-compact button {
