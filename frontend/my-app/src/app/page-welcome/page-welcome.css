@@ -1,0 +1,66 @@
+.page_welcome {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page_welcome_content {
+    /* background-color: red; */
+    width: 100%;
+    text-align: center;
+
+}
+
+.msg_welcome {
+    
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 50px;
+
+    width:100%;
+
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-weight: bolder;
+    
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.ptext {
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 50%;
+}
+
+
+.text_for_user {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+
+
+.Start_Writing {
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  height: 35px;
+  width: 15%;
+  margin-right: 10px;
+}
+
+
+.Start_Writing:hover{
+    background-color: rgb(49, 83, 112);
+    color: aliceblue;
+}

@@ -2,11 +2,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Navbar } from '../navbar/navbar'; 
 import { AuthService } from '../services/auth.service';
+import { PageWelcome } from '../page-welcome/page-welcome';
 
 @Component({
   selector: 'app-home',
   standalone: true,  
-  imports: [CommonModule, Navbar],
+  imports: [CommonModule, Navbar, PageWelcome],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
