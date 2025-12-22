@@ -163,6 +163,7 @@ export class RegisterComponent {
 
     
   isLoading = false;
+  
   fetchRegister() {
     const data = {
       username: this.username.trim(),
@@ -177,17 +178,15 @@ export class RegisterComponent {
     this.authService.register(data).subscribe({
       next: (res) => {
         this.isLoading = false;
-        console.log('Registration success:', res);
-        this.errorService.showMessage('Registration successful!', 'success');
-        // يمكنك هنا تحويل المستخدم إلى صفحة login:
-        // this.switchForm.emit();
-        
 
+        // console.log('Registration success:', res);
+
+        this.errorService.showMessage('Registration successful!', 'success');
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Registration failed:', err);
-        this.errorService.showMessage('Failed to register. Try again.', 'error');
+        // console.error('Registration failed:', err);
+        this.errorService.showMessage(err.error.message, 'error');
       }
     });
   }

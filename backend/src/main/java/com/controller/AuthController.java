@@ -1,9 +1,13 @@
 package com.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.entity.User;
 import com.service.UserService;
 import java.util.Map;
+
+import com.util.Response;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,17 +20,30 @@ public class AuthController {
     }
     
     
-    @GetMapping("/auth/check")
+    @GetMapping("/check")
     public Map<String, Boolean> checkUser() {
         System.err.println("hhhhhhhhhhhhhhhhh  >>>>>>>>>>>>>>>>");
         boolean isRegistered = true; 
         return Map.of("registered", isRegistered);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<Response> register(@RequestBody User user) {
 
-    // @PostMapping("/register")
-    // public Map<String, String> registerUser(@RequestBody User user) {
-    //     String message = userService.register(user);
-    //     return Map.of("message", message);
-    // }
+        Response response = userService.register(user);
+
+        if (!response.isSuccess()) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT) // 409
+                    .body(response);
+        }
+
+        
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED) // 201
+                .body(response);
+    }
+
+
 }

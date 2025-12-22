@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import com.entity.User;
 import com.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.util.Response;
 
 @Service
 public class UserService {
@@ -16,12 +17,12 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public String register(User user) {
+    public Response register(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return "Email already exists";
+            return new Response(false , "Email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "User registered successfully: " + user.getUsername();
+        return new Response(true ,  "User registered successfully: " + user.getUsername());
     }
 }
