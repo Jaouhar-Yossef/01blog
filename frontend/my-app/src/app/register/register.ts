@@ -79,23 +79,23 @@ export class RegisterComponent {
       this.allisfilled()
     }
 
-    checkFirstName () {
-      if (  this.firstname.trim().length >= 3) {
-        this.isFirstnameValid = true;
-      } else {
-        this.isFirstnameValid = false;
-      }
-      this.allisfilled()
-    }
+    // checkFirstName () {
+    //   if (  this.firstname.trim().length >= 3) {
+    //     this.isFirstnameValid = true;
+    //   } else {
+    //     this.isFirstnameValid = false;
+    //   }
+    //   this.allisfilled()
+    // }
 
-    checkLastName () {
-      if (  this.lastname.trim().length >= 3) {
-        this.isLastnameValid = true;
-      } else {
-        this.isLastnameValid = false;
-      }
-      this.allisfilled()
-    }
+    // checkLastName () {
+    //   if (  this.lastname.trim().length >= 3) {
+    //     this.isLastnameValid = true;
+    //   } else {
+    //     this.isLastnameValid = false;
+    //   }
+    //   this.allisfilled()
+    // }
 
      checkUserName() {
       if (  this.username.trim().length >= 3) {
@@ -108,7 +108,7 @@ export class RegisterComponent {
 
 
     allisfilled() {
-        if (this.isEmailValid && this.isFirstnameValid && this.isLastnameValid && this.isusername && this.ispassWordValid && this.isConfirmpassWordValid) {
+        if (this.isEmailValid && this.isusername && this.ispassWordValid && this.isConfirmpassWordValid) { // this.isFirstnameValid && this.isLastnameValid &&
           this.isfilled = true
         } else {
           this.isfilled = false

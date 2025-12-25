@@ -13,11 +13,5 @@ public class RunController {
     public String home() {
         return "Welcome to my Spring Boot API!";
     }
-
-    @GetMapping("/api/message")
-    public String sayHello() {
-        return "Hello from RunController server!";
-    }
-
     
 }
