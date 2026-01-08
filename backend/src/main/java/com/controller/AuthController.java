@@ -18,7 +18,7 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
-    
+
     
     @GetMapping("/check")
     public Map<String, Boolean> checkUser() {
@@ -34,15 +34,22 @@ public class AuthController {
 
         if (!response.isSuccess()) {
             return ResponseEntity
-                    .status(HttpStatus.CONFLICT) // 409
+                    .status(HttpStatus.CONFLICT)
                     .body(response);
         }
-
-        
-
         return ResponseEntity
-                .status(HttpStatus.CREATED) // 201
+                .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
+        Response response = userService.login(request.getEmail(), request.getPassword());
+        if (!response.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        return ResponseEntity.ok(response);
     }
 
 
