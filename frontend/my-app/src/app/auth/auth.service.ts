@@ -4,10 +4,14 @@ import { Observable } from 'rxjs';
 
 export interface RegisterData {
   username: string;
-  firstname: string;
-  lastname: string;
   email: string;
   password: string;
+}
+
+
+export interface loginData {
+  emailOrUsername : string;
+  password: string
 }
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +20,11 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(data: RegisterData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, data);
+  register(dataRegister: RegisterData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, dataRegister);
+  }
+
+  login(dataLogin: loginData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, dataLogin);
   }
 }

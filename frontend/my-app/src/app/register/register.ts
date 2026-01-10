@@ -34,8 +34,7 @@ export class RegisterComponent {
     error: string = '';
 
     username: string = '';
-    firstname: string = '';
-    lastname: string = '';
+  
 
     passWord: string = '';
     ConfirmPassWord: string = '';
@@ -44,8 +43,6 @@ export class RegisterComponent {
     emailRegex: RegExp = /^[^\s@]{3,}@[^\s@]{2,}\.[^\s@]{2,}$/;
 
     isEmailValid: boolean = false;
-    isFirstnameValid: boolean = false;
-    isLastnameValid: boolean = false;
     isusername: boolean = false;
     ispassWordValid: boolean = false
     isConfirmpassWordValid: boolean = false
@@ -79,23 +76,6 @@ export class RegisterComponent {
       this.allisfilled()
     }
 
-    // checkFirstName () {
-    //   if (  this.firstname.trim().length >= 3) {
-    //     this.isFirstnameValid = true;
-    //   } else {
-    //     this.isFirstnameValid = false;
-    //   }
-    //   this.allisfilled()
-    // }
-
-    // checkLastName () {
-    //   if (  this.lastname.trim().length >= 3) {
-    //     this.isLastnameValid = true;
-    //   } else {
-    //     this.isLastnameValid = false;
-    //   }
-    //   this.allisfilled()
-    // }
 
      checkUserName() {
       if (  this.username.trim().length >= 3) {
@@ -120,8 +100,8 @@ export class RegisterComponent {
      check() {
       this.allisfilled()
        this.error = ''; 
-      if (!this.isLastnameValid || !this.isFirstnameValid || !this.isusername) {
-        this.error += 'names must be at least 3 characters!'
+      if (!this.isusername) {
+        this.error += 'username must be at least 3 characters!'
       }
       if (!this.checkError()) {
         return
@@ -167,8 +147,6 @@ export class RegisterComponent {
   fetchRegister() {
     const data = {
       username: this.username.trim(),
-      firstname: this.firstname.trim(),
-      lastname: this.lastname.trim(),
       email: this.email.trim(),
       password: this.passWord.trim(),
     };
@@ -179,13 +157,11 @@ export class RegisterComponent {
       next: (res) => {
         this.isLoading = false;
 
-        // console.log('Registration success:', res);
-
         this.errorService.showMessage('Registration successful!', 'success');
       },
       error: (err) => {
         this.isLoading = false;
-        // console.error('Registration failed:', err);
+
         this.errorService.showMessage(err.error.message, 'error');
       }
     });

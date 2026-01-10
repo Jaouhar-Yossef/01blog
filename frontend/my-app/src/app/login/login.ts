@@ -2,6 +2,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ErrorService } from '../error/error.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
+
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,7 +15,10 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   showPassword = false;
   
-  constructor(private errorService: ErrorService) {}
+  constructor(
+    private errorService: ErrorService,
+    private authService: AuthService
+  ) {}
 
   @Output() switchForm = new EventEmitter<void>();
 
@@ -42,9 +48,27 @@ export class LoginComponent {
       this.errorService.showMessage('Password must be at least 6 characters', 'error');
       return
     }
+
+    this.fetchLogin();
   }
 
+  fetchLogin() {
+    const data = {
+      emailOrUsername: this.email.trim(),
+      password: this.password.trim(),
+    };
 
-//   Please enter a valid email
-// Password must be at least 6 characters
+    this.authService.login(data).subscribe({
+      next: (res) => {
+
+        this.errorService.showMessage('login successful!', 'success');
+      },
+      error: (err) => {
+        
+        this.errorService.showMessage(err.error.message, 'error');
+      }
+
+    })
+  }
+
 }

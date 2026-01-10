@@ -10,7 +10,6 @@ import com.repository.UserRepository;
 
 @Configuration
 public class AdminInitializer {
-
     @Bean
     CommandLineRunner createAdmin(UserRepository userRepository,
                                   PasswordEncoder passwordEncoder) {
