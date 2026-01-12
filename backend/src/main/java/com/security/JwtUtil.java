@@ -20,7 +20,7 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration; // e.g., 1000 * 60 * 60 * 10
 
-    private Key getSigningKey() {
+    public Key getSigningKey() {
         // convert secret to bytes and ensure it's valid length for HS256 (32 bytes min)
         byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length < 32) {
@@ -37,4 +37,6 @@ public class JwtUtil {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+
 }

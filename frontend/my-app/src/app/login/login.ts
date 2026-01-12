@@ -3,6 +3,7 @@ import { ErrorService } from '../error/error.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class LoginComponent {
   
   constructor(
     private errorService: ErrorService,
-    private authService: AuthService
+    private authService: AuthService,
+     private router: Router
   ) {}
 
   @Output() switchForm = new EventEmitter<void>();
@@ -60,8 +62,11 @@ export class LoginComponent {
 
     this.authService.login(data).subscribe({
       next: (res) => {
+        this.errorService.showMessage('login successful!', 'success');        
+        this.authService.saveAuthData(res.token, res.anyData);
+        this.router.navigate(['/']);
 
-        this.errorService.showMessage('login successful!', 'success');
+          this.authService.loggedIn.set(true); 
       },
       error: (err) => {
         

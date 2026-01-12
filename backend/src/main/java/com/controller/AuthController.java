@@ -46,14 +46,33 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         // identifier can be email or username
-        String identifier = request.getIdentifier(); // instead of getEmail()
-        Response<UserResponseDTO> response = userService.login(identifier, request.getPassword());
+        String emailOrUsername = request.getEmailOrUsername();
+        Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
     
         if (!response.isSuccess()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         return ResponseEntity.ok(response);
     }
+
+
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> me(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        String token = authHeader.substring(7); // remove "Bearer " prefix
+        UserResponseDTO user = userService.getUserFromToken(token);
+    
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+
 
 
 

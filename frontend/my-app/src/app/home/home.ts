@@ -1,8 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, effect } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Navbar } from '../navbar/navbar'; 
-import { AuthService } from '../services/auth.service';
 import { PageWelcome } from '../page-welcome/page-welcome';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,15 +11,26 @@ import { PageWelcome } from '../page-welcome/page-welcome';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
+export class HomeComponent {
 
-export class HomeComponent implements OnInit {
-  userRegistered = signal(false); 
-  
-  constructor(private authService: AuthService) {}
+  loggedIn = false;
+  user: any = null;
 
-  ngOnInit(): void {
-    this.authService.checkUser().subscribe(res => {
-      this.userRegistered.set(res.registered);
+  constructor(
+    public authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // load user from localStorage if browser
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        this.user = JSON.parse(userData);
+      }
+    }
+
+    // react to changes in loggedIn signal
+    effect(() => {
+      this.loggedIn = this.authService.isLoggedIn()(); // <- read the signal with ()
     });
   }
 }

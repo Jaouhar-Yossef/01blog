@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 import { ErrorService } from '../error/error.service';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ export class RegisterComponent {
 
   constructor(
     private errorService: ErrorService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
 
@@ -156,12 +158,14 @@ export class RegisterComponent {
     this.authService.register(data).subscribe({
       next: (res) => {
         this.isLoading = false;
-
         this.errorService.showMessage('Registration successful!', 'success');
+        
+        this.authService.saveAuthData(res.token, res.anyData);
+
+        this.router.navigate(['/']);
       },
       error: (err) => {
         this.isLoading = false;
-
         this.errorService.showMessage(err.error.message, 'error');
       }
     });

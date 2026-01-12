@@ -4,12 +4,16 @@
     </div>
     <div class="divcontenthome">
         <div class="devcontent">
-            <div *ngIf="userRegistered(); else notRegistered">
-                Welcome back! You are registered.
-            </div>
-            <ng-template #notRegistered>
-                <app-page-welcome></app-page-welcome>
-            </ng-template>
+
+        <div *ngIf="loggedIn">
+               Welcome back, {{ user?.username }}!
+            <p>This is your dashboard content.</p>
+          </div>
+          
+          <div *ngIf="!loggedIn">
+            <app-page-welcome></app-page-welcome>
+          </div>
+          
         </div>
     </div>
 </div>

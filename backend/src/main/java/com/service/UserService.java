@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.util.Response;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
 @Service
 public class UserService {
 
@@ -96,6 +99,38 @@ public class UserService {
         return new Response<>(true, "Login successful", token, dto);
     }
 
+
+
+
+
+     public UserResponseDTO getUserFromToken(String token) {
+        try {
+            // Use the signing key from JwtUtil
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(jwtUtil.getSigningKey()) // <- use your JwtUtil key
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            String username = claims.getSubject();
+            Optional<User> userOpt = userRepository.findByUsername(username);
+
+            if (userOpt.isEmpty()) return null;
+
+            User user = userOpt.get();
+
+            // Return DTO just like in login
+            return new UserResponseDTO(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+
+        } catch (Exception e) {
+            return null; // invalid or expired token
+        }
+    }
 
 
 

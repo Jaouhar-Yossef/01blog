@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ErrorComponent } from './error/error';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,16 @@ import { ErrorComponent } from './error/error';
    `
 })
 
-export class App {
+export class App  implements OnInit  {
   errorMessage: string = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.authService.checkAuth(); 
+  }
+  
 }
