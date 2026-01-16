@@ -1,6 +1,5 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { AuthService } from './auth.service';
-
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
@@ -8,35 +7,37 @@ export class AuthStore {
   loggedIn = signal<boolean>(false);
 
   constructor(private authService: AuthService) {
-    // Try to read from localStorage first
-    const token = authService.getToken();
-    if (token) {
+    this.initializeAuth();
+  }
+
+  private initializeAuth() {
+    const token = this.authService.getToken();
+    const userData =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('user')
+        : null;
+
+    if (token && userData) {
+      this.user.set(JSON.parse(userData));
+      this.loggedIn.set(true);
       this.checkUserFromServer();
+    } else {
+      this.clearUser();
     }
   }
 
   checkUserFromServer() {
-    this.authService.checkAuthServer().subscribe({
-      next: (user) => {
-        if (user) {
-          this.user.set(user);
-          this.loggedIn.set(true);
-        } else {
-          this.user.set(null);
-          this.loggedIn.set(false);
-        }
-      },
-      error: (err) => {
-        console.log('Auth check failed:', err);
-        this.user.set(null);
-        this.loggedIn.set(false);
+    this.authService.checkAuthServer().subscribe(user => {
+      if (user) {
+        this.user.set(user);
+        this.loggedIn.set(true);
+      } else {
+        this.clearUser();
       }
     });
   }
 
   setUser(user: any) {
-    this.authService.user = user;
-    this.authService.loggedIn.set(true);
     this.user.set(user);
     this.loggedIn.set(true);
   }

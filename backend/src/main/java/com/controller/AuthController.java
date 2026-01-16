@@ -48,6 +48,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         // identifier can be email or username
+        
         String emailOrUsername = request.getEmailOrUsername();
         Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
     
@@ -59,6 +60,7 @@ public class AuthController {
 
 
 
+     // Validate token
     @GetMapping("/validate-token")
     public ResponseEntity<Map<String, Boolean>> validateToken(@RequestHeader("Authorization") String authHeader) {
         Map<String, Boolean> result = new HashMap<>();
@@ -66,13 +68,32 @@ public class AuthController {
             result.put("valid", false);
             return ResponseEntity.ok(result);
         }
-    
+
         String token = authHeader.substring(7);
         UserResponseDTO user = userService.getUserFromToken(token);
         result.put("valid", user != null);
         return ResponseEntity.ok(result);
     }
 
+
+
+     // Get current user
+    @PostMapping("/me")
+    public ResponseEntity<UserResponseDTO> me(@RequestHeader("Authorization") String authHeader) {
+
+        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = authHeader.substring(7);
+        UserResponseDTO user = userService.getUserFromToken(token);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(user);
+    }
 
 
 

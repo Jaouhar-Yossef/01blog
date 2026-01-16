@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthStore } from '../auth/auth-store.service';
 import { AuthService } from '../auth/auth.service';
+import { AuthStore } from '../auth/auth-store.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
-    private authStore: AuthStore,
     private authService: AuthService,
+    private authStore: AuthStore,
     private router: Router
   ) {}
 
@@ -21,12 +21,10 @@ export class AuthGuard implements CanActivate {
       return of(false);
     }
 
-    return this.authService.checkTokenOnServer().pipe(
-      map(valid => {
-        if (valid) {
-
-            const userData = localStorage.getItem('user');
-          if (userData) this.authStore.setUser(JSON.parse(userData));
+    return this.authService.checkAuthServer().pipe(
+      map(user => {
+        if (user) {
+          this.authStore.setUser(user);
           return true;
         } else {
           this.authStore.clearUser();

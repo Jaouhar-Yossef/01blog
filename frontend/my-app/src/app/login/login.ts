@@ -64,9 +64,9 @@ export class LoginComponent {
       next: (res) => {
         this.errorService.showMessage('login successful!', 'success');        
         this.authService.saveAuthData(res.token, res.anyData);
+        this.authService.loggedIn.set(true); 
         this.router.navigate(['/']);
 
-          this.authService.loggedIn.set(true); 
       },
       error: (err) => {
         
