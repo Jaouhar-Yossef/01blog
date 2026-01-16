@@ -1,19 +1,23 @@
 <div class="home">
-    <div class="divnavbar">
-        <app-navbar></app-navbar>
-    </div>
-    <div class="divcontenthome">
-        <div class="devcontent">
+  <div class="divnavbar">
+    <app-navbar 
+      [loggedIn]="authStore.loggedIn()" 
+      [user]="authStore.user()">
+    </app-navbar>
+  </div>
 
-        <div *ngIf="loggedIn">
-               Welcome back, {{ user?.username }}!
-            <p>This is your dashboard content.</p>
-          </div>
-          
-          <div *ngIf="!loggedIn">
-            <app-page-welcome></app-page-welcome>
-          </div>
-          
-        </div>
+  <div class="divcontenthome">
+    <div class="devcontent">
+
+      <div *ngIf="authStore.loggedIn()">
+        Welcome back, {{ authStore.user()?.username }}!
+        <p>This is your dashboard content.</p>
+      </div>
+
+      <div class="DivFORwelcomePage" *ngIf="!authStore.loggedIn()">
+        <app-page-welcome></app-page-welcome>
+      </div>
+
     </div>
+  </div>
 </div>

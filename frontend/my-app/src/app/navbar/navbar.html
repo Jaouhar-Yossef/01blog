@@ -7,9 +7,7 @@
   </div>
 
 
-
-<!-- 
-   <div class="rightnavbar" *ngIf="userRegistered(); else righ_register">
+  <div class="rightnavbar" *ngIf="loggedIn; else righ_register">
 
     <div class="search-compact" >
       <input type="search" id="compact" placeholder="Search for somethings..." />
@@ -17,8 +15,8 @@
     </div>
     
     <div class="divNotification">
-      <img class="notification" src="../../assets/notification2.png" alt=""> 
-      <img class="notification" src="../../assets/images/notification-icon.png" alt="">
+      <img class="imgsing" src="../../assets/notification2.png" alt=""> 
+      <img class="imgsing" src="../../assets/images/notification-icon.png" alt="">
       <img class="notification1" src="../../assets/night-mode.png" alt=""> 
       <img class="notification notificationsetting" (click)="toggleSettings()"  src="../../assets/images/hideMenu.svg" alt="">
       @if (showSettings) {
@@ -26,17 +24,18 @@
       }
     </div>
 
-  </div> -->
+  </div>
 
 
   <ng-template #righ_register>
     <div class="button-account" class="rightnavbarnoregister" >
-        <button class="btn signin-btn">Sign In
-          <img class="notification" src="../../assets/images/notification-icon.png" alt="">
+
+        <button type="button" class="btn btn-primary">
+          <a class="navbar-brand" href="/account">Get Started
+            <img class="imgsing" src="../../assets/images/user.svg" alt="">
+          </a>
         </button>
-        <button class="btn signup-btn">Sign Up
-          <img class="notification" src="../../assets/images/notification-icon.png" alt="">
-        </button>
+
     </div>
   </ng-template>
  

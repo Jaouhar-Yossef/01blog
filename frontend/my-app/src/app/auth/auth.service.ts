@@ -1,6 +1,6 @@
 import { Injectable, inject, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface RegisterData {
@@ -15,7 +15,6 @@ export interface LoginData {
 }
 
 
-// ----------------- AUTH SERVICE -----------------
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   public loggedIn = signal(false);
@@ -27,17 +26,45 @@ export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private apiUrl = 'http://localhost:8080/auth';
 
-  // ----------------- REGISTER -----------------
+
+
+checkTokenOnServer(): Observable<boolean> {
+  const token = this.getToken();
+  if (!token) return of(false); 
+
+  return this.http.get<{ valid: boolean }>(`http://localhost:8080/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` }
+  }).pipe(
+    map(response => response.valid),
+    catchError(() => of(false))
+  );
+}
+
+
+
+
+  checkAuthServer(): Observable<any> {
+  const token = this.getToken();
+  if (!token) return new Observable(observer => {
+    observer.next(null);
+    observer.complete();
+  });
+
+  return this.http.get(`${this.apiUrl}/me`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
+
+
   register(dataRegister: RegisterData): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, dataRegister);
   }
 
-  // ----------------- LOGIN -----------------
   login(dataLogin: LoginData): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, dataLogin);
   }
 
-  // ----------------- SAVE AUTH DATA -----------------
  
 
     saveAuthData(token: string, user: any) {
@@ -50,7 +77,6 @@ export class AuthService {
   }
 
 
-  // ----------------- GET TOKEN -----------------
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('token');
@@ -58,7 +84,6 @@ export class AuthService {
     return null;
   }
 
-  // ----------------- CHECK AUTH -----------------
   
   checkAuth() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -77,7 +102,6 @@ export class AuthService {
 
 
 
-  // ----------------- LOGOUT -----------------
   logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
@@ -86,7 +110,6 @@ export class AuthService {
     this.loggedIn.set(false);
   }
 
-  // ----------------- IS LOGGED IN -----------------
   isLoggedIn() {
     return this.loggedIn;
   }

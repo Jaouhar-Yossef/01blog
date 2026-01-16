@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.dto.UserResponseDTO;
 import com.entity.User;
 import com.service.UserService;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import com.util.Response;
@@ -57,20 +59,20 @@ public class AuthController {
 
 
 
-    @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> me(@RequestHeader("Authorization") String authHeader) {
+    @GetMapping("/validate-token")
+    public ResponseEntity<Map<String, Boolean>> validateToken(@RequestHeader("Authorization") String authHeader) {
+        Map<String, Boolean> result = new HashMap<>();
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            result.put("valid", false);
+            return ResponseEntity.ok(result);
         }
     
-        String token = authHeader.substring(7); // remove "Bearer " prefix
+        String token = authHeader.substring(7);
         UserResponseDTO user = userService.getUserFromToken(token);
-    
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok(user);
+        result.put("valid", user != null);
+        return ResponseEntity.ok(result);
     }
+
 
 
 

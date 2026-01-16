@@ -66,6 +66,8 @@ docker exec -it blog-postgres psql -U postgres -d blogdb
 cd backend-project-folder
 mvn clean install
 mvn spring-boot:run
+./mvnw spring-boot:run
+
 
 # Angular frontend commands
 npm install @angular/cli
