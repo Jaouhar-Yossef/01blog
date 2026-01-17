@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.dto.UserResponseDTO;
 import com.entity.User;
+import com.entity.UserDetailsImpl;
 import com.repository.UserRepository;
 import com.security.JwtUtil;
 
@@ -159,16 +160,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Convert your role to Spring Security authorities
-        List<SimpleGrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole()) // e.g., ROLE_USER, ROLE_ADMIN
-        );
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                authorities
-        );
+        return new UserDetailsImpl(user);
     }
 
 }

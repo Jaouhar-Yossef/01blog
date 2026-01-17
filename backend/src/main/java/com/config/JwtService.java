@@ -1,6 +1,7 @@
 package com.config; // or com.service
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -10,10 +11,12 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private final String secretKey = "mysecretkeymysecretkeymysecretkey12"; // 32+ chars for HS256
+   
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
     public String extractUsername(String token) {

@@ -2,10 +2,13 @@ package com.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.dto.UserResponseDTO;
 import com.entity.User;
+import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
 import java.util.HashMap;
@@ -46,9 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
-        // identifier can be email or username
-        
+    public ResponseEntity<Response> login(@RequestBody LoginRequest request) {       
         String emailOrUsername = request.getEmailOrUsername();
         Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
     
@@ -59,44 +60,10 @@ public class AuthController {
     }
 
 
-
-     // Validate token
-    @GetMapping("/validate-token")
-    public ResponseEntity<Map<String, Boolean>> validateToken(@RequestHeader("Authorization") String authHeader) {
-        Map<String, Boolean> result = new HashMap<>();
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            result.put("valid", false);
-            return ResponseEntity.ok(result);
-        }
-
-        String token = authHeader.substring(7);
-        UserResponseDTO user = userService.getUserFromToken(token);
-        result.put("valid", user != null);
-        return ResponseEntity.ok(result);
-    }
-
-
-
-     // Get current user
     @PostMapping("/me")
-    public ResponseEntity<UserResponseDTO> me(@RequestHeader("Authorization") String authHeader) {
+    public User me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        String token = authHeader.substring(7);
-        UserResponseDTO user = userService.getUserFromToken(token);
-
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok(user);
+        return userDetails.getUser();
     }
-
-
-
-
 
 }
