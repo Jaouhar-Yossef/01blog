@@ -29,7 +29,6 @@ public class AuthController {
     
     @GetMapping("/check")
     public Map<String, Boolean> checkUser() {
-        System.err.println("hhhhhhhhhhhhhhhhh  >>>>>>>>>>>>>>>>");
         boolean isRegistered = true; 
         return Map.of("registered", isRegistered);
     }
