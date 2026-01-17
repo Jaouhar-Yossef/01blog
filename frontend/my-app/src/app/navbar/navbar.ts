@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Setting } from '../setting/setting';
-import { AuthStore } from '../auth/auth-store.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +12,7 @@ import { AuthStore } from '../auth/auth-store.service';
 
 export class Navbar {
   
-   @Input() loggedIn: boolean = false; 
-  @Input() user: any = null;          
+  loggedIn: boolean = false; 
 
   showSettings: boolean = false;
 

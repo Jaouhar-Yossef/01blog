@@ -2,7 +2,6 @@ import { Component, Inject, Input, PLATFORM_ID, effect } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Navbar } from '../navbar/navbar'; 
 import { PageWelcome } from '../page-welcome/page-welcome';
-import { AuthStore } from '../auth/auth-store.service';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +10,4 @@ import { AuthStore } from '../auth/auth-store.service';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent {
-  constructor(public authStore: AuthStore) {}
-}
+export class HomeComponent {}

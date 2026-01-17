@@ -62,7 +62,6 @@ public class AuthController {
 
     @PostMapping("/me")
     public User me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-
         return userDetails.getUser();
     }
 

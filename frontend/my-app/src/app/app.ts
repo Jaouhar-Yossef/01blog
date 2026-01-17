@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ErrorComponent } from './error/error';
 import { AuthService } from './auth/auth.service';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthStore } from './auth/auth-store.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +15,4 @@ import { AuthStore } from './auth/auth-store.service';
    `
 })
 
-export class App {
-    constructor(public authStore: AuthStore) {}
-}
+export class App {}
