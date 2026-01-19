@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import { Navbar } from '../navbar/navbar'; 
+
 
 @Component({
   selector: 'app-page-welcome',
-  imports: [],
+  standalone: true,
+  imports: [Navbar],
+
   templateUrl: './page-welcome.html',
   styleUrl: './page-welcome.css',
 })

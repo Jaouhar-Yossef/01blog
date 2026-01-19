@@ -59,8 +59,9 @@ public class AuthController {
     }
 
 
-    @PostMapping("/me")
+    @PostMapping("/validate-token")
     public User me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        
         return userDetails.getUser();
     }
 

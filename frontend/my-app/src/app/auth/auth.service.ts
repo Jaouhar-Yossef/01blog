@@ -2,7 +2,8 @@ import { Injectable, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
+import { log } from 'node:console';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -10,6 +11,11 @@ export class AuthService {
   private isBrowser: boolean;
 
   loggedIn = signal<boolean>(false);
+  
+  getloggedIn() {
+    return this.loggedIn();
+  }
+
   user: any = null;
 
   constructor(
@@ -17,11 +23,20 @@ export class AuthService {
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+
+    
+    if (this.isBrowser) {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      if (token && user) {
+        this.loggedIn.set(true);
+        this.user = JSON.parse(user);
+      }
+    }
   }
 
   saveAuthData(token: string, user: any) {
     if (!this.isBrowser) return;
-
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.loggedIn.set(true);
@@ -29,7 +44,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) return null;
+    if (this.isBrowser) return null;
     return localStorage.getItem('token');
   }
 
@@ -44,9 +59,7 @@ export class AuthService {
 
   login(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap(res => {
-        this.saveAuthData(res.token, res.user);
-      })
+      tap(res => this.saveAuthData(res.token, res.user))
     );
   }
 
@@ -54,14 +67,35 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  checkAuthServer(): Observable<any> {
-    const token = this.getToken();
-    if (!token) return of(null);
+  
+  validateToken(): Observable<boolean> {
+  // لو الـ user موجود في localStorage مسبقاً
 
-    return this.http.get<any>(`${this.apiUrl}/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).pipe(
-      catchError(() => of(null))
-    );
-  }
+  const token = this.getToken();
+
+  log("Validating token called"  , this.isBrowser);
+
+
+
+console.log("Validating token:", token);
+  
+  
+  if (!token) return of(false);
+
+  return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {
+    headers: { Authorization: `Bearer ${token}` }
+  }).pipe(
+    map(user => {
+      this.loggedIn.set(true);
+      this.user = user;
+      return true;
+    }),
+    catchError(() => {
+      this.logout();
+      return of(false);
+    })
+  );
+}
+
+
 }

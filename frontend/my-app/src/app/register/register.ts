@@ -160,7 +160,7 @@ export class RegisterComponent {
         this.isLoading = false;
         this.errorService.showMessage('Registration successful!', 'success');
         this.authService.saveAuthData(res.token, res.anyData);
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.isLoading = false;

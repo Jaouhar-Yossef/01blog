@@ -7,7 +7,10 @@
   </div>
 
 
-  <div class="rightnavbar" *ngIf="loggedIn; else righ_register">
+  @if (isHome()) {
+
+
+    <div class="rightnavbar"> 
 
     <div class="search-compact" >
       <input type="search" id="compact" placeholder="Search for somethings..." />
@@ -27,17 +30,23 @@
   </div>
 
 
-  <ng-template #righ_register>
-    <div class="button-account" class="rightnavbarnoregister" >
 
-        <button type="button" class="btn btn-primary">
-          <a class="navbar-brand" href="/account">Get Started
-            <img class="imgsing" src="../../assets/images/user.svg" alt="">
-          </a>
-        </button>
+  }
 
-    </div>
-  </ng-template>
+
+    @if (isRoot()) {
+
+      <div class="button-account" class="rightnavbarnoregister" >
+  
+          <button type="button" class="btn btn-primary">
+            <a class="navbar-brand" href="/account">Get Started
+              <img class="imgsing" src="../../assets/images/user.svg" alt="">
+            </a>
+          </button>
+  
+      </div>
+    }
+
  
 </div>
 

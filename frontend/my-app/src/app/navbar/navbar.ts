@@ -2,6 +2,9 @@ import { Component, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Setting } from '../setting/setting';
 
+import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -12,7 +15,6 @@ import { Setting } from '../setting/setting';
 
 export class Navbar {
   
-  loggedIn: boolean = false; 
 
   showSettings: boolean = false;
 
@@ -20,4 +22,17 @@ export class Navbar {
     this.showSettings = !this.showSettings;
   }
 
+
+
+  constructor(private router: Router) {}
+
+  isHome(): boolean {
+    return this.router.url === '/home';
+  }
+
+  isRoot(): boolean {
+    return this.router.url === '/';
+  }
+
+  
 }

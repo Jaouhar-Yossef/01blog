@@ -63,11 +63,11 @@ export class LoginComponent {
     this.authService.login(data).subscribe({
       next: (res) => {
         this.errorService.showMessage('login successful!', 'success');        
-        // this.authService.saveAuthData(res.token, res.anyData);
+        this.authService.saveAuthData(res.token, res.anyData);
         // this.authService.loggedIn.set(true);
 
         console.log('data after login:--->   ', res);
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
 
       },
       error: (err) => {
