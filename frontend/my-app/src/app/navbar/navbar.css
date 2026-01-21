@@ -112,16 +112,32 @@
 
 .divNotification {
   /* background-color: red; */
-  width: 10%;
+  width: 25%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 
 }
 
+
+.Creat-Blog {
+  background:linear-gradient(90deg,#2b8cff,#6ea8ff);
+
+}
+
+.Creat-Blog:hover {
+  background:linear-gradient(90deg,#1a549b, #4970ac);
+}
+
+.plus-blog {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
 .imgsing {
-  width: 18px;
-  height: 18px;
+  width: 28px;
+  height: 28px;
   border-radius: 10px;
 
   margin-left: 5px;
@@ -160,7 +176,8 @@
 
 .search-compact button {
   width: 20%;
-  border:0; background:linear-gradient(90deg,#2b8cff,#6ea8ff);
+  border:0; 
+  background:linear-gradient(90deg,#2b8cff,#6ea8ff);
   color:#fff; cursor:pointer; 
   font-weight:600; 
 }

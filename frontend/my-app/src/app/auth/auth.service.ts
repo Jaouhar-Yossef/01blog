@@ -3,7 +3,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { log } from 'node:console';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -43,10 +42,12 @@ export class AuthService {
     this.user = user;
   }
 
+ 
   getToken(): string | null {
-    if (this.isBrowser) return null;
-    return localStorage.getItem('token');
-  }
+  if (!this.isBrowser) return null;  // ✅
+  return localStorage.getItem('token');
+}
+
 
   logout() {
     if (this.isBrowser) {
@@ -69,11 +70,9 @@ export class AuthService {
 
   
   validateToken(): Observable<boolean> {
-  // لو الـ user موجود في localStorage مسبقاً
 
   const token = this.getToken();
 
-  log("Validating token called"  , this.isBrowser);
 
 
 

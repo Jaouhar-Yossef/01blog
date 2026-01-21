@@ -1,30 +1,23 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { Setting } from '../setting/setting';
-
 import { Router } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Setting , CommonModule],
+  imports: [Setting, CommonModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
 })
-
 export class Navbar {
-  
+  showSettings = false;
 
-  showSettings: boolean = false;
+  constructor(private router: Router) {}
 
   toggleSettings() {
     this.showSettings = !this.showSettings;
   }
-
-
-
-  constructor(private router: Router) {}
 
   isHome(): boolean {
     return this.router.url === '/home';
@@ -33,6 +26,4 @@ export class Navbar {
   isRoot(): boolean {
     return this.router.url === '/';
   }
-
-  
 }

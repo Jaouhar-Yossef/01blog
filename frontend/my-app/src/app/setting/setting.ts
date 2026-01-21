@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-setting',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './setting.html',
-  styleUrl: './setting.css',
+  styleUrls: ['./setting.css'],
 })
 export class Setting {
-
+  @Input() show: boolean = false;
 }

@@ -14,17 +14,19 @@
 
     <div class="search-compact" >
       <input type="search" id="compact" placeholder="Search for somethings..." />
-      <button >Search</button>
+      <button > <img src="../../assets/images/search.svg" alt=""> Search </button>
     </div>
     
     <div class="divNotification">
-      <img class="imgsing" src="../../assets/notification2.png" alt=""> 
+      
+      <button type="button" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
+
+
       <img class="imgsing" src="../../assets/images/notification-icon.png" alt="">
-      <img class="notification1" src="../../assets/night-mode.png" alt=""> 
       <img class="notification notificationsetting" (click)="toggleSettings()"  src="../../assets/images/hideMenu.svg" alt="">
-      @if (showSettings) {
-        <app-setting></app-setting>
-      }
+      
+        <app-setting [show]="showSettings"></app-setting>
+
     </div>
 
   </div>
