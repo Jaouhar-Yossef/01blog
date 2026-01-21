@@ -13,15 +13,10 @@ import { CreatBlog } from '../creat-blog/creat-blog';
 })
 
 export class Navbar {
-  showSettings = false;
 
   showCreatBlog = false;
 
   constructor(private router: Router) {}
-
-  toggleSettings() {
-    this.showSettings = !this.showSettings;
-  }
 
   isHome(): boolean {
     return this.router.url === '/home';

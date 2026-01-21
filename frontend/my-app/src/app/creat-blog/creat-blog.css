@@ -231,3 +231,17 @@
 .botnpub:hover {
     background:linear-gradient(90deg,#6ea8ff,#2b8cff);
 }
+
+
+.divclearandcancel {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    padding: 5px;
+}
+
+.Cancel {
+    width: 45%;
+}

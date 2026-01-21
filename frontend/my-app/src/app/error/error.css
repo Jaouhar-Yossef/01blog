@@ -11,7 +11,6 @@
   animation: slideInFromRight 0.5s forwards;
 }
 
-/* الأنيميشن للظهور من اليمين */
 @keyframes slideInFromRight {
   0% {
     opacity: 0;
@@ -23,15 +22,14 @@
   }
 }
 
-/* الألوان حسب النوع */
 .error-box.error {
-  background-color: #f44336; /* أحمر */
+  background-color: #f44336; 
 }
 
 .error-box.success {
-  background-color: #4caf50; /* أخضر */
+  background-color: #4caf50;
 }
 
 .error-box.warning {
-  background-color: #ff9800; /* برتقالي */
+  background-color: #ff9800;
 }

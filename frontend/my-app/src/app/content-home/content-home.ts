@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CardBlog } from '../card-blog/card-blog';
 import { ContentHomeService } from './content-home.service';
 
@@ -9,6 +9,7 @@ import { ContentHomeService } from './content-home.service';
   styleUrl: './content-home.css',
 })
 export class ContentHome {
+
   Blogs: any[] = [];
   constructor(private postService: ContentHomeService) {}
 

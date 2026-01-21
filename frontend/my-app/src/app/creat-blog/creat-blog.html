@@ -50,6 +50,7 @@
     </div>
 
     <div class="form-actions">
+
       <button
         type="submit"
         class="botnpub btn btn-primary"
@@ -57,9 +58,10 @@
       >
         Publish Blog
       </button>
-      <div>
-            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-            <button type="button" class="btn btn-secondary" (click)="clearForm()"> clear </button>
+
+      <div class="divclearandcancel">
+        <button type="button" class="btn btn-secondary Cancel" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-secondary Cancel" (click)="clearForm()"> clear </button>
       </div>
     </div>
   </form>

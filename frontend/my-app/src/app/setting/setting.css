@@ -2,12 +2,11 @@
     background-color: rgb(1, 1, 44);
     position: fixed;
     top: 10%;
-    right: -25%;
+    right: 0%;
     height: 100vh;
     width: 10%;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     z-index: 999;
-    opacity: 0;
     transition: right 0.9s ease-in-out, opacity 1s ease-in-out;
     display: flex;
     flex-direction: column;
@@ -43,6 +42,13 @@
     margin-right: 8px;
 }
 
+.homeset2 {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+ 
+}
+
 .setting-item button {
     background-color: rgb(1, 1, 44);
     width: 80%;
@@ -61,6 +67,11 @@
   font-weight: bold;
 
   display: flex;
+}
+
+
+button.hidden {
+    display: none;
 }
 
 .setting-item button:hover {
