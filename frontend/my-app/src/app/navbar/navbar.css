@@ -122,11 +122,10 @@
 
 .Creat-Blog {
   background:linear-gradient(90deg,#2b8cff,#6ea8ff);
-
 }
 
 .Creat-Blog:hover {
-  background:linear-gradient(90deg,#1a549b, #4970ac);
+  background:linear-gradient(90deg,#6ea8ff , #2b8cff);
 }
 
 .plus-blog {
@@ -183,7 +182,7 @@
 }
 
 .search-compact button:hover { 
-  background: #5773ce ;
+  background:linear-gradient(90deg,#6ea8ff , #2b8cff);
   color:#fff;
   font-weight:600; 
 }

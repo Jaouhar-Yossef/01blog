@@ -1,0 +1,66 @@
+<div class="create-blog-container" [class.showCreatBlog]="showCreatBlog">
+  <h2>Create New Blog Post</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="title"
+        placeholder="Enter blog title..."
+        maxlength="20"
+      />
+    </div>
+
+    <div class="form-group mb-3">
+      <textarea
+        class="the-content"
+        formControlName="content"
+        placeholder="Write your blog content..."
+        maxlength="1000"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-group-media">
+      <div class="selectmedia">
+        <label for="media">Upload Images or Videos (1 to 5 files)</label>
+        <div class="selectmedia-divimgs">
+          <input
+            class="selectmedia-input"
+            type="file"
+            id="media"
+            multiple
+            accept="image/*,video/*"
+            (change)="onFileSelected($event)"
+          />
+          <label for="media" class="selectmedia-label">
+            <span>Select images or videos</span>
+            <img src="./../../assets/images/image.svg" alt="Select media" />
+          </label>
+        </div>
+      </div>
+
+      <div class="preview">
+        <div class="preview-item" *ngFor="let item of files; let i = index">
+          <img *ngIf="item.type === 'image'" [src]="item.url" />
+          <video *ngIf="item.type === 'video'" [src]="item.url" controls></video>
+          <button class="remove-btn" type="button" (click)="removeFile(i)">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="botnpub btn btn-primary"
+        [disabled]="form.invalid || files.length === 0"
+      >
+        Publish Blog
+      </button>
+      <div>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+            <button type="button" class="btn btn-secondary" (click)="clearForm()"> clear </button>
+      </div>
+    </div>
+  </form>
+</div>

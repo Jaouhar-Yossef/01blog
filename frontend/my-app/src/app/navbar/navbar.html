@@ -19,7 +19,7 @@
     
     <div class="divNotification">
       
-      <button type="button" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
+      <button (click)="creatBlog()" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
 
 
       <img class="imgsing" src="../../assets/images/notification-icon.png" alt="">
@@ -50,5 +50,8 @@
     }
 
  
+     <app-creat-blog [showCreatBlog]="showCreatBlog"   (close)="showCreatBlog = false" > </app-creat-blog>
+    
+
 </div>
 

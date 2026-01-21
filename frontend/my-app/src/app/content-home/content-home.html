@@ -1,10 +1,32 @@
 <div class="post-container">
 
   <div class="post-header">
-    <button class=" post-header_button"><span> All Blogs</span></button>
-    <button class="post-header_button"><span> Saved</span></button>
-    <button class="post-header_button"><span> Your  Blogs </span></button>
+    <!-- <button class=" post-header_button"><span> All Blogs</span></button> -->
+    <!-- <button class="post-header_button"><span> Saved</span></button> -->
+    <!-- <button class="post-header_button"><span> Your  Blogs </span></button> -->
+    
   </div>
+
+
+
+  <div class="noContent" [class.showNoContent]="Blogs.length === 0">
+    
+    <div>
+      <p class="noContent-text"> Nothing here yet 👀 </p>
+      <span class="noContent-subtext"> Create a post to get started </span>
+    </div>
+
+    <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+  </div>
+
+
+  <div class="post-list">
+    @for (Blog of Blogs; track Blog.id) {
+      <app-card-blog [Blog]="Blog"> </app-card-blog>
+    }
+    <!-- <app-card-blog></app-card-blog> -->
+  </div>
+
 
 
 </div>

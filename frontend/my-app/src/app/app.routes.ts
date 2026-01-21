@@ -8,8 +8,11 @@ import { loggedInGuard } from './auth/loggedInGuard';
 
 export const routes: Routes = [
     // { path: 'home', component:  HomeComponent , canActivate: [authGuard] },
+    
     { path: 'home', component:  HomeComponent },
-     { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
-  { path: 'account', component: AuthComponent, canActivate: [loggedInGuard] },
+
+    { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
+
+    { path: 'account', component: AuthComponent, canActivate: [loggedInGuard] },
 ];
     

@@ -1,11 +1,11 @@
 
 .post-card {
-  margin-top: 15px;
-  
+
     border-radius: 10px;
 
     background-color: rgb(0, 0, 0);
-    width: 60%;
+
+    width: 100%;
     height: 20%;
 
     display: flex;
@@ -33,12 +33,14 @@
     width: 20px;
     height: 20px;
 }
+
 .read-more {
     color: rgb(100, 149, 237);
     text-decoration: none;
     font-weight: bold;
 
     font-size: 13px;
+    
 
 }
 
@@ -57,6 +59,7 @@
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
 
+  
   
 }
 
@@ -106,7 +109,7 @@
   width: 30%;
   display: flex;
   gap: 20px;
-  justify-content: end;
+  justify-content: center;
   align-content: center;
   align-items: center;
 }
@@ -116,45 +119,36 @@
 
 
 .post-imgs {
-    width: 40%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* .post-image {
-    width: 60%;
-    height: 80%;
-}
- */
-
-/* 
-.post-imgs {
-  width: 800px;
-  height: 400px;
-  overflow: hidden;
+  width: 35%;
+  padding: 15px;
+  height: 100%;         
   position: relative;
-} */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: black;
 
-.post-imgs .post-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: slider 6s infinite;
+  
 }
 
-/* delays */
-.post-imgs img:nth-child(1) { animation-delay: 0s; }
-.post-imgs img:nth-child(2) { animation-delay: 2s; }
-.post-imgs img:nth-child(3) { animation-delay: 4s; }
+.media-item {
+    border-radius: 14px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fade 0.5s ease-in-out;
 
-@keyframes slider {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  30% { opacity: 1; }
-  40% { opacity: 0; }
-  100% { opacity: 0; }
+
 }
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+

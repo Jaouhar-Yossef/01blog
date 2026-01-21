@@ -1,39 +1,41 @@
 
-    <div class="post-card">
+<div class="post-card">
       
-      
-
-        <div class="post-content">
-            <div class="post-content-top">
-
-                <h2>about life</h2>
-
-                <p  class="discription">just  discription sdklfhs dsuijfs ugsdf iugfsd  <a class="read-more"  > ...Read more </a> </p>
-            </div>
-
-            <div class="post-content-bottom">
-
-              <div class="post-content-bottom-first">
-                <button > <span class="creat-by">creat by :<span class="name-auther"> jaouhar </span>  </span> </button>
-                <button class="like" > <span class="cont-like" > 2 </span> <img src="./../../assets/images/like.svg" alt=""> </button>
-                <button  class="coment" > <span  class="coment"> 2 </span> <img src="./../../assets/images/chat-icon.svg" alt=""></button>
-              </div>
-
-                <div class="post-content-bottom-last">
-                  <button class="save"> <img  class="saved" src="./../../assets/saved.webp" alt=""></button>
-                  <div class="circle-line"></div>
-                </div>
-
-            </div>
-
+    <div class="post-content">
+        <div class="post-content-top">
+            <h2>about life</h2>
+            <p  class="discription">just  discription sdklfhs dsuijfs ugsdf iugfsd  <a class="read-more"  > ...Read more </a> </p>
         </div>
-
-        <div class="post-imgs">
-          <img src="https://picsum.photos/800/400" alt="Post Image" class="post-image">
-          <img src="https://picsum.photos/800/400" alt="Post Image" class="post-image">
-          <img src="https://picsum.photos/800/400" alt="Post Image" class="post-image">
+        <div class="post-content-bottom">
+          <div class="post-content-bottom-first">
+            <button > <span class="creat-by">creat by :<span class="name-auther"> jaouhar </span>  </span> </button>
+            <button class="like" > <span class="cont-like" > 2 </span> <img src="./../../assets/images/like.svg" alt=""> </button>
+            <button  class="coment" > <span  class="coment"> 2 </span> <img src="./../../assets/images/chat-icon.svg" alt=""></button>
+          </div>
+            <div class="post-content-bottom-last">
+              <button class="save"> <img  class="saved" src="./../../assets/saved.webp" alt=""></button>
+              <div class="circle-line"></div>
+            </div>
         </div>
-    
-    
-       
     </div>
+
+    <div class="post-imgs">
+        @if (media[currentIndex].type === 'image') {
+          <img
+            [src]="media[currentIndex].src"
+            class="media-item"
+          />
+        }
+        @if (media[currentIndex].type === 'video') {
+          <video
+            class="media-item"
+            [src]="media[currentIndex].src"
+            autoplay
+            muted
+            loop
+            playsinline
+          ></video>
+        }
+    </div> 
+
+</div>
