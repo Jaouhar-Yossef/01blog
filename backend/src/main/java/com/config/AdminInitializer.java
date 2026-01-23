@@ -11,8 +11,7 @@ import com.repository.UserRepository;
 @Configuration
 public class AdminInitializer {
     @Bean
-    CommandLineRunner createAdmin(UserRepository userRepository,
-                                  PasswordEncoder passwordEncoder) {
+    CommandLineRunner createAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (userRepository.findByUsername("jaouhar").isEmpty()) {
                 User admin = new User();

@@ -7,7 +7,7 @@
     
   </div>
 
-  <div class="noContent" [class.showNoContent]="Blogs.length === 0">
+  <!-- <div class="noContent" [class.showNoContent]="Blogs.length === 0">
     
     <div>
       <p class="noContent-text"> Nothing here yet 👀 </p>
@@ -16,13 +16,18 @@
 
     <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
   </div> 
-
+ -->
 
   <div class="post-list">
-    @for (Blog of Blogs; track Blog.id) {
+    <!-- @for (Blog of Blogs; track Blog.id) {
       <app-card-blog [Blog]="Blog"> </app-card-blog>
-    }
-    <!-- <app-card-blog></app-card-blog> -->
+    } -->
+    <app-card-blog></app-card-blog>
+    <app-card-blog></app-card-blog>
+    <app-card-blog></app-card-blog>
+    <app-card-blog></app-card-blog>
+    <app-card-blog></app-card-blog>
+    
   </div>
 
 

@@ -23,7 +23,7 @@
 
     <div class="form-group-media">
       <div class="selectmedia">
-        <label for="media">Upload Images or Videos (1 to 5 files)</label>
+        <label for="media">Upload (1 to 5 files)</label>
         <div class="selectmedia-divimgs">
           <input
             class="selectmedia-input"
@@ -54,14 +54,14 @@
       <button
         type="submit"
         class="botnpub btn btn-primary"
-        [disabled]="form.invalid || files.length === 0"
+        [disabled]="form.invalid"
       >
         Publish Blog
       </button>
 
       <div class="divclearandcancel">
         <button type="button" class="btn btn-secondary Cancel" (click)="onCancel()">Cancel</button>
-        <button type="button" class="btn btn-secondary Cancel" (click)="clearForm()"> clear </button>
+        <button type="button" class="btn btn-secondary Cancel" (click)="clearForm()">clear </button>
       </div>
     </div>
   </form>

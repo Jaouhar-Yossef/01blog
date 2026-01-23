@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
+import { ContentHomeService } from '../content-home/content-home.service';
 
 type MediaType = 'image' | 'video';
 
@@ -10,6 +11,7 @@ interface MediaFile {
   url: string;
   type: MediaType;
 }
+
 
 @Component({
   selector: 'app-creat-blog',
@@ -24,8 +26,9 @@ export class CreatBlog {
 
   form: FormGroup;
   files: MediaFile[] = [];
+  
 
-  constructor(private fb: FormBuilder, private errorService: ErrorService) {
+  constructor(private fb: FormBuilder, private errorService: ErrorService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(20)]],
       content: ['', [Validators.required, Validators.maxLength(1000)]],
@@ -33,7 +36,7 @@ export class CreatBlog {
   }
 
   onCancel() {
-    setTimeout(() => this.close.emit());
+    this.close.emit();
   }
 
   onFileSelected(event: Event) {
@@ -70,33 +73,39 @@ export class CreatBlog {
       this.form.markAllAsTouched();
       return;
     }
-
     if (this.files.length === 0) {
       this.errorService.showMessage('Please upload at least one image or video.', 'error');
       return;
     }
 
-    console.log({
-      title: this.form.value.title,
-      content: this.form.value.content,
-      files: this.files,
+    const formData =  new FormData();
+     formData.append('title', this.form.value.title);
+     formData.append('content', this.form.value.content);
+   
+     this.files.forEach((f, i) => {
+       formData.append(`file${i}`, f.file);
+     });
+
+
+     
+    this.blogService.creatBlogs(formData).subscribe({
+      next: res => {
+        this.errorService.showMessage('Error creating blog', 'success');
+        this.clearForm();
+      },
+      error: err => {
+        this.errorService.showMessage('Error creating blog', 'error');
+      }
     });
 
-
-    this.form.reset();
-  
-    this.files.forEach(file => URL.revokeObjectURL(file.url)); 
-    this.files = [];
-
-    this.close.emit();
-    
-    // send to backend later
+    this.clearForm();
   }
 
   clearForm() {
     this.form.reset();
     this.files.forEach(file => URL.revokeObjectURL(file.url)); 
     this.files = [];
+    
   }
 
 

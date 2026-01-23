@@ -13,21 +13,15 @@ import { CreatBlog } from '../creat-blog/creat-blog';
 })
 
 export class Navbar {
-
   showCreatBlog = false;
-
   constructor(private router: Router) {}
-
   isHome(): boolean {
     return this.router.url === '/home';
   }
-
   isRoot(): boolean {
     return this.router.url === '/';
   }
-
   creatBlog() {
     this.showCreatBlog = !this.showCreatBlog;
   }
-
 }

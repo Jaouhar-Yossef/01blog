@@ -44,7 +44,7 @@ export class AuthService {
 
  
   getToken(): string | null {
-  if (!this.isBrowser) return null;  // ✅
+  if (!this.isBrowser) return null;  
   return localStorage.getItem('token');
 }
 
@@ -71,14 +71,7 @@ export class AuthService {
   
   validateToken(): Observable<boolean> {
 
-  const token = this.getToken();
-
-
-
-
-console.log("Validating token:", token);
-  
-  
+  const token = this.getToken();  
   if (!token) return of(false);
 
   return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {

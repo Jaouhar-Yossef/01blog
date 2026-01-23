@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthComponent } from '../auth/auth';
 
 
 @Injectable({  providedIn: 'root'})
@@ -14,4 +15,15 @@ export class ContentHomeService {
         return this.http.get<any>(`${this.apiUrl}/all-blogs`);
     }
 
+
+    creatBlogs(data : any): Observable<any> {
+      const token = localStorage.getItem('jwt');  
+      return this.http.post<any>(`${this.apiUrl}/creat-blog`, data , {
+        headers : {
+            Authorization: `Bearer ${token}`
+
+        }
+      });
+    }
+    
 }

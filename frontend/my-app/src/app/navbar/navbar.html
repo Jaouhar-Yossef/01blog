@@ -8,50 +8,30 @@
 
 
   @if (isHome()) {
-
-
     <div class="rightnavbar"> 
-
     <div class="search-compact" >
       <input type="search" id="compact" placeholder="Search for somethings..." />
       <button > <img src="../../assets/images/search.svg" alt=""> Search </button>
     </div>
-    
     <div class="divNotification">
-      
-      <button (click)="creatBlog()" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
-
-
       <img class="imgsing" src="../../assets/images/notification-icon.png" alt="">
-      <img class="notification notificationsetting"  src="../../assets/images/hideMenu.svg" alt="">
-      
-        <app-setting ></app-setting>
-
+      <button (click)="creatBlog()" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
+      <app-setting ></app-setting>
     </div>
-
   </div>
-
-
-
   }
 
 
     @if (isRoot()) {
-
       <div class="button-account" class="rightnavbarnoregister" >
-  
           <button type="button" class="btn btn-primary">
             <a class="navbar-brand" href="/account">Get Started
               <img class="imgsing" src="../../assets/images/user.svg" alt="">
             </a>
           </button>
-  
+
       </div>
     }
-
- 
-     <app-creat-blog [showCreatBlog]="showCreatBlog"   (close)="showCreatBlog = false" > </app-creat-blog>
-    
-
+    <app-creat-blog [showCreatBlog]="showCreatBlog"   (close)="showCreatBlog = false" > </app-creat-blog>
 </div>
 

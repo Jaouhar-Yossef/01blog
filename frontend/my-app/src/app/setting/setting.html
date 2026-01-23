@@ -1,56 +1,37 @@
-<div class="setting">
-  <div class="setting-item">
 
-    <button [class.hidden]="!show">
-      <img class="homeset" src="./../../assets/home.svg" alt=""> Home
-    </button>
+<div class="setting"
+  [class.expanded]="show"
+  (mouseenter)="show = true"  
+  (mouseleave)="show = false"
+  >
+    <div class="setting-item">
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/home.svg" alt=""> <span> Home</span>
+      </button>
+  
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/images/user.svg" alt=""> Profile
+      </button>
+  
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/saved.webp" alt=""> Saved
+      </button>
+  
+      <button class="btnnor">
+        <img class="homeset" src="../../assets/images/notification-icon.png" alt=""> Notification
+      </button>
+  
+      <button class="btnnor">
+        <img class="homeset" src="../../assets/images/arrow-left.svg" alt=""> Log out
+      </button>
+  
+      @if (show) {
+        <button class="delete-account">
+          <img class="homeset" src="../../assets/deleteaccount.png" alt=""> Delete Account
+        </button>
+      }
 
-    <button [class.hidden]="show">
-      <img class="homeset2" src="./../../assets/home.svg" alt="">
-    </button>
-
-    <button [class.hidden]="show">
-      <img class="homeset" src="./../../assets/images/user.svg" alt=""> Profile
-    </button>
-
-    @if (!show) {
-        
-    }
-    <button [class.hidden]="show">
-        <img class="homeset2" src="./../../assets/images/user.svg" alt="">
-    </button>
-
-    <button [class.hidden]="show">
-      <img class="homeset" src="./../../assets/saved.webp" alt=""> Saved
-    </button>
-
-    <button [class.hidden]="!show">
-      <img class="homeset2" src="./../../assets/saved.webp" alt="">
-    </button>
-
-    <button [class.hidden]="show">
-      <img class="homeset" src="../../assets/images/notification-icon.png" alt=""> Notification
-    </button>
-
-    <button [class.hidden]="!show">
-      <img class="homeset2" src="../../assets/images/notification-icon.png" alt="">
-    </button>
-
-    <button [class.hidden]="show">
-      <img class="homeset" src="../../assets/images/arrow-left.svg" alt=""> Log out
-    </button>
-
-    <button [class.hidden]="!show">
-      <img class="homeset2" src="../../assets/images/arrow-left.svg" alt="">
-    </button>
-
-    <button class="delete-account" [class.hidden]="show">
-      <img class="homeset" src="../../assets/deleteaccount.png" alt=""> Delete Account
-    </button>
-
-    <button class="delete-account2" [class.hidden]="!show">
-      <img class="homeset" src="../../assets/deleteaccount.png" alt="">
-    </button>
-
-  </div>
+    </div>
 </div>
+
+

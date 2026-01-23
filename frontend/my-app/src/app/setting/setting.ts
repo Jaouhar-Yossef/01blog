@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './setting.html',
   styleUrls: ['./setting.css'],
 })
+
 export class Setting {
   show: boolean = false;
 }
