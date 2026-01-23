@@ -7,9 +7,9 @@ import { authGuard } from './auth/auth.guard';
 import { loggedInGuard } from './auth/loggedInGuard';
 
 export const routes: Routes = [
-    // { path: 'home', component:  HomeComponent , canActivate: [authGuard] },
+    { path: 'home', component:  HomeComponent , canActivate: [authGuard] },
     
-    { path: 'home', component:  HomeComponent },
+    // { path: 'home', component:  HomeComponent },
 
     { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
 

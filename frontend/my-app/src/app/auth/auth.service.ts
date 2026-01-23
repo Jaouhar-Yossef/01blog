@@ -34,14 +34,13 @@ export class AuthService {
     }
   }
 
-  saveAuthData(token: string, user: any) {
+  saveAuthData(user: any) {
     if (!this.isBrowser) return;
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', user.tokeString);
     localStorage.setItem('user', JSON.stringify(user));
     this.loggedIn.set(true);
     this.user = user;
   }
-
  
   getToken(): string | null {
   if (!this.isBrowser) return null;  
@@ -60,7 +59,7 @@ export class AuthService {
 
   login(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap(res => this.saveAuthData(res.token, res.user))
+      tap(res => this.saveAuthData(res.anyData))
     );
   }
 

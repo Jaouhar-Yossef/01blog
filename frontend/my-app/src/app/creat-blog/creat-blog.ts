@@ -13,6 +13,15 @@ interface MediaFile {
 }
 
 
+
+interface Data {
+  title: string;
+  content: string;
+  media: MediaFile[];
+}
+
+
+
 @Component({
   selector: 'app-creat-blog',
   standalone: true,
@@ -25,8 +34,9 @@ export class CreatBlog {
   @Output() close = new EventEmitter<void>();
 
   form: FormGroup;
+
   files: MediaFile[] = [];
-  
+
 
   constructor(private fb: FormBuilder, private errorService: ErrorService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
@@ -74,23 +84,19 @@ export class CreatBlog {
       return;
     }
     if (this.files.length === 0) {
-      this.errorService.showMessage('Please upload at least one image or video.', 'error');
-      return;
+      this.errorService.showMessage('You can upload images or videos.', 'warning');
     }
 
-    const formData =  new FormData();
-     formData.append('title', this.form.value.title);
-     formData.append('content', this.form.value.content);
-   
-     this.files.forEach((f, i) => {
-       formData.append(`file${i}`, f.file);
-     });
-
+    const formData : Data = {
+      title : this.form.value.title,
+      content :  this.form.value.content,
+      media : this.files
+    }
 
      
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
-        this.errorService.showMessage('Error creating blog', 'success');
+        this.errorService.showMessage('Blog Created', 'success');
         this.clearForm();
       },
       error: err => {

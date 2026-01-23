@@ -159,7 +159,7 @@ export class RegisterComponent {
       next: (res) => {
         this.isLoading = false;
         this.errorService.showMessage('Registration successful!', 'success');
-        this.authService.saveAuthData(res.token, res.anyData);
+        this.authService.saveAuthData(res.anyData);
         this.router.navigate(['/home']);
       },
       error: (err) => {
