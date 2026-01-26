@@ -36,16 +36,16 @@ export class AuthService {
 
   saveAuthData(user: any) {
     if (!this.isBrowser) return;
-    localStorage.setItem('token', user.tokeString);
+    localStorage.setItem('token', user.tokeString); 
     localStorage.setItem('user', JSON.stringify(user));
     this.loggedIn.set(true);
     this.user = user;
   }
  
   getToken(): string | null {
-  if (!this.isBrowser) return null;  
-  return localStorage.getItem('token');
-}
+    if (!this.isBrowser) return null;  
+    return localStorage.getItem('token'); 
+  }
 
 
   logout() {
@@ -74,19 +74,19 @@ export class AuthService {
   if (!token) return of(false);
 
   return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {
-    headers: { Authorization: `Bearer ${token}` }
-  }).pipe(
-    map(user => {
-      this.loggedIn.set(true);
-      this.user = user;
-      return true;
-    }),
-    catchError(() => {
-      this.logout();
-      return of(false);
-    })
-  );
-}
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      map(user => {
+        this.loggedIn.set(true);
+        this.user = user;
+        return true;
+      }),
+      catchError(() => {
+        this.logout();
+        return of(false);
+      })
+    );
+  }
 
 
 }

@@ -1,11 +1,12 @@
 package com.entity;
 
+import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-
 @Table(
     name = "users",
     uniqueConstraints = {
@@ -13,7 +14,7 @@ import jakarta.persistence.*;
         @UniqueConstraint(columnNames = "username")
     }
 )
-public class User  {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,9 @@ public class User  {
     @Column(nullable = false)
     private String role = "USER";
 
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Blog> blogs = new ArrayList<>();
 
     public User() {}
 
@@ -41,7 +45,7 @@ public class User  {
         this.role = "USER";
     }
 
-
+    // --- Getters & Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -56,4 +60,10 @@ public class User  {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public List<Blog> getBlogs() { return blogs; }
+    public void addBlog(Blog blog) {
+        blogs.add(blog);
+        blog.setCreatedBy(this);
+    }
 }

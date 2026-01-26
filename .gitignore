@@ -7,6 +7,7 @@ backend/*.war
 backend/.idea/
 backend/*.iml
 backend/.vscode/
+backend/uploads
 
 # Frontend
 frontend/my-app/node_modules/

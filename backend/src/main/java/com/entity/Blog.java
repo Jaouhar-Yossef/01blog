@@ -1,6 +1,10 @@
 package com.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "blogs")
@@ -15,12 +19,15 @@ public class Blog {
     @Column(length = 2000)
     private String content;
 
-    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "created_by")
+    @JsonIgnore
     private User createdBy;
 
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MediaBlog> medias = new ArrayList<>();
 
+    // --- Getters & Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -32,4 +39,11 @@ public class Blog {
 
     public User getCreatedBy() { return createdBy; }
     public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+
+    public List<MediaBlog> getMedias() { return medias; }
+
+    public void addMedia(MediaBlog media) {
+        medias.add(media);
+        media.setBlog(this); 
+    }
 }

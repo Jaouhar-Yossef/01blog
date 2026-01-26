@@ -23,62 +23,60 @@ public class MediaBlogService {
         this.mediaBlogRepository = mediaBlogRepository;
     }
 
-    public void saveMedia(Blog blog , BlogRequest blogRequest ) {
+    public void saveMedia(Blog blog, BlogRequest blogRequest) {
 
-        String uploadDir = "backend/uploads/";
-        boolean uploadDirExists = true;
+        if (blogRequest.getFiles() == null || blogRequest.getFiles().isEmpty()) {
+            return; 
+        }
+
+        String baseDir = System.getProperty("user.dir"); 
+        String uploadDir = baseDir + File.separator + "uploads" + File.separator;
 
         try {
             Files.createDirectories(Paths.get(uploadDir));
         } catch (IOException e) {
-            uploadDirExists = false;
             System.out.println("Upload folder not created, blog will be saved without media: " + e.getMessage());
+            return;
         }
 
-        if (uploadDirExists && blogRequest.getFiles() != null && !blogRequest.getFiles().isEmpty()) {
+        int maxFiles = 5;
+        long maxFileSize = 20 * 1024 * 1024; 
+        int fileCount = 0;
 
-            int maxFiles = 5;
-            long maxFileSize = 20 * 1024 * 1024; 
-            int fileCount = 0;
+        for (MultipartFile file : blogRequest.getFiles()) {
+            if (file.isEmpty()) continue;
 
-            for (MultipartFile file : blogRequest.getFiles()) {
-                if (file.isEmpty()) continue;
-                fileCount++;
-                if (fileCount > maxFiles) {
-                    System.out.println("File limit reached, remaining files ignored");
-                    break;
-                }
-                if (file.getSize() > maxFileSize) {
-                    System.out.println("File " + file.getOriginalFilename() + " is too large, skipped");
-                    continue;
-                }
+            fileCount++;
+            if (fileCount > maxFiles) {
+                System.out.println("File limit reached, remaining files ignored");
+                break;
+            }
+            if (file.getSize() > maxFileSize) {
+                System.out.println("File " + file.getOriginalFilename() + " is too large, skipped");
+                continue;
+            }
 
-                MediaBlog media = new MediaBlog();
-                media.setBlog(blog);
-                
-                media.setFileName(file.getOriginalFilename() != null ? file.getOriginalFilename() : "file_" + System.currentTimeMillis());
-                
-                if (file.getContentType() != null) {
-                    if (file.getContentType().startsWith("image")) {
-                        media.setType(TypeMedia.IMAGE);
-                    } else if (file.getContentType().startsWith("video")) {
-                        media.setType(TypeMedia.VIDEO);
-                    } else {
-                        media.setType(TypeMedia.IMAGE);
-                    }
-                } else {
-                    media.setType(TypeMedia.IMAGE); 
-                }
+            MediaBlog media = new MediaBlog();
+            media.setBlog(blog);
 
-                
-                try {
-                    String filePath = uploadDir + System.currentTimeMillis() + "_" + media.getFileName();
-                    file.transferTo(new File(filePath));
-                    media.setUrl(filePath);
-                    mediaBlogRepository.save(media);
-                } catch (IOException e) {
-                    System.out.println("Error uploading file " + media.getFileName() + ": " + e.getMessage());
-                }
+            String originalFileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file_" + System.currentTimeMillis();
+            media.setFileName(originalFileName);
+
+            String contentType = file.getContentType();
+            if (contentType != null && contentType.startsWith("video")) {
+                media.setType(TypeMedia.VIDEO);
+            } else {
+                media.setType(TypeMedia.IMAGE);
+            }
+
+            try {
+                String filePath = uploadDir + System.currentTimeMillis() + "_" + originalFileName;
+                file.transferTo(new File(filePath));
+
+                media.setUrl(filePath);
+                mediaBlogRepository.save(media);
+            } catch (IOException e) {
+                System.out.println("Error uploading file " + originalFileName + ": " + e.getMessage());
             }
         }
     }

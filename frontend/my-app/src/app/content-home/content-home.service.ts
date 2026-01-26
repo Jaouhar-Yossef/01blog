@@ -1,27 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
-@Injectable({  providedIn: 'root'})
+
+@Injectable({ providedIn: 'root' })
 export class ContentHomeService {
+  private apiUrl = 'http://localhost:8080/blogs';
+  private isBrowser: boolean;
 
-    private apiUrl = 'http://localhost:8080/blogs';
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
-    constructor(private http: HttpClient) { }
-    
-    getBlogs(): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/all-blogs`);
-    }
 
+  getBlogs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/allblogs`);
+  }
 
-    creatBlogs(data : any): Observable<any> {
-      const token = localStorage.getItem('jwt');  
-      return this.http.post<any>(`${this.apiUrl}/creat-blog`, data , {
-        headers : {
-            Authorization: `Bearer ${token}`
-
-        }
-      });
-    }
+  creatBlogs(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);
+  }
     
 }

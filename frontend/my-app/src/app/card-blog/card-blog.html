@@ -3,12 +3,12 @@
       
     <div class="post-content">
         <div class="post-content-top">
-            <h2>about life</h2>
-            <p  class="discription">just  discription sdklfhs dsuijfs ugsdf iugfsd  <a class="read-more"  > ...Read more </a> </p>
+            <h2>{{blog.title}}</h2>
+            <p  class="discription"> {{blog.content}} <a class="read-more"  > ...Read more </a> </p>
         </div>
         <div class="post-content-bottom">
           <div class="post-content-bottom-first">
-            <button > <span class="creat-by">creat by :<span class="name-auther"> jaouhar </span>  </span> </button>
+            <button > <span class="creat-by">creat by :<span class="name-auther"> {{blog.createdByUsername}} </span>  </span> </button>
             <button class="like" > <span class="cont-like" > 2 </span> <img src="./../../assets/images/like.svg" alt=""> </button>
             <button  class="coment" > <span  class="coment"> 2 </span> <img src="./../../assets/images/chat-icon.svg" alt=""></button>
           </div>
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-
+<!-- 
     <div class="post-imgs">
         @if (media[currentIndex].type === 'image') {
           <img
@@ -36,6 +36,6 @@
             playsinline
           ></video>
         }
-    </div> 
+    </div>  -->
 
 </div>

@@ -7,6 +7,11 @@ import com.entity.User;
 import com.repository.BlogRepository;
 import com.repository.UserRepository;
 import com.util.Response;
+
+import jakarta.transaction.Transactional;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +27,7 @@ public class BlogService {
         this.mediaBlogService = mediaBlogService;
     }
 
+
     public Response<BlogResponseDTO> createBlog(BlogRequest blogRequest, String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -31,17 +37,17 @@ public class BlogService {
             blog.setTitle(blogRequest.getTitle());
             blog.setContent(blogRequest.getContent());
             blog.setCreatedBy(user);
-
+    
             blogRepository.save(blog);
-            
-            mediaBlogService.saveMedia(blog , blogRequest);
-
+            mediaBlogService.saveMedia(blog, blogRequest);
+    
+    
             BlogResponseDTO responseData = new BlogResponseDTO(
                     blog.getTitle(),
                     blog.getContent(),
                     blog.getCreatedBy().getUsername()
             );
-
+    
             return new Response<>(true, "Blog created successfully", responseData);
     
         } catch (RuntimeException e) {
@@ -49,5 +55,19 @@ public class BlogService {
         }
     }
 
+
+
+    public List<Blog> getAllBlogs() {
+        return blogRepository.findAll();
+    }
+    
+
+    @Transactional
+    public void deleteBlog(Long id) {
+        Blog blog = blogRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Blog not found"));
+    
+        blogRepository.delete(blog);
+    }
 
 }    

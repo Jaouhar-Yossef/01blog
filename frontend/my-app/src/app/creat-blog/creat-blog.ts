@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
+import { AuthService } from '../auth/auth.service';
 
 type MediaType = 'image' | 'video';
 
@@ -11,15 +12,6 @@ interface MediaFile {
   url: string;
   type: MediaType;
 }
-
-
-
-interface Data {
-  title: string;
-  content: string;
-  media: MediaFile[];
-}
-
 
 
 @Component({
@@ -38,7 +30,7 @@ export class CreatBlog {
   files: MediaFile[] = [];
 
 
-  constructor(private fb: FormBuilder, private errorService: ErrorService , private blogService: ContentHomeService ) {
+  constructor(private fb: FormBuilder, private errorService: ErrorService , private authService: AuthService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(20)]],
       content: ['', [Validators.required, Validators.maxLength(1000)]],
@@ -87,24 +79,25 @@ export class CreatBlog {
       this.errorService.showMessage('You can upload images or videos.', 'warning');
     }
 
-    const formData : Data = {
-      title : this.form.value.title,
-      content :  this.form.value.content,
-      media : this.files
-    }
 
-     
+    const formData = new FormData();
+    formData.append('title', this.form.value.title);
+    formData.append('content', this.form.value.content);
+  
+    this.files.forEach((fileObj, index) => {
+      formData.append('files', fileObj.file);
+    });
+
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
-        this.errorService.showMessage('Blog Created', 'success');
+        this.errorService.showMessage('Blog Created (:', 'success');
         this.clearForm();
+        console.log("====>  " ,res)
       },
       error: err => {
         this.errorService.showMessage('Error creating blog', 'error');
       }
     });
-
-    this.clearForm();
   }
 
   clearForm() {
