@@ -1,11 +1,10 @@
-package com.entity;
+package com.entity.Blogs;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+import com.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -21,15 +20,17 @@ public class Blog {
     private Long id;
 
     private String title;
-
+    
     @Column(length = 2000)
     private String content;
 
+    private String status;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     @JsonIgnore
     private User createdBy;
-
+    
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MediaBlog> medias = new ArrayList<>();
 
@@ -39,7 +40,6 @@ public class Blog {
     }
 
     public static Object builder() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'builder'");
     }
 }

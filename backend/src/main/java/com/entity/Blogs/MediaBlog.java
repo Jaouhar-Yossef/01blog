@@ -1,6 +1,7 @@
-package com.entity;
+package com.entity.Blogs;
 
 import jakarta.persistence.*;
+
 import com.util.TypeMedia;
 import lombok.*;
 

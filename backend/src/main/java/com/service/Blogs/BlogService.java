@@ -1,12 +1,12 @@
-package com.service;
+package com.service.Blogs;
 
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
 import com.dto.MediaDTO;
-import com.entity.Blog;
 import com.entity.User;
-import com.repository.BlogRepository;
+import com.entity.Blogs.Blog;
 import com.repository.UserRepository;
+import com.repository.Blogs.BlogRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +25,8 @@ public class BlogService {
     private final UserRepository userRepository;    
     private final MediaBlogService mediaBlogService;
 
+    
+
     public BlogService(BlogRepository blogRepository , UserRepository userRepository, MediaBlogService mediaBlogService ) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
@@ -39,6 +41,7 @@ public class BlogService {
     
             Blog blog = new Blog();
             blog.setTitle(blogRequest.getTitle());
+            blog.setStatus("show");
             blog.setContent(blogRequest.getContent());
             blog.setCreatedBy(user);
     
@@ -51,7 +54,9 @@ public class BlogService {
             BlogResponseDTO responseData = new BlogResponseDTO(
                 blog.getId(),
                 blog.getTitle(),
+                blog.getStatus(),
                 blog.getContent(),
+                false,
                 blog.getCreatedBy().getUsername(),
                 mediaList
             );

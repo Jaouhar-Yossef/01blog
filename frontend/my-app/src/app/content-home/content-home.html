@@ -1,9 +1,9 @@
 <div class="post-container">
   <div class="post-header"></div>
 
-  <ng-container *ngIf="blogs$ | async as blogs; else noContent">
+  <ng-container *ngIf="blogs$ | async as blogs">
 
-    <div *ngIf="blogs.length > 0" class="post-list">
+    <div *ngIf="blogs.length > 0; else noContent" class="post-list">
       <app-card-blog
         *ngFor="let blog of blogs; trackBy: trackById"
         [blog]="blog">
@@ -21,10 +21,5 @@
       <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
     </div>
   </ng-template>
-
-
-  <div #observer style="height: 1px;"></div>
-
-
 
 </div>

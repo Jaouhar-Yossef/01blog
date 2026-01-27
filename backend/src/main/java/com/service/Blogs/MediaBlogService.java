@@ -1,4 +1,4 @@
-package com.service;
+package com.service.Blogs;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dto.BlogRequest;
-import com.entity.Blog;
-import com.entity.MediaBlog;
-import com.repository.MediaBlogRepository;
+import com.entity.Blogs.Blog;
+import com.entity.Blogs.MediaBlog;
+import com.repository.Blogs.MediaBlogRepository;
 import com.util.TypeMedia;
 
 @Service

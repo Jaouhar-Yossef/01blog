@@ -12,7 +12,7 @@
 
     <div class="post-content-bottom">
       <div class="post-content-bottom-first">
-        <button>
+        <button >
           <span class="creat-by">
             created by: <span class="name-auther">{{ blog.createdByUsername }}</span>
           </span>
@@ -27,8 +27,9 @@
         </button>
       </div>
       <div class="post-content-bottom-last">
-        <button class="save">
-          <img class="saved" src="./../../assets/saved.webp" alt="">
+        <button (click)="toggleSave()">
+          <img  *ngIf="!blog.saved" class="saved" src="./../../assets/saved.webp" alt="">
+          <img *ngIf="blog.saved" class="saved" src="./../../assets/saved2.png" alt="">
         </button>
         <div class="circle-line"></div>
       </div>

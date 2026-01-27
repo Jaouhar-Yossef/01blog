@@ -17,20 +17,25 @@
 .post-content-top {
   margin-top: 20px;
   height: 50%;
+
+  gap: 10%;
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: end;
+
 }
 
 .post-content-bottom {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  
+  align-items: end;
   align-content: center;
+  
+  height: 30%;
 
 }
 
-.saved {
-    width: 20px;
-    height: 20px;
-}
 
 .read-more {
     color: rgb(100, 149, 237);
@@ -50,6 +55,8 @@
   font-weight: bold;
   
 }
+
+
 
 .circle-line {
   width: 18px;
@@ -116,14 +123,13 @@
   align-items: center;
   overflow: hidden;
   background-color: black;
-
   
 }
 
 .media-item {
-    border-radius: 20px;
-    width: 80%;
-    height: 80%;
+    border-radius: 10px;
+    width: 70%;
+    height: 70%;
     object-fit: cover;
     animation: fade 0.5s ease-in-out;
 }
@@ -137,4 +143,22 @@
   }
 }
 
+
+.save {
+  width: 50px;
+  height: 30px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  text-align: center;
+
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.saved {
+  width: 20px;
+  height: 20px;
+}
 

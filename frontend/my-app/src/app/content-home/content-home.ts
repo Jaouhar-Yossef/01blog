@@ -40,6 +40,7 @@ export class ContentHome implements OnInit, AfterViewInit {
   @ViewChild('observer') observer!: ElementRef;
 
   private postService = inject(ContentHomeService);
+  
   private platformId = inject(PLATFORM_ID); 
 
   ngOnInit() {
@@ -77,9 +78,6 @@ export class ContentHome implements OnInit, AfterViewInit {
 
         if (data.length < this.size) {
           this.hasMore = false;
-
-          this.errorService.showMessage("You’ve reached the end 👋" , 'warning');
-
         } else {
           this.page++;
         }

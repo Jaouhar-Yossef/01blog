@@ -3,11 +3,11 @@ package com.service;
 import org.springframework.stereotype.Service;
 
 import com.dto.UserResponseDTO;
-import com.entity.Blog;
 import com.entity.User;
 import com.entity.UserDetailsImpl;
-import com.repository.BlogRepository;
+import com.entity.Blogs.Blog;
 import com.repository.UserRepository;
+import com.repository.Blogs.BlogRepository;
 import com.security.JwtUtil;
 
 import java.util.List;
