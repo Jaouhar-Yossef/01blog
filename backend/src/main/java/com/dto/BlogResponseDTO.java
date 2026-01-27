@@ -1,24 +1,22 @@
 package com.dto;
 
 import java.util.List;
+import lombok.*;
 
+@Data
+@NoArgsConstructor
 public class BlogResponseDTO {
+    private Long id;
     private String title;
     private String content;
     private String createdByUsername;
+    private List<MediaDTO> media;
 
-    private List<String> media; 
-
-    public BlogResponseDTO(String title, String content, String createdByUsername) {
+    public BlogResponseDTO(Long id, String title, String content, String createdByUsername, List<MediaDTO> media) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.createdByUsername = createdByUsername;
+        this.media = media;
     }
-
-    // getters
-    public String getTitle() { return title; }
-    public String getContent() { return content; }
-    public String getCreatedByUsername() { return createdByUsername; }
-    public List<String> getmedia() { return media; }
-
 }

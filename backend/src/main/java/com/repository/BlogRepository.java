@@ -11,4 +11,4 @@ import org.springframework.stereotype.Repository;
 public interface BlogRepository extends JpaRepository<Blog, Long> {
     public List<Blog> findByCreatedById(Long userId);
     
-}
+}   

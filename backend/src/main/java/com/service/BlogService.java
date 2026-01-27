@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
+import com.dto.MediaDTO;
 import com.entity.Blog;
 import com.entity.User;
 import com.repository.BlogRepository;
@@ -12,6 +13,9 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,27 +44,31 @@ public class BlogService {
     
             blogRepository.save(blog);
             mediaBlogService.saveMedia(blog, blogRequest);
-    
-    
+
+            List<MediaDTO> mediaList = blog.getMedias().stream()
+                                           .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
+                                           .toList();
             BlogResponseDTO responseData = new BlogResponseDTO(
-                    blog.getTitle(),
-                    blog.getContent(),
-                    blog.getCreatedBy().getUsername()
+                blog.getId(),
+                blog.getTitle(),
+                blog.getContent(),
+                blog.getCreatedBy().getUsername(),
+                mediaList
             );
-    
+
             return new Response<>(true, "Blog created successfully", responseData);
-    
+
         } catch (RuntimeException e) {
             return new Response<>(false, "Error creating blog: " + e.getMessage(), null);
         }
     }
 
 
-
-    public List<Blog> getAllBlogs() {
-        return blogRepository.findAll();
+    public List<Blog> getBlogsPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return blogRepository.findAll(pageable).getContent();
     }
-    
+
 
     @Transactional
     public void deleteBlog(Long id) {
@@ -69,5 +77,4 @@ public class BlogService {
     
         blogRepository.delete(blog);
     }
-
-}    
+}

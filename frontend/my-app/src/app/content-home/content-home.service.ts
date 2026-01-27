@@ -19,9 +19,10 @@ export class ContentHomeService {
   }
 
 
-  getBlogs(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/allblogs`);
+  getBlogs(page: number, size: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/blogs?page=${page}&size=${size}`);
   }
+
 
   creatBlogs(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);

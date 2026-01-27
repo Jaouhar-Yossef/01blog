@@ -1,29 +1,22 @@
 package com.dto;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import com.util.TypeMedia;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
+import lombok.*;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MediaRequest {
 
+    @NotNull(message = "File must not be null")
     private MultipartFile file; 
+
+    @NotBlank(message = "URL must not be blank")
     private String url;       
+
+    @NotNull(message = "Type must not be null")
     private TypeMedia type;   
-
-    public MediaRequest() {}
-
-    public MediaRequest(MultipartFile file, String url, TypeMedia type) {
-        this.file = file;
-        this.url = url;
-        this.type = type;
-    }
-
-    public MultipartFile getFile() { return file; }
-    public void setFile(MultipartFile file) { this.file = file; }
-
-    public String getUrl() { return url; }
-    public void setUrl(String url) { this.url = url; }
-
-    public TypeMedia getType() { return type; }
-    public void setType(TypeMedia type) { this.type = type; }
 }

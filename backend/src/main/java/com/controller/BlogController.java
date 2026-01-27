@@ -2,6 +2,7 @@ package com.controller;
 
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
+import com.dto.MediaDTO;
 import com.entity.Blog;
 import com.service.BlogService;
 
@@ -9,9 +10,10 @@ import java.util.List;
 
 import com.util.Response;
 
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security .core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,34 +28,54 @@ public class BlogController {
 
 
 
-    @GetMapping("/allblogs")
-    public ResponseEntity<List<BlogResponseDTO>> getAllBlogs() {
-        List<Blog> blogs = blogService.getAllBlogs();
-
+    @GetMapping("/blogs")
+    public ResponseEntity<List<BlogResponseDTO>> getBlogs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+    
+        List<Blog> blogs = blogService.getBlogsPaginated(page, size);
+    
         List<BlogResponseDTO> blogDTOs = blogs.stream()
-                .map(blog -> new BlogResponseDTO(
-                        blog.getTitle(),
-                        blog.getContent(),
-                        blog.getCreatedBy().getUsername() 
-                ))
-                .toList();
-
+            .map(blog -> {
+                List<MediaDTO> mediaList = blog.getMedias().stream()
+                                               .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
+                                               .toList();
+                return new BlogResponseDTO(
+                    blog.getId(),
+                    blog.getTitle(),
+                    blog.getContent(),
+                    blog.getCreatedBy().getUsername(),
+                    mediaList
+                );
+            })
+            .toList();
+    
         return ResponseEntity.ok(blogDTOs);
     }
 
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlog(@PathVariable Long id) {
+    public ResponseEntity<Response<Void>> deleteBlog(@PathVariable Long id) {
         blogService.deleteBlog(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly", null));
     }
-    
 
     @PostMapping("/creat-blog")
-    public ResponseEntity<Response<BlogResponseDTO>> createBlog(@ModelAttribute BlogRequest blogRequest, Authentication authentication) {
+    public ResponseEntity<Response<BlogResponseDTO>> createBlog(
+            @Valid @ModelAttribute BlogRequest blogRequest, 
+            BindingResult bindingResult,
+            Authentication authentication) {
+    
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg, null));
+        }
+    
         String username = authentication.getName();
         Response<BlogResponseDTO> data = blogService.createBlog(blogRequest, username);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.created(null).body(data);
     }
+
 
 }

@@ -92,7 +92,7 @@ export class CreatBlog {
       next: res => {
         this.errorService.showMessage('Blog Created (:', 'success');
         this.clearForm();
-        console.log("====>  " ,res)
+        this.onCancel();
       },
       error: err => {
         this.errorService.showMessage('Error creating blog', 'error');

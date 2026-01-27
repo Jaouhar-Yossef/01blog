@@ -3,7 +3,9 @@ package com.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,42 +28,42 @@ public class MediaBlogService {
     public void saveMedia(Blog blog, BlogRequest blogRequest) {
 
         if (blogRequest.getFiles() == null || blogRequest.getFiles().isEmpty()) {
-            return; 
+            return;
         }
 
-        String baseDir = System.getProperty("user.dir"); 
-        String uploadDir = baseDir + File.separator + "uploads" + File.separator;
+        // 📁 upload directory
+        String uploadDir = System.getProperty("user.dir")
+                + File.separator + "uploads";
 
         try {
             Files.createDirectories(Paths.get(uploadDir));
         } catch (IOException e) {
-            System.out.println("Upload folder not created, blog will be saved without media: " + e.getMessage());
-            return;
+            throw new RuntimeException("Could not create upload directory", e);
         }
 
         int maxFiles = 5;
-        long maxFileSize = 20 * 1024 * 1024; 
+        long maxFileSize = 20 * 1024 * 1024; // 20MB
         int fileCount = 0;
 
         for (MultipartFile file : blogRequest.getFiles()) {
+
             if (file.isEmpty()) continue;
 
             fileCount++;
-            if (fileCount > maxFiles) {
-                System.out.println("File limit reached, remaining files ignored");
-                break;
-            }
-            if (file.getSize() > maxFileSize) {
-                System.out.println("File " + file.getOriginalFilename() + " is too large, skipped");
-                continue;
-            }
+            if (fileCount > maxFiles) break;
+            if (file.getSize() > maxFileSize) continue;
 
             MediaBlog media = new MediaBlog();
             media.setBlog(blog);
 
-            String originalFileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file_" + System.currentTimeMillis();
-            media.setFileName(originalFileName);
+            // 🏷️ original name
+            String originalName = file.getOriginalFilename();
+            if (originalName == null) originalName = "file";
 
+            // 🔐 unique file name
+            String fileName = UUID.randomUUID() + "_" + originalName;
+
+            // 📄 type
             String contentType = file.getContentType();
             if (contentType != null && contentType.startsWith("video")) {
                 media.setType(TypeMedia.VIDEO);
@@ -70,13 +72,17 @@ public class MediaBlogService {
             }
 
             try {
-                String filePath = uploadDir + System.currentTimeMillis() + "_" + originalFileName;
-                file.transferTo(new File(filePath));
+                Path filePath = Paths.get(uploadDir, fileName);
+                Files.copy(file.getInputStream(), filePath);
 
-                media.setUrl(filePath);
+                // 🌐 URL saved in DB (used by frontend)
+                media.setFileName(fileName);
+                media.setUrl("/uploads/" + fileName);
+
                 mediaBlogRepository.save(media);
+
             } catch (IOException e) {
-                System.out.println("Error uploading file " + originalFileName + ": " + e.getMessage());
+                System.out.println("Failed to upload file: " + originalName);
             }
         }
     }

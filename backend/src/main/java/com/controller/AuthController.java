@@ -10,7 +10,6 @@ import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
-import java.util.Map;
 import com.util.Response;
 
 @RestController
@@ -23,17 +22,10 @@ public class AuthController {
         this.userService = userService;
     }
 
-    
-    @GetMapping("/check")
-    public Map<String, Boolean> checkUser() {
-        boolean isRegistered = true; 
-        return Map.of("registered", isRegistered);
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<Response> register(@RequestBody User user) {
+    public ResponseEntity<Response<?>> register(@RequestBody User user) {
 
-        Response response = userService.register(user);
+        Response<?> response = userService.register(user);
         if (!response.isSuccess()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -45,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response> login(@RequestBody LoginRequest request) {       
+    public ResponseEntity<Response<?>> login(@RequestBody LoginRequest request) {       
         String emailOrUsername = request.getEmailOrUsername();
         Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
     
@@ -57,9 +49,8 @@ public class AuthController {
 
 
     @PostMapping("/validate-token")
-    public User me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        
-        return userDetails.getUser();
+    public void me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return;
     }
 
 }

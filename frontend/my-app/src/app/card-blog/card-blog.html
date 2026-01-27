@@ -1,41 +1,58 @@
-
 <div class="post-card">
-      
-    <div class="post-content">
-        <div class="post-content-top">
-            <h2>{{blog.title}}</h2>
-            <p  class="discription"> {{blog.content}} <a class="read-more"  > ...Read more </a> </p>
-        </div>
-        <div class="post-content-bottom">
-          <div class="post-content-bottom-first">
-            <button > <span class="creat-by">creat by :<span class="name-auther"> {{blog.createdByUsername}} </span>  </span> </button>
-            <button class="like" > <span class="cont-like" > 2 </span> <img src="./../../assets/images/like.svg" alt=""> </button>
-            <button  class="coment" > <span  class="coment"> 2 </span> <img src="./../../assets/images/chat-icon.svg" alt=""></button>
-          </div>
-            <div class="post-content-bottom-last">
-              <button class="save"> <img  class="saved" src="./../../assets/saved.webp" alt=""></button>
-              <div class="circle-line"></div>
-            </div>
-        </div>
+
+  <!-- Post Content -->
+  <div class="post-content">
+    <div class="post-content-top">
+      <h2>{{ blog.title }}</h2>
+      <p class="discription">
+        {{ blog.content | slice:0:10 }}
+        <a class="read-more">...Read more</a>
+      </p>
+    </div>  
+
+    <div class="post-content-bottom">
+      <div class="post-content-bottom-first">
+        <button>
+          <span class="creat-by">
+            created by: <span class="name-auther">{{ blog.createdByUsername }}</span>
+          </span>
+        </button>
+        <button class="like">
+          <span class="cont-like">2</span>
+          <img src="./../../assets/images/like.svg" alt="">
+        </button>
+        <button class="coment">
+          <span class="coment">2</span>
+          <img src="./../../assets/images/chat-icon.svg" alt="">
+        </button>
+      </div>
+      <div class="post-content-bottom-last">
+        <button class="save">
+          <img class="saved" src="./../../assets/saved.webp" alt="">
+        </button>
+        <div class="circle-line"></div>
+      </div>
     </div>
-<!-- 
-    <div class="post-imgs">
-        @if (media[currentIndex].type === 'image') {
-          <img
-            [src]="media[currentIndex].src"
-            class="media-item"
-          />
-        }
-        @if (media[currentIndex].type === 'video') {
-          <video
-            class="media-item"
-            [src]="media[currentIndex].src"
-            autoplay
-            muted
-            loop
-            playsinline
-          ></video>
-        }
-    </div>  -->
+  </div>
+
+  
+  <div class="post-imgs" *ngIf="blog.media?.length > 0">
+    <img
+      *ngIf="blog.media[currentIndex].type === 'IMAGE'"
+      [src]="baseUrl + blog.media[currentIndex].url"
+      class="media-item"
+    />
+    <video
+      *ngIf="blog.media[currentIndex].type === 'VIDEO'"
+      [src]="baseUrl + blog.media[currentIndex].url"
+      autoplay
+      muted
+      loop
+      playsinline
+      class="media-item"
+    ></video>
+  </div>
+
+
 
 </div>

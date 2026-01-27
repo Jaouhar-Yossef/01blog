@@ -1,15 +1,17 @@
-import { Component, inject, PLATFORM_ID, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { CardBlog } from '../card-blog/card-blog';
+import { BehaviorSubject } from 'rxjs';
 import { ContentHomeService } from './content-home.service';
-import { Observable } from 'rxjs';
-
-interface Blog {
-  id: number;
-  title: string;
-  content: string;
-  createdBy: string;
-}
+import { CardBlog } from '../card-blog/card-blog';
+import { ErrorService } from '../error/error.service';
 
 @Component({
   selector: 'app-content-home',
@@ -19,18 +21,76 @@ interface Blog {
   styleUrls: ['./content-home.css'],
 })
 
-export class ContentHome {
-  
-  blogs$: Observable<Blog[]>;
+export class ContentHome implements OnInit, AfterViewInit {
 
-  private platformId = inject(PLATFORM_ID);
-  private postService = inject(ContentHomeService);
   
-  constructor() {
-    this.blogs$ = this.postService.getBlogs();
+  constructor(
+    private errorService: ErrorService,
+  ) {}
+
+
+  private blogsSubject = new BehaviorSubject<any[]>([]);
+  blogs$ = this.blogsSubject.asObservable();
+
+  page = 0;
+  size = 10;
+  loading = false;
+  hasMore = true;
+
+  @ViewChild('observer') observer!: ElementRef;
+
+  private postService = inject(ContentHomeService);
+  private platformId = inject(PLATFORM_ID); 
+
+  ngOnInit() {
+    this.loadNextPage();
   }
 
-  trackById(index: number, blog: any): number {
-    return blog.id; 
+  ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const io = new IntersectionObserver(entries => {
+      if (
+        entries[0].isIntersecting &&
+        !this.loading &&
+        this.hasMore   
+
+      ) {
+        this.loadNextPage();
+      }
+    });
+    
+    io.observe(this.observer.nativeElement);
+  }
+
+  loadNextPage() {
+    if (this.loading || !this.hasMore) return;
+
+    this.loading = true;
+
+    this.postService.getBlogs(this.page, this.size).subscribe({
+      next: (data) => {
+        this.blogsSubject.next([
+          ...this.blogsSubject.value,
+          ...data
+        ]);
+
+        if (data.length < this.size) {
+          this.hasMore = false;
+
+          this.errorService.showMessage("You’ve reached the end 👋" , 'warning');
+
+        } else {
+          this.page++;
+        }
+
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
+  }
+
+  trackById(_: number, blog: any) {
+    return blog.id;
   }
 }

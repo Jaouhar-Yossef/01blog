@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnDestroy, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,37 +6,42 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card-blog.html',
-  styleUrl: './card-blog.css',
+  styleUrls: ['./card-blog.css'],
 })
-export class CardBlog {
+export class CardBlog implements OnChanges, OnDestroy {
   @Input() blog!: any;
 
-  // media = [
+  baseUrl = 'http://localhost:8080';
+  currentIndex = 0;
+  intervalId: any;
 
-  //   { type: 'image', src: './../../assets/img5.jpg' },
+  constructor(private ngZone: NgZone) {}
 
-  //   { type: 'video', src: './../../assets/vdback.mp4' },
-    
-  //   { type: 'image', src: './../../assets/img4.jpeg' },
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['blog'] && this.blog?.media?.length > 1 && !this.intervalId) {
+      this.startSlideshow();
+    }
+  }
 
-  // ];
+  startSlideshow() {
+    this.ngZone.runOutsideAngular(() => {
+      this.intervalId = setInterval(() => {
+        this.ngZone.run(() => {
+          this.next();
+        });
+      }, 3000); // كل 3 ثواني
+    });
+  }
 
+  next() {
+    if (this.blog?.media?.length) {
+      this.currentIndex = (this.currentIndex + 1) % this.blog.media.length;
+    }
+  }
 
-  // currentIndex = 0;
-  // intervalId: any;
-
-  // ngOnInit() {
-  //   this.intervalId = setInterval(() => {
-  //     this.next();
-  //   }, 3000); 
-  // }
-
-  // next() {
-  //   this.currentIndex = (this.currentIndex + 1) % this.media.length;
-  // }
-
-  // ngOnDestroy() {
-  //   clearInterval(this.intervalId);
-  // }
-
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
 }

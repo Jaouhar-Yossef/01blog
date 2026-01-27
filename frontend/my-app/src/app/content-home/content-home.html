@@ -1,7 +1,8 @@
 <div class="post-container">
   <div class="post-header"></div>
 
-  <ng-container *ngIf="blogs$ | async as blogs; else loading">
+  <ng-container *ngIf="blogs$ | async as blogs; else noContent">
+
     <div *ngIf="blogs.length > 0" class="post-list">
       <app-card-blog
         *ngFor="let blog of blogs; trackBy: trackById"
@@ -9,16 +10,21 @@
       </app-card-blog>
     </div>
 
-    <div *ngIf="blogs.length === 0" class="noContent">
+  </ng-container>
+
+  <ng-template #noContent>
+    <div class="noContent">
       <div>
         <p class="noContent-text">Nothing here yet 👀</p>
         <span class="noContent-subtext">Create a post to get started</span>
       </div>
       <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
     </div>
-  </ng-container>
-
-  <ng-template #loading>
-    <p>Loading blogs ...</p>
   </ng-template>
+
+
+  <div #observer style="height: 1px;"></div>
+
+
+
 </div>
