@@ -1,10 +1,8 @@
 .create-blog-container {
     background-color: rgb(1, 1, 44);
     position: fixed;
-
-    top: 18%;
+    top: 15%;
     left: -25%;
-
     height: 80vh;
     width: 50%;
     border-radius: 20px;
@@ -16,18 +14,32 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto; 
-
     padding: 40px;
-
     gap: 20px;
 }
 
 .create-blog-container.showCreatBlog {
-    left: 25%;  
+    left: 1%;  
     opacity: 1; 
 }
 
 
+.blur-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 8, 56, 0.24); 
+    backdrop-filter: blur(0.3px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: -99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s ease;
+}
+
+.blur-overlay.show {
+    opacity: 1;
+     pointer-events: none;
+}
 
 .create-blog-container h2 {
   text-align: center;

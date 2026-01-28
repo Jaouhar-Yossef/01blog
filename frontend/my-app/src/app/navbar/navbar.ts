@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CreatBlog } from '../creat-blog/creat-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
+import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ import { BlogUiService } from '../blog/blog-ui.service';
 })
 
 export class Navbar {
-  showCreatBlog = false;
+
   constructor(private router: Router) {}
   isHome(): boolean {
     return this.router.url === '/home';
@@ -24,11 +25,16 @@ export class Navbar {
   }
 
   private ui = inject(BlogUiService)
+  private uiui = inject(CreatBlogUiService)
   
   creatBlog() {
+    if (this.uiui.showCreatBlogHere()) {
+      this.uiui.closeCreatBlog()
+      return
+    }
     if (this.ui.showBlog()) {
       this.ui.closeBlog()
     }
-    this.showCreatBlog = !this.showCreatBlog;
+    this.uiui.openCreatBlog()
   }
 }

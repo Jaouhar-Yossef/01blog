@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CardBlogService } from './card-blog.service';
 import { ErrorService } from '../error/error.service';
 import { BlogUiService } from '../blog/blog-ui.service';
+import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 
 @Component({
   selector: 'app-card-blog',
@@ -22,12 +23,17 @@ export class CardBlog implements OnChanges, OnDestroy {
   showAllOfTheBlog = false;
 
   private ui = inject(BlogUiService)
+  private uiui = inject(CreatBlogUiService)
   
   private blogService = inject(CardBlogService);
   constructor(private ngZone: NgZone , private errorService: ErrorService) {}
 
   showTheBlog(blog : any) {
+    if (this.uiui.showCreatBlogHere()) {
+      this.uiui.closeCreatBlog();
+    }
     this.ui.openBlog(blog);
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { AuthService } from '../auth/auth.service';
+import { CreatBlogUiService } from './creat-blog-ui-service';
 
 type MediaType = 'image' | 'video';
 
@@ -22,13 +23,11 @@ interface MediaFile {
   styleUrls: ['./creat-blog.css'],
 })
 export class CreatBlog {
-  @Input() showCreatBlog = false;
-  @Output() close = new EventEmitter<void>();
+
+  ui = inject(CreatBlogUiService);
 
   form: FormGroup;
-
   files: MediaFile[] = [];
-
 
   constructor(private fb: FormBuilder, private errorService: ErrorService , private authService: AuthService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
@@ -38,7 +37,7 @@ export class CreatBlog {
   }
 
   onCancel() {
-    this.close.emit();
+    this.ui.closeCreatBlog()
   }
 
   onFileSelected(event: Event) {
@@ -103,9 +102,7 @@ export class CreatBlog {
   clearForm() {
     this.form.reset();
     this.files.forEach(file => URL.revokeObjectURL(file.url)); 
-    this.files = [];
-    
+    this.files = [];   
+    this.onCancel()
   }
-
-
 }
