@@ -2,12 +2,13 @@ package com.controller;
 
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
+import com.dto.LikeOrSaveBlogRequest;
 import com.dto.MediaDTO;
-import com.dto.SaveBlogRequest;
 import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;
-import com.repository.Blogs.SavedRepository;
+import com.repository.Blogs.LikeBlogRepository;
 import com.service.Blogs.BlogService;
+import com.service.Blogs.LikeBlogService;
 import com.service.Blogs.SavedService;
 
 import java.util.List;
@@ -28,16 +29,40 @@ public class BlogController {
 
     private final BlogService blogService;
     private final SavedService savedService;
+    private final LikeBlogService likeBlogService;
     
 
-    public BlogController(BlogService blogService , SavedService savedService) {
+    public BlogController(BlogService blogService , LikeBlogService likeBlogService,SavedService savedService) {
         this.blogService = blogService;
+        this.likeBlogService = likeBlogService;
         this.savedService = savedService;
     }
 
 
+    @PostMapping("/like_blog")
+    public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request, 
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+            ) {
+
+        Long user_id = userDetails.getUser().getId();
+        String msg = this.likeBlogService.likeBlog(user_id, request.getId_blog());        
+        return ResponseEntity.ok(Map.of("message", msg));        
+    }
+
+    @PostMapping("/unlike_blog")
+    public ResponseEntity<?> UnLikeBlog(@RequestBody LikeOrSaveBlogRequest request, 
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+            ) {
+
+        Long user_id = userDetails.getUser().getId();
+        String msg = this.likeBlogService.unLikedBlog(user_id, request.getId_blog());        
+
+        return ResponseEntity.ok(Map.of("message", msg));
+    }
+
+
     @PostMapping("/save_blog")
-    public ResponseEntity<?> saveBlog( @RequestBody SaveBlogRequest request, 
+    public ResponseEntity<?> saveBlog( @RequestBody LikeOrSaveBlogRequest request, 
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
 
@@ -50,7 +75,7 @@ public class BlogController {
 
 
     @PostMapping("/unsave_blog")
-    public ResponseEntity<?> unsaveBlog( @RequestBody SaveBlogRequest request, 
+    public ResponseEntity<?> unsaveBlog( @RequestBody LikeOrSaveBlogRequest request, 
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
 
@@ -76,7 +101,10 @@ public class BlogController {
     
     
                 boolean saved = savedService.isBlogSaved(userId, blog.getId());
-    
+                boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
+
+                Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+
                 List<MediaDTO> mediaList = blog.getMedias().stream()
                     .map(m -> new MediaDTO(
                             m.getUrl(),
@@ -91,6 +119,8 @@ public class BlogController {
                     blog.getStatus(),
                     blog.getContent(),
                     saved,
+                    liked,
+                    numbLike,
                     blog.getCreatedBy().getUsername(),
                     mediaList
                 );

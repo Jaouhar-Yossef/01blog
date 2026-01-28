@@ -4,6 +4,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveBlogRequest {
+public class LikeOrSaveBlogRequest {
     private Long id_blog;
 }

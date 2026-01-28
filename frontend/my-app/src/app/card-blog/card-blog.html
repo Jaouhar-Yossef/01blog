@@ -6,23 +6,25 @@
       <h2>{{ blog.title }}</h2>
       <p class="discription">
         {{ blog.content | slice:0:10 }}
-        <a class="read-more">...Read more</a>
+        <a class="read-more" (click)="showTheBlog(blog)" >...Read more</a>
       </p>
     </div>  
 
     <div class="post-content-bottom">
       <div class="post-content-bottom-first">
+        
         <button >
           <span class="creat-by">
             created by: <span class="name-auther">{{ blog.createdByUsername }}</span>
           </span>
         </button>
-        <button class="like">
-          <span class="cont-like">2</span>
-          <img src="./../../assets/images/like.svg" alt="">
+
+        <button class="like" (click)="toggleLike()">
+          <img *ngIf="!blog.liked" src="./../../assets/heart2.png" alt="">
+          <img *ngIf="blog.liked" src="./../../assets/heart.png" alt="">
         </button>
-        <button class="coment">
-          <span class="coment">2</span>
+
+        <button class="like" (click)="showTheBlog(blog)">
           <img src="./../../assets/images/chat-icon.svg" alt="">
         </button>
       </div>
@@ -42,6 +44,7 @@
       *ngIf="blog.media[currentIndex].type === 'IMAGE'"
       [src]="baseUrl + blog.media[currentIndex].url"
       class="media-item"
+      (click)="showTheBlog(blog)"
     />
     <video
       *ngIf="blog.media[currentIndex].type === 'VIDEO'"
@@ -51,9 +54,14 @@
       loop
       playsinline
       class="media-item"
+      (click)="showTheBlog(blog)"
     ></video>
   </div>
 
 
+  <div class="post-imgs" *ngIf="blog.media?.length === 0">
+    <img src="./../../assets/no-picture.png" alt="" class="no-media" (click)="showTheBlog(blog)">
+  </div> 
+  
 
 </div>

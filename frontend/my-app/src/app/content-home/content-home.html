@@ -1,17 +1,16 @@
 <div class="post-container">
   <div class="post-header"></div>
-
+  
   <ng-container *ngIf="blogs$ | async as blogs">
-
     <div *ngIf="blogs.length > 0; else noContent" class="post-list">
       <app-card-blog
-        *ngFor="let blog of blogs; trackBy: trackById"
-        [blog]="blog">
-      </app-card-blog>
+       *ngFor="let blog of blogs; trackBy: trackById"
+       [blog]="blog">
+     </app-card-blog>
     </div>
-
+    <app-blog ></app-blog>
   </ng-container>
-
+  
   <ng-template #noContent>
     <div class="noContent">
       <div>
@@ -21,5 +20,6 @@
       <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
     </div>
   </ng-template>
+  
 
 </div>

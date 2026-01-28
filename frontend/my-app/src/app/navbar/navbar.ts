@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Setting } from '../setting/setting';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CreatBlog } from '../creat-blog/creat-blog';
+import { BlogUiService } from '../blog/blog-ui.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,13 @@ export class Navbar {
   isRoot(): boolean {
     return this.router.url === '/';
   }
+
+  private ui = inject(BlogUiService)
+  
   creatBlog() {
+    if (this.ui.showBlog()) {
+      this.ui.closeBlog()
+    }
     this.showCreatBlog = !this.showCreatBlog;
   }
 }

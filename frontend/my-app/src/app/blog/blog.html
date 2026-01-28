@@ -1,0 +1,8 @@
+<div class="blog" [class.showBlog]="ui.showBlog()" >
+    <p (click)="ui.closeBlog()"> {{ ui.selectedBlog()?.title }} </p>
+
+    <div class="card" style="width: 20rem;" >
+        <p class="card-text"> {{ ui.selectedBlog()?.content }} </p>
+    </div>
+
+</div>

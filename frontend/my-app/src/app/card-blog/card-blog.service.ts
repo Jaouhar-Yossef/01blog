@@ -28,4 +28,17 @@ export class CardBlogService {
         id_blog);
     }
 
+
+    liked_Blogs(id_blog: number) {
+      return this.http.post(
+        `${this.apiUrl}/like_blog`,
+        id_blog);
+    }
+
+    unliked_Blogs(id_blog: number) {
+      return this.http.post(
+        `${this.apiUrl}/unlike_blog`,
+        id_blog);
+    }
+
 }

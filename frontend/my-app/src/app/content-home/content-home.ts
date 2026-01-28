@@ -11,23 +11,21 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { ContentHomeService } from './content-home.service';
 import { CardBlog } from '../card-blog/card-blog';
+import { Blog } from '../blog/blog';
 import { ErrorService } from '../error/error.service';
 
 @Component({
   selector: 'app-content-home',
   standalone: true,
-  imports: [CommonModule, CardBlog],
+  imports: [CommonModule, CardBlog , Blog],
   templateUrl: './content-home.html',
   styleUrls: ['./content-home.css'],
 })
 
 export class ContentHome implements OnInit, AfterViewInit {
-
-  
   constructor(
     private errorService: ErrorService,
   ) {}
-
 
   private blogsSubject = new BehaviorSubject<any[]>([]);
   blogs$ = this.blogsSubject.asObservable();
@@ -49,7 +47,7 @@ export class ContentHome implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-
+    if (!this.observer) return;
     const io = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&

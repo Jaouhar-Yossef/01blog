@@ -25,11 +25,18 @@ public class BlogService {
     private final UserRepository userRepository;    
     private final MediaBlogService mediaBlogService;
 
+    private final SavedService savedService;
+    private final LikeBlogService likeBlogService;
+
+
     
 
-    public BlogService(BlogRepository blogRepository , UserRepository userRepository, MediaBlogService mediaBlogService ) {
+    public BlogService(BlogRepository blogRepository , UserRepository userRepository,
+    LikeBlogService likeBlogService , SavedService savedService,  MediaBlogService mediaBlogService ) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
+        this.likeBlogService = likeBlogService;
+        this.savedService = savedService;
         this.mediaBlogService = mediaBlogService;
     }
 
@@ -51,12 +58,19 @@ public class BlogService {
             List<MediaDTO> mediaList = blog.getMedias().stream()
                                            .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
                                            .toList();
+
+            boolean saved = savedService.isBlogSaved(user.getId() , blog.getId());
+            boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());
+            Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+                               
             BlogResponseDTO responseData = new BlogResponseDTO(
                 blog.getId(),
                 blog.getTitle(),
                 blog.getStatus(),
                 blog.getContent(),
-                false,
+                saved,
+                liked,
+                numbLike,
                 blog.getCreatedBy().getUsername(),
                 mediaList
             );

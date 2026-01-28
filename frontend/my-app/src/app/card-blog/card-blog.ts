@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, OnDestroy, NgZone, inject }
 import { CommonModule } from '@angular/common';
 import { CardBlogService } from './card-blog.service';
 import { ErrorService } from '../error/error.service';
+import { BlogUiService } from '../blog/blog-ui.service';
 
 @Component({
   selector: 'app-card-blog',
@@ -12,14 +13,22 @@ import { ErrorService } from '../error/error.service';
 })
 export class CardBlog implements OnChanges, OnDestroy {
   @Input() blog!: any;
-
+  
   baseUrl = 'http://localhost:8080';
   currentIndex = 0;
   intervalId: any;
   loading = false;
 
+  showAllOfTheBlog = false;
+
+  private ui = inject(BlogUiService)
+  
   private blogService = inject(CardBlogService);
   constructor(private ngZone: NgZone , private errorService: ErrorService) {}
+
+  showTheBlog(blog : any) {
+    this.ui.openBlog(blog);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['blog'] && this.blog?.media?.length > 1 && !this.intervalId) {
@@ -49,8 +58,6 @@ export class CardBlog implements OnChanges, OnDestroy {
     }
   }
 
-
-  
   toggleSave() {
     if (this.loading) return;
     this.loading = true;
@@ -79,52 +86,33 @@ export class CardBlog implements OnChanges, OnDestroy {
   }
 
 
+  toggleLike() {
+    if (this.loading) {return}
+    this.loading = true
+    
+    const previousState = this.blog.liked;
+    this.blog.liked = !previousState;
+   
+    const request$ = previousState
+      ? this.blogService.unliked_Blogs(this.blog.id)
+      : this.blogService.liked_Blogs(this.blog.id);
+        
+    request$.subscribe({
+      next: () => {
+        this.errorService.showMessage(
+          previousState ? 'UnLiked successfully!' : 'liked blog successfully!',
+          'success'
+        );
+        this.loading = false;
+      },
 
+      error: () => {
+        this.blog.liked = previousState;
+        this.loading = false;
+        this.errorService.showMessage('Something went wrong 😢', 'error');
+      }
+    });
+  }
 
-    // save_blog() {
-
-  //   this.BlogService.save_Blogs(this.blog.id).subscribe({
-
-  //     next : (res) => {
-
-  //       this.errorService.showMessage("Saved successfully!", "success");
-
-  //       this.blog.saved = true;
-
-  //     },
-
-  //     error :  () => {
-
-  //       console.log("hhhhhhhhhhhhh")
-
-  //     },
-
-  //   });
-
-  // }
-
-
-
-  // unsave_blog() {
-
-  //   this.BlogService.unsave_Blogs(this.blog.id).subscribe({
-
-  //     next : (res) => {
-
-  //       this.errorService.showMessage("UnSaved successfully!", "success");
-
-  //       this.blog.saved = true;
-
-  //     },
-
-  //     error :  () => {
-
-  //       console.log("hhhhhhhhhhhhh")
-
-  //     },
-
-  //   });
-
-  // }
 
 }
