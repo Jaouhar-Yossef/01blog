@@ -5,12 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.dto.LoginRequest;
+import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
-import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
 import com.util.Response;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,9 +26,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<?>> register(@RequestBody User user) {
+    public ResponseEntity<Response<?>> register(@RequestBody @Valid UserRequestDTO request) {
 
-        Response<?> response = userService.register(user);
+        Response<?> response = userService.register(request);
         if (!response.isSuccess()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -36,8 +39,9 @@ public class AuthController {
                 .body(response);
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<Response<?>> login(@RequestBody LoginRequest request) {       
+    public ResponseEntity<Response<?>> login(@RequestBody @Valid LoginRequest request) {       
         String emailOrUsername = request.getEmailOrUsername();
         Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
     
@@ -46,7 +50,6 @@ public class AuthController {
         }
         return ResponseEntity.ok(response);
     }
-
 
     @PostMapping("/validate-token")
     public void me(@AuthenticationPrincipal UserDetailsImpl userDetails) {

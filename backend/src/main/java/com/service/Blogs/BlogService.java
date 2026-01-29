@@ -45,8 +45,7 @@ public class BlogService {
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
-    
-            Blog blog = new Blog();
+                Blog blog = new Blog();
             blog.setTitle(blogRequest.getTitle());
             blog.setStatus("show");
             blog.setContent(blogRequest.getContent());
@@ -54,7 +53,6 @@ public class BlogService {
     
             blogRepository.save(blog);
             mediaBlogService.saveMedia(blog, blogRequest);
-
             List<MediaDTO> mediaList = blog.getMedias().stream()
                                            .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
                                            .toList();
@@ -84,7 +82,7 @@ public class BlogService {
 
 
     public List<Blog> getBlogsPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return blogRepository.findAll(pageable).getContent();
     }
 
@@ -95,5 +93,42 @@ public class BlogService {
             .orElseThrow(() -> new RuntimeException("Blog not found"));
     
         blogRepository.delete(blog);
+    }
+
+
+    public List<BlogResponseDTO> blogsGetter(Long userId , int page , int size) {
+
+        List<Blog> blogs = this.getBlogsPaginated(page, size);
+    
+        List<BlogResponseDTO> blogDTOs = blogs.stream()
+            .map(blog -> {
+                boolean saved = savedService.isBlogSaved(userId, blog.getId());
+                boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
+
+                Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+
+                List<MediaDTO> mediaList = blog.getMedias().stream()
+                    .map(m -> new MediaDTO(
+                            m.getUrl(),
+                            m.getFileName(),
+                            m.getType()
+                    ))
+                    .toList();
+    
+                return new BlogResponseDTO(
+                    blog.getId(),
+                    blog.getTitle(),
+                    blog.getStatus(),
+                    blog.getContent(),
+                    saved,
+                    liked,
+                    numbLike,
+                    blog.getCreatedBy().getUsername(),
+                    mediaList
+                );
+            })
+            .toList();
+
+        return blogDTOs;    
     }
 }

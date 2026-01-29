@@ -12,4 +12,13 @@ import { BlogUiService } from './blog-ui.service';
 export class Blog {
   @Input() blog!: any;
   ui = inject(BlogUiService);
+  AllTheDiscription : boolean = false;
+
+  showAllTheDiscription() {
+    this.AllTheDiscription = !this.AllTheDiscription;
+  }
+
+  showLess () {
+    this.AllTheDiscription = !this.AllTheDiscription;
+  }
 }

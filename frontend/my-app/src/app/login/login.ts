@@ -63,13 +63,8 @@ export class LoginComponent {
     this.authService.login(data).subscribe({
       next: (res) => {
         this.errorService.showMessage('login successful!', 'success');
-
-        this.authService.saveAuthData(res.anyData);
-
-        console.log('data after login:--->   ', res);
-        
+        this.authService.saveAuthData(res.anyData);        
         this.router.navigate(['/home']);
-
       },
       error: (err) => {
         

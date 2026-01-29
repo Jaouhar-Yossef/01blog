@@ -53,6 +53,9 @@ export class CreatBlog {
     }
 
     selectedFiles.forEach(file => {
+       if (file.size > 50 * 1024 * 1024) {
+        this.errorService.showMessage( 'Video too large (max 50MB)', 'warning');
+      }
       const type: MediaType = file.type.startsWith('image') ? 'image' : 'video';
       this.files.push({
         file,
@@ -83,9 +86,14 @@ export class CreatBlog {
     formData.append('title', this.form.value.title);
     formData.append('content', this.form.value.content);
   
-    this.files.forEach((fileObj, index) => {
-      formData.append('files', fileObj.file);
-    });
+    for (let i = 0; i < this.files.length; i++) {
+      const file = this.files[i];
+      if (file.file.size > 50 * 1024 * 1024) {
+        this.errorService.showMessage( 'Video too large (max 50MB)', 'warning');
+        continue;
+      }
+      formData.append('files', file.file);
+    }
 
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {

@@ -16,7 +16,6 @@ export class AuthComponent implements AfterViewInit {
 
   toggleForm() {
     this.showLogin = !this.showLogin;
-    console.log('Toggled form. showLogin is now:', this.showLogin);
   }
 
   @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;

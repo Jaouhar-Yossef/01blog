@@ -3,20 +3,15 @@ package com.controller;
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
 import com.dto.LikeOrSaveBlogRequest;
-import com.dto.MediaDTO;
 import com.entity.UserDetailsImpl;
-import com.entity.Blogs.Blog;
-import com.repository.Blogs.LikeBlogRepository;
 import com.service.Blogs.BlogService;
 import com.service.Blogs.LikeBlogService;
 import com.service.Blogs.SavedService;
-
 import java.util.List;
 import java.util.Map;
-
 import com.util.Response;
-
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security .core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -86,47 +81,12 @@ public class BlogController {
     }
 
     @GetMapping("/blogs")
-    public ResponseEntity<List<BlogResponseDTO>> getBlogs(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-    
+    public ResponseEntity<List<BlogResponseDTO>> getBlogs( @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
+            ) {
+
         Long userId = userDetails.getUser().getId();
-    
-        List<Blog> blogs = blogService.getBlogsPaginated(page, size);
-    
-        List<BlogResponseDTO> blogDTOs = blogs.stream()
-            .map(blog -> {
-    
-    
-                boolean saved = savedService.isBlogSaved(userId, blog.getId());
-                boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
-
-                Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
-
-                List<MediaDTO> mediaList = blog.getMedias().stream()
-                    .map(m -> new MediaDTO(
-                            m.getUrl(),
-                            m.getFileName(),
-                            m.getType()
-                    ))
-                    .toList();
-    
-                return new BlogResponseDTO(
-                    blog.getId(),
-                    blog.getTitle(),
-                    blog.getStatus(),
-                    blog.getContent(),
-                    saved,
-                    liked,
-                    numbLike,
-                    blog.getCreatedBy().getUsername(),
-                    mediaList
-                );
-            })
-            .toList();
-    
+        List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
         return ResponseEntity.ok(blogDTOs);
     }
 
@@ -138,7 +98,7 @@ public class BlogController {
         return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly", null));
     }
 
-    @PostMapping("/creat-blog")
+    @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<BlogResponseDTO>> create_Blog(
             @Valid @ModelAttribute BlogRequest blogRequest, 
             BindingResult bindingResult,

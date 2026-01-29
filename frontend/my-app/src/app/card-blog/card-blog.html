@@ -1,6 +1,5 @@
 <div class="post-card">
 
-  <!-- Post Content -->
   <div class="post-content">
     <div class="post-content-top">
       <h2>{{ blog.title }}</h2>
@@ -57,7 +56,6 @@
       (click)="showTheBlog(blog)"
     ></video>
   </div>
-
 
   <div class="post-imgs" *ngIf="blog.media?.length === 0">
     <img src="./../../assets/no-picture.png" alt="" class="no-media" (click)="showTheBlog(blog)">

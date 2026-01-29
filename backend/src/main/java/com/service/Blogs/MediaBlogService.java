@@ -31,9 +31,7 @@ public class MediaBlogService {
             return;
         }
 
-        // 📁 upload directory
-        String uploadDir = System.getProperty("user.dir")
-                + File.separator + "uploads";
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 
         try {
             Files.createDirectories(Paths.get(uploadDir));
@@ -42,7 +40,7 @@ public class MediaBlogService {
         }
 
         int maxFiles = 5;
-        long maxFileSize = 20 * 1024 * 1024; // 20MB
+        long maxFileSize = 50 * 1024 * 1024;
         int fileCount = 0;
 
         for (MultipartFile file : blogRequest.getFiles()) {
@@ -56,14 +54,10 @@ public class MediaBlogService {
             MediaBlog media = new MediaBlog();
             media.setBlog(blog);
 
-            // 🏷️ original name
             String originalName = file.getOriginalFilename();
             if (originalName == null) originalName = "file";
 
-            // 🔐 unique file name
             String fileName = UUID.randomUUID() + "_" + originalName;
-
-            // 📄 type
             String contentType = file.getContentType();
             if (contentType != null && contentType.startsWith("video")) {
                 media.setType(TypeMedia.VIDEO);
@@ -75,7 +69,6 @@ public class MediaBlogService {
                 Path filePath = Paths.get(uploadDir, fileName);
                 Files.copy(file.getInputStream(), filePath);
 
-                // 🌐 URL saved in DB (used by frontend)
                 media.setFileName(fileName);
                 media.setUrl("/uploads/" + fileName);
 
