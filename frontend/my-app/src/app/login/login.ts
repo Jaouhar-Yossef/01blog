@@ -34,15 +34,14 @@ export class LoginComponent {
 
   password: string = ''
   email: string = ''
-  emailRegex: RegExp = /^[^\s@]{3,}@[^\s@]{2,}\.[^\s@]{2,}$/;
 
   check() {
     if (this.email.trim() == '' || this.password.trim() == ''  ) {
       this.errorService.showMessage('All fields must be filled!', 'error');
       return
     }
-    if (!this.emailRegex.test(this.email.trim())) {
-      this.errorService.showMessage('Email must be like example@gmail.com', 'error');
+    if (this.email.trim().length < 3 ) {
+      this.errorService.showMessage('At least 3 characters!', 'error');
       return
     }
 

@@ -4,6 +4,8 @@ import com.util.TypeMedia;
 import lombok.*;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MediaDTO {

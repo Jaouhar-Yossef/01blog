@@ -41,22 +41,31 @@ public class BlogService {
     }
 
 
+
+    @Transactional
     public Response<BlogResponseDTO> createBlog(BlogRequest blogRequest, String username) {
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
                 Blog blog = new Blog();
-            blog.setTitle(blogRequest.getTitle());
-            blog.setStatus("show");
-            blog.setContent(blogRequest.getContent());
-            blog.setCreatedBy(user);
+                blog.setTitle(blogRequest.getTitle());
+                blog.setStatus("show");
+                blog.setContent(blogRequest.getContent());
+                blog.setCreatedBy(user);
     
-            blogRepository.save(blog);
-            mediaBlogService.saveMedia(blog, blogRequest);
-            List<MediaDTO> mediaList = blog.getMedias().stream()
-                                           .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
-                                           .toList();
+                blogRepository.save(blog);
+            
+            try {
+                mediaBlogService.saveMedia(blog, blogRequest);
+            } catch (Exception e) {
+                throw new RuntimeException("Error creating blog: " + e.getMessage());
+            }              
 
+            List<MediaDTO> mediaList = blog.getMedias().stream()
+                .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
+                .toList();
+
+            
             boolean saved = savedService.isBlogSaved(user.getId() , blog.getId());
             boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());
             Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
@@ -82,7 +91,7 @@ public class BlogService {
 
 
     public List<Blog> getBlogsPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return blogRepository.findAll(pageable).getContent();
     }
 

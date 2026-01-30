@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { Router } from '@angular/router';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
@@ -19,7 +21,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
+    @Inject(PLATFORM_ID) platformId: Object,
+    private router: Router,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
 
@@ -49,12 +52,14 @@ export class AuthService {
 
 
   logout() {
+    console.log("ggggggggg")
     if (this.isBrowser) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
     this.loggedIn.set(false);
     this.user = null;
+    this.router.navigate(['/home']); here
   }
 
   login(data: any): Observable<any> {

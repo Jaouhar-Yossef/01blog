@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import com.util.Response;
 import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security .core.Authentication;
@@ -110,8 +112,12 @@ public class BlogController {
         }
 
         String username = authentication.getName();
-        Response<BlogResponseDTO> data = blogService.createBlog(blogRequest, username);
-        return ResponseEntity.created(null).body(data);
-    }
 
+        try {
+            Response<BlogResponseDTO> dataa = blogService.createBlog(blogRequest, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(dataa);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
 }

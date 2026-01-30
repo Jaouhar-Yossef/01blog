@@ -97,6 +97,10 @@ export class CreatBlog {
 
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
+        if (!res.success) {
+          this.errorService.showMessage('Error creating blog', 'error');
+          return;
+        }
         this.errorService.showMessage('Blog Created (:', 'success');
         this.clearForm();
         this.onCancel();

@@ -5,7 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.*;
 import jakarta.validation.constraints.*;
 
+
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogRequest {
