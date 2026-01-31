@@ -11,29 +11,9 @@ import { LoginComponent } from '../login/login';
   templateUrl: './auth.html',
   styleUrls: ['./auth.css'],
 })
-export class AuthComponent implements AfterViewInit {
-  showLogin = false;
-
+export class AuthComponent {
+  showLogin = true;
   toggleForm() {
     this.showLogin = !this.showLogin;
-  }
-
-  @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
-
-  ngAfterViewInit() {
-
-    if (isPlatformBrowser(this.platformId)) {
-      const video = this.bgVideo.nativeElement as HTMLVideoElement;
-
-      if (video && typeof video.play === 'function') {
-        video.volume = 0;
-        video.muted = true;
-        video.play().catch(err => console.warn('Autoplay blocked:', err));
-      } else {
-        console.warn('Video element not ready or not a real <video> tag');
-      }
-    }
   }
 }

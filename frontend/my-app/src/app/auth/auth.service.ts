@@ -3,8 +3,14 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-
 import { Router } from '@angular/router';
+
+interface TheUser {
+  username: string; 
+  email: string;
+  imageUrl: string;
+}
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -39,8 +45,16 @@ export class AuthService {
 
   saveAuthData(user: any) {
     if (!this.isBrowser) return;
-    localStorage.setItem('token', user.tokeString); 
-    localStorage.setItem('user', JSON.stringify(user));
+
+    localStorage.setItem('token', user.tokeString);
+
+    const theUser: TheUser = {
+        username: user.username,
+        email: user.email,
+        imageUrl: user.imageUrl
+    };
+
+    localStorage.setItem('user', JSON.stringify(theUser));
     this.loggedIn.set(true);
     this.user = user;
   }
@@ -52,14 +66,13 @@ export class AuthService {
 
 
   logout() {
-    console.log("ggggggggg")
     if (this.isBrowser) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
     this.loggedIn.set(false);
     this.user = null;
-    this.router.navigate(['/home']); here
+    this.router.navigate(['/']);
   }
 
   login(data: any): Observable<any> {
@@ -74,24 +87,24 @@ export class AuthService {
 
   
   validateToken(): Observable<boolean> {
-
-  const token = this.getToken();  
-  if (!token) return of(false);
-
-  return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).pipe(
-      map(user => {
-        this.loggedIn.set(true);
-        this.user = user;
-        return true;
-      }),
-      catchError(() => {
-        this.logout();
-        return of(false);
-      })
-    );
+    const token = this.getToken();  
+    if (!token) return of(false);
+    return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).pipe(
+        map(user => {
+          this.loggedIn.set(true);
+          this.user = user;
+          return true;
+        }),
+        catchError(() => {
+          this.logout();
+          return of(false);
+        })
+      );
   }
 
-
+  deleteAccount(): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/deleteAccount` , {});
+  }
 }

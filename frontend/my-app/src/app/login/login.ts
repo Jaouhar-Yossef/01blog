@@ -1,15 +1,21 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ErrorService } from '../error/error.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
+import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule, MatFormFieldModule , MatButtonModule , RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -17,8 +23,8 @@ export class LoginComponent {
   showPassword = false;
   
   constructor(
-    private errorService: ErrorService,
     private authService: AuthService,
+    private errorService: ErrorService,
      private router: Router
   ) {}
 
@@ -66,10 +72,8 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        
         this.errorService.showMessage(err.error.message, 'error');
       }
-
     })
   }
 

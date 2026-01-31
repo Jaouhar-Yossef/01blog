@@ -77,19 +77,31 @@ app-navbar {
 
 
 .Start_Writing {
-  border-radius: 15px;
   font-size: 18px;
   font-weight: bold;
-  cursor: pointer;
-  border: none;
-  transition: 0.3s;
-  height: 35px;
-  width: 15%;
+  padding: 25px;
   margin-right: 10px;
 }
 
 
-.Start_Writing:hover{
-    background-color: rgb(49, 83, 112);
-    color: aliceblue;
+
+
+@media (max-width: 575.98px) {
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) {
+
 }

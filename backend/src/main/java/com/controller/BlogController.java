@@ -9,6 +9,8 @@ import com.service.Blogs.LikeBlogService;
 import com.service.Blogs.SavedService;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import com.util.Response;
 import jakarta.validation.Valid;
 
@@ -40,8 +42,7 @@ public class BlogController {
     public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request, 
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
-
-        Long user_id = userDetails.getUser().getId();
+        UUID user_id = userDetails.getUser().getId();
         String msg = this.likeBlogService.likeBlog(user_id, request.getId_blog());        
         return ResponseEntity.ok(Map.of("message", msg));        
     }
@@ -51,7 +52,7 @@ public class BlogController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
 
-        Long user_id = userDetails.getUser().getId();
+        UUID user_id = userDetails.getUser().getId();
         String msg = this.likeBlogService.unLikedBlog(user_id, request.getId_blog());        
 
         return ResponseEntity.ok(Map.of("message", msg));
@@ -63,7 +64,7 @@ public class BlogController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
 
-        Long user_id = userDetails.getUser().getId();
+        UUID user_id = userDetails.getUser().getId();
         String msg = this.savedService.saveBlog(user_id, request.getId_blog());
 
         return ResponseEntity.ok(Map.of("message", msg));
@@ -76,7 +77,7 @@ public class BlogController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) {
 
-        Long user_id = userDetails.getUser().getId();
+        UUID user_id = userDetails.getUser().getId();
         String msg = this.savedService.unsaveBlog(user_id, request.getId_blog());
 
         return ResponseEntity.ok(Map.of("message", msg));
@@ -87,7 +88,7 @@ public class BlogController {
             @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
             ) {
 
-        Long userId = userDetails.getUser().getId();
+        UUID userId = userDetails.getUser().getId();
         List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
         return ResponseEntity.ok(blogDTOs);
     }
@@ -95,7 +96,7 @@ public class BlogController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Void>> deleteBlog(@PathVariable Long id) {
+    public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
         blogService.deleteBlog(id);
         return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly", null));
     }

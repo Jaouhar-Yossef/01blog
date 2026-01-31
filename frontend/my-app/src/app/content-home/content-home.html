@@ -6,11 +6,13 @@
       <app-card-blog
        *ngFor="let blog of blogs; trackBy: trackById"
        [blog]="blog">
-     </app-card-blog>
+      </app-card-blog>
     </div>
     <app-blog ></app-blog>
   </ng-container>
   
+  <div #observer style="height: 1px;"></div>
+
   <ng-template #noContent>
     <div class="noContent">
       <div>

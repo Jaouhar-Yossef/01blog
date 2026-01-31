@@ -102,6 +102,8 @@ export class CardBlog implements OnChanges, OnDestroy {
     const request$ = previousState
       ? this.blogService.unliked_Blogs(this.blog.id)
       : this.blogService.liked_Blogs(this.blog.id);
+
+      console.log("hhhh ==>  " , this.blog.id)
         
     request$.subscribe({
       next: () => {
@@ -112,7 +114,7 @@ export class CardBlog implements OnChanges, OnDestroy {
         this.loading = false;
       },
 
-      error: () => {
+      error: (err) => {
         this.blog.liked = previousState;
         this.loading = false;
         this.errorService.showMessage('Something went wrong 😢', 'error');

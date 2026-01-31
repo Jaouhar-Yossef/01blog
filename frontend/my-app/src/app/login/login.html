@@ -1,5 +1,6 @@
 <div class="login">
         <h2>Log-in</h2>
+
         <div class="input-group">
           <input [(ngModel)]="email" maxlength="50" type="email" placeholder="Enter your email:">
         </div>
@@ -12,7 +13,9 @@
           </div>
         
         <div class="btn-Signin">
-          <button class="Signin" (click)="check()">Sign In</button>
+
+          <button (click)="check()" matButton="tonal" style="background-color: #045d6dd0; color: aliceblue;" class="Signin">Sign In</button>
+
         </div>
         <div class="forregister">
           <div class="linksgoto">

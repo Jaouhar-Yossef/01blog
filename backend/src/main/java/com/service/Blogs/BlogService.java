@@ -5,13 +5,16 @@ import com.dto.BlogResponseDTO;
 import com.dto.MediaDTO;
 import com.entity.User;
 import com.entity.Blogs.Blog;
+import com.entity.Blogs.MediaBlog;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,30 +62,9 @@ public class BlogService {
                 mediaBlogService.saveMedia(blog, blogRequest);
             } catch (Exception e) {
                 throw new RuntimeException("Error creating blog: " + e.getMessage());
-            }              
+            } 
 
-            List<MediaDTO> mediaList = blog.getMedias().stream()
-                .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
-                .toList();
-
-            
-            boolean saved = savedService.isBlogSaved(user.getId() , blog.getId());
-            boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());
-            Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
-                               
-            BlogResponseDTO responseData = new BlogResponseDTO(
-                blog.getId(),
-                blog.getTitle(),
-                blog.getStatus(),
-                blog.getContent(),
-                saved,
-                liked,
-                numbLike,
-                blog.getCreatedBy().getUsername(),
-                mediaList
-            );
-
-            return new Response<>(true, "Blog created successfully", responseData);
+            return new Response<>(true, "Blog created successfully", null);
 
         } catch (RuntimeException e) {
             return new Response<>(false, "Error creating blog: " + e.getMessage(), null);
@@ -97,15 +79,20 @@ public class BlogService {
 
 
     @Transactional
-    public void deleteBlog(Long id) {
+    public void deleteBlog(UUID id) {
         Blog blog = blogRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Blog not found"));
-    
+        for (MediaBlog media : blog.getMedias()) {
+            File file = new File("uploads/" + media.getFileName());
+            if (file.exists()) {
+                file.delete(); 
+            }
+        }    
         blogRepository.delete(blog);
     }
 
 
-    public List<BlogResponseDTO> blogsGetter(Long userId , int page , int size) {
+    public List<BlogResponseDTO> blogsGetter(UUID userId , int page , int size) {
 
         List<Blog> blogs = this.getBlogsPaginated(page, size);
     
@@ -135,6 +122,7 @@ public class BlogService {
                     blog.getCreatedBy().getUsername(),
                     mediaList
                 );
+
             })
             .toList();
 

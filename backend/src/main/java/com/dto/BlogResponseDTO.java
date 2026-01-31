@@ -1,6 +1,8 @@
 package com.dto;
 
 import java.util.List;
+import java.util.UUID;
+
 import lombok.*;
 
 @Data
@@ -9,14 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogResponseDTO {
-    private Long id;
+    private UUID id;
     private String title;
     private String status;
     private String content;
     private boolean saved;
     private boolean liked;
-    private Long NumbLiked;
+    private Long numbLiked;
     private String createdByUsername;
     private List<MediaDTO> media;
-
 }

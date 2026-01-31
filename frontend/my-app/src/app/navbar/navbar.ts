@@ -5,11 +5,14 @@ import { CommonModule } from '@angular/common';
 import { CreatBlog } from '../creat-blog/creat-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
 import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Setting, CommonModule , CreatBlog],
+  imports: [Setting, CommonModule , CreatBlog , MatButtonModule , MatIconModule , RouterModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
 })

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.dto.LoginRequest;
 import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
+import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
@@ -56,4 +57,14 @@ public class AuthController {
         return;
     }
 
+    @DeleteMapping("/deleteAccount")
+    public ResponseEntity<?> delete_Account(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        try {
+            Response<?> response =  userService.deleteAccount(user);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response<>(false, e.getMessage())); 
+        }
+    }
 }

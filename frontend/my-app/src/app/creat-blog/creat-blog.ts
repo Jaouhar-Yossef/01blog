@@ -51,6 +51,7 @@ export class CreatBlog {
       input.value = '';
       return;
     }
+    
 
     selectedFiles.forEach(file => {
        if (file.size > 50 * 1024 * 1024) {
@@ -77,11 +78,7 @@ export class CreatBlog {
       this.form.markAllAsTouched();
       return;
     }
-    if (this.files.length === 0) {
-      this.errorService.showMessage('You can upload images or videos.', 'warning');
-    }
-
-
+   
     const formData = new FormData();
     formData.append('title', this.form.value.title);
     formData.append('content', this.form.value.content);
@@ -97,6 +94,7 @@ export class CreatBlog {
 
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
+        console.log("===>   " ,res)
         if (!res.success) {
           this.errorService.showMessage('Error creating blog', 'error');
           return;

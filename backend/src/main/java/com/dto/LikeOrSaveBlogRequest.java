@@ -1,5 +1,7 @@
 package com.dto;
 
+import java.util.UUID;
+
 import lombok.*;
 
 @Data
@@ -8,5 +10,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeOrSaveBlogRequest {
-    private Long id_blog;
+    private UUID id_blog;
 }

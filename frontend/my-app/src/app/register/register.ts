@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
+
+
 export class RegisterComponent {
   showPassword = false;
 
@@ -90,7 +92,7 @@ export class RegisterComponent {
 
 
     allisfilled() {
-        if (this.isEmailValid && this.isusername && this.ispassWordValid && this.isConfirmpassWordValid) { // this.isFirstnameValid && this.isLastnameValid &&
+        if (this.isEmailValid && this.isusername && this.ispassWordValid && this.isConfirmpassWordValid) {
           this.isfilled = true
         } else {
           this.isfilled = false

@@ -109,4 +109,18 @@ public class MediaBlogService {
         mediaBlogRepository.delete(media);
     }
 
+
+    public void deleteBlogFiles(Blog blog) {
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
+        for (MediaBlog media : blog.getMedias()) {
+            File file = new File(uploadDir + media.getFileName());
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    System.out.println("Failed to delete file: " + file.getAbsolutePath());
+                }
+            }
+        }
+    }
+
 }

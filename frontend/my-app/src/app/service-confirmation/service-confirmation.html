@@ -1,0 +1,50 @@
+<div
+  class="modal fade"
+  tabindex="-1"
+  [class.show]="confirmService.show"
+  [class.backg]="confirmService.show"
+  [style.display]="confirmService.show ? 'block' : 'none'"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <p>{{ confirmService.text }}</p>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirm()"
+        >
+          Confirm
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal-backdrop fade show"
+  *ngIf="confirmService.show"
+></div>

@@ -1,6 +1,7 @@
 package com.service.Blogs;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class LikeBlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    public String likeBlog(Long userId, Long blogId) {
+    public String likeBlog(UUID userId, UUID blogId) {
 
         if (this.likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog already liked";
@@ -47,7 +48,7 @@ public class LikeBlogService {
 
 
     @Transactional
-    public String unLikedBlog(Long userId, Long blogId) {
+    public String unLikedBlog(UUID userId, UUID blogId) {
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog not liked";
         }
@@ -57,14 +58,14 @@ public class LikeBlogService {
         return "UnLiked successfully!";
     }
 
-    public boolean isBlogLiked(Long userId, Long blogId) {
+    public boolean isBlogLiked(UUID userId, UUID blogId) {
         return likeBlogRepository.existsByUserIdAndBlogId(userId, blogId);
     }
 
-    public Long getNumbLike(Long blogId) {
+    public Long getNumbLike(UUID blogId) {
         return likeBlogRepository.countByBlogId(blogId);
     }
-    public List<Saved> getLikeBlogs(Long userId) {
+    public List<Saved> getLikeBlogs(UUID userId) {
         return likeBlogRepository.findByUserId(userId);
     }
 

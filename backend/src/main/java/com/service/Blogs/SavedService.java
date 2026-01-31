@@ -1,6 +1,7 @@
 package com.service.Blogs;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class SavedService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    public String saveBlog(Long userId, Long blogId) {
+    public String saveBlog(UUID userId, UUID blogId) {
 
         if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog already saved";
@@ -46,7 +47,7 @@ public class SavedService {
 
 
     @Transactional
-    public String unsaveBlog(Long userId, Long blogId) {
+    public String unsaveBlog(UUID userId, UUID blogId) {
 
         if (!savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog not saved";
@@ -58,11 +59,11 @@ public class SavedService {
     }
     
 
-    public boolean isBlogSaved(Long userId, Long blogId) {
+    public boolean isBlogSaved(UUID userId, UUID blogId) {
         return savedRepository.existsByUserIdAndBlogId(userId, blogId);
     }
 
-    public List<Saved> getSavedBlogs(Long userId) {
+    public List<Saved> getSavedBlogs(UUID userId) {
         return savedRepository.findByUserId(userId);
     }
 }

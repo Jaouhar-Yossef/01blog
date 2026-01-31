@@ -25,12 +25,12 @@
         <img class="homeset" src="../../assets/images/users.svg" alt=""> Followers
       </button>
   
-      <button class="btnnor" (click)="userlogout()">
+      <button class="btnnor" (click)="logout()">
         <img class="homeset" src="../../assets/images/arrow-left.svg" alt=""> Log out
       </button>
   
       @if (show) {
-        <button class="delete-account">
+        <button class="delete-account" (click)="deleteAccount()">
           <img class="homeset" src="../../assets/deleteaccount.png" alt=""> Delete Account
         </button>
       }

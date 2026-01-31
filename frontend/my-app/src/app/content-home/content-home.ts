@@ -35,6 +35,9 @@ export class ContentHome implements OnInit, AfterViewInit {
   loading = false;
   hasMore = true;
 
+
+  private io!: IntersectionObserver;
+
   @ViewChild('observer') observer!: ElementRef;
 
   private postService = inject(ContentHomeService);
@@ -45,22 +48,23 @@ export class ContentHome implements OnInit, AfterViewInit {
     this.loadNextPage();
   }
 
+
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-    if (!this.observer) return;
-    const io = new IntersectionObserver(entries => {
+  
+    this.io = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
         !this.loading &&
-        this.hasMore   
-
+        this.hasMore
       ) {
         this.loadNextPage();
       }
     });
-    
-    io.observe(this.observer.nativeElement);
+  
+    this.io.observe(this.observer.nativeElement);
   }
+
 
   loadNextPage() {
     if (this.loading || !this.hasMore) return;

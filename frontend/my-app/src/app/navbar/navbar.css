@@ -17,6 +17,7 @@
   
 }
 
+
 .title p {
   font-size: 25px; 
   font-family: "Merriweather", "Open Sans", serif;
@@ -24,6 +25,14 @@
   font-weight: bolder;
   margin-top: 8px;
   width: 100%;
+}
+
+.accent {
+  color: #0080bb;
+  font-size: 30px; 
+  font-family: "Merriweather", "Open Sans", serif;
+  font-weight: bolder;
+  margin-left: 15px;
 }
 
 
@@ -91,21 +100,8 @@
 }
 
 .btn {
-  border-radius: 15px;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: 0.3s;
-  height: 35px;
-
   background-color: #135777;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-right: 10px;
+  color: #fff;
 }
 
 
@@ -122,6 +118,9 @@
 
 .Creat-Blog {
   background:linear-gradient(90deg,#2b8cff,#6ea8ff);
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
 }
 
 .Creat-Blog:hover {

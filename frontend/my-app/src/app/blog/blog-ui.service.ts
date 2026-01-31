@@ -14,7 +14,7 @@ export class BlogUiService {
     } else {
       this.bigContent.set(false)
     }
-
+    
     this.showBlog.set(true);
   }
 
