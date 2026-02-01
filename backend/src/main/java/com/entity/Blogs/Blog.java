@@ -64,7 +64,7 @@ public class Blog {
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<ComentBlog> comentBlogs = new ArrayList<>();
+    private List<CommentBlog> comentBlogs = new ArrayList<>();
 
 
     public void addMedia(MediaBlog media) {

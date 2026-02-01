@@ -12,7 +12,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComentBlog {
+public class CommentBlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

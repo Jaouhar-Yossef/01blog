@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.entity.Blogs.Blog;
-import com.entity.Blogs.ComentBlog;
+import com.entity.Blogs.CommentBlog;
 import com.entity.Blogs.LikeBlog;
 import com.entity.Blogs.Saved;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,7 +70,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<ComentBlog> comentBlogs = new ArrayList<>();
+    private List<CommentBlog> comentBlogs = new ArrayList<>();
 
 
 

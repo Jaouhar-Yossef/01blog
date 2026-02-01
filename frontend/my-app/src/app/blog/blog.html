@@ -1,116 +1,247 @@
 <div class="blog" [class.showBlog]="ui.showBlog()">
 
-             <div class="blogheader">
-           
-               <div class="blogheader_left">
-                 <img class="imguser" src="./../../assets/book1.jpg" alt="">
-                 <div class="blogheader_left_right">
-           
-                   <p class="creat-by"> {{ ui.selectedBlog()?.createdByUsername }} </p>
-                   <p class="creat-at">18h</p>
-           
-                 </div>
-               </div>
-           
-               <div class="blogheader_right">
-                 <img class="imgskip" (click)="ui.closeBlog()" src="./../../assets/images/close.svg" alt="">
-               </div>
-           
-             </div>
+  <div class="blogheader">
+
+    <div class="blogheader_left">
+      <img class="imguser" src="./../../assets/book1.jpg" alt="">
+      <div class="blogheader_left_right">
+
+        <p class="creat-by"> {{ ui.selectedBlog()?.createdByUsername }} </p>
+        <p class="creat-at">18h</p>
+
+      </div>
+    </div>
+
+    <div class="blogheader_right">
+      <img class="imgskip" (click)="ui.closeBlog()" src="./../../assets/images/close.svg" alt="">
+    </div>
+
+  </div>
 
   <div class="card">
-                    <div class="titleAndDiscription">
-                      <p class="title"> {{ ui.selectedBlog()?.title }} </p>
-                      <div class="divcontent">
-                        <p class="content" *ngIf="!AllTheDiscription"> {{ ui.selectedBlog()?.content | slice:0:30 }} </p>
-                        <p class="content" *ngIf="AllTheDiscription" (click)="showLess()"> {{ ui.selectedBlog()?.content }} <span
-                            class="read-less" *ngIf="ui.bigContent()">...less</span> </p>
-                        <span class="read-more" [class.bigcontent]="ui.bigContent()" *ngIf="!AllTheDiscription"
-                          (click)="showAllTheDiscription()">
-                          ...Read more
-                        </span>
-                
-                      </div>
-                    </div>
-                
-                    <div class="theMedia">
-                      <img class="realimg" src="../../assets/bmwg.jpg" alt="">
-                      <img class="iconnext" src="../../assets/next2.png" alt="">
-                    </div>
-                
-                      <div class="blogbotoom">
-                  
-                            <button matFab extended>
-                              <mat-icon>favorite</mat-icon>
-                              <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span>
-                            </button>
-                  
-                            <button matFab extended>
-                              <mat-icon>comment</mat-icon>
-                              <span> <span> Comment </span> <span>2</span></span>
-                            </button>
-                      
-                            <button *ngIf="!ui.selectedBlog()?.saved" matFab extended>
-                              <mat-icon>bookmarks</mat-icon>
-                              <span> <span> Save</span> </span>
-                            </button>
-                      
-                            <button *ngIf="ui.selectedBlog()?.saved" (click)="showComment()"   matFab extended>
-                              <mat-icon>bookmark_added</mat-icon>
-                              <span> <span> Saved </span> </span>
-                            </button>
-                      </div>
-                
-                
-                      <div class="divComment" *ngIf="!showTheComment" >
-                        <div class="commenttitle">
-                          <mat-icon>comment</mat-icon>
-                          <span>The Comment</span>
-                        </div>
-                        <div class="commentuser" >
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
-                        <div class="commentuser">
-                          <p>test comment</p>
-                          <span>iconhere</span>
-                        </div>
+    <div class="titleAndDiscription">
+      <p class="title"> {{ ui.selectedBlog()?.title }} </p>
+      
+      <div class="divcontent">
+        <p class="content">
+          {{
+            AllTheDiscription
+              ? ui.selectedBlog()?.content
+              : (ui.selectedBlog()?.content | slice:0:30)
+          }}
+          <span *ngIf="!AllTheDiscription && ui.selectedBlog()?.content?.length > 30">
+            ...
+          </span>
+        </p>
+      
+        <span
+            class="read-more"
+             *ngIf="ui.selectedBlog()?.content?.length > 30"
+             (click)="toggleDescription()"
+           >
+          {{ AllTheDiscription ? 'Read less' : 'Read more' }}
+        </span>
+      </div>
 
 
-                           <form class="example-form">
-                             <mat-form-field class="example-full-width" >
-                               <mat-label> Comment as {{ ui.selectedBlog()?.createdByUsername }}</mat-label>
-                               <input type="text" class=".test" matInput>
-                             </mat-form-field>
-                           </form>
+    <div class="theMedia">
+      <img class="realimg" src="../../assets/bmwg.jpg" alt="">
+      <img class="iconnext" src="../../assets/next2.png" alt="">
+    </div>
 
-                      </div>
+    <div class="blogbotoom">
+
+      <button matFab extended>
+        <mat-icon>favorite</mat-icon>
+        <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span>
+      </button>
+
+      <button matFab extended (click)="showComment()">
+        <mat-icon>comment</mat-icon>
+        <span> <span> Comment </span> <span>2</span></span>
+      </button>
+
+      <button *ngIf="!ui.selectedBlog()?.saved" matFab extended>
+        <mat-icon>bookmarks</mat-icon>
+        <span> <span> Save</span> </span>
+      </button>
+
+      <button *ngIf="ui.selectedBlog()?.saved"  matFab extended>
+        <mat-icon>bookmark_added</mat-icon>
+        <span> <span> Saved </span> </span>
+      </button>
+
+    </div>
+
+
+    <div class="divComment" *ngIf="showTheComment">
+
+      <div class="commenttitle">
+        <mat-icon>comment</mat-icon>
+        <span>The Comment</span>
+      </div>
+
+
+
+     <div class="comments-list">
+      
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <!-- <span> <span> Like </span> <span> {{ ui.selectedBlog()?.numbLiked }} </span></span> -->
+
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+      <div class="commentuser">
+        <img src="./../../assets/bmwg.jpg" alt="">
+        <span>
+        </span>
+        <div class="comment-fieldd">
+          zmksdvknzmklsdvknzmklsdvkn
+        </div>
+      </div>
+
+
+
+
+      <div class="commentuserbbottom">
+        <mat-icon>comments_disabled</mat-icon>
+        <span>The last comment</span>
+      </div>
+
+     </div>
+
+
+
+
+      <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
+        <div class="form-group">
+          <input type="text" class="inputComment" formControlName="title" placeholder="Write Comment zise(200) (:"
+            maxlength="300" />
+          <span><mat-icon>comment</mat-icon></span>
+        </div>
+        <button type="submit" hidden></button>
+      </form>
+
+
+    </div>
+
+
+
 
 
 
   </div>
-
-
-  <div class="blur-overlay" [class.show]="ui.showBlog()"></div>
-
-</div>

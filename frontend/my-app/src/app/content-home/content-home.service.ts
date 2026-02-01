@@ -28,4 +28,11 @@ export class ContentHomeService {
     return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);
   }
     
+
+
+  creatComment(formData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/creat-comment`, formData);
+  }
+    
+
 }

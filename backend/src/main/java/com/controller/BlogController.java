@@ -2,9 +2,12 @@ package com.controller;
 
 import com.dto.BlogRequest;
 import com.dto.BlogResponseDTO;
+import com.dto.CommentRequestDTO;
+import com.dto.CommentResponseDTO;
 import com.dto.LikeOrSaveBlogRequest;
 import com.entity.UserDetailsImpl;
 import com.service.Blogs.BlogService;
+import com.service.Blogs.CommentBlogService;
 import com.service.Blogs.LikeBlogService;
 import com.service.Blogs.SavedService;
 import java.util.List;
@@ -29,14 +32,46 @@ public class BlogController {
     private final BlogService blogService;
     private final SavedService savedService;
     private final LikeBlogService likeBlogService;
+    private final CommentBlogService commentBlogService;
     
 
-    public BlogController(BlogService blogService , LikeBlogService likeBlogService,SavedService savedService) {
+    public BlogController(BlogService blogService  ,CommentBlogService commentBlogService , LikeBlogService likeBlogService,SavedService savedService) {
         this.blogService = blogService;
         this.likeBlogService = likeBlogService;
         this.savedService = savedService;
+        this.commentBlogService = commentBlogService;
     }
 
+
+    @PostMapping("/creat-comment")
+    public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request, 
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+            ) {
+       
+        try {        
+            UUID user_id = userDetails.getUser().getId();
+            CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
+            return ResponseEntity.status(HttpStatus. CREATED).body(new Response<CommentResponseDTO>(true, "Comment created sucesfuly!",response));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        } 
+    }
+
+
+
+    // @PostMapping("/the_comment")
+    // public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request, 
+    //         @AuthenticationPrincipal UserDetailsImpl userDetails
+    //         ) {
+       
+    //     try {        
+    //         UUID user_id = userDetails.getUser().getId();
+    //         CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
+    //         return ResponseEntity.status(HttpStatus. CREATED).body(new Response<CommentResponseDTO>(false, "Comment created sucesfuly!",response));
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+    //     } 
+    // }
 
     @PostMapping("/like_blog")
     public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request, 
