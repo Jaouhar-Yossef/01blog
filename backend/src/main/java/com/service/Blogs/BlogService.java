@@ -72,7 +72,7 @@ public class BlogService {
     }
 
 
-    public List<Blog> getBlogsPaginated(int page, int size) {
+    private List<Blog> getBlogsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return blogRepository.findAll(pageable).getContent();
     }
@@ -127,5 +127,39 @@ public class BlogService {
             .toList();
 
         return blogDTOs;    
+    }
+
+    
+    public BlogResponseDTO getOneBlog(UUID user_id , UUID id_blog)   {
+        Blog blog = blogRepository.findById(id_blog)
+            .orElseThrow(() -> new RuntimeException("Blog not found"));
+
+        userRepository.findById(user_id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean saved = savedService.isBlogSaved(user_id, blog.getId());
+        boolean liked = this.likeBlogService.isBlogLiked(user_id, blog.getId());
+
+        Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+
+        List<MediaDTO> mediaList = blog.getMedias().stream()
+            .map(m -> new MediaDTO(
+                    m.getUrl(),
+                    m.getFileName(),
+                    m.getType()
+            ))
+            .toList();
+
+        return new BlogResponseDTO(
+            blog.getId(),
+            blog.getTitle(),
+            blog.getStatus(),
+            blog.getContent(),
+            saved,
+            liked,
+            numbLike,
+            blog.getCreatedBy().getUsername(),
+            mediaList
+        );
     }
 }

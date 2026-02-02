@@ -2,7 +2,7 @@
 
   <div class="post-content">
     <div class="post-content-top">
-      <h2>{{ blog.title }}</h2>
+      <h2 class="titleBlog">{{ blog.title }}</h2>
       <p class="discription">
         {{ blog.content | slice:0:10 }}
         <a class="read-more" (click)="showTheBlog(blog)" >...Read more</a>

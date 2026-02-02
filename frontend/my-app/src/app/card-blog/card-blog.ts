@@ -2,8 +2,9 @@ import { Component, Input, OnChanges, SimpleChanges, OnDestroy, NgZone, inject }
 import { CommonModule } from '@angular/common';
 import { CardBlogService } from './card-blog.service';
 import { ErrorService } from '../error/error.service';
-import { BlogUiService } from '../blog/blog-ui.service';
+
 import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-blog',
@@ -22,18 +23,18 @@ export class CardBlog implements OnChanges, OnDestroy {
 
   showAllOfTheBlog = false;
 
-  private ui = inject(BlogUiService)
+
   private uiui = inject(CreatBlogUiService)
   
   private blogService = inject(CardBlogService);
-  constructor(private ngZone: NgZone , private errorService: ErrorService) {}
+  constructor(private ngZone: NgZone,private router: Router , private errorService: ErrorService) {}
+
 
   showTheBlog(blog : any) {
     if (this.uiui.showCreatBlogHere()) {
       this.uiui.closeCreatBlog();
     }
-    this.ui.openBlog(blog);
-    
+    this.router.navigate(['/home/blog', blog.id]);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -103,7 +104,6 @@ export class CardBlog implements OnChanges, OnDestroy {
       ? this.blogService.unliked_Blogs(this.blog.id)
       : this.blogService.liked_Blogs(this.blog.id);
 
-      console.log("hhhh ==>  " , this.blog.id)
         
     request$.subscribe({
       next: () => {

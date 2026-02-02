@@ -1,7 +1,11 @@
 package com.service.Blogs;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dto.CommentRequestDTO;
@@ -51,4 +55,38 @@ public class CommentBlogService {
         return data;
     }
 
+    private List<CommentBlog> getCommentPaginated(int page , int size , UUID id_blog) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return commentRepository.findByBlogId(id_blog ,  pageable);
+    }
+
+    public List<CommentResponseDTO>  getTheComment(UUID user_id , int page , int size , UUID  id_blog) throws Exception {
+        
+        userRepository.findById(user_id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+        blogRepository.findById(id_blog)
+            .orElseThrow(() -> new RuntimeException("Blog not found"));
+
+        List<CommentBlog> Comments = this.getCommentPaginated(page, size , id_blog);
+
+        List<CommentResponseDTO> CommentsDTO = Comments.stream()
+           .map(comment ->{
+
+            return new CommentResponseDTO(
+                comment.getId(),
+                comment.getComentblog(),
+                comment.getUser().getImageUrl(),
+                comment.getUser().getUsername()
+            );
+           })
+            .toList();
+
+
+           return CommentsDTO;
+
+    }
+
 }
+

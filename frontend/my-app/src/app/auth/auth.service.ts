@@ -99,7 +99,7 @@ export class AuthService {
           return true;
         }),
         catchError(() => {
-          this.logout();
+          this.loggedIn.set(false);
           return of(false);
         })
       );

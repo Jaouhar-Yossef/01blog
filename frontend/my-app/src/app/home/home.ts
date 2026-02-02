@@ -1,12 +1,14 @@
-import { Component, Inject, Input, PLATFORM_ID, effect } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Navbar } from '../navbar/navbar'; 
-import { ContentHome } from '../content-home/content-home';
+
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,  
-  imports: [CommonModule, Navbar , ContentHome],
+  imports: [CommonModule, Navbar  , RouterModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })

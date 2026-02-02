@@ -1,0 +1,45 @@
+<div class="post-listdiv">
+
+    <div class="post-header"></div>
+
+    <ng-container *ngIf="blogs$ | async as blogs">
+     <div *ngIf="blogs.length > 0; else noContent" class="post-list">
+    
+        <app-card-blog
+    
+         *ngFor="let blog of blogs; trackBy: trackById"
+    
+         [blog]="blog">
+    
+        </app-card-blog>
+    
+      </div>
+    
+    </ng-container>
+    
+    
+    
+    <div #observer style="height: 1px;"></div>
+    
+    
+    
+    
+    
+    <ng-template #noContent>
+    
+      <div class="noContent">
+    
+        <div>
+    
+          <p class="noContent-text">Nothing here yet 👀</p>
+    
+          <span class="noContent-subtext">Create a post to get started</span>
+    
+        </div>
+    
+        <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+    
+      </div>
+    
+    </ng-template>
+</div>

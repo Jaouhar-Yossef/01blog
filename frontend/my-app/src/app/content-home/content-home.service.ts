@@ -5,6 +5,19 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 
+interface Comment {
+  id: number;
+  comment: string;
+  urlString: string;
+  creatorUsername: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  anyData: Comment[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class ContentHomeService {
   private apiUrl = 'http://localhost:8080/blogs';
@@ -24,6 +37,11 @@ export class ContentHomeService {
   }
 
 
+  getBlogById(blogId : string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/blog/${blogId}`);
+  }
+
+
   creatBlogs(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);
   }
@@ -33,6 +51,8 @@ export class ContentHomeService {
   creatComment(formData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-comment`, formData);
   }
-    
 
+  getComment(id_blog: string, page: number, size: number) {
+    return this.http.get<ApiResponse>(`${this.apiUrl}/comments/${id_blog}?page=${page}&size=${size}`);
+  }
 }

@@ -1,17 +1,25 @@
 import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Injectable({ providedIn: 'root' })
 export class BlogUiService {
-  showBlog = signal(false);
+
   selectedBlog = signal<any>(null);
+
+
+  constructor(private router: Router) {}
+
 
   openBlog(blog: any) {
     this.selectedBlog.set(blog);
-    this.showBlog.set(true);
+    console.log("==> " , blog )
   }
 
   closeBlog() {
-    this.showBlog.set(false);
+
     this.selectedBlog.set(null);
+    this.router.navigate(['/home/']);
   }
+
 }

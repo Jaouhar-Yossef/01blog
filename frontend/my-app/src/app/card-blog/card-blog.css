@@ -2,12 +2,20 @@
 .post-card {
   border-radius: 10px;
   background-color: rgb(0, 0, 0);
+  background-color: rgb(0, 28, 43);
+  background-color: rgb(1, 24, 36);
+
   width: 100%;
   height: 25%;
+
   margin-top: 20px;
   display: flex;
   justify-content: center;
   cursor: pointer;
+}
+
+.titleBlog {
+  font-size: 20px;
 }
 
 .post-content {
@@ -18,9 +26,8 @@
 .post-content-top {
   margin-top: 20px;
   height: 50%;
-
   gap: 10%;
-   display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   align-content: end;
@@ -52,7 +59,8 @@
 }
 .post-content-bottom button {
   height: 30%;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(1, 24, 36);
+
   border: none;
   color: white;
   font-size: 16px;
@@ -127,7 +135,13 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: black;
+  /* background-color: black;
+
+  background-color: rgb(0, 36, 56);
+
+  background-color: rgb(0, 28, 43); */
+
+  background-color: rgb(1, 24, 36);
   
 }
 

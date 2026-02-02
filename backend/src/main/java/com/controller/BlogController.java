@@ -59,20 +59,6 @@ public class BlogController {
 
 
 
-    // @PostMapping("/the_comment")
-    // public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request, 
-    //         @AuthenticationPrincipal UserDetailsImpl userDetails
-    //         ) {
-       
-    //     try {        
-    //         UUID user_id = userDetails.getUser().getId();
-    //         CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
-    //         return ResponseEntity.status(HttpStatus. CREATED).body(new Response<CommentResponseDTO>(false, "Comment created sucesfuly!",response));
-    //     } catch (Exception e) {
-    //         return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
-    //     } 
-    // }
-
     @PostMapping("/like_blog")
     public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request, 
             @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -126,6 +112,42 @@ public class BlogController {
         UUID userId = userDetails.getUser().getId();
         List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
         return ResponseEntity.ok(blogDTOs);
+    }
+
+    @GetMapping("/blog/{id_blog}")
+    public ResponseEntity<?> getBlog(@PathVariable UUID id_blog,
+            @AuthenticationPrincipal UserDetailsImpl userDetails 
+            ) {
+
+        try {
+            UUID user_id = userDetails.getUser().getId();
+            BlogResponseDTO blogDTOs = blogService.getOneBlog(user_id , id_blog);
+            return ResponseEntity.ok(blogDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Blog not found or error occurred");
+        }
+    }
+
+
+    @GetMapping("/comments/{id_blog}")
+    public ResponseEntity<Response<?>> getcomments(@PathVariable UUID id_blog,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
+            ) {
+            UUID user_id = userDetails.getUser().getId();
+        
+            
+            try {
+                List<CommentResponseDTO> CommentDTO = this.commentBlogService.getTheComment(user_id,  page , size , id_blog);
+                
+                return ResponseEntity.ok(new Response<>(true, "" , CommentDTO));
+
+            } catch (Exception e) {
+                
+                return ResponseEntity.badRequest().body(new Response<>(false,  e.getMessage()));
+            }
+            
+
     }
 
 

@@ -1,28 +1,19 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  inject,
-  PLATFORM_ID,
-} from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
-import { ContentHomeService } from './content-home.service';
-import { CardBlog } from '../card-blog/card-blog';
-import { Blog } from '../blog/blog';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+
 import { ErrorService } from '../error/error.service';
+import { BehaviorSubject } from 'rxjs';
+import { BlogUiService } from '../blog/blog-ui.service';
+import { ContentHomeService } from '../content-home/content-home.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CardBlog } from '../card-blog/card-blog';
 
 @Component({
-  selector: 'app-content-home',
-  standalone: true,
-  imports: [CommonModule, CardBlog , Blog],
-  templateUrl: './content-home.html',
-  styleUrls: ['./content-home.css'],
+  selector: 'app-blog-list-component',
+  imports: [CommonModule,CardBlog],
+  templateUrl: './blog-list-component.html',
+  styleUrl: './blog-list-component.css',
 })
-
-export class ContentHome implements OnInit, AfterViewInit {
+export class BlogListComponent implements OnInit, AfterViewInit{
   constructor(
     private errorService: ErrorService,
   ) {}
@@ -34,15 +25,13 @@ export class ContentHome implements OnInit, AfterViewInit {
   size = 10;
   loading = false;
   hasMore = true;
+  JustOneBlog = false;
 
-
+  public ui = inject(BlogUiService)
   private io!: IntersectionObserver;
-
   @ViewChild('observer') observer!: ElementRef;
-
   private postService = inject(ContentHomeService);
-  
-  private platformId = inject(PLATFORM_ID); 
+  private platformId = inject(PLATFORM_ID);
 
   ngOnInit() {
     this.loadNextPage();
@@ -51,7 +40,7 @@ export class ContentHome implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-  
+
     this.io = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
@@ -61,16 +50,12 @@ export class ContentHome implements OnInit, AfterViewInit {
         this.loadNextPage();
       }
     });
-  
     this.io.observe(this.observer.nativeElement);
   }
 
-
   loadNextPage() {
     if (this.loading || !this.hasMore) return;
-
     this.loading = true;
-
     this.postService.getBlogs(this.page, this.size).subscribe({
       next: (data) => {
         this.blogsSubject.next([

@@ -3,7 +3,7 @@ import { Setting } from '../setting/setting';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CreatBlog } from '../creat-blog/creat-blog';
-import { BlogUiService } from '../blog/blog-ui.service';
+
 import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,7 +27,7 @@ export class Navbar {
     return this.router.url === '/';
   }
 
-  private ui = inject(BlogUiService)
+
   private uiui = inject(CreatBlogUiService)
   
   creatBlog() {
@@ -35,9 +35,7 @@ export class Navbar {
       this.uiui.closeCreatBlog()
       return
     }
-    if (this.ui.showBlog()) {
-      this.ui.closeBlog()
-    }
+   
     this.uiui.openCreatBlog()
   }
 }
