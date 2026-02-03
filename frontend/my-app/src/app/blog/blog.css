@@ -10,9 +10,10 @@
     margin-top: 30px;
 
     margin-bottom: 100px;
-}
 
-.blog {
+  }
+  
+  .blog {
     background-color: rgb(1, 1, 44);
    
 
@@ -65,8 +66,7 @@
     justify-content: space-between;
     align-content: center;
 
-    
-    background-color: red;
+    padding: 10px;
     background-color: rgb(1, 1, 44);
 
 
@@ -103,7 +103,7 @@
     font-weight: 700;
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
-
+    margin: 0%;
     text-align: start;
     color: gray;
 }
@@ -138,25 +138,24 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
+    font-size: 30px;
 }
 
 .imgskip:hover {
     width: 43px;
     height: 43px;
-    cursor: pointer;
-
 }
 
 .imguser {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 20px;
     cursor: pointer;
 }
 
 .imguser:hover {
-    width: 43px;
-    height: 43px;
+    width: 47px;
+    height: 47px;
 }
 
 
@@ -209,9 +208,6 @@
     height: auto;
     overflow-x: hidden;
     overflow-y: hidden;
-    display: flex;
-
-    flex-direction: column;
     text-align: start;
 }
 
@@ -221,13 +217,8 @@
   font-weight: bold;
   font-size: 15px;
   width: 100px;
-  white-space: nowrap;
    
-  align-items: flex-end;
   cursor: pointer;
-
-   /* position: relative; */
-  /* z-index: 5; */
 }
 
 .read-more.bigcontent {
@@ -251,19 +242,20 @@
 
 
 .theMedia {
-  width: 80%;
+  width: 90%;
   height: 50vh;         
   margin: 0 auto;        
   overflow: hidden;      
   border-radius: 10px;   
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
+
+  /* background-color: red; */
 }
 
 .realimg {
-  width: 90%;
+  width: 80%;
   height:95%;
   border-radius: 10px;
   display: block;       
@@ -272,40 +264,59 @@
 }
 
 .realimg:hover {
-  transform: scale(1.00);
+  width: 81%;
+  height:96%;
 }
 
-.iconnext {
-    width: 60px;
-    height: 60px;
-    margin-right: 10px;
+.arrow {
+  padding: 10px;
+
+
+  border-radius: 20px;
+
+  font-size: 20px;
+  color: aliceblue;
+  font-weight: 500;
 }
 
 
-.iconnext:hover {
-    width: 65px;
-    height: 65px;
+.big-mat-icon {
+  font-size: 50px;
+  width: 50px;
+  height: 50px;
+  color: aliceblue;
+
+  border-radius: 15px;
 }
+
+
+.big-mat-icon:hover {
+  background-color: #042c38;
+}
+
+
+
 
 
 
 
 .blogbotoom {
-    width: 100%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
-
-
     height: auto;
-
+    
+    margin-top: 15px;
+    border-radius: 25px;
+    border: 2px solid  rgba(0,0,0,0.2);
 }
 
 
 
 .blogbotoom button {
-    width: 33%;
+    width: 43%;
     padding: 20px;
     margin: auto;
     background-color: transparent; 
@@ -313,6 +324,7 @@
     height: auto;
     font-size: 17px;
     font-weight: 600;
+    box-shadow: none;
 }
 
 
@@ -323,6 +335,7 @@
 
     padding-right: 10px;
 }
+
 .blogbotoom button span span {
     color: rgb(182, 182, 182);
 }
@@ -532,3 +545,13 @@
   font-weight: 500;
   margin-bottom: 20px;
 }
+
+
+
+  .observer {
+    height: 20px;
+    width: 100%;
+    background-color: red;
+
+
+  }

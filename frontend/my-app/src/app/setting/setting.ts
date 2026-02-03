@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AuthService } from './../auth/auth.service'
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
 import { ErrorService } from '../error/error.service';
@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
 
 export class Setting {
   show: boolean = false;
-
+  platformId = inject(PLATFORM_ID);
+  
   constructor(
     private authService: AuthService,
     private confirmService: ServiceConfirmation,
@@ -26,6 +27,24 @@ export class Setting {
 
 
 
+  home() {
+    this.router.navigate(['/home']);
+  }
+
+
+  profile() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      this.router.navigate([`/home/profile` , user.username]);
+    }
+  }
+
+  savedBlog() {
+    console.log("hhhhhhh")
+    this.router.navigate([`/home/blogsSaved`]);
+  }
   logout() {
     this.confirmService.open(
       'Are you sure you want to logout?',

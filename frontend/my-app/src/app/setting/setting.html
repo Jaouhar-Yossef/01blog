@@ -5,15 +5,15 @@
   (mouseleave)="show = false"
   >
     <div class="setting-item">
-      <button class="btnnor">
+      <button class="btnnor" (click)="home()">
         <img class="homeset" src="./../../assets/home.svg" alt=""> <span> Home</span>
       </button>
   
-      <button class="btnnor">
+      <button class="btnnor" (click)="profile()">
         <img class="homeset" src="./../../assets/images/user.svg" alt=""> Profile
       </button>
   
-      <button class="btnnor">
+      <button class="btnnor" (click)="savedBlog()">
         <img class="homeset" src="./../../assets/saved.webp" alt=""> Saved
       </button>
   

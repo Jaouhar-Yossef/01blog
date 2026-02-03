@@ -1,18 +1,32 @@
 <div class="blogdiv">
 
   <ng-container *ngIf="blog$ | async as blog">
+    
     <div class="blog">
 
          <div class="blogheader">
           <div class="blogheader_left">
-            <img class="imguser" src="./../../assets/book1.jpg" alt="">
+
+             <img class="imguser"
+                    *ngIf="blog.urlString?.length > 0; else nophotouser"
+                    [src]="blog?.urlString"
+                    alt=""
+                  >
+              
+                  <ng-template #nophotouser>
+                    <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                  </ng-template>
+              
+
             <div class="blogheader_left_right">
               <p class="creat-by"> {{ blog?.createdByUsername }} </p>
               <p class="creat-at">18h</p>
             </div>
           </div>
+
           <div class="blogheader_right">
-            <img class="imgskip" src="./../../assets/images/close.svg" alt="">
+            <mat-icon class="imgskip">report</mat-icon>
+
           </div>
         </div>
 
@@ -27,21 +41,21 @@
                   ? blog?.content
                   : (blog?.content | slice:0:30)
                   }}
-                  <span *ngIf="!AllTheDiscription && blog?.content?.length > 30">
-                    ...
+                  
+                  <span class="read-more" (click)="toggleDescription()" *ngIf="blog?.content?.length > 30">
+                    {{ AllTheDiscription ? '... Read less' : '... Read more' }}
                   </span>
                 </p>
-      
-                <span class="read-more" (click)="toggleDescription()" *ngIf="blog?.content?.length > 30">
-                  {{ AllTheDiscription ? 'Read less' : 'Read more' }}
-                </span>
               </div>
       
-      
+              
               <div class="theMedia">
+                
+                <mat-icon class="big-mat-icon" >arrow_left</mat-icon>
                 <img class="realimg" src="../../assets/bmwg.jpg" alt="">
-                <img class="iconnext" src="../../assets/next2.png" alt="">
-              </div>
+                <mat-icon class="big-mat-icon" >arrow_right</mat-icon>
+
+             </div>
       
               <div class="blogbotoom">
       
@@ -74,32 +88,46 @@
           </div>
 
           <div class="comments-list">
-            <ng-container *ngIf="comments$ | async as comments">
-              <div class="commentuser" *ngFor="let comment of comments; trackBy: trackById">
-                <img [src]="comment.urlString" alt="">
-                <div class="comment-fieldd">
-                  {{ comment.comment }}
+
+              <ng-container *ngIf="comments$ | async as comments">
+              
+                <div class="commentuser"
+                     *ngFor="let comment of comments; trackBy: trackById">
+              
+                  <img
+                    *ngIf="comment.urlString?.length > 0; else nophoto"
+                    [src]="comment.urlString"
+                    alt=""
+                  >
+              
+                  <ng-template #nophoto>
+                    <img src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                  </ng-template>
+              
+                  <div class="comment-fieldd">
+                    {{ comment.comment }}
+                  </div>
                 </div>
-              </div>
-
-              <div *ngIf="comments.length === 0" class="noContent">
-                <p class="noContent-text">Nothing here yet 👀</p>
-                <span class="noContent-subtext">Create a Comment to get started</span>
-                <mat-icon class="iconnoaomment">comments_disabled</mat-icon>
-              </div> 
-
-              <div *ngIf="comments.length > 0" #observer class="commentuserbbottom">
-                <mat-icon>comments_disabled</mat-icon>
-                <span>The last comment</span>
-              </div>
-
-            </ng-container>
-          </div>
+              
+                <div *ngIf="comments.length === 0" class="noContent">
+                  <p class="noContent-text">Nothing here yet 👀</p>
+                  <span class="noContent-subtext">Create a Comment to get started</span>
+                  <mat-icon class="iconnoaomment">comments_disabled</mat-icon>
+                </div>
+              
+                <div *ngIf="comments.length > 0"  class="commentuserbbottom">
+                  <mat-icon>comments_disabled</mat-icon>
+                  <span>The last comment</span>
+                </div>
+              </ng-container>
+              
+              <div #observer class="observer"> </div>
+            </div>
 
           <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
             <mat-form-field appearance="fill" class="form-group">
-              <mat-label>Write a comment</mat-label>
-              <input matInput type="text" placeholder="Write Comment zise(200)" formControlName="title" maxlength="300"
+              <mat-label>Write a Comment </mat-label>
+              <input matInput type="text" placeholder="Write Comment" formControlName="title" maxlength="300"
                 class="inputComment">
               <button mat-icon-button matSuffix type="submit">
                 <mat-icon>comment</mat-icon>

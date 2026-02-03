@@ -9,10 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-page-welcome',
   standalone: true,
   imports: [Navbar , MatButtonModule , RouterModule , MatIconModule],
-
   templateUrl: './page-welcome.html',
   styleUrl: './page-welcome.css',
 })
-export class PageWelcome {
-
-}
+export class PageWelcome {}

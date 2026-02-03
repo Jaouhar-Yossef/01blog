@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home';
 import { AuthComponent } from './auth/auth';
 import { PageWelcome } from './page-welcome/page-welcome';
+import { Profile } from './profile/profile';
 import { authGuard } from './auth/auth.guard';
 import { loggedInGuard } from './auth/loggedInGuard';
 
@@ -18,8 +19,10 @@ export const routes: Routes = [
       canActivate: [authGuard],
       children: [
      
-            { path: '', component: BlogListComponent },
-            { path: 'blog/:id', component: Blog }
+            { path: '', component: BlogListComponent , canActivate: [authGuard] },
+            { path: 'blog/:id', component: Blog , canActivate: [authGuard]},
+            { path: 'blogsSaved', component: BlogListComponent , canActivate: [authGuard] },
+            { path: 'profile/:name', component: Profile , canActivate: [authGuard] }
       ]
     },
 

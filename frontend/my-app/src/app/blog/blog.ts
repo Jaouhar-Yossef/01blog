@@ -38,7 +38,6 @@ interface ApiResponse {
 
 @Component({
   selector: 'app-blog',
-  standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,
@@ -69,9 +68,6 @@ export class Blog {
   loading = false;
   hasMore = true;
 
-    private isBrowser: boolean;
-
-  
   commentForm: FormGroup;
 
   
@@ -80,15 +76,14 @@ export class Blog {
       this.commentForm = this.fb.group({
         title: ['', [Validators.required, Validators.maxLength(300)]]
       });
-      this.isBrowser = isPlatformBrowser(this.platformId);
     }
-    
 
+
+  private io!: IntersectionObserver;
+
+  @ViewChild('observer') observer!: ElementRef;
     ngOnInit() {
-      if (!this.isBrowser) return;
-  
       const id = this.route.snapshot.paramMap.get('id');
-  
       if (!id) {
         this.errorService.showMessage('Blog ID not found', 'error');
         this.router.navigate(['/home']);
@@ -104,10 +99,11 @@ export class Blog {
         })
       );
 
-      this.loadNextPage()
-
+    if (this.loading) {
+      return
     }
-
+      this.loadNextPage()
+    }
 
 
   toggleDescription() {
@@ -115,48 +111,47 @@ export class Blog {
   }
 
 
-
-
-
-  private io!: IntersectionObserver;
-
-  @ViewChild('observer') observer!: ElementRef;
-
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-     if (!this.observer) return;
-    this.io = new IntersectionObserver(entries => {
+        this.io = new IntersectionObserver(entries => {
       if (
-        entries[0].isIntersecting && !this.loading && this.hasMore
-      ) { this.loadNextPage();}
+        entries[0].isIntersecting &&
+        !this.loading &&
+        this.hasMore
+      ) {
+        this.loadNextPage();
+      }
     });
-  
     this.io.observe(this.observer.nativeElement);
   }
   
+  
+  
 
   loadNextPage() {
-
-    this.contentHomeService.getComment( this.id_blog ,this.page , this.size).subscribe({
-      next: (res : ApiResponse) => {
-        
-        this.CommentSubject.next([
-          ...this.CommentSubject.value,
-          ...res.anyData
-        ]);
-
-        if (res.anyData.length < this.size) {
-          this.hasMore = false;
-        } else {
-          this.page++;
-        }
-
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    })
+      if (this.loading || !this.hasMore) return;
+        this.loading = true;
+        this.contentHomeService.getComment(this.id_blog, this.page, this.size)
+        .subscribe({
+          next: (res: ApiResponse) => {
+            this.CommentSubject.next([
+              ...this.CommentSubject.value,
+              ...res.anyData
+            ]);
+    
+            if (res.anyData.length < this.size) {
+              this.hasMore = false;
+            } else {
+              this.page++;
+            }
+    
+            this.loading = false;
+          },
+          error: () => this.loading = false
+        });
 
   }
+
 
 
   submitComment() {
@@ -165,13 +160,20 @@ export class Blog {
         comment: this.commentForm.value.title,
         id_blog: this.id_blog
       };
+
       this.contentHomeService.creatComment(payload).subscribe({
           next: res => {
             if (!res.success) {
               this.errorService.showMessage('Error creating comment', 'error');
               return;
             }
-            console.log("==> " , res )
+
+            const newComment = res.anyData;
+       
+            this.CommentSubject.next([
+              newComment,
+              ...this.CommentSubject.value
+            ]);
             this.errorService.showMessage('comment Created (:', 'success');
           },
           error: err => {

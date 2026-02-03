@@ -6,6 +6,7 @@ import { BlogUiService } from '../blog/blog-ui.service';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CardBlog } from '../card-blog/card-blog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-list-component',
@@ -14,8 +15,10 @@ import { CardBlog } from '../card-blog/card-blog';
   styleUrl: './blog-list-component.css',
 })
 export class BlogListComponent implements OnInit, AfterViewInit{
+  
   constructor(
     private errorService: ErrorService,
+    private router: Router
   ) {}
 
   private blogsSubject = new BehaviorSubject<any[]>([]);
@@ -34,6 +37,13 @@ export class BlogListComponent implements OnInit, AfterViewInit{
   private platformId = inject(PLATFORM_ID);
 
   ngOnInit() {
+    if (this.router.url === '/home') {
+      
+    }
+
+    if (this.router.url === '/home/blogsSaved') {
+      
+    }
     this.loadNextPage();
   }
 

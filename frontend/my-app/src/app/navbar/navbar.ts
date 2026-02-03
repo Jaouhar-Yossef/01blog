@@ -21,7 +21,7 @@ export class Navbar {
 
   constructor(private router: Router) {}
   isHome(): boolean {
-    return this.router.url === '/home';
+    return this.router.url !== '/';
   }
   isRoot(): boolean {
     return this.router.url === '/';
