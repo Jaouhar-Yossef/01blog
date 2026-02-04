@@ -7,9 +7,9 @@
          <div class="blogheader">
           <div class="blogheader_left">
 
-             <img class="imguser"
-                    *ngIf="blog.urlString?.length > 0; else nophotouser"
-                    [src]="blog?.urlString"
+             <img (click)="goToProfile()" class="imguser"
+                    *ngIf="blog.createdByUrlimg?.length > 0; else nophotouser"
+                    [src]="baseUrl +  blog?.createdByUrlimg"
                     alt=""
                   >
               
@@ -19,7 +19,7 @@
               
 
             <div class="blogheader_left_right">
-              <p class="creat-by"> {{ blog?.createdByUsername }} </p>
+              <p class="creat-by" (click)="goToProfile()"> {{ blog?.createdByUsername }} </p>
               <p class="creat-at">18h</p>
             </div>
           </div>

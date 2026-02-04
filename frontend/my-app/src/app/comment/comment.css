@@ -60,12 +60,13 @@
 
 }
 
-.commentuser img {
+.imgcreatblog {
+    pointer-events: auto;
+    cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 20px;
     margin-right: 15px;
-    cursor: pointer;
 }
 
 
@@ -215,6 +216,7 @@
 
 .creatorcomment {
     text-align: start;
-    color: blue;
+    /* color: blue; */
+    color: gray;
     cursor: pointer;
 }

@@ -147,10 +147,10 @@
 }
 
 .imguser {
+    cursor: pointer;
     width: 45px;
     height: 45px;
     border-radius: 20px;
-    cursor: pointer;
 }
 
 .imguser:hover {

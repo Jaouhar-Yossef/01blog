@@ -20,7 +20,7 @@ export interface CreateCommentDto {
 }
 
 
-interface Comment {
+interface comment {
   id: number;
   comment: string;
   urlString: string;
@@ -30,7 +30,7 @@ interface Comment {
 interface ApiResponse {
   success: boolean;
   message: string;
-  anyData: Comment[];
+  anyData: comment[];
 }
 
 
@@ -49,7 +49,7 @@ interface ApiResponse {
   templateUrl: './comment.html',
   styleUrl: './comment.css',
 })
-export class CommentComponent {
+export class Comment {
   id_blog :  string = "";
 
   private CommentSubject = new BehaviorSubject<any[]>([]);
@@ -126,13 +126,6 @@ export class CommentComponent {
 
   }
 
-
-
-
-
-
-
-
   submitComment() {
     if (this.commentForm.valid) {
       const payload = {
@@ -171,5 +164,12 @@ export class CommentComponent {
   }
 
  
+
+  goToProfile(comment: comment) {
+    if (!comment?.creatorUsername) return;
+  
+    this.router.navigate(['/home/profile', comment.creatorUsername]);
+  }
+
 
 }

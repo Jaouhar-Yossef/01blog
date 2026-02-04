@@ -7,15 +7,17 @@
     <div class="comments-list">
         <ng-container *ngIf="comments$ | async as comments">
             <div class="commentuser" *ngFor="let comment of comments; trackBy: trackById">
-                <img *ngIf="comment.urlString?.length > 0; else nophoto" [src]="comment.urlString" alt="">
-                <ng-template #nophoto>
-                    <img src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                </ng-template>
+
+                <img class="imgcreatblog" (click)="goToProfile(comment)" [src]="comment.urlString && comment.urlString.length > 0 
+                    ? comment.urlString 
+                    : './../../assets/blank-profile-picture-973460_640.webp'" alt="">
+
+
                 <div class="creatbyAndComment">
                     <div class="comment-fieldd">
                         {{ comment.comment }}
                     </div>
-                    <span class="creatorcomment"> {{ comment.creatorUsername }}</span>
+                    <span (click)="goToProfile(comment)" class="creatorcomment"> {{ comment.creatorUsername }}</span>
                 </div>
             </div>
             <div *ngIf="comments.length === 0" class="noContent">

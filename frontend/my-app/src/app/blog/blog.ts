@@ -13,27 +13,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
-import { CommentComponent } from '../comment/comment';
+import { Comment } from '../comment/comment';
 import { CardBlogService } from '../card-blog/card-blog.service';
 
-export interface CreateCommentDto {
-  content: string;
-  blogId: number;
-}
 
-
-interface Comment {
-  id: number;
-  comment: string;
-  urlString: string;
-  creatorUsername: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  anyData: Comment[];
-}
 
 
 
@@ -48,7 +31,7 @@ interface ApiResponse {
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    CommentComponent
+    Comment
   ],
   templateUrl: './blog.html',
   styleUrl: './blog.css',
@@ -64,6 +47,8 @@ export class Blog {
   AllTheDiscription = false;
   loading = false;
   likedblog = false;
+
+  baseUrl = 'http://localhost:8080';
 
   private blogService = inject(CardBlogService);
 
@@ -136,46 +121,49 @@ export class Blog {
   }
 
   toggleSave() {
-  if (this.loading) return;
+    if (this.loading) return;
 
-  const blog = this.blogSubject.value;
-  if (!blog) return;
+    const blog = this.blogSubject.value;
+    if (!blog) return;
 
-  this.loading = true;
+    this.loading = true;
 
-  const previousState = blog.saved;
+    const previousState = blog.saved;
 
-  // ✅ Optimistic update
-  this.blogSubject.next({
-    ...blog,
-    saved: !previousState
-  });
+    this.blogSubject.next({
+      ...blog,
+      saved: !previousState
+    });
 
-  const request$ = previousState
-    ? this.blogService.unsave_Blogs(this.id_blog)
-    : this.blogService.save_Blogs(this.id_blog);
+    const request$ = previousState
+      ? this.blogService.unsave_Blogs(this.id_blog)
+      : this.blogService.save_Blogs(this.id_blog);
 
-  request$.subscribe({
-    next: () => {
-      this.loading = false;
-      this.errorService.showMessage(
-        previousState ? 'Removed from saved' : 'Saved successfully!',
-        'success'
-      );
-    },
+    request$.subscribe({
+      next: () => {
+        this.loading = false;
+        this.errorService.showMessage(
+          previousState ? 'Removed from saved' : 'Saved successfully!',
+          'success'
+        );
+      },
 
-    error: () => {
-      // 🔁 rollback
-      this.blogSubject.next({
-        ...blog,
-        saved: previousState
-      });
+      error: () => {
+        // 🔁 rollback
+        this.blogSubject.next({
+          ...blog,
+          saved: previousState
+        });
 
-      this.loading = false;
-      this.errorService.showMessage('Something went wrong 😢', 'error');
-    }
-  });
-}
+        this.loading = false;
+        this.errorService.showMessage('Something went wrong 😢', 'error');
+      }
+    });
+  }
 
 
+
+
+  goToProfile() {
+  }
 }
