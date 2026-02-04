@@ -1,34 +1,9 @@
-.post-listdiv {
-
-
-
-
-
-    
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  align-items: center;
-  
-  overflow-y: auto;
-  
-   margin-top: 20px;
+/* .post-listdiv {
    width: 100%;
    height: 85vh;
- 
-   scroll-behavior: smooth;
 
-  
-}
-
-.post-list {
-    
-    width: 60%;
-    height: 100%;
-}
-
-
+   background-color: red;
+  }
 
 .post-listdiv::-webkit-scrollbar {
   width: 5px;
@@ -47,8 +22,48 @@
 
 .post-listdiv::-webkit-scrollbar-thumb:hover {
   background: #555;
+} */
+
+
+.post-list {
+  width: 100%;
+  
+  margin-top: 15px;
+  
+  overflow-y: auto;
+  height: 90vh;
+
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+  
 }
 
+
+.post-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.post-list::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+.post-list::-webkit-scrollbar-thumb {
+    background: rgb(1, 94, 122);
+    border-radius: 10px;
+
+    border: 2px solid transparent;
+}
+
+.post-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.blogsforuser {
+
+   width: 50%;
+
+}
 
 .noContent {
   width: 60%;
@@ -78,9 +93,10 @@
 }
 
 
-div#observer {
-  height: 1px;
-  width: 100%;
+.observer {
+    height: 2px;
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 
@@ -99,3 +115,18 @@ div#observer {
     padding-bottom: 3px;
 }
 
+
+.commentuserbbottom {
+    color: gray;
+    margin-top: 15px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+
+.commentuserbbottom span {
+    margin-left: 10px;
+}

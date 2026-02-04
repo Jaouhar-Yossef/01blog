@@ -8,9 +8,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CardBlog } from '../card-blog/card-blog';
 import { Router } from '@angular/router';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-blog-list-component',
-  imports: [CommonModule,CardBlog],
+  imports: [CommonModule,CardBlog , MatIconModule],
   templateUrl: './blog-list-component.html',
   styleUrl: './blog-list-component.css',
 })

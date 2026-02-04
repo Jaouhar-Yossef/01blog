@@ -38,28 +38,37 @@
   </div>
 
   
-  <div class="post-imgs" *ngIf="blog.media?.length > 0">
+  <div class="post-imgs">
+  <ng-container *ngIf="blog.media?.length > 0; else noMedia">
+    
     <img
       *ngIf="blog.media[currentIndex].type === 'IMAGE'"
       [src]="baseUrl + blog.media[currentIndex].url"
       class="media-item"
       (click)="showTheBlog(blog)"
     />
+
     <video
       *ngIf="blog.media[currentIndex].type === 'VIDEO'"
       [src]="baseUrl + blog.media[currentIndex].url"
-      autoplay
       muted
       loop
       playsinline
       class="media-item"
       (click)="showTheBlog(blog)"
     ></video>
-  </div>
 
-  <div class="post-imgs" *ngIf="blog.media?.length === 0">
-    <img src="./../../assets/no-picture.png" alt="" class="no-media" (click)="showTheBlog(blog)">
-  </div> 
+  </ng-container>
+
+  <ng-template #noMedia>
+    <img
+      src="./../../assets/no-picture.png"
+      class="nomedia-item"
+      (click)="showTheBlog(blog)"
+    />
+  </ng-template>
+</div>
+
   
 
 </div>
