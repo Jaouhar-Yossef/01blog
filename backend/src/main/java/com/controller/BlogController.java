@@ -6,6 +6,7 @@ import com.dto.CommentRequestDTO;
 import com.dto.CommentResponseDTO;
 import com.dto.LikeOrSaveBlogRequest;
 import com.entity.UserDetailsImpl;
+import com.entity.Blogs.Blog;
 import com.service.Blogs.BlogService;
 import com.service.Blogs.CommentBlogService;
 import com.service.Blogs.LikeBlogService;
@@ -104,15 +105,49 @@ public class BlogController {
         return ResponseEntity.ok(Map.of("message", msg));
     }
 
+    // @GetMapping("/blogs")
+    // public ResponseEntity<List<BlogResponseDTO>> getBlogs( @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
+    //         ) {
+
+    //     UUID userId = userDetails.getUser().getId();
+    //     List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
+    //     return ResponseEntity.ok(blogDTOs);
+    // }
+
+
+
+
+
+
+
     @GetMapping("/blogs")
-    public ResponseEntity<List<BlogResponseDTO>> getBlogs( @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
-            ) {
+    public ResponseEntity<List<BlogResponseDTO>> getBlogs(
+        @RequestParam int page,
+        @RequestParam int size,
+        @RequestParam String mode,
+        @RequestParam(required = false) String username, @AuthenticationPrincipal UserDetailsImpl userDetails 
+    ) {
+
+        System.out.println("===> " + mode);
 
         UUID userId = userDetails.getUser().getId();
-        List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
-        return ResponseEntity.ok(blogDTOs);
+
+        if ("home".equals(mode)) {
+            List<BlogResponseDTO> blogDTOs = blogService.blogsGetterHome(userId , page , size);
+            return ResponseEntity.ok(blogDTOs);
+        } else if ("profile".equals(mode)) {
+            List<BlogResponseDTO> blogDTOs =  blogService.blogsGetterProfile(userId , page , size , username);
+            return ResponseEntity.ok(blogDTOs);
+
+        } else if ("saved".equals(mode)) {
+
+        }
+
+        return ResponseEntity.ok(null);
     }
+
+
 
     @GetMapping("/blog/{id_blog}")
     public ResponseEntity<?> getBlog(@PathVariable UUID id_blog,

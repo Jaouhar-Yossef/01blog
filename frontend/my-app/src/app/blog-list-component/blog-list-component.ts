@@ -1,27 +1,34 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-
-import { ErrorService } from '../error/error.service';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+
+import { CardBlog } from '../card-blog/card-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
 import { ContentHomeService } from '../content-home/content-home.service';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { CardBlog } from '../card-blog/card-blog';
-import { Router } from '@angular/router';
+import { BlogMode } from '../blog-list-component/blog-list-mode';
 
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-blog-list-component',
-  imports: [CommonModule,CardBlog , MatIconModule],
+  standalone: true,
+  imports: [CommonModule, CardBlog, MatIconModule],
   templateUrl: './blog-list-component.html',
   styleUrl: './blog-list-component.css',
 })
-export class BlogListComponent implements OnInit, AfterViewInit{
-  
-  constructor(
-    private errorService: ErrorService,
-    private router: Router
-  ) {}
+export class BlogListComponent implements OnInit, AfterViewInit {
+
+  @Input() mode: BlogMode = 'home';
+  @Input() username?: string;
 
   private blogsSubject = new BehaviorSubject<any[]>([]);
   blogs$ = this.blogsSubject.asObservable();
@@ -30,25 +37,18 @@ export class BlogListComponent implements OnInit, AfterViewInit{
   size = 10;
   loading = false;
   hasMore = true;
-  JustOneBlog = false;
 
-  public ui = inject(BlogUiService)
-  private io!: IntersectionObserver;
-  @ViewChild('observer') observer!: ElementRef;
+  public ui = inject(BlogUiService);
   private postService = inject(ContentHomeService);
   private platformId = inject(PLATFORM_ID);
 
-  ngOnInit() {
-    if (this.router.url === '/home') {
-      
-    }
+  private io!: IntersectionObserver;
+  @ViewChild('observer') observer!: ElementRef;
 
-    if (this.router.url === '/home/blogsSaved') {
-      
-    }
+  ngOnInit() {
+    
     this.loadNextPage();
   }
-
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -62,32 +62,44 @@ export class BlogListComponent implements OnInit, AfterViewInit{
         this.loadNextPage();
       }
     });
+
     this.io.observe(this.observer.nativeElement);
   }
 
   loadNextPage() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
-    this.postService.getBlogs(this.page, this.size).subscribe({
-      next: (data) => {
-        this.blogsSubject.next([
-          ...this.blogsSubject.value,
-          ...data
-        ]);
+    this.postService
+      .getBlogs(this.page, this.size, this.mode, this.username)
+      .subscribe({
+        next: (data) => {
+          this.blogsSubject.next([
+            ...this.blogsSubject.value,
+            ...data
+          ]);
 
-        if (data.length < this.size) {
-          this.hasMore = false;
-        } else {
-          this.page++;
-        }
+          if (data.length < this.size) {
+            this.hasMore = false;
+          } else {
+            this.page++;
+          }
 
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+          this.loading = false;
+        },
+        error: () => this.loading = false
+      });
   }
 
   trackById(_: number, blog: any) {
     return blog.id;
+  }
+
+
+  get modeClass(): string {
+    return this.mode + '-style';
+  }
+
+  get modeClassforblogs(): string {
+    return this.mode + '-blogsforuser-style';
   }
 }

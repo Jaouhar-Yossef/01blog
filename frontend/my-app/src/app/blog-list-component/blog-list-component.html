@@ -1,6 +1,6 @@
-<div class="post-list">
+<div class="post-list" [class]="modeClass">
     <ng-container *ngIf="blogs$ | async as blogs">
-        <div *ngIf="blogs.length > 0; else noContent"  class="blogsforuser">
+        <div *ngIf="blogs.length > 0; else noContent"  class="blogsforuser" [class]="modeClassforblogs">
              <app-card-blog
         
               *ngFor="let blog of blogs; trackBy: trackById"

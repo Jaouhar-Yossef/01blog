@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ProfileService } from './profile.service';
+import { BlogListComponent } from '../blog-list-component/blog-list-component';
 
 export interface UserProfile {
   id: number;
@@ -18,7 +19,7 @@ export interface UserProfile {
 @Component ({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , BlogListComponent ],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -27,6 +28,7 @@ export class Profile {
   isBrowser = false;
   profile!: UserProfile;
   loading = false;
+  username!: string;
 
   constructor(
     private profileService: ProfileService,
@@ -47,6 +49,9 @@ export class Profile {
       return;
     }
 
+
+  this.username = username;
+
     this.loadProfile(username);
   }
 
@@ -55,17 +60,15 @@ export class Profile {
 
     this.profileService.getProfileByUsername(username).subscribe({
       next: (res) => {
-        console.log("dsddsdsdds  "  , res) 
-        // this.profile = res;
         this.loading = false;
       },
       error: (err) => {
         this.loading = false;
-        console.log("dsddsdsdds  "  , err) 
 
         this.errorService.showMessage('Cannot load profile 😢', 'error');
         this.router.navigate(['/home']);
       }
     });
   }
+
 }

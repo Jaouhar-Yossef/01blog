@@ -25,17 +25,14 @@ import org.springframework.stereotype.Service;
 public class BlogService {
 
     private final BlogRepository blogRepository;
-    private final UserRepository userRepository;    
+    private final UserRepository userRepository;
     private final MediaBlogService mediaBlogService;
 
     private final SavedService savedService;
     private final LikeBlogService likeBlogService;
 
-
-    
-
-    public BlogService(BlogRepository blogRepository , UserRepository userRepository,
-    LikeBlogService likeBlogService , SavedService savedService,  MediaBlogService mediaBlogService ) {
+    public BlogService(BlogRepository blogRepository, UserRepository userRepository,
+            LikeBlogService likeBlogService, SavedService savedService, MediaBlogService mediaBlogService) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.likeBlogService = likeBlogService;
@@ -43,26 +40,24 @@ public class BlogService {
         this.mediaBlogService = mediaBlogService;
     }
 
-
-
     @Transactional
     public Response<BlogResponseDTO> createBlog(BlogRequest blogRequest, String username) {
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
-                Blog blog = new Blog();
-                blog.setTitle(blogRequest.getTitle());
-                blog.setStatus("show");
-                blog.setContent(blogRequest.getContent());
-                blog.setCreatedBy(user);
-    
-                blogRepository.save(blog);
-            
+            Blog blog = new Blog();
+            blog.setTitle(blogRequest.getTitle());
+            blog.setStatus("show");
+            blog.setContent(blogRequest.getContent());
+            blog.setCreatedBy(user);
+
+            blogRepository.save(blog);
+
             try {
                 mediaBlogService.saveMedia(blog, blogRequest);
             } catch (Exception e) {
                 throw new RuntimeException("Error creating blog: " + e.getMessage());
-            } 
+            }
 
             return new Response<>(true, "Blog created successfully", null);
 
@@ -71,97 +66,128 @@ public class BlogService {
         }
     }
 
+    @Transactional
+    public void deleteBlog(UUID id) {
+        Blog blog = blogRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+        for (MediaBlog media : blog.getMedias()) {
+            File file = new File("uploads/" + media.getFileName());
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        blogRepository.delete(blog);
+    }
 
     private List<Blog> getBlogsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return blogRepository.findAll(pageable).getContent();
     }
 
-
-    @Transactional
-    public void deleteBlog(UUID id) {
-        Blog blog = blogRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Blog not found"));
-        for (MediaBlog media : blog.getMedias()) {
-            File file = new File("uploads/" + media.getFileName());
-            if (file.exists()) {
-                file.delete(); 
-            }
-        }    
-        blogRepository.delete(blog);
-    }
-
-
-    public List<BlogResponseDTO> blogsGetter(UUID userId , int page , int size) {
+    public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
 
         List<Blog> blogs = this.getBlogsPaginated(page, size);
-    
+
         List<BlogResponseDTO> blogDTOs = blogs.stream()
-            .map(blog -> {
-                boolean saved = savedService.isBlogSaved(userId, blog.getId());
-                boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
+                .map(blog -> {
+                    boolean saved = savedService.isBlogSaved(userId, blog.getId());
+                    boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
 
-                Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+                    Long numbLike = this.likeBlogService.getNumbLike(blog.getId());
 
-                List<MediaDTO> mediaList = blog.getMedias().stream()
-                    .map(m -> new MediaDTO(
-                            m.getUrl(),
-                            m.getFileName(),
-                            m.getType()
-                    ))
-                    .toList();
-    
-                return new BlogResponseDTO(
-                    blog.getId(),
-                    blog.getTitle(),
-                    blog.getStatus(),
-                    blog.getContent(),
-                    saved,
-                    liked,
-                    numbLike,
-                    blog.getCreatedBy().getUsername(),
-                    blog.getCreatedBy().getImageUrl(),
-                    mediaList
-                );
+                    List<MediaDTO> mediaList = blog.getMedias().stream()
+                            .map(m -> new MediaDTO(
+                                    m.getUrl(),
+                                    m.getFileName(),
+                                    m.getType()))
+                            .toList();
 
-            })
-            .toList();
+                    return new BlogResponseDTO(
+                            blog.getId(),
+                            blog.getTitle(),
+                            blog.getStatus(),
+                            blog.getContent(),
+                            saved,
+                            liked,
+                            numbLike,
+                            blog.getCreatedBy().getUsername(),
+                            blog.getCreatedBy().getImageUrl(),
+                            mediaList);
 
-        return blogDTOs;    
+                })
+                .toList();
+
+        return blogDTOs;
     }
 
-    
-    public BlogResponseDTO getOneBlog(UUID user_id , UUID id_blog)   {
+    public List<BlogResponseDTO> blogsGetterProfile(
+            UUID userId,
+            int page,
+            int size,
+            String username) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        List<Blog> blogs = blogRepository.findByCreatedById(user.getId(), pageable);
+
+        List<BlogResponseDTO> blogDTOs = blogs.stream()
+                .map(blog -> {
+                    boolean saved = savedService.isBlogSaved(userId, blog.getId());
+                    boolean liked = likeBlogService.isBlogLiked(userId, blog.getId());
+                    Long numbLike = likeBlogService.getNumbLike(blog.getId());
+
+                    List<MediaDTO> mediaList = blog.getMedias().stream()
+                            .map(m -> new MediaDTO(m.getUrl(), m.getFileName(), m.getType()))
+                            .toList();
+
+                    return new BlogResponseDTO(
+                            blog.getId(),
+                            blog.getTitle(),
+                            blog.getStatus(),
+                            blog.getContent(),
+                            saved,
+                            liked,
+                            numbLike,
+                            blog.getCreatedBy().getUsername(),
+                            blog.getCreatedBy().getImageUrl(),
+                            mediaList);
+                })
+                .toList();
+
+        return blogDTOs;
+    }
+
+    public BlogResponseDTO getOneBlog(UUID user_id, UUID id_blog) {
         Blog blog = blogRepository.findById(id_blog)
-            .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         userRepository.findById(user_id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean saved = savedService.isBlogSaved(user_id, blog.getId());
         boolean liked = this.likeBlogService.isBlogLiked(user_id, blog.getId());
 
-        Long numbLike =  this.likeBlogService.getNumbLike(blog.getId());
+        Long numbLike = this.likeBlogService.getNumbLike(blog.getId());
 
         List<MediaDTO> mediaList = blog.getMedias().stream()
-            .map(m -> new MediaDTO(
-                    m.getUrl(),
-                    m.getFileName(),
-                    m.getType()
-            ))
-            .toList();
+                .map(m -> new MediaDTO(
+                        m.getUrl(),
+                        m.getFileName(),
+                        m.getType()))
+                .toList();
 
         return new BlogResponseDTO(
-            blog.getId(),
-            blog.getTitle(),
-            blog.getStatus(),
-            blog.getContent(),
-            saved,
-            liked,
-            numbLike,
-            blog.getCreatedBy().getUsername(),
-            blog.getCreatedBy().getImageUrl(),
-            mediaList
-        );
+                blog.getId(),
+                blog.getTitle(),
+                blog.getStatus(),
+                blog.getContent(),
+                saved,
+                liked,
+                numbLike,
+                blog.getCreatedBy().getUsername(),
+                blog.getCreatedBy().getImageUrl(),
+                mediaList);
     }
 }

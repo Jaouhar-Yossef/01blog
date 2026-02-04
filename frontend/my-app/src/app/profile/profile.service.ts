@@ -18,7 +18,7 @@ export class ProfileService {
     getProfileByUsername(username: string): Observable<UserProfile> {
         return this.http.get<any>(`${this.baseUrl}/${username}`);
     }
-
+    
     follow(username: string): Observable<void> {
         return this.http.post<void>(`${this.baseUrl}/${username}/follow`, {});
     }

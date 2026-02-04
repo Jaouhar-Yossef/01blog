@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // import { AuthService } from '../auth/auth.service';
+import { BlogMode } from '../blog-list-component/blog-list-mode';
 
 
 interface Comment {
@@ -32,8 +33,21 @@ export class ContentHomeService {
   }
 
 
-  getBlogs(page: number, size: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/blogs?page=${page}&size=${size}`);
+
+    getBlogs(
+    page: number,
+    size: number,
+    mode: BlogMode,
+    username?: string
+  ): Observable<any[]> {
+
+    let params = `page=${page}&size=${size}&mode=${mode}`;
+
+    if (mode === 'profile' && username) {
+      params += `&username=${username}`;
+    }
+
+    return this.http.get<any[]>(`${this.apiUrl}/blogs?${params}`);
   }
 
 

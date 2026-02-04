@@ -40,6 +40,12 @@
 }
 
 
+.profile-style {
+  height: 65vh;
+}
+
+
+
 .post-list::-webkit-scrollbar {
     width: 4px;
 }
@@ -64,6 +70,14 @@
    width: 50%;
 
 }
+
+
+
+
+.profile-blogsforuser-style {
+  width: 80%;
+}
+
 
 .noContent {
   width: 60%;
