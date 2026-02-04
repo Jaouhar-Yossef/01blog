@@ -59,86 +59,38 @@
       
               <div class="blogbotoom">
       
-                <button matFab extended>
-                  <mat-icon>favorite</mat-icon>
-                  <span> <span> Like </span> <span> {{ blog?.numbLiked }} </span></span>
+               
+               
+                <button mat-fab extended (click)="toggleLike()" class="liked">
+                  <span>
+                    <img
+                      class="buttonheart"
+                      [src]="blog?.liked 
+                        ? './../../assets/heart.png' 
+                        : './../../assets/heart2.png'"
+                      alt=""
+                    />
+                    Like {{ blog?.numbLiked }}
+                  </span>
+                </button>
+                
+                <button mat-fab extended (click)="toggleSave()">
+                  <mat-icon>
+                    {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
+                  </mat-icon>
+                  <span>
+                    {{ blog?.saved ? 'Saved' : 'Save' }}
+                  </span>
                 </button>
       
-                <button *ngIf="!blog?.saved" matFab extended>
-                  <mat-icon>bookmarks</mat-icon>
-                  <span> <span> Save</span> </span>
-                </button>
-      
-                <button *ngIf="blog?.saved" matFab extended>
-                  <mat-icon>bookmark_added</mat-icon>
-                  <span> <span> Saved </span> </span>
-                </button>
-      
-              </div>
+              </div>  
 
           </div>
           
-      
-      
-        <div class="divComment">
-
-          <div class="commenttitle">
-            <mat-icon>comment</mat-icon>
-            <span>The Comment</span>
-          </div>
-
-          <div class="comments-list">
-
-              <ng-container *ngIf="comments$ | async as comments">
-              
-                <div class="commentuser"
-                     *ngFor="let comment of comments; trackBy: trackById">
-              
-                  <img
-                    *ngIf="comment.urlString?.length > 0; else nophoto"
-                    [src]="comment.urlString"
-                    alt=""
-                  >
-              
-                  <ng-template #nophoto>
-                    <img src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                  </ng-template>
-              
-                  <div class="comment-fieldd">
-                    {{ comment.comment }}
-                  </div>
-                </div>
-              
-                <div *ngIf="comments.length === 0" class="noContent">
-                  <p class="noContent-text">Nothing here yet 👀</p>
-                  <span class="noContent-subtext">Create a Comment to get started</span>
-                  <mat-icon class="iconnoaomment">comments_disabled</mat-icon>
-                </div>
-              
-                <div *ngIf="comments.length > 0"  class="commentuserbbottom">
-                  <mat-icon>comments_disabled</mat-icon>
-                  <span>The last comment</span>
-                </div>
-              </ng-container>
-              
-              <div #observer class="observer"> </div>
-            </div>
-
-          <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
-            <mat-form-field appearance="fill" class="form-group">
-              <mat-label>Write a Comment </mat-label>
-              <input matInput type="text" placeholder="Write Comment" formControlName="title" maxlength="300"
-                class="inputComment">
-              <button mat-icon-button matSuffix type="submit">
-                <mat-icon>comment</mat-icon>
-              </button>
-            </mat-form-field>
-          </form>
-
-
+          
         </div>
-    </div>
-
+        <app-comment></app-comment>
+        
   
 
 </div>

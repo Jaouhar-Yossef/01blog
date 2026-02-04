@@ -1,19 +1,20 @@
-import { Component, ElementRef, Inject, inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { ErrorService } from '../error/error.service';
-import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { BlogUiService } from './blog-ui.service';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { CommentComponent } from '../comment/comment';
+import { CardBlogService } from '../card-blog/card-blog.service';
 
 export interface CreateCommentDto {
   content: string;
@@ -38,6 +39,7 @@ interface ApiResponse {
 
 @Component({
   selector: 'app-blog',
+  standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,
@@ -45,7 +47,8 @@ interface ApiResponse {
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    CommentComponent
   ],
   templateUrl: './blog.html',
   styleUrl: './blog.css',
@@ -53,57 +56,34 @@ interface ApiResponse {
 
 export class Blog {
 
-  blog$!: Observable<any>;
-  
-  id_blog :  string = "";
 
+  blogSubject = new BehaviorSubject<any>(null);
+  blog$ = this.blogSubject.asObservable();
+
+  id_blog: string = "";
   AllTheDiscription = false;
-  showTheComment = false;
-
-  private CommentSubject = new BehaviorSubject<any[]>([]);
-  comments$ = this.CommentSubject.asObservable();
-  
-  page = 0;
-  size = 10;
   loading = false;
-  hasMore = true;
+  likedblog = false;
 
-  commentForm: FormGroup;
-
-  
-  constructor( private errorService: ErrorService ,  @Inject(PLATFORM_ID) private platformId: Object,
-    private route: ActivatedRoute ,private router: Router, private  contentHomeService : ContentHomeService  , private fb: FormBuilder) {
-      this.commentForm = this.fb.group({
-        title: ['', [Validators.required, Validators.maxLength(300)]]
-      });
-    }
+  private blogService = inject(CardBlogService);
 
 
-  private io!: IntersectionObserver;
+  constructor(private errorService: ErrorService, @Inject(PLATFORM_ID) private platformId: Object,
+    private route: ActivatedRoute, private router: Router, private contentHomeService: ContentHomeService) { }
 
-  @ViewChild('observer') observer!: ElementRef;
-    ngOnInit() {
-      const id = this.route.snapshot.paramMap.get('id');
-      if (!id) {
-        this.errorService.showMessage('Blog ID not found', 'error');
-        this.router.navigate(['/home']);
-        return;
-      }
-  
-      this.id_blog = id;
 
-      this.blog$ = this.contentHomeService.getBlogById(id).pipe(
-        catchError(err => {
-          this.errorService.showMessage('Cannot load blog', 'error');
-          return of(null); 
-        })
-      );
 
-    if (this.loading) {
-      return
-    }
-      this.loadNextPage()
-    }
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.id_blog = id;
+
+    this.contentHomeService.getBlogById(id).subscribe({
+      next: blog => this.blogSubject.next(blog),
+      error: () => this.errorService.showMessage('Cannot load blog', 'error')
+    });
+  }
 
 
   toggleDescription() {
@@ -111,85 +91,91 @@ export class Blog {
   }
 
 
-  ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-        this.io = new IntersectionObserver(entries => {
-      if (
-        entries[0].isIntersecting &&
-        !this.loading &&
-        this.hasMore
-      ) {
-        this.loadNextPage();
-      }
-    });
-    this.io.observe(this.observer.nativeElement);
-  }
-  
-  
-  
 
-  loadNextPage() {
-      if (this.loading || !this.hasMore) return;
-        this.loading = true;
-        this.contentHomeService.getComment(this.id_blog, this.page, this.size)
-        .subscribe({
-          next: (res: ApiResponse) => {
-            this.CommentSubject.next([
-              ...this.CommentSubject.value,
-              ...res.anyData
-            ]);
-    
-            if (res.anyData.length < this.size) {
-              this.hasMore = false;
-            } else {
-              this.page++;
-            }
-    
-            this.loading = false;
-          },
-          error: () => this.loading = false
+  toggleLike() {
+    if (this.loading) return;
+    const blog = this.blogSubject.value;
+    if (!blog) return;
+
+    this.loading = true;
+
+    const previousState = blog.liked;
+
+    this.blogSubject.next({
+      ...blog,
+      liked: !previousState,
+      numbLiked: previousState
+        ? blog.numbLiked - 1
+        : blog.numbLiked + 1
+    });
+
+    const request$ = previousState
+      ? this.blogService.unliked_Blogs(this.id_blog)
+      : this.blogService.liked_Blogs(this.id_blog);
+
+    request$.subscribe({
+      next: () => {
+        this.loading = false;
+        this.errorService.showMessage(
+          previousState ? 'Unliked successfully!' : 'Liked successfully!',
+          'success'
+        );
+      },
+
+      error: () => {
+        this.blogSubject.next({
+          ...blog,
+          liked: previousState,
+          numbLiked: blog.numbLiked
         });
 
+        this.loading = false;
+        this.errorService.showMessage('Something went wrong 😢', 'error');
+      }
+    });
   }
 
+  toggleSave() {
+  if (this.loading) return;
 
+  const blog = this.blogSubject.value;
+  if (!blog) return;
 
-  submitComment() {
-    if (this.commentForm.valid) {
-      const payload = {
-        comment: this.commentForm.value.title,
-        id_blog: this.id_blog
-      };
+  this.loading = true;
 
-      this.contentHomeService.creatComment(payload).subscribe({
-          next: res => {
-            if (!res.success) {
-              this.errorService.showMessage('Error creating comment', 'error');
-              return;
-            }
+  const previousState = blog.saved;
 
-            const newComment = res.anyData;
-       
-            this.CommentSubject.next([
-              newComment,
-              ...this.CommentSubject.value
-            ]);
-            this.errorService.showMessage('comment Created (:', 'success');
-          },
-          error: err => {
-            this.errorService.showMessage('Error creating comment', 'error');
-          }
-      })
+  // ✅ Optimistic update
+  this.blogSubject.next({
+    ...blog,
+    saved: !previousState
+  });
 
-      this.commentForm.reset();
+  const request$ = previousState
+    ? this.blogService.unsave_Blogs(this.id_blog)
+    : this.blogService.save_Blogs(this.id_blog);
+
+  request$.subscribe({
+    next: () => {
+      this.loading = false;
+      this.errorService.showMessage(
+        previousState ? 'Removed from saved' : 'Saved successfully!',
+        'success'
+      );
+    },
+
+    error: () => {
+      // 🔁 rollback
+      this.blogSubject.next({
+        ...blog,
+        saved: previousState
+      });
+
+      this.loading = false;
+      this.errorService.showMessage('Something went wrong 😢', 'error');
     }
-  }
-
-
-
-  trackById(_: number, comment: any) {
-    return comment.id;
-  }
+  });
+}
 
 
 }

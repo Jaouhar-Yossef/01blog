@@ -1,0 +1,45 @@
+<div class="divComment">
+    <div class="commenttitle">
+        <mat-icon>comment</mat-icon>
+        <span>The Comment</span>
+    </div>
+
+    <div class="comments-list">
+        <ng-container *ngIf="comments$ | async as comments">
+            <div class="commentuser" *ngFor="let comment of comments; trackBy: trackById">
+                <img *ngIf="comment.urlString?.length > 0; else nophoto" [src]="comment.urlString" alt="">
+                <ng-template #nophoto>
+                    <img src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                </ng-template>
+                <div class="creatbyAndComment">
+                    <div class="comment-fieldd">
+                        {{ comment.comment }}
+                    </div>
+                    <span class="creatorcomment"> {{ comment.creatorUsername }}</span>
+                </div>
+            </div>
+            <div *ngIf="comments.length === 0" class="noContent">
+                <p class="noContent-text">Nothing here yet 👀</p>
+                <span class="noContent-subtext">Create a Comment to get started</span>
+                <mat-icon class="iconnoaomment">comments_disabled</mat-icon>
+            </div>
+            <div *ngIf="comments.length > 0" class="commentuserbbottom">
+                <mat-icon>comments_disabled</mat-icon>
+                <span>The last comment</span>
+            </div>
+        </ng-container>
+        <div #observer class="observer"> </div>
+    </div>
+
+    <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
+        <mat-form-field appearance="fill" class="form-group">
+            <mat-label>Write a Comment </mat-label>
+            <input matInput type="text" placeholder="Write Comment" formControlName="title" maxlength="300"
+                class="inputComment">
+            <button mat-icon-button matSuffix type="submit">
+                <mat-icon>comment</mat-icon>
+            </button>
+        </mat-form-field>
+    </form>
+
+</div>

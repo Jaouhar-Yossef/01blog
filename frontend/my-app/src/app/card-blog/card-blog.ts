@@ -68,8 +68,8 @@ export class CardBlog implements OnChanges, OnDestroy {
   toggleSave() {
     if (this.loading) return;
     this.loading = true;
+    
     const previousState = this.blog.saved;
-
     this.blog.saved = !previousState;
 
     const request$ = previousState
