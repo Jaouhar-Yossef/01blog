@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+// import { AuthService } from '../auth/auth.service';
 
 
 interface Comment {
@@ -25,7 +25,7 @@ export class ContentHomeService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
+    
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);

@@ -5,11 +5,13 @@ import { ErrorService } from '../error/error.service';
 
 import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-card-blog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , MatIconModule],
   templateUrl: './card-blog.html',
   styleUrls: ['./card-blog.css'],
 })
@@ -122,5 +124,10 @@ export class CardBlog implements OnChanges, OnDestroy {
     });
   }
 
+
+  goToProfile() {
+    console.log("hhhh")
+    this.router.navigate([`/home/profile` , this.blog.createdByUsername]);
+  }
 
 }

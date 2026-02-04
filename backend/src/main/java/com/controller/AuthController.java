@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -59,9 +61,9 @@ public class AuthController {
 
     @DeleteMapping("/deleteAccount")
     public ResponseEntity<?> delete_Account(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
+        UUID user_id = userDetails.getUser().getId();
         try {
-            Response<?> response =  userService.deleteAccount(user);
+            Response<?> response =  userService.deleteAccount(user_id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response<>(false, e.getMessage())); 

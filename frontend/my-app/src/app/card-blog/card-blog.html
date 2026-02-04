@@ -12,11 +12,10 @@
     <div class="post-content-bottom">
       <div class="post-content-bottom-first">
         
-        <button >
-          <span class="creat-by">
-            created by: <span class="name-auther">{{ blog.createdByUsername }}</span>
-          </span>
-        </button>
+        
+        <span class="creat-by">
+          created by: <span class="name-auther" (click)="goToProfile()" >{{ blog.createdByUsername }}</span>
+        </span>
 
         <button class="like" (click)="toggleLike()">
           <img *ngIf="!blog.liked" src="./../../assets/heart2.png" alt="">
@@ -28,10 +27,13 @@
         </button>
       </div>
       <div class="post-content-bottom-last">
-        <button (click)="toggleSave()">
-          <img  *ngIf="!blog.saved" class="saved" src="./../../assets/saved.webp" alt="">
-          <img *ngIf="blog.saved" class="saved" src="./../../assets/saved2.png" alt="">
-        </button>
+
+      
+          <mat-icon class="saved" (click)="toggleSave()">
+            {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
+          </mat-icon>
+         
+
         <div class="circle-line"></div>
       </div>
     </div>

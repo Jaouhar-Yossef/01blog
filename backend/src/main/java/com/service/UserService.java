@@ -6,6 +6,7 @@ import com.dto.UserResponseDTO;
 import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;
+import com.fasterxml.jackson.databind.ser.std.EnumSerializer;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.service.Blogs.MediaBlogService;
@@ -134,8 +135,13 @@ public class UserService implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 
-    public Response<?> deleteAccount(User user) {
+    public Response<?> deleteAccount(UUID user_id) {
         try {
+
+           
+            User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
             List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
 
             for (Blog blog : blogs) {
@@ -147,6 +153,21 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             return new Response<>(false, "Error deleting user: " + e.getMessage() );
         }
+    }
+
+
+    public Response<?> getProfileData(String username , UUID user_id) throws Exception {
+
+        try {
+             
+            User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        } catch (Exception e) {
+
+        }
+
+        return new Response<>(false, username);
     }
 
 }

@@ -65,6 +65,7 @@
   
   height: 30%;
 
+
 }
 
 
@@ -114,13 +115,21 @@
 }
 
 .creat-by {
-    font-size: 13px;
+    font-size: 14px;
     color: gray;
+    margin-left: 10px;
     margin-right: 10px;
 }
+
 .name-auther {
     color: rgb(100, 149, 237);
     font-weight: bold;
+    padding: 5px;
+}
+
+.name-auther:hover  {
+    color: rgb(35, 76, 151);
+  
 }
 .reaport {
     border-radius: 20px;
@@ -130,6 +139,7 @@
 
 .post-content-bottom-first {
   width: 70%;
+  height: 100%;
   display: flex;
   gap: 20px;
   align-items: center;
@@ -142,10 +152,10 @@
   display: flex;
   height: 100%;
   gap: 20px;
-  background-color: red;
   justify-content: center;
   align-content: center;
   align-items: center;
+
 }
 
 
@@ -159,67 +169,71 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 5px;
+}
 
-  padding: 10px;
+
+
+.media-item,
+.nomedia-item {
+  animation: fade 0.6s ease-in-out;
+  transition: width 0.2s ease, height 0.2s ease;
 }
 
 .media-item {
   width: 90%;
   height: 90%;
-  object-fit: cover; 
+  object-fit: contain;
   border-radius: 10px;
   cursor: pointer;
 }
-
 
 .nomedia-item {
   width: 60px;
   height: 60px;
   border-radius: 10px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .media-item:hover {
-  transform: scale(1.05);
+  width: 92%;
+  height: 92%;
 }
 
-
-
+.nomedia-item:hover {
+  width: 62px;
+  height: 62px;
+}
 
 @keyframes fade {
   from {
     opacity: 0;
+    transform: scale(0.98);
   }
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 
-
-
-.save {
-  width: 50px;
-  height: 30px;
-
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
-  text-align: center;
-
-  display: flex;
-  justify-content: end;
-  align-items: end;
-}
 
 .saved {
   width: 20px;
   height: 20px;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
 .saved:hover {
   width: 25px;
   height: 25px;
+  background-color: rgb(0, 58, 88);
+
 }
 
 
