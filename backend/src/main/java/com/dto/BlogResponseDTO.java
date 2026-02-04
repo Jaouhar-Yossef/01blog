@@ -19,5 +19,6 @@ public class BlogResponseDTO {
     private boolean liked;
     private Long numbLiked;
     private String createdByUsername;
+    private String createdByUrlimg;
     private List<MediaDTO> media;
 }

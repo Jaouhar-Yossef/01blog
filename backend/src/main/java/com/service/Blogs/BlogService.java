@@ -120,6 +120,7 @@ public class BlogService {
                     liked,
                     numbLike,
                     blog.getCreatedBy().getUsername(),
+                    blog.getCreatedBy().getImageUrl(),
                     mediaList
                 );
 
@@ -159,6 +160,7 @@ public class BlogService {
             liked,
             numbLike,
             blog.getCreatedBy().getUsername(),
+            blog.getCreatedBy().getImageUrl(),
             mediaList
         );
     }
