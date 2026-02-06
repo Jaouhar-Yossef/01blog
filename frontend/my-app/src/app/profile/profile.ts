@@ -74,14 +74,14 @@ export class Profile {
     this.ProfileSubject.next(null);
     this.profileService.getProfileByUsername(username).subscribe({
       next: (res: ApiResponse<UserProfile>) => {
-        console.log("==> ", res)
+        // console.log("==> ", res)
         this.ProfileSubject.next(res.anyData)
         this.loading = false;
       },
       error: (err) => {
         this.loading = false;
         this.ProfileSubject.next(null);
-        this.errorService.showMessage(`${err.message} ):`, 'error');
+        this.errorService.showMessage(`Profile not found ):`, 'error');
         this.router.navigate(['/home']);
       }
     });

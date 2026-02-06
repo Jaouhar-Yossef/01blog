@@ -161,7 +161,12 @@ export class Comment {
 
  
 
-  goToProfile(creatBy: string) {  
+  goToProfile(creatBy: string) {
+
+    if (this.loading) {
+      return;
+    }
+
     this.router.navigate(['/home/profile', creatBy]);
   }
 

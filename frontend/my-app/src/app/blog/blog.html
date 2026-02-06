@@ -7,11 +7,12 @@
          <div class="blogheader">
           <div class="blogheader_left">
 
-             <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
+             <img (click)="goToProfile(blog?.createdByUsername)"  class="imguser"
                     *ngIf="blog.createdByUrlimg?.length > 0; else nophotouser"
                     [src]="baseUrl +  blog?.createdByUrlimg"
                     alt=""
                   >
+                  
               
                   <ng-template #nophotouser>
                     <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">

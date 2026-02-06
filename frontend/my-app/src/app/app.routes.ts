@@ -32,5 +32,6 @@ export const routes: Routes = [
     { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
 
     { path: 'account', component: AuthComponent, canActivate: [loggedInGuard] },
+    { path: '**', component: AuthComponent , canActivate: [loggedInGuard] },
 ];
     
