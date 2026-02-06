@@ -1,16 +1,16 @@
 package com.service;
 
 import org.springframework.stereotype.Service;
+
 import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
 import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;
-import com.fasterxml.jackson.databind.ser.std.EnumSerializer;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.service.Blogs.MediaBlogService;
-import com.config.JwtService; 
+import com.config.JwtService;
 import com.util.Response;
 
 import java.util.List;
@@ -32,10 +32,9 @@ public class UserService implements UserDetailsService {
     private final JwtService jwtService;
     private final BlogRepository blogRepository;
     private final MediaBlogService mediaBlogService;
-    
 
-    public UserService(BlogRepository blogRepository, UserRepository userRepository, MediaBlogService mediaBlogService ,
-                       JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public UserService(BlogRepository blogRepository, UserRepository userRepository, MediaBlogService mediaBlogService,
+            JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.mediaBlogService = mediaBlogService;
@@ -46,7 +45,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void deleteUser(UUID userId) {
         List<Blog> blogs = blogRepository.findByCreatedById(userId);
-        blogRepository.deleteAll(blogs); 
+        blogRepository.deleteAll(blogs);
         userRepository.deleteById(userId);
     }
 
@@ -71,11 +70,10 @@ public class UserService implements UserDetailsService {
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
         UserResponseDTO dto = new UserResponseDTO(
-            user.getUsername(),
-            user.getEmail(),
-            user.getImageUrl(),
-            token
-        );
+                user.getUsername(),
+                user.getEmail(),
+                user.getImageUrl(),
+                token);
         return new Response<>(true, "User registered successfully", dto);
     }
 
@@ -96,36 +94,35 @@ public class UserService implements UserDetailsService {
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
         UserResponseDTO dto = new UserResponseDTO(
-            user.getUsername(),
-            user.getEmail(),
-            user.getImageUrl(),
-            token
-        );
+                user.getUsername(),
+                user.getEmail(),
+                user.getImageUrl(),
+                token);
         return new Response<>(true, "Login successful", dto);
     }
 
     // public UserResponseDTO getUserFromToken(String token) {
-    //     try {
-    //         UUID id = jwtService.extractUserId(token);    
-    //         String username = jwtService.extractUsername(token);
+    // try {
+    // UUID id = jwtService.extractUserId(token);
+    // String username = jwtService.extractUsername(token);
 
-    //         Optional<User> userOpt = userRepository.findById(id);
-    //         if (userOpt.isEmpty()) return null;
+    // Optional<User> userOpt = userRepository.findById(id);
+    // if (userOpt.isEmpty()) return null;
 
-    //         User user = userOpt.get();
+    // User user = userOpt.get();
 
-    //         if (!user.getUsername().equals(username)) return null;
+    // if (!user.getUsername().equals(username)) return null;
 
-    //         return new UserResponseDTO(
-    //             user.getUsername(),
-    //             user.getEmail(),
-    //             user.getImageUrl(),
-    //             token
-    //         );
+    // return new UserResponseDTO(
+    // user.getUsername(),
+    // user.getEmail(),
+    // user.getImageUrl(),
+    // token
+    // );
 
-    //     } catch (Exception e) {
-    //         return null;
-    //     }
+    // } catch (Exception e) {
+    // return null;
+    // }
     // }
 
     @Override
@@ -138,9 +135,8 @@ public class UserService implements UserDetailsService {
     public Response<?> deleteAccount(UUID user_id) {
         try {
 
-           
             User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
             List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
 
@@ -151,23 +147,8 @@ public class UserService implements UserDetailsService {
             userRepository.delete(user);
             return new Response<>(true, "Account deleted successful!");
         } catch (Exception e) {
-            return new Response<>(false, "Error deleting user: " + e.getMessage() );
+            return new Response<>(false, "Error deleting user: " + e.getMessage());
         }
-    }
-
-
-    public Response<?> getProfileData(String username , UUID user_id) throws Exception {
-
-        try {
-             
-            User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        } catch (Exception e) {
-
-        }
-
-        return new Response<>(false, username);
     }
 
 }

@@ -13,4 +13,5 @@ import com.entity.Blogs.Blog;
 public interface BlogRepository extends JpaRepository<Blog, UUID> {
     public List<Blog> findByCreatedById(UUID userId);
     List<Blog> findByCreatedById(UUID userId, Pageable pageable);
-}   
+    Long countByCreatedBy_Id(UUID userId);
+}

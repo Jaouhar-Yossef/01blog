@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security .core.Authentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,57 +34,50 @@ public class BlogController {
     private final SavedService savedService;
     private final LikeBlogService likeBlogService;
     private final CommentBlogService commentBlogService;
-    
 
-    public BlogController(BlogService blogService  ,CommentBlogService commentBlogService , LikeBlogService likeBlogService,SavedService savedService) {
+    public BlogController(BlogService blogService, CommentBlogService commentBlogService,
+            LikeBlogService likeBlogService, SavedService savedService) {
         this.blogService = blogService;
         this.likeBlogService = likeBlogService;
         this.savedService = savedService;
         this.commentBlogService = commentBlogService;
     }
 
-
     @PostMapping("/creat-comment")
-    public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request, 
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
-       
-        try {        
+    public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        try {
             UUID user_id = userDetails.getUser().getId();
             CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
-            return ResponseEntity.status(HttpStatus. CREATED).body(new Response<CommentResponseDTO>(true, "Comment created sucesfuly!",response));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new Response<CommentResponseDTO>(true, "Comment created sucesfuly!", response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
-        } 
+        }
     }
 
-
-
     @PostMapping("/like_blog")
-    public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request, 
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public ResponseEntity<?> likeBlog(@RequestBody LikeOrSaveBlogRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UUID user_id = userDetails.getUser().getId();
-        String msg = this.likeBlogService.likeBlog(user_id, request.getId_blog());        
-        return ResponseEntity.ok(Map.of("message", msg));        
+        String msg = this.likeBlogService.likeBlog(user_id, request.getId_blog());
+        return ResponseEntity.ok(Map.of("message", msg));
     }
 
     @PostMapping("/unlike_blog")
-    public ResponseEntity<?> UnLikeBlog(@RequestBody LikeOrSaveBlogRequest request, 
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public ResponseEntity<?> UnLikeBlog(@RequestBody LikeOrSaveBlogRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UUID user_id = userDetails.getUser().getId();
-        String msg = this.likeBlogService.unLikedBlog(user_id, request.getId_blog());        
+        String msg = this.likeBlogService.unLikedBlog(user_id, request.getId_blog());
 
         return ResponseEntity.ok(Map.of("message", msg));
     }
 
-
     @PostMapping("/save_blog")
-    public ResponseEntity<?> saveBlog( @RequestBody LikeOrSaveBlogRequest request, 
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public ResponseEntity<?> saveBlog(@RequestBody LikeOrSaveBlogRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UUID user_id = userDetails.getUser().getId();
         String msg = this.savedService.saveBlog(user_id, request.getId_blog());
@@ -92,12 +85,9 @@ public class BlogController {
         return ResponseEntity.ok(Map.of("message", msg));
     }
 
-
-
     @PostMapping("/unsave_blog")
-    public ResponseEntity<?> unsaveBlog( @RequestBody LikeOrSaveBlogRequest request, 
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public ResponseEntity<?> unsaveBlog(@RequestBody LikeOrSaveBlogRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UUID user_id = userDetails.getUser().getId();
         String msg = this.savedService.unsaveBlog(user_id, request.getId_blog());
@@ -106,86 +96,74 @@ public class BlogController {
     }
 
     // @GetMapping("/blogs")
-    // public ResponseEntity<List<BlogResponseDTO>> getBlogs( @RequestParam(defaultValue = "0") int page,
-    //         @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
-    //         ) {
+    // public ResponseEntity<List<BlogResponseDTO>> getBlogs(
+    // @RequestParam(defaultValue = "0") int page,
+    // @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal
+    // UserDetailsImpl userDetails
+    // ) {
 
-    //     UUID userId = userDetails.getUser().getId();
-    //     List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page , size);
-    //     return ResponseEntity.ok(blogDTOs);
+    // UUID userId = userDetails.getUser().getId();
+    // List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page ,
+    // size);
+    // return ResponseEntity.ok(blogDTOs);
     // }
 
-
-
-
-
-
-
     @GetMapping("/blogs")
-    public ResponseEntity<List<BlogResponseDTO>> getBlogs(
-        @RequestParam int page,
-        @RequestParam int size,
-        @RequestParam String mode,
-        @RequestParam(required = false) String username, @AuthenticationPrincipal UserDetailsImpl userDetails 
-    ) {
+    public ResponseEntity<Response<List<BlogResponseDTO>>> getBlogs(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String mode,
+            @RequestParam(required = false) String username, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        System.out.println("===> " + mode);
+        try {
+            UUID userId = userDetails.getUser().getId();
 
-        UUID userId = userDetails.getUser().getId();
-
-        if ("home".equals(mode)) {
-            List<BlogResponseDTO> blogDTOs = blogService.blogsGetterHome(userId , page , size);
-            return ResponseEntity.ok(blogDTOs);
-        } else if ("profile".equals(mode)) {
-            List<BlogResponseDTO> blogDTOs =  blogService.blogsGetterProfile(userId , page , size , username);
-            return ResponseEntity.ok(blogDTOs);
-
-        } else if ("saved".equals(mode)) {
-
+            if ("home".equals(mode)) {
+                List<BlogResponseDTO> blogDTOs = blogService.blogsGetterHome(userId, page, size);
+                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+            } else if ("profile".equals(mode)) {
+                List<BlogResponseDTO> blogDTOs = blogService.blogsGetterProfile(userId, page, size, username);
+                    return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+            } else if ("saved".equals(mode)) {
+                List<BlogResponseDTO> blogDTOs = blogService.blogsGetterSaved(userId, page, size);
+                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
-
-        return ResponseEntity.ok(null);
+        return ResponseEntity.badRequest().body(new Response<>(false, "Bad Request"));
     }
-
-
 
     @GetMapping("/blog/{id_blog}")
     public ResponseEntity<?> getBlog(@PathVariable UUID id_blog,
-            @AuthenticationPrincipal UserDetailsImpl userDetails 
-            ) {
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         try {
             UUID user_id = userDetails.getUser().getId();
-            BlogResponseDTO blogDTOs = blogService.getOneBlog(user_id , id_blog);
+            BlogResponseDTO blogDTOs = blogService.getOneBlog(user_id, id_blog);
             return ResponseEntity.ok(blogDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Blog not found or error occurred");
         }
     }
 
-
     @GetMapping("/comments/{id_blog}")
     public ResponseEntity<Response<?>> getcomments(@PathVariable UUID id_blog,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails 
-            ) {
-            UUID user_id = userDetails.getUser().getId();
-        
-            
-            try {
-                List<CommentResponseDTO> CommentDTO = this.commentBlogService.getTheComment(user_id,  page , size , id_blog);
-                
-                return ResponseEntity.ok(new Response<>(true, "" , CommentDTO));
+            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UUID user_id = userDetails.getUser().getId();
 
-            } catch (Exception e) {
-                
-                return ResponseEntity.badRequest().body(new Response<>(false,  e.getMessage()));
-            }
-            
+        try {
+            List<CommentResponseDTO> CommentDTO = this.commentBlogService.getTheComment(user_id, page, size, id_blog);
+
+            return ResponseEntity.ok(new Response<>(true, "", CommentDTO));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
 
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
@@ -195,10 +173,10 @@ public class BlogController {
 
     @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<BlogResponseDTO>> create_Blog(
-            @Valid @ModelAttribute BlogRequest blogRequest, 
+            @Valid @ModelAttribute BlogRequest blogRequest,
             BindingResult bindingResult,
             Authentication authentication) {
-    
+
         if (bindingResult.hasErrors()) {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg, null));

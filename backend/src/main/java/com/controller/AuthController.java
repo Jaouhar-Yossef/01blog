@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.dto.LoginRequest;
 import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
-import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
@@ -42,31 +41,35 @@ public class AuthController {
                 .body(response);
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<Response<?>> login(@RequestBody @Valid LoginRequest request) {       
+    public ResponseEntity<Response<?>> login(@RequestBody @Valid LoginRequest request) {
         String emailOrUsername = request.getEmailOrUsername();
         Response<UserResponseDTO> response = userService.login(emailOrUsername, request.getPassword());
-    
+
         if (!response.isSuccess()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/validate-token")
-    public void me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return;
-    }
-
     @DeleteMapping("/deleteAccount")
     public ResponseEntity<?> delete_Account(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UUID user_id = userDetails.getUser().getId();
         try {
-            Response<?> response =  userService.deleteAccount(user_id);
+            Response<?> response = userService.deleteAccount(user_id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response<>(false, e.getMessage())); 
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response<>(false, e.getMessage()));
         }
     }
+
+    @PostMapping("/validate-token")
+    public ResponseEntity<Boolean> validateToken(
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+        return ResponseEntity.ok(true);
+    }
+
 }

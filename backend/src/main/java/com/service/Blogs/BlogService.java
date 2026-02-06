@@ -6,8 +6,10 @@ import com.dto.MediaDTO;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.MediaBlog;
+import com.entity.Blogs.Saved;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
+import com.repository.Blogs.SavedRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
@@ -27,17 +29,20 @@ public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
     private final MediaBlogService mediaBlogService;
+    private final SavedRepository savedRepository;
 
     private final SavedService savedService;
     private final LikeBlogService likeBlogService;
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
-            LikeBlogService likeBlogService, SavedService savedService, MediaBlogService mediaBlogService) {
+            LikeBlogService likeBlogService, SavedService savedService,
+             MediaBlogService mediaBlogService , SavedRepository savedRepository) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.likeBlogService = likeBlogService;
         this.savedService = savedService;
         this.mediaBlogService = mediaBlogService;
+        this.savedRepository = savedRepository;
     }
 
     @Transactional
@@ -84,6 +89,7 @@ public class BlogService {
         return blogRepository.findAll(pageable).getContent();
     }
 
+  
     public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
 
         List<Blog> blogs = this.getBlogsPaginated(page, size);
@@ -120,6 +126,49 @@ public class BlogService {
         return blogDTOs;
     }
 
+    public List<BlogResponseDTO> blogsGetterSaved (UUID userId, int page, int size) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Pageable pageable = PageRequest.of(page, size);
+        List<Saved> savedList = savedRepository.findSavedBlogsByUserId(user.getId(), pageable);
+
+        List<Blog> savedBlogs = savedList.stream()
+                .map(Saved::getBlog)
+                .toList();
+                
+        List<BlogResponseDTO> blogDTOs = savedBlogs.stream()
+                .map(blog -> {
+                    boolean saved = true;
+                    boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());
+
+                    Long numbLike = this.likeBlogService.getNumbLike(blog.getId());
+
+                    List<MediaDTO> mediaList = blog.getMedias().stream()
+                            .map(m -> new MediaDTO(
+                                    m.getUrl(),
+                                    m.getFileName(),
+                                    m.getType()))
+                            .toList();
+
+                    return new BlogResponseDTO(
+                            blog.getId(),
+                            blog.getTitle(),
+                            blog.getStatus(),
+                            blog.getContent(),
+                            saved,
+                            liked,
+                            numbLike,
+                            blog.getCreatedBy().getUsername(),
+                            blog.getCreatedBy().getImageUrl(),
+                            mediaList);
+
+                })
+                .toList();
+
+        return blogDTOs;
+    }
+
     public List<BlogResponseDTO> blogsGetterProfile(
             UUID userId,
             int page,
@@ -128,7 +177,6 @@ public class BlogService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         List<Blog> blogs = blogRepository.findByCreatedById(user.getId(), pageable);
 
