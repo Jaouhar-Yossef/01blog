@@ -1,8 +1,42 @@
 <div class="profile">
-    <div class="nameAndEdit">
-        HHHH
-    </div>
-    <div class="blogsAndcontent">
-        <app-blog-list-component  mode="profile"  [username]="username"></app-blog-list-component>
-    </div>
+    <ng-container *ngIf="profile$ | async as profile">
+        <div class="nameAndEdit">
+            <div class="imgProfile">
+
+                <img class="imguser" *ngIf="profile.imageUrl?.length > 0; else nophotouser"
+                    [src]=" baseUrl  + profile.imageUrl" alt="">
+
+                <ng-template #nophotouser>
+                    <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                </ng-template>
+
+            </div>
+            <div class="nameAndInfo">
+                <p>
+                    {{ profile.username }}
+                </p>
+                <div class="nmbInfo">
+                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.blogsCont }} Blogs </button>
+                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.countFollowers }} Followers </button>
+                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.countFollowing }} Following </button>
+                </div>
+                <div *ngIf="profile.yourProfile" class="FollowOrReport">
+                    <button type="button" class="btn btn-secondary">Edit Profile <mat-icon>edit_note</mat-icon> </button>
+                </div>
+
+                 <div *ngIf="!profile.yourProfile" class="btnEdit">
+                    <button  *ngIf="!profile.following" type="button" matButton="tonal" class="btn" (click)="FollowTheUser()" > 
+                        Follow <mat-icon>person_add</mat-icon> </button>
+                    <button *ngIf="profile.following" type="button" matButton="tonal" class="btn" (click)="UnFollowTheUser()">
+                         Following <mat-icon>how_to_reg</mat-icon> </button>
+                    <button type="button" matButton="tonal"   class="btnn"> 
+                         Report <mat-icon>policy</mat-icon> </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="blogsAndcontent">
+            <app-blog-list-component mode="profile" [username]="username"></app-blog-list-component>
+        </div>
+    </ng-container>
 </div>

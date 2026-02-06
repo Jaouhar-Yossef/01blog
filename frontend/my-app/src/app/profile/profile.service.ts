@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserProfile } from '../profile/profile';
+import { ApiResponse } from '../content-home/content-home.service';
+
+
+export interface UserProfile {
+  username: string;
+  imageUrl: string;
+  isFollower : boolean;
+  isFollowing : boolean;
+  isYourProfile : boolean;
+  CountFollowers: number;
+  CountFollowing: number;
+  BlogsCont: number;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -9,21 +21,17 @@ import { UserProfile } from '../profile/profile';
 export class ProfileService {
 
     private baseUrl = 'http://localhost:8080/profile';
+    constructor(private http: HttpClient,) {}
 
-    constructor(
-        private http: HttpClient,
-    ) {
-    }
-
-    getProfileByUsername(username: string): Observable<UserProfile> {
-        return this.http.get<any>(`${this.baseUrl}/${username}`);
+    getProfileByUsername(username: string): Observable<ApiResponse<UserProfile>> {
+        return this.http.get<ApiResponse<UserProfile>>(`${this.baseUrl}/${username}`);
     }
     
-    follow(username: string): Observable<void> {
-        return this.http.post<void>(`${this.baseUrl}/${username}/follow`, {});
+    follow(username: string): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(`${this.baseUrl}/${username}/follow`, {});
     }
 
-    unfollow(username: string): Observable<void> {
-        return this.http.post<void>(`${this.baseUrl}/${username}/unfollow`, {});
+    unfollow(username: string): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(`${this.baseUrl}/${username}/unfollow`, {});
     }
 }

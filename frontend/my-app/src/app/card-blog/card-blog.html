@@ -5,7 +5,7 @@
       <h2 class="titleBlog">{{ blog.title }}</h2>
       <p class="discription">
         {{ blog.content | slice:0:10 }}
-        <a class="read-more" (click)="showTheBlog(blog)" >...Read more</a>
+        <a class="read-more" (click)="showTheBlog(blog.id)" >...Read more</a>
       </p>
     </div>  
 
@@ -22,7 +22,7 @@
           <img *ngIf="blog.liked" src="./../../assets/heart.png" alt="">
         </button>
 
-        <button class="like" (click)="showTheBlog(blog)">
+        <button class="like" (click)="showTheBlog(blog.id)">
           <img src="./../../assets/images/chat-icon.svg" alt="">
         </button>
       </div>
@@ -47,7 +47,7 @@
       *ngIf="blog.media[currentIndex].type === 'IMAGE'"
       [src]="baseUrl + blog.media[currentIndex].url"
       class="media-item"
-      (click)="showTheBlog(blog)"
+      (click)="showTheBlog(blog.id)"
     />
 
     <video
@@ -57,7 +57,7 @@
       loop
       playsinline
       class="media-item"
-      (click)="showTheBlog(blog)"
+      (click)="showTheBlog(blog.id)"
     ></video>
 
   </ng-container>
@@ -66,7 +66,7 @@
     <img
       src="./../../assets/no-picture.png"
       class="nomedia-item"
-      (click)="showTheBlog(blog)"
+      (click)="showTheBlog(blog.id)"
     />
   </ng-template>
 </div>

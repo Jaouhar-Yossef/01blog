@@ -32,11 +32,8 @@ export class CardBlog implements OnChanges, OnDestroy {
   constructor(private ngZone: NgZone,private router: Router , private errorService: ErrorService) {}
 
 
-  showTheBlog(blog : any) {
-    if (this.uiui.showCreatBlogHere()) {
-      this.uiui.closeCreatBlog();
-    }
-    this.router.navigate(['/home/blog', blog.id]);
+  showTheBlog(id : string) {
+    this.router.navigate(['/home/blog', id]);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -126,7 +123,6 @@ export class CardBlog implements OnChanges, OnDestroy {
 
 
   goToProfile() {
-    console.log("hhhh")
     this.router.navigate([`/home/profile` , this.blog.createdByUsername]);
   }
 

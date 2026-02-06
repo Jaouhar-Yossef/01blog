@@ -8,16 +8,15 @@
         <ng-container *ngIf="comments$ | async as comments">
             <div class="commentuser" *ngFor="let comment of comments; trackBy: trackById">
 
-                <img class="imgcreatblog" (click)="goToProfile(comment)" [src]="comment.urlString && comment.urlString.length > 0 
-                    ? comment.urlString 
-                    : './../../assets/blank-profile-picture-973460_640.webp'" alt="">
+                <img class="imgcreatblog" (click)="goToProfile(comment?.creatorUsername)" [src]="comment.urlString.length > 0  
+                ? baseUrl + comment.urlString   : './../../assets/blank-profile-picture-973460_640.webp'" alt="">
 
 
                 <div class="creatbyAndComment">
                     <div class="comment-fieldd">
                         {{ comment.comment }}
                     </div>
-                    <span (click)="goToProfile(comment)" class="creatorcomment"> {{ comment.creatorUsername }}</span>
+                    <span (click)="goToProfile(comment?.creatorUsername)" class="creatorcomment"> {{ comment.creatorUsername }}</span>
                 </div>
             </div>
             <div *ngIf="comments.length === 0" class="noContent">

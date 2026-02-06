@@ -1,20 +1,153 @@
 .profile {
-    width: 70%;
+    width: 100%;
     height: 100%;   
     border-left: 1px solid rgb(82, 82, 82);
     border-right: 1px solid rgb(82, 82, 82);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .nameAndEdit {
     width: 100%;
-    height: 20%;
-    border-right: 1px solid rgb(82, 82, 82);
-    padding-top: 2%;
+    height: 25%;
+    border-bottom: 1px solid rgb(82, 82, 82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgProfile{
+    width: 25%;
+    height: 100%;
+    text-align: end;
+    margin-right: 2%;
+}
+
+.imguser {
+    width: 140px;
+    height: 140px;
+    border-radius: 80px;
+    object-fit: cover;
+    filter: brightness(1.2) contrast(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.nameAndInfo {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 20px;
+}
+
+.nameAndInfo p {
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
+
+.nmbInfo {
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 50%;
+    /* background-color: red; */
+
+}
+
+.btnmatang {
+    color: white !important;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+}
+
+.btnmatang:hover {
+    color: rgba(94, 94, 94, 0.336) !important;
+}
+
+.nmbForProfile {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    background-color: rgba(128, 128, 128, 0.295);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.FollowOrReport {
+    margin-top: 10px;
+    width: 70%;
+    display: flex;
+}
+
+.btnEdit {
+    margin-top: 10px;
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn {
+    width: 45%;
+   
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+
+    background-color: rgb(0, 123, 172) !important;
+    color: white !important;
+}
+
+.btnn{
+    width: 30%;
+    display: flex;
+    justify-content: center;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+
+    
+    background-color: rgb(172, 103, 0) !important;
+    color: rgb(226, 226, 226) !important;
+    
 
 }
 
 .blogsAndcontent {
-    width: 100%;
-    height: 80%;
+    width: 80%;
+    height: 85%;
     padding-top: 2%;
+    overflow-y: auto;
+}
+
+
+.reportUser {
+    background-color: aqua;
+    
+}
+.blogsAndcontent::-webkit-scrollbar {
+    width: 0px;
+}
+
+.blogsAndcontent::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+.blogsAndcontent::-webkit-scrollbar-thumb {
+    background: rgb(1, 94, 122);
+    border-radius: 10px;
+
+    border: 0px solid transparent;
+}
+
+.blogsAndcontent::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.9);
 }

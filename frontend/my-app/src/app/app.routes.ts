@@ -21,7 +21,7 @@ export const routes: Routes = [
      
             { path: '', component: BlogListComponent , canActivate: [authGuard] },
             { path: 'blog/:id', component: Blog , canActivate: [authGuard]},
-            { path: 'blogsSaved', component: BlogListComponent , canActivate: [authGuard] },
+            { path: 'blogsSaved', component: BlogListComponent , canActivate: [authGuard] ,  data: { view: 'saved' } },
             { path: 'profile/:name', component: Profile , canActivate: [authGuard] }
       ]
     },

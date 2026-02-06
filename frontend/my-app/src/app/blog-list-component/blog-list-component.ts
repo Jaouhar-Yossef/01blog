@@ -17,6 +17,7 @@ import { ContentHomeService } from '../content-home/content-home.service';
 import { BlogMode } from '../blog-list-component/blog-list-mode';
 
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-list-component',
@@ -41,13 +42,19 @@ export class BlogListComponent implements OnInit, AfterViewInit {
   public ui = inject(BlogUiService);
   private postService = inject(ContentHomeService);
   private platformId = inject(PLATFORM_ID);
+  
+  constructor(private route: ActivatedRoute) {}
 
   private io!: IntersectionObserver;
   @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
-    
+    if (!this.mode || this.mode == 'home') {
+      const view = this.route.snapshot.data['view'];
+      this.mode = view === 'saved' ? 'saved' : 'home';
+    } 
     this.loadNextPage();
+   
   }
 
   ngAfterViewInit() {
@@ -72,13 +79,15 @@ export class BlogListComponent implements OnInit, AfterViewInit {
     this.postService
       .getBlogs(this.page, this.size, this.mode, this.username)
       .subscribe({
-        next: (data) => {
+        next: (res) => {
+
+
           this.blogsSubject.next([
             ...this.blogsSubject.value,
-            ...data
+            ...res.anyData
           ]);
 
-          if (data.length < this.size) {
+          if (res.anyData.length < this.size) {
             this.hasMore = false;
           } else {
             this.page++;

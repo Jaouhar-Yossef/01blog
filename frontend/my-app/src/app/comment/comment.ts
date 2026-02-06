@@ -12,6 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ApiResponse } from '../content-home/content-home.service';
 
 
 export interface CreateCommentDto {
@@ -25,12 +26,6 @@ interface comment {
   comment: string;
   urlString: string;
   creatorUsername: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  anyData: comment[];
 }
 
 
@@ -64,7 +59,8 @@ export class Comment {
 
   commentForm: FormGroup;
 
-  
+  baseUrl = 'http://localhost:8080';  
+
   constructor( private errorService: ErrorService ,  @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute ,private router: Router, private  contentHomeService : ContentHomeService  , private fb: FormBuilder) {
       this.commentForm = this.fb.group({
@@ -76,6 +72,7 @@ export class Comment {
   @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.errorService.showMessage('Blog ID not found', 'error');
@@ -107,7 +104,7 @@ export class Comment {
         this.loading = true;
         this.contentHomeService.getComment(this.id_blog, this.page, this.size)
         .subscribe({
-          next: (res: ApiResponse) => {
+          next: (res: ApiResponse<comment[]>) => {
             this.CommentSubject.next([
               ...this.CommentSubject.value,
               ...res.anyData
@@ -158,17 +155,14 @@ export class Comment {
   }
 
 
-
   trackById(_: number, comment: any) {
     return comment.id;
   }
 
  
 
-  goToProfile(comment: comment) {
-    if (!comment?.creatorUsername) return;
-  
-    this.router.navigate(['/home/profile', comment.creatorUsername]);
+  goToProfile(creatBy: string) {  
+    this.router.navigate(['/home/profile', creatBy]);
   }
 
 

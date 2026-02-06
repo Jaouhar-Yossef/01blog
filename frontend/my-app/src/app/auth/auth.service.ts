@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 interface TheUser {
-  username: string; 
+  username: string;
   email: string;
   imageUrl: string;
 }
@@ -18,7 +18,7 @@ export class AuthService {
   private isBrowser: boolean;
 
   loggedIn = signal<boolean>(false);
-  
+
 
   getloggedIn() {
     return this.loggedIn();
@@ -33,7 +33,7 @@ export class AuthService {
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
 
-    
+
     if (this.isBrowser) {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');
@@ -50,19 +50,19 @@ export class AuthService {
     localStorage.setItem('token', user.tokeString);
 
     const theUser: TheUser = {
-        username: user.username,
-        email: user.email,
-        imageUrl: user.imageUrl
+      username: user.username,
+      email: user.email,
+      imageUrl: user.imageUrl
     };
 
     localStorage.setItem('user', JSON.stringify(theUser));
     this.loggedIn.set(true);
     this.user = user;
   }
- 
+
   getToken(): string | null {
-    if (!this.isBrowser) return null;  
-    return localStorage.getItem('token'); 
+    if (!this.isBrowser) return null;
+    return localStorage.getItem('token');
   }
 
 
@@ -78,34 +78,48 @@ export class AuthService {
 
   login(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap(res => this.saveAuthData(res.anyData))
+      tap(res => this.saveAuthData(res.anyData)),
+      catchError(err => {
+        return of({
+          success: false,
+          message: err.error?.message || 'Login failed'
+        });
+      })
     );
   }
+
 
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  
-  validateToken(): Observable<boolean> {
-    const token = this.getToken();  
-    if (!token) return of(false);
-    return this.http.post<any>(`${this.apiUrl}/validate-token`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).pipe(
-        map(user => {
-          this.loggedIn.set(true);
-          this.user = user;
-          return true;
-        }),
-        catchError(() => {
-          this.loggedIn.set(false);
-          return of(false);
-        })
-      );
-  }
+
 
   deleteAccount(): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/deleteAccount` , {});
+    return this.http.delete<any>(`${this.apiUrl}/deleteAccount`, {});
   }
+
+  validateToken(): Observable<boolean> {
+    const token = this.getToken();
+    if (!token) return of(false);
+
+    return this.http.post<boolean>(
+      `${this.apiUrl}/validate-token`,
+      {}
+    ).pipe(
+      map(() => {
+        this.loggedIn.set(true);
+        return true;
+      }),
+      catchError((err) => {
+        console.error('Auth error:  ', err);
+
+        this.loggedIn.set(false);
+        return of(false);
+      })
+    );
+  }
+
+
+
 }

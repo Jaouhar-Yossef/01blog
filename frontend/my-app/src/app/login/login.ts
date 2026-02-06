@@ -15,18 +15,18 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatFormFieldModule , MatButtonModule , RouterModule],
+  imports: [CommonModule, FormsModule, MatFormFieldModule, MatButtonModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
   showPassword = false;
-  
+
   constructor(
     private authService: AuthService,
     private errorService: ErrorService,
-     private router: Router
-  ) {}
+    private router: Router
+  ) { }
 
   @Output() switchForm = new EventEmitter<void>();
 
@@ -42,11 +42,11 @@ export class LoginComponent {
   email: string = ''
 
   check() {
-    if (this.email.trim() == '' || this.password.trim() == ''  ) {
+    if (this.email.trim() == '' || this.password.trim() == '') {
       this.errorService.showMessage('All fields must be filled!', 'error');
       return
     }
-    if (this.email.trim().length < 3 ) {
+    if (this.email.trim().length < 3) {
       this.errorService.showMessage('At least 3 characters!', 'error');
       return
     }
@@ -65,16 +65,16 @@ export class LoginComponent {
       password: this.password.trim(),
     };
 
-    this.authService.login(data).subscribe({
-      next: (res) => {
-        this.errorService.showMessage('login successful!', 'success');
-        this.authService.saveAuthData(res.anyData);        
-        this.router.navigate(['/home']);
-      },
-      error: (err) => {
-        this.errorService.showMessage(err.error.message, 'error');
+    this.authService.login(data).subscribe(res => {
+      if (res.success === false) {
+        this.errorService.showMessage(res.message, 'error');
+        return;
       }
-    })
+
+      this.errorService.showMessage('Login successful!', 'success');
+      this.router.navigate(['/home']);
+    });
   }
+
 
 }

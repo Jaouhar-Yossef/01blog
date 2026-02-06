@@ -29,10 +29,12 @@ export class CreatBlog {
   form: FormGroup;
   files: MediaFile[] = [];
 
+  isSubmitting= false;
+
   constructor(private fb: FormBuilder, private errorService: ErrorService , private authService: AuthService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(20)]],
-      content: ['', [Validators.required, Validators.maxLength(1000)]],
+      title: ['', [Validators.required, Validators.minLength(2),  Validators.maxLength(20)]],
+      content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
     });
   }
 
@@ -54,8 +56,9 @@ export class CreatBlog {
     
 
     selectedFiles.forEach(file => {
-       if (file.size > 50 * 1024 * 1024) {
-        this.errorService.showMessage( 'Video too large (max 50MB)', 'warning');
+       if (file.size > 20 * 1024 * 1024) {
+        this.errorService.showMessage( 'Video too large (max 20MB)', 'warning');
+        return
       }
       const type: MediaType = file.type.startsWith('image') ? 'image' : 'video';
       this.files.push({
@@ -74,10 +77,15 @@ export class CreatBlog {
   }
 
   submit() {
+
+    if (this.isSubmitting) return;
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+
+    this.isSubmitting = true;
    
     const formData = new FormData();
     formData.append('title', this.form.value.title);
@@ -85,8 +93,8 @@ export class CreatBlog {
   
     for (let i = 0; i < this.files.length; i++) {
       const file = this.files[i];
-      if (file.file.size > 50 * 1024 * 1024) {
-        this.errorService.showMessage( 'Video too large (max 50MB)', 'warning');
+      if (file.file.size > 20 * 1024 * 1024) {
+        this.errorService.showMessage( 'Video too large (max 20MB)', 'warning');
         continue;
       }
       formData.append('files', file.file);
@@ -96,14 +104,19 @@ export class CreatBlog {
       next: res => {
         if (!res.success) {
           this.errorService.showMessage('Error creating blog', 'error');
+          this.isSubmitting = false;
+          this.clearForm();
+          this.onCancel();
           return;
         }
         this.errorService.showMessage('Blog Created (:', 'success');
+        this.isSubmitting = false;
         this.clearForm();
         this.onCancel();
       },
       error: err => {
         this.errorService.showMessage('Error creating blog', 'error');
+        this.isSubmitting = false;
       }
     });
   }

@@ -42,7 +42,6 @@ export class Setting {
   }
 
   savedBlog() {
-    console.log("hhhhhhh")
     this.router.navigate([`/home/blogsSaved`]);
   }
   logout() {

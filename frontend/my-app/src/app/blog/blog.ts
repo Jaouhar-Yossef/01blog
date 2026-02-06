@@ -1,5 +1,5 @@
 import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -59,6 +59,9 @@ export class Blog {
 
 
   ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (this.loading) return;
+    this.loading = true
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
@@ -66,8 +69,11 @@ export class Blog {
 
     this.contentHomeService.getBlogById(id).subscribe({
       next: blog => this.blogSubject.next(blog),
-      error: () => this.errorService.showMessage('Cannot load blog', 'error')
+      error: () => {
+        this.errorService.showMessage('Cannot load blog ):', 'error')
+      } 
     });
+    this.loading = false
   }
 
 
@@ -102,7 +108,7 @@ export class Blog {
       next: () => {
         this.loading = false;
         this.errorService.showMessage(
-          previousState ? 'Unliked successfully!' : 'Liked successfully!',
+          previousState ? 'Unliked successfully! (:' : 'Liked successfully! (:',
           'success'
         );
       },
@@ -115,7 +121,7 @@ export class Blog {
         });
 
         this.loading = false;
-        this.errorService.showMessage('Something went wrong 😢', 'error');
+        this.errorService.showMessage('Something went wrong ):', 'error');
       }
     });
   }
@@ -143,27 +149,24 @@ export class Blog {
       next: () => {
         this.loading = false;
         this.errorService.showMessage(
-          previousState ? 'Removed from saved' : 'Saved successfully!',
+          previousState ? 'Removed from saved (:' : 'Saved successfully! (:',
           'success'
         );
       },
 
       error: () => {
-        // 🔁 rollback
         this.blogSubject.next({
           ...blog,
           saved: previousState
         });
 
         this.loading = false;
-        this.errorService.showMessage('Something went wrong 😢', 'error');
+        this.errorService.showMessage('Something went wrong ):', 'error');
       }
     });
   }
 
-
-
-
-  goToProfile() {
+  goToProfile(creatBy: string) {
+    this.router.navigate(['/home/profile', creatBy]);
   }
 }

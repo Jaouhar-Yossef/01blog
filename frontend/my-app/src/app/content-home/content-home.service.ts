@@ -2,7 +2,6 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-// import { AuthService } from '../auth/auth.service';
 import { BlogMode } from '../blog-list-component/blog-list-mode';
 
 
@@ -13,11 +12,12 @@ interface Comment {
   creatorUsername: string;
 }
 
-interface ApiResponse {
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  anyData: Comment[];
+  anyData: T;
 }
+
 
 @Injectable({ providedIn: 'root' })
 export class ContentHomeService {
@@ -26,7 +26,7 @@ export class ContentHomeService {
 
   constructor(
     private http: HttpClient,
-    
+
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -34,12 +34,12 @@ export class ContentHomeService {
 
 
 
-    getBlogs(
+  getBlogs(
     page: number,
     size: number,
     mode: BlogMode,
     username?: string
-  ): Observable<any[]> {
+  ): Observable<ApiResponse<any[]>> {
 
     let params = `page=${page}&size=${size}&mode=${mode}`;
 
@@ -47,11 +47,11 @@ export class ContentHomeService {
       params += `&username=${username}`;
     }
 
-    return this.http.get<any[]>(`${this.apiUrl}/blogs?${params}`);
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/blogs?${params}`);
   }
 
 
-  getBlogById(blogId : string): Observable<any> {
+  getBlogById(blogId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/blog/${blogId}`);
   }
 
@@ -59,14 +59,17 @@ export class ContentHomeService {
   creatBlogs(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);
   }
-    
+
 
 
   creatComment(formData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-comment`, formData);
   }
 
-  getComment(id_blog: string, page: number, size: number) {
-    return this.http.get<ApiResponse>(`${this.apiUrl}/comments/${id_blog}?page=${page}&size=${size}`);
+  getComment(id_blog: string, page: number, size: number): Observable<ApiResponse<Comment[]>> {
+    return this.http.get<ApiResponse<Comment[]>>(
+      `${this.apiUrl}/comments/${id_blog}?page=${page}&size=${size}`
+    );
   }
+
 }
