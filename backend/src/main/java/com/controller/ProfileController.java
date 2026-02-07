@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.ProfileResponseDTO;
 import com.entity.UserDetailsImpl;
 import com.service.FollowersService;
-import com.service.UserService;
 import com.util.Response;
 
 @RestController
@@ -52,8 +52,8 @@ public class ProfileController {
 
 
 
-     @PostMapping("{username}/unfollow")
-    private ResponseEntity<Response<?>>  un_follow(@PathVariable String username, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("{username}/unfollow")
+    private ResponseEntity<Response<?>>  unFollow(@PathVariable String username, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
             UUID user_id = userDetails.getUser().getId();
             this.followersService.unFollow(username , user_id);
@@ -62,4 +62,12 @@ public class ProfileController {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
     }
+
+
+    @GetMapping("users")
+    private void getUsers(@RequestParam int page, @RequestParam int size , @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        System.out.println("hhh =>  " + page + " " + size);
+    }
+    
 }

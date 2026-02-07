@@ -6,38 +6,21 @@
   height: 80vh;
   width: 50%;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  z-index: 99999999;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 999;
   opacity: 0;
-  transition: left 1s ease-in-out, opacity 1s ease-in-out; 
+  transition: left 1s ease-in-out, opacity 1s ease-in-out;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; 
-  overflow-x: hidden; 
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 40px;
   gap: 20px;
 }
 
 .create-blog-container.showCreatBlog {
-    left: 1%;  
-    opacity: 1; 
-}
-
-.blur-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 8, 56, 0.24); 
-  backdrop-filter: blur(0.3px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: -99;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0s ease;
-}
-
-.blur-overlay.show {
-    opacity: 1;
-     pointer-events: none;
+  left: 1%;
+  opacity: 1;
 }
 
 .create-blog-container h2 {
@@ -50,86 +33,86 @@
 }
 
 .form-group input {
-    background-color: rgb(1, 1, 44);
-    
-    border-radius: 15px;
-    color: white;
-    border: none;
-  
-    outline: none;
-    box-shadow: none;
+  background-color: rgb(1, 1, 44);
 
-    padding: 20px;
+  border-radius: 15px;
+  color: white;
+  border: none;
 
-    text-align: center;
+  outline: none;
+  box-shadow: none;
+
+  padding: 20px;
+
+  text-align: center;
   border-top: 2px solid rgb(48, 1, 109);
   border-bottom: 2px solid rgb(48, 1, 109);
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
 .form-group textarea {
-    text-align: center;
+  text-align: center;
 
-    align-content: center;    
-    background-color: rgb(1, 1, 44);
-    margin-top: 5px;
-    padding: 20px;
-    border-radius: 15px;
-      cursor: pointer;
-    color: white;
-    border: none;
-  
-    outline: none;
-    box-shadow: none;
-  
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-  
-    border-top: 2px solid rgb(48, 1, 109);
-    border-bottom: 2px solid rgb(48, 1, 109);
+  align-content: center;
+  background-color: rgb(1, 1, 44);
+  margin-top: 5px;
+  padding: 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  color: white;
+  border: none;
 
-    resize: none;
+  outline: none;
+  box-shadow: none;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+
+  border-top: 2px solid rgb(48, 1, 109);
+  border-bottom: 2px solid rgb(48, 1, 109);
+
+  resize: none;
 }
 
 .form-group input:focus {
-  background-color: rgb(6, 6, 78); 
-  color: white; 
+  background-color: rgb(6, 6, 78);
+  color: white;
   outline: none;
   box-shadow: none;
 }
 
 
 .form-group textarea:focus {
-  background-color: rgb(6, 6, 78); 
-  color: white; 
+  background-color: rgb(6, 6, 78);
+  color: white;
   outline: none;
   box-shadow: none;
 }
 
 .the-content::placeholder {
-  color: rgba(161, 161, 161, 0.7); 
-  font-size: 1rem;               
-  font-weight: 500;                  
+  color: rgba(161, 161, 161, 0.7);
+  font-size: 1rem;
+  font-weight: 500;
   opacity: 1;
 
 }
 
 
 .the-content {
-    height: 200px;
-    resize: none;  
+  height: 200px;
+  resize: none;
 }
 
 .form-group-media {
-    display: flex;
-    justify-content: space-between;
-      cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 .form-group-media input[type="file"] {
   padding: 5px;
-    cursor: pointer;
+  cursor: pointer;
 }
 
 
@@ -139,22 +122,22 @@
   height: 100px;
   object-fit: cover;
   border-radius: 8px;
-    cursor: pointer;
+  cursor: pointer;
 }
 
 
 .selectmedia {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    color: white;
-    width: 30%;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  color: white;
+  width: 30%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
@@ -165,22 +148,22 @@
 
 
 
-.selectmedia-label img{
-    width: 40px;
-    height: 40px;
-      cursor: pointer;
+.selectmedia-label img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
 }
 
 .selectmedia-label span {
-    color: gray;
-    font-size: 14px;
+  color: gray;
+  font-size: 14px;
 }
 
 .selectmedia-divimgs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .preview {
@@ -189,16 +172,16 @@
   gap: 12px;
   margin-top: 10px;
   width: 70%;
-  
 
-    cursor: pointer;
+
+  cursor: pointer;
 }
 
 .preview-item {
   position: relative;
   width: 18%;
   height: 100px;
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
@@ -208,7 +191,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
@@ -224,7 +207,7 @@
   width: 26px;
   height: 26px;
   cursor: pointer;
-    cursor: pointer;
+  cursor: pointer;
 
 }
 
@@ -234,12 +217,12 @@
 
 
 .form-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
 }
 
 
@@ -254,25 +237,25 @@
 .botnpub {
   cursor: pointer;
 
-    background:linear-gradient(90deg,#2b8cff,#6ea8ff);
+  background: linear-gradient(90deg, #2b8cff, #6ea8ff);
 }
 
 .botnpub:hover {
-    background:linear-gradient(90deg,#6ea8ff,#2b8cff);
+  background: linear-gradient(90deg, #6ea8ff, #2b8cff);
 }
 
 
 .divclearandcancel {
-    width: 25%;
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
   cursor: pointer;
 
-    padding: 5px;
+  padding: 5px;
 }
 
 .Cancel {
-    width: 45%;
-    display: flex;
+  width: 45%;
+  display: flex;
 }

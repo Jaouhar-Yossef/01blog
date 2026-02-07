@@ -57,24 +57,11 @@ export class Profile {
   }
 
 
-  // ngAfterViewInit() {
-  //   const new_name = this.route.snapshot.paramMap.get('name');
-  //    if (!new_name) {
-  //     this.errorService.showMessage('Profile not found', 'error');
-  //     return;
-  //   }
-  //   if (this.username !== new_name) {
-  //     this.username = new_name;
-  //     this.loadProfile(new_name);
-  //   }
-
-  // }
   loadProfile(username: string) {
     this.loading = true;
     this.ProfileSubject.next(null);
     this.profileService.getProfileByUsername(username).subscribe({
       next: (res: ApiResponse<UserProfile>) => {
-        // console.log("==> ", res)
         this.ProfileSubject.next(res.anyData)
         this.loading = false;
       },

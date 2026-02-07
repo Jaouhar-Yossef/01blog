@@ -1,30 +1,14 @@
 .nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 100%;
-  color: white;
-  padding: 1%;
-  background-color: black;
-}
-
-
-.title {
-  width: 20%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  
-}
-
-
-.title p {
-  font-size: 25px; 
-  font-family: "Merriweather", "Open Sans", serif;
-
-  font-weight: bolder;
-  margin-top: 8px;
   width: 100%;
+  color: white;
+  background-color: #2b8cff;
+  background-color: black;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .accent {
@@ -32,19 +16,31 @@
   font-size: 30px; 
   font-family: "Merriweather", "Open Sans", serif;
   font-weight: bolder;
-  margin-left: 15px;
+  margin-left: 5px;
 }
 
 
 .imgtitle {
-  width: 10%;
-  background-color: red;
+  
+  width: 30%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.imgtitle p {
+  padding: 0;
+  font-size: 30px; 
+  font-family: "Merriweather", "Open Sans", serif;
+  font-weight: bolder;
+}
+
 .book {
   position: absolute;
   top: 10%; 
   width: 60px;
-  left: 10%;
+  left: 12%;
   transform: translateX(50%);
   animation: fall 1.5s ease-in forwards;
   border-radius: 10px;
@@ -70,10 +66,12 @@
 .rightnavbar {
   width: 70%;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
-  height:  100%;
-  padding-right: 10%;
+  height: 100%;
+  gap: 30px;
+
+
 }
 
 
@@ -88,15 +86,6 @@
   justify-content: end;
   align-items: center;
   height: 100%;
-}
-
-.button-account {
-  display: flex;
-  gap: 15px;
-  height: 100%;
-  background-color: red;
-  justify-content: center;
-  align-items: center;
 }
 
 .btn {
@@ -155,33 +144,3 @@
   height: 40px;
 }
 
-.search-compact {
-  display:flex;
-  width:50%; 
-  border-radius:12px;
-  overflow:hidden; 
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-}
-
-.search-compact input {
-  flex:1;
-  padding:12px;
-  border:0;
-  outline:none;
-  font-size:12px;
-  height: 40%;
-}
-
-.search-compact button {
-  width: 20%;
-  border:0; 
-  background:linear-gradient(90deg,#2b8cff,#6ea8ff);
-  color:#fff; cursor:pointer; 
-  font-weight:600; 
-}
-
-.search-compact button:hover { 
-  background:linear-gradient(90deg,#6ea8ff , #2b8cff);
-  color:#fff;
-  font-weight:600; 
-}

@@ -15,6 +15,15 @@ export interface UserProfile {
   BlogsCont: number;
 }
 
+
+export interface User {
+  username: string;
+  imageUrl: string;
+  isFollower : boolean;
+  isFollowing : boolean;
+}
+
+
 @Injectable({
     providedIn: 'root'
 })
@@ -27,6 +36,11 @@ export class ProfileService {
         return this.http.get<ApiResponse<UserProfile>>(`${this.baseUrl}/${username}`);
     }
     
+    getUsers(page: number, size: number ):Observable<ApiResponse<User[]>> {
+        let params = `page=${page}&size=${size}`;
+        return this.http.get<ApiResponse<User[]>>(`${this.baseUrl}/users?${params}`)
+    }
+
     follow(username: string): Observable<ApiResponse<any>> {
         return this.http.post<ApiResponse<any>>(`${this.baseUrl}/${username}/follow`, {});
     }

@@ -1,37 +1,31 @@
 <div class="nav">
   <div class="imgtitle">
     <img src="../../assets/img4.jpeg" class="book">
-  </div>
-  <div class="title">
+
     <p>Welcome to <span class="accent">01-blog</span></p>
   </div>
 
 
   @if (isHome()) {
-    <div class="rightnavbar"> 
-    <div class="search-compact" >
-      <input type="search" id="compact" placeholder="Search for somethings..." />
-      <button > <img src="../../assets/images/search.svg" alt=""> Search </button>
-    </div>
-    <div class="divNotification">
-      <img class="imgsing" src="../../assets/images/notification-icon.png" alt="">
-
+  <div class="rightnavbar"> 
+    
+    <mat-icon (click)="searchHere()">search</mat-icon>
+      <mat-icon>notifications</mat-icon>
       <button (click)="creatBlog()" class="Creat-Blog  btn btn-primary"> <img class="plus-blog" src="../../assets/images/plus.svg" alt=""> Write Blog</button>
       <app-setting ></app-setting>
-    </div>
+    
   </div>
   }
 
 
-    @if (isRoot()) {
-      <div class="button-account" class="rightnavbarnoregister" >
-      <button mat-raised-button class="btn" routerLink="/account">
-        Get Started
-        <mat-icon>account_circle</mat-icon>
-      </button>
-
-      </div>
-    }
+  @if (isRoot()) {
+    <div class="button-account" class="rightnavbarnoregister" >
+    <button mat-raised-button class="btn" routerLink="/account">
+      Get Started
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    </div>
+  }
     <app-creat-blog> </app-creat-blog>
 </div>
 

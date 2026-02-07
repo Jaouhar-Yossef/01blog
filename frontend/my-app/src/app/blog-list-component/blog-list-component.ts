@@ -17,15 +17,30 @@ import { ContentHomeService } from '../content-home/content-home.service';
 import { BlogMode } from '../blog-list-component/blog-list-mode';
 
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorService } from '../error/error.service';
+
 
 @Component({
   selector: 'app-blog-list-component',
   standalone: true,
-  imports: [CommonModule, CardBlog, MatIconModule],
+  imports: [
+    CommonModule, CardBlog, MatIconModule,
+    MatFormFieldModule, MatInputModule,
+    MatButtonModule, ReactiveFormsModule
+  ],
+
   templateUrl: './blog-list-component.html',
   styleUrl: './blog-list-component.css',
 })
+
+
 export class BlogListComponent implements OnInit, AfterViewInit {
 
   @Input() mode: BlogMode = 'home';
@@ -42,19 +57,23 @@ export class BlogListComponent implements OnInit, AfterViewInit {
   public ui = inject(BlogUiService);
   private postService = inject(ContentHomeService);
   private platformId = inject(PLATFORM_ID);
-  
-  constructor(private route: ActivatedRoute) {}
+
+  private errorService = inject(ErrorService)
+
+  constructor(private route: ActivatedRoute) { }
 
   private io!: IntersectionObserver;
   @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     if (!this.mode || this.mode == 'home') {
       const view = this.route.snapshot.data['view'];
       this.mode = view === 'saved' ? 'saved' : 'home';
-    } 
+    }
     this.loadNextPage();
-   
+
   }
 
   ngAfterViewInit() {
@@ -80,8 +99,6 @@ export class BlogListComponent implements OnInit, AfterViewInit {
       .getBlogs(this.page, this.size, this.mode, this.username)
       .subscribe({
         next: (res) => {
-
-
           this.blogsSubject.next([
             ...this.blogsSubject.value,
             ...res.anyData
@@ -95,7 +112,10 @@ export class BlogListComponent implements OnInit, AfterViewInit {
 
           this.loading = false;
         },
-        error: () => this.loading = false
+        error: err => {
+          this.errorService.showMessage('Error geting Blogs ):', 'error');
+          this.loading = false
+        }
       });
   }
 

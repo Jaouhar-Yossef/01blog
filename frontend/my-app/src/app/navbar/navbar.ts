@@ -8,18 +8,19 @@ import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { UiService } from '../content-home/ui.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Setting, CommonModule , CreatBlog , MatButtonModule , MatIconModule , RouterModule],
+  imports: [Setting, CommonModule, CreatBlog, MatButtonModule, MatIconModule, RouterModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
 })
 
 export class Navbar {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
   isHome(): boolean {
     return this.router.url !== '/';
   }
@@ -29,13 +30,22 @@ export class Navbar {
 
 
   private uiui = inject(CreatBlogUiService)
-  
+  private ui = inject(UiService);
+
+  searchHere() {
+    if (this.ui.showSearchHere()) {
+      this.ui.closeSearch();
+    } else {
+      this.ui.openSearch();
+    }
+  }
+
   creatBlog() {
     if (this.uiui.showCreatBlogHere()) {
       this.uiui.closeCreatBlog()
       return
     }
-   
+
     this.uiui.openCreatBlog()
   }
 }

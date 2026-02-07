@@ -77,7 +77,6 @@ export class CreatBlog {
   }
 
   submit() {
-
     if (this.isSubmitting) return;
 
     if (this.form.invalid) {
@@ -100,19 +99,18 @@ export class CreatBlog {
       formData.append('files', file.file);
     }
 
+    this.clearForm();
+    this.onCancel();
+
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
         if (!res.success) {
           this.errorService.showMessage('Error creating blog', 'error');
           this.isSubmitting = false;
-          this.clearForm();
-          this.onCancel();
           return;
         }
         this.errorService.showMessage('Blog Created (:', 'success');
         this.isSubmitting = false;
-        this.clearForm();
-        this.onCancel();
       },
       error: err => {
         this.errorService.showMessage('Error creating blog', 'error');

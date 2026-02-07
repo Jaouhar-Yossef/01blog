@@ -1,0 +1,115 @@
+.pop-up_search {
+    background-color: rgb(1, 1, 44);
+
+    position: fixed;
+    top: 10%;
+    left: -25%;
+    height: 90vh;
+    width: 80%;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    opacity: 0;
+    transition: left 1s ease-in-out, opacity 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y:auto;
+    overflow-x: hidden;
+    padding: 5px;
+    
+}
+
+
+.pop-up_search.showSearch {
+    left: 10%;
+    opacity: 1;
+}
+
+
+
+.message {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.message p {
+    color: #e0e0e0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0%;
+}
+
+.message .closebtn {
+    font-size: 30px;
+}
+.message span {
+    background-color: rgba(1, 53, 95, 0.781);
+    width: 50px;
+    border-radius: 10px;
+} 
+
+.search-box {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-field {
+    width: 100%;
+    
+}
+
+.mat-mdc-form-field {
+    border-radius: 16px;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--focused {
+    box-shadow: 0 0 0 3px rgba(43, 140, 255, 0.25);
+}
+
+input {
+    font-size: 15px;
+    color: aliceblue !important;
+    border-radius: 20px !important;
+}
+
+mat-icon {
+    color: #2b8cff;
+}
+
+.mat-mdc-form-field,
+.mat-mdc-text-field-wrapper {
+    transition: all 0.25s ease-in-out;
+}
+
+.choose {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+}
+
+
+.btnmatang {
+    color: white !important;
+    font-size: 18px;
+    padding: 0%;
+    margin: 0%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    border-radius: 0;
+    width: 60%;
+} 
+
+.btnmatangchoose {
+    border-bottom: 2px solid blue;
+
+}

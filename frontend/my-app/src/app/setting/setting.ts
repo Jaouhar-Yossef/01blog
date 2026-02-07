@@ -5,11 +5,15 @@ import { ServiceConfirmation } from '../service-confirmation/service-confirmatio
 import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
 
+import { MatIconModule } from '@angular/material/icon';
+import { UiService } from '../content-home/ui.service';
+
+
 
 @Component({
   selector: 'app-setting',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './setting.html',
   styleUrls: ['./setting.css'],
 })
@@ -17,18 +21,31 @@ import { Router } from '@angular/router';
 export class Setting {
   show: boolean = false;
   platformId = inject(PLATFORM_ID);
-  
+  private ui = inject(UiService);
+
   constructor(
     private authService: AuthService,
     private confirmService: ServiceConfirmation,
     private errorService: ErrorService,
     private router: Router
-  ) {}
+  ) { }
 
 
 
   home() {
     this.router.navigate(['/home']);
+  }
+
+  SearchForAll() {
+    if (this.ui.showSearchHere()) {
+      this.ui.closeSearch();
+    } else {
+      this.ui.openSearch();
+    }
+  }
+
+  getUsers() {
+    this.router.navigate(['/home/Users']);
   }
 
 
@@ -37,7 +54,7 @@ export class Setting {
     const userStr = localStorage.getItem('user');
     if (userStr) {
       const user = JSON.parse(userStr);
-      this.router.navigate([`/home/profile` , user.username]);
+      this.router.navigate([`/home/profile`, user.username]);
     }
   }
 
@@ -58,14 +75,14 @@ export class Setting {
       'Are you sure you want to delete your account?',
       () => {
         this.authService.deleteAccount().subscribe({
-            next: (res) => {
-              this.errorService.showMessage(`${res.message}`, 'success');
-              this.authService.logout()
-            },
-            error: (err) => {
-              this.errorService.showMessage(err.error.message, 'error');
-            }
-        })  
+          next: (res) => {
+            this.errorService.showMessage(`${res.message}`, 'success');
+            this.authService.logout()
+          },
+          error: (err) => {
+            this.errorService.showMessage(err.error.message, 'error');
+          }
+        })
       }
     );
   }
