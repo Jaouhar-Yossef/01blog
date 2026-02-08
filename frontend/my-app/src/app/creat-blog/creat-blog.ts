@@ -61,6 +61,7 @@ export class CreatBlog {
         return
       }
       const type: MediaType = file.type.startsWith('image') ? 'image' : 'video';
+      console.log("==> " , type )
       this.files.push({
         file,
         url: URL.createObjectURL(file),

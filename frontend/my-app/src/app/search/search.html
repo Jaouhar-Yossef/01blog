@@ -1,14 +1,10 @@
-<div class="pop-up_search" [class.showSearch]="(ui.showSearch$ | async)">
+<div class="pop-up_search">
 
 
   <div class="message">
-    <span (click)="closeSearch()">
-        <mat-icon matPrefix class="closebtn" >arrow_back</mat-icon>
-    </span>
+
     <p>Search for Users or Blogs...</p>
-    <span (click)="closeSearch()">
-        <mat-icon matPrefix class="closebtn" >arrow_back</mat-icon>
-    </span>
+   
   </div>
 
   <div class="search-box">
@@ -37,10 +33,8 @@
   </div>
 
   <div class="choose">
-    <button matButton="tonal" disabled class="btnmatang"> Blogs </button>
-    <span></span>
-    <button matButton="tonal" disabled class="btnmatang"> Users </button>
-    <span></span>
+    <button matButton="tonal" (click)="showBlogs()" class="btnmatang" [class.btnmatangchoose]="isBlogs"> Blogs </button>
+    <button matButton="tonal" (click)="showUsers()" class="btnmatang" [class.btnmatangchoose]="!isBlogs"> Users </button>
   </div>
 
   

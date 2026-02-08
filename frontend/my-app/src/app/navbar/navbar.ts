@@ -33,11 +33,7 @@ export class Navbar {
   private ui = inject(UiService);
 
   searchHere() {
-    if (this.ui.showSearchHere()) {
-      this.ui.closeSearch();
-    } else {
-      this.ui.openSearch();
-    }
+    this.router.navigate(['/home/Search']);
   }
 
   creatBlog() {

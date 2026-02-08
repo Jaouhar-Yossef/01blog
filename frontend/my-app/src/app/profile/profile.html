@@ -16,27 +16,48 @@
                     {{ profile.username }}
                 </p>
                 <div class="nmbInfo">
-                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.blogsCont }} Blogs </button>
-                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.countFollowers }} Followers </button>
-                    <button matButton="tonal" disabled class="btnmatang"> {{ profile.countFollowing }} Following </button>
+                    <button matButton="tonal"  (click)="showBlogs()" class="btnmatang"> {{ profile.blogsCont }} Blogs </button>
+                    <button matButton="tonal" (click)="showFollowers()"  class="btnmatang"> {{ profile.countFollowers }} Followers
+                    </button>
+                    <button matButton="tonal"  (click)="showFollowing()" class="btnmatang"> {{ profile.countFollowing }} Following
+                    </button>
                 </div>
                 <div *ngIf="profile.yourProfile" class="FollowOrReport">
-                    <button type="button" class="btn btn-secondary">Edit Profile <mat-icon>edit_note</mat-icon> </button>
+                    <button type="button" class="btn btn-secondary">Edit Profile <mat-icon>edit_note</mat-icon>
+                    </button>
                 </div>
 
-                 <div *ngIf="!profile.yourProfile" class="btnEdit">
-                    <button  *ngIf="!profile.following" type="button" matButton="tonal" class="btn" (click)="FollowTheUser()" > 
+                <div *ngIf="!profile.yourProfile" class="btnEdit">
+                    <button *ngIf="!profile.following && !profile.follower" type="button" matButton="tonal" class="btn"
+                        (click)="FollowTheUser('follow')">
                         Follow <mat-icon>person_add</mat-icon> </button>
-                    <button *ngIf="profile.following" type="button" matButton="tonal" class="btn" (click)="UnFollowTheUser()">
-                         Following <mat-icon>how_to_reg</mat-icon> </button>
-                    <button type="button" matButton="tonal"   class="btnn"> 
-                         Report <mat-icon>policy</mat-icon> </button>
+
+                    <button *ngIf="!profile.following && profile.follower" type="button" matButton="tonal" class="btn"
+                        (click)="FollowTheUser('followBack')">
+                        follow-back <mat-icon>person_add</mat-icon> </button>
+
+                    <button *ngIf="profile.following" type="button" matButton="tonal" class="btn following"
+                        (click)="FollowTheUser('unfollow')">
+                        Following <mat-icon>how_to_reg</mat-icon> </button>
+                    <button type="button" matButton="tonal" class="btnn">
+                        Report <mat-icon>policy</mat-icon> </button>
                 </div>
             </div>
 
         </div>
-        <div class="blogsAndcontent">
+
+        <div class="choose">
+            <button matButton="tonal" (click)="showBlogs()" [class.btnmatangchoose]="isBlogs" class="btnmatang"> Blogs </button>
+            <button matButton="tonal"  [class.btnmatangchoose]="!isBlogs" class="btnmatang "> Users </button>
+        </div>
+
+        <div class="blogsAndcontent" *ngIf="isBlogs">
             <app-blog-list-component mode="profile" [username]="username"></app-blog-list-component>
+        </div>
+
+
+         <div class="blogsAndcontent" *ngIf="!isBlogs" >
+            <app-users [mode]="usersMode"  [username]="username" ></app-users>
         </div>
     </ng-container>
 </div>

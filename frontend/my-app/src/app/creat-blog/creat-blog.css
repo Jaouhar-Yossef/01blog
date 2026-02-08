@@ -2,12 +2,12 @@
   background-color: rgb(1, 1, 44);
   position: fixed;
   top: 15%;
-  left: -25%;
+  left: -99%;
   height: 80vh;
   width: 50%;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  z-index: 10;
   opacity: 0;
   transition: left 1s ease-in-out, opacity 1s ease-in-out;
   display: flex;

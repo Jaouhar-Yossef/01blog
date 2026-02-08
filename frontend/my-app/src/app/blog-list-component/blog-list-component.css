@@ -27,16 +27,15 @@
 
 .post-list {
   width: 100%;
-  
+
   margin-top: 15px;
-  
+
   overflow-y: auto;
   height: 90vh;
 
-  display: flex ;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  
 }
 
 
@@ -47,18 +46,18 @@
 
 
 .post-list::-webkit-scrollbar {
-    width: 4px;
+  width: 4px;
 }
 
 .post-list::-webkit-scrollbar-track {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .post-list::-webkit-scrollbar-thumb {
-    background: rgb(1, 94, 122);
-    border-radius: 10px;
+  background: rgb(1, 94, 122);
+  border-radius: 10px;
 
-    border: 2px solid transparent;
+  border: 2px solid transparent;
 }
 
 .post-list::-webkit-scrollbar-thumb:hover {
@@ -67,7 +66,7 @@
 
 .blogsforuser {
 
-   width: 50%;
+  width: 50%;
 
 }
 
@@ -108,39 +107,39 @@
 
 
 .observer {
-    height: 2px;
-    width: 100%;
-    margin-bottom: 30px;
+  height: 2px;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 
 
 .post-header {
-    width: 60%;
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: end;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    border-bottom: 1px solid rgb(0, 0, 0);
-    padding-bottom: 3px;
+  width: 60%;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: end;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(0, 0, 0);
+  padding-bottom: 3px;
 }
 
 
 .commentuserbbottom {
-    color: gray;
-    margin-top: 15px;
-    margin-bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
+  color: gray;
+  margin-top: 15px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
 }
 
 
 .commentuserbbottom span {
-    margin-left: 10px;
+  margin-left: 10px;
 }

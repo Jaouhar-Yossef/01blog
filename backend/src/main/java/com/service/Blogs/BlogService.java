@@ -7,6 +7,7 @@ import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.MediaBlog;
 import com.entity.Blogs.Saved;
+import com.repository.FollowersRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.SavedRepository;
@@ -30,19 +31,21 @@ public class BlogService {
     private final UserRepository userRepository;
     private final MediaBlogService mediaBlogService;
     private final SavedRepository savedRepository;
-
+    private final FollowersRepository followersRepository;
+    
     private final SavedService savedService;
     private final LikeBlogService likeBlogService;
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
             LikeBlogService likeBlogService, SavedService savedService,
-             MediaBlogService mediaBlogService , SavedRepository savedRepository) {
+             MediaBlogService mediaBlogService , SavedRepository savedRepository, FollowersRepository followersRepository) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.likeBlogService = likeBlogService;
         this.savedService = savedService;
         this.mediaBlogService = mediaBlogService;
         this.savedRepository = savedRepository;
+        this.followersRepository = followersRepository;
     }
 
     @Transactional
@@ -92,7 +95,8 @@ public class BlogService {
   
     public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
 
-        List<Blog> blogs = this.getBlogsPaginated(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId , pageable);
 
         List<BlogResponseDTO> blogDTOs = blogs.stream()
                 .map(blog -> {

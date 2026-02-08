@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Navbar } from '../navbar/navbar'; 
 
 import { RouterModule } from '@angular/router';
-import { Search } from '../search/search';
-
 
 @Component({
   selector: 'app-home',
   standalone: true,  
-  imports: [CommonModule, Navbar , Search , RouterModule],
+  imports: [CommonModule, Navbar , RouterModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })

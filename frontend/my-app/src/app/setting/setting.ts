@@ -37,11 +37,7 @@ export class Setting {
   }
 
   SearchForAll() {
-    if (this.ui.showSearchHere()) {
-      this.ui.closeSearch();
-    } else {
-      this.ui.openSearch();
-    }
+    this.router.navigate(['/home/Search']);
   }
 
   getUsers() {

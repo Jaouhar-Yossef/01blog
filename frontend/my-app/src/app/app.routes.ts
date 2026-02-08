@@ -10,6 +10,7 @@ import { loggedInGuard } from './auth/loggedInGuard';
 import { Blog } from './blog/blog';
 import { BlogListComponent } from './blog-list-component/blog-list-component';
 import { Users } from './users/users';
+import { Search } from './search/search';
 
 
 export const routes: Routes = [
@@ -24,7 +25,8 @@ export const routes: Routes = [
             { path: 'blog/:id', component: Blog , canActivate: [authGuard]},
             { path: 'blogsSaved', component: BlogListComponent , canActivate: [authGuard] ,  data: { view: 'saved' } },
             { path: 'profile/:name', component: Profile , canActivate: [authGuard] },
-            { path: 'Users', component: Users , canActivate: [authGuard] }
+            { path: 'Users', component: Users , canActivate: [authGuard] },
+            { path: 'Search', component: Search, canActivate: [authGuard] }
       ]
     },
 

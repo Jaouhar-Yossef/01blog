@@ -1,33 +1,31 @@
 <div class="post-list" [class]="modeClass">
-    <ng-container *ngIf="blogs$ | async as blogs">
-        <div *ngIf="blogs.length > 0; else noContent"  class="blogsforuser" [class]="modeClassforblogs">
-             <app-card-blog
-        
-              *ngFor="let blog of blogs; trackBy: trackById"
-              [blog]="blog">
-          
-             </app-card-blog>
-          
-        
-           <div *ngIf="blogs.length > 0 " class="commentuserbbottom">
-            <mat-icon>comments_disabled</mat-icon>
+  <ng-container *ngIf="blogs$ | async as blogs">
+    <div *ngIf="blogs.length > 0; else noContent" class="blogsforuser" [class]="modeClassforblogs">
+      <app-card-blog *ngFor="let blog of blogs; trackBy: trackById" [blog]="blog">
 
-            <span>The last Blog</span>
-           </div>
-         </div>
-    </ng-container>
-     
-    <div #observer class="observer"></div>
-</div>
+      </app-card-blog>
 
-<ng-template #noContent>
-  <div class="noContent">
-    <div>
-      <p class="noContent-text">Nothing here yet 👀</p>
-      <span class="noContent-subtext">Create a post to get started</span>
+
+      <div *ngIf="blogs.length > 0 " class="commentuserbbottom">
+        <mat-icon>comments_disabled</mat-icon>
+
+        <span>The last Blog</span>
+      </div>
     </div>
-    <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+  </ng-container>
 
-  </div>
-</ng-template>
+  <div #observer class="observer"></div>
 
+
+
+  <ng-template #noContent>
+    <div class="noContent">
+      <div>
+        <p class="noContent-text">Nothing here yet 👀</p>
+        <span class="noContent-subtext">Create a post to get started</span>
+      </div>
+      <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+
+    </div>
+  </ng-template>
+</div>

@@ -6,7 +6,6 @@ import com.dto.CommentRequestDTO;
 import com.dto.CommentResponseDTO;
 import com.dto.LikeOrSaveBlogRequest;
 import com.entity.UserDetailsImpl;
-import com.entity.Blogs.Blog;
 import com.service.Blogs.BlogService;
 import com.service.Blogs.CommentBlogService;
 import com.service.Blogs.LikeBlogService;

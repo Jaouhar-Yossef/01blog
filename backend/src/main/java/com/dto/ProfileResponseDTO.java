@@ -16,5 +16,13 @@ public class ProfileResponseDTO {
     private Long CountFollowing;
     private Long BlogsCont;
 
+    public ProfileResponseDTO(String username , String imageUrl ,boolean isYourProfile , boolean isFollower , boolean isFollowing , Long BlogsCont) {
+        this.username = username;
+        this.imageUrl = imageUrl;
+        this.isYourProfile = isYourProfile;
+        this.isFollower = isFollower;
+        this.isFollowing = isFollowing;
+        this.BlogsCont = BlogsCont;
+    }
 
 }

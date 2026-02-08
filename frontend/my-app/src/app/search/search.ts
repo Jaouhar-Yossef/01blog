@@ -1,35 +1,66 @@
-import { Component, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule } from '@angular/forms';
-import { UiService } from './../content-home/ui.service'
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule,
-    ReactiveFormsModule
+    MatButtonModule
   ],
   templateUrl: './search.html',
-  styleUrl: './search.css',
+  styleUrls: ['./search.css'],
 })
-export class Search {
-  searchControl = new FormControl('');
+export class Search implements OnInit {
 
-  ui = inject(UiService);
+  searchControl = new FormControl<string>('');
+  isBlogs = true;
 
-  
-  closeSearch() {
-    this.ui.closeSearch();
+  results: any[] = [];
+
+  ngOnInit() {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(value => {
+        if (value !== null) this.onSearch(value);
+      });
   }
+
+  showBlogs() {
+    this.isBlogs = true;
+    if (this.searchControl.value) this.onSearch(this.searchControl.value);
+  }
+
+  showUsers() {
+    this.isBlogs = false;
+    if (this.searchControl.value) this.onSearch(this.searchControl.value);
+  }
+
+  onSearch(query: string) {
+    query = query.trim(); 
+    if (!query) {
+      this.results = [];
+      return;
+    }
+
+    if (this.isBlogs) {
+      console.log("search blogs:", query);
+      
+     
+    } else {
+      console.log("search users :", query);
+      
+    }
+  }
+
 }

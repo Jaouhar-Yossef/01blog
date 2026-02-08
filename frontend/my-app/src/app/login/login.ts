@@ -70,9 +70,8 @@ export class LoginComponent {
         this.errorService.showMessage(res.message, 'error');
         return;
       }
-
-      this.errorService.showMessage('Login successful!', 'success');
       this.router.navigate(['/home']);
+      this.errorService.showMessage('Login successful!', 'success');
     });
   }
 

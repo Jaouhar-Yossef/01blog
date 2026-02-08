@@ -1,20 +1,82 @@
-<div class="users">
+<div class="users-list">
 
 
+    <ng-container *ngIf="Users$ | async as users">
+        <ng-container *ngIf="users.length > 0 ; else noContent">
+            <div class="user" *ngFor="let user of users; trackBy: trackById">
 
+                <div class="blogheader_left">
+                    <div class="divuserimg">
+
+                        <img (click)="goToProfile(user.username)" class="imguser"
+                            *ngIf="user.imageUrl.length > 0; else nophotouser" [src]="baseUrl + user.imageUrl" alt="">
+                        <ng-template #nophotouser>
+                            <img (click)="goToProfile(user.username)" class="imguser"
+                                src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                        </ng-template>
+
+                    </div>
+                    <div class="nameandnmbblogs">
+                        <p class="creat-by" (click)="goToProfile(user.username)">
+                            {{ user?.username }}
+                        </p>
+                        <button (click)="goToProfile(user.username)" matButton="tonal" disabled class="btnmatang">
+                            {{ user.blogsCont }} Blogs
+                        </button>
+                    </div>
+
+
+                </div>
+
+
+                <div class="btnEdit" *ngIf="user.yourProfile">
+                    <button (click)="goToProfile(user.username)" type="button" matButton="tonal" class="btn">
+                        your profile <mat-icon>person</mat-icon>
+                    </button>
+                </div>
+
+                <div class="btnEdit" *ngIf="!user.yourProfile">
+                    <!-- Following -->
+                    <button *ngIf="user.following" type="button" matButton="tonal" class="btn following"
+                        (click)="FollowTheUser(user.username , 'unfollow')">
+                        Following <mat-icon>how_to_reg</mat-icon>
+                    </button>
+
+                    <!-- Follow -->
+                    <button *ngIf="!user.following && !user.follower" type="button" matButton="tonal" class="btn"
+                        (click)="FollowTheUser(user.username , 'follow')">
+                        Follow <mat-icon>person_add</mat-icon>
+                    </button>
+
+                    <!-- Follow-back -->
+                    <button *ngIf="!user.following && user.follower" type="button" matButton="tonal" class="btn"
+                        (click)="FollowTheUser(user.username , 'followBack')">
+                        Follow-back <mat-icon>person_add</mat-icon>
+                    </button>
+
+                    <!-- Report -->
+                    <button type="button" matButton="tonal" class="btnn">
+                        Report <mat-icon>policy</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+            <div *ngIf="users.length > 0" class="userbbottom">
+                <mat-icon>groups</mat-icon>
+                <span>The last user</span>
+            </div>
+        </ng-container>
+
+    </ng-container>
     <div #observer class="observer"></div>
-
-
-
-
 
     <ng-template #noContent>
         <div class="noContent">
             <div>
                 <p class="noContent-text">Nothing here yet 👀</p>
-                <span class="noContent-subtext">Create a post to get started</span>
+                <span class="noContent-subtext">There is only you now..</span>
             </div>
-            <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+            <img class="noContent-img" src="./../../assets/images/group.svg" alt="">
 
         </div>
     </ng-template>

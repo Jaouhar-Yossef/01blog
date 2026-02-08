@@ -15,7 +15,7 @@
                   
               
                   <ng-template #nophotouser>
-                    <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                    <img (click)="goToProfile(blog?.createdByUsername)" class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
                   </ng-template>
               
 
