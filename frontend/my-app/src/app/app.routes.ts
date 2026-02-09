@@ -22,11 +22,8 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [authGuard],
-    canActivateChild: [authGuard],
     children: [
-
       { path: 'admin', component: AdminComponent, canActivate: [adminGuard], },
-
       { path: '', component: BlogListComponent },
       { path: 'blog/:id', component: Blog },
       { path: 'blogsSaved', component: BlogListComponent, data: { view: 'saved' } },

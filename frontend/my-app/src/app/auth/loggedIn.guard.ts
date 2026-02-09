@@ -14,13 +14,18 @@ export const loggedInGuard: CanActivateFn = () => {
   const token = auth.getToken();
   if (!token) return true;
 
-  return auth.validateToken().pipe(
-    map(isValid => {
-      if (isValid) {
-        router.navigate(['/home']);
-        return false;
-      }
-      return true;
-    })
-  );
+
+  const u = auth.getUser();
+  if (u == null) {
+    return auth.validateToken().pipe(
+      map(isValid => {
+        if (isValid) {
+          router.navigate(['/home']);
+          return false;
+        }
+        return true;
+      })
+    );
+  }
+  return false;
 };

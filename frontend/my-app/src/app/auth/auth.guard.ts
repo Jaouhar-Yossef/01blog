@@ -10,6 +10,8 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
+  // const loading = false; 
+
   if (!isPlatformBrowser(platformId)) return true;
 
   if (!auth.loggedIn()) {
@@ -17,19 +19,25 @@ export const authGuard: CanActivateFn = () => {
     return false;
   }
 
-  return auth.validateToken().pipe(
-    map(isValid => {
-      if (!isValid) {
+  const u = auth.getUser();
+  if (u == null) {
+    // console.log("hhhhhhhhhhhhh")
+    return auth.validateToken().pipe(
+      map(isValid => {
+        if (!isValid) {
+          auth.logout();
+          router.navigate(['/']);
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => {
         auth.logout();
         router.navigate(['/']);
-        return false;
-      }
-      return true;
-    }),
-    catchError(() => {
-      auth.logout();
-      router.navigate(['/']);
-      return of(false);
-    })
-  );
+        return of(false);
+      })
+    );
+  }
+
+  return true;
 };

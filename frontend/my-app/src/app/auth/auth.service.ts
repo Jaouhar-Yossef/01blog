@@ -50,6 +50,15 @@ export class AuthService {
   }
 
 
+  setUser(dataUser : TheUser) {
+    if (dataUser != null) {
+      this.user.set(dataUser);
+    }
+    return;
+  }
+
+
+
   saveAuthData(user: any) {
     if (!this.isBrowser) return;
 
@@ -114,7 +123,10 @@ export class AuthService {
       {}
     ).pipe(
       map((res) => {
-        this.user.set(res.anyData);
+        if (!res.success) {
+          return false;
+        }
+        this.setUser(res.anyData);
         this.loggedIn.set(true);
         return true;
       }),

@@ -9,17 +9,14 @@ export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
   if (!isPlatformBrowser(platformId)) return true;
-
-
   const user = auth.user();
   if (!user) {
     router.navigate(['/']);
     return false;
   }
 
-  console.log("==> ", user)
   if (user.role !== 'ADMIN') {
-    router.navigate(['/']); 
+    router.navigate(['/home']); 
     return false;
   }
 
