@@ -12,7 +12,6 @@ import {
 } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { JwtInterceptor } from './auth/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes),
-    provideClientHydration(withEventReplay())
+    provideRouter(routes)
   ]
 };

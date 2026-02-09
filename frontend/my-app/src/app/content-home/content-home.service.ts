@@ -1,5 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BlogMode } from '../blog-list-component/blog-list-mode';
@@ -54,14 +53,10 @@ export function TimeAgo(dateString: string): string {
 @Injectable({ providedIn: 'root' })
 export class ContentHomeService {
   private apiUrl = 'http://localhost:8080/blogs';
-  private isBrowser: boolean;
-
   constructor(
     private http: HttpClient,
 
-    @Inject(PLATFORM_ID) platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
 

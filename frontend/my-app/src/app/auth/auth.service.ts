@@ -1,5 +1,4 @@
 import { Injectable, Inject, PLATFORM_ID, signal } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -16,7 +15,6 @@ interface TheUser {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
-  private isBrowser: boolean;
 
   loggedIn = signal<boolean>(false);
 
@@ -33,14 +31,11 @@ export class AuthService {
     @Inject(PLATFORM_ID) platformId: Object,
     private router: Router,
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
 
 
-    if (this.isBrowser) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.loggedIn.set(true);
-      }
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loggedIn.set(true);
     }
   }
 
@@ -50,7 +45,7 @@ export class AuthService {
   }
 
 
-  setUser(dataUser : TheUser) {
+  setUser(dataUser: TheUser) {
     if (dataUser != null) {
       this.user.set(dataUser);
     }
@@ -60,8 +55,6 @@ export class AuthService {
 
 
   saveAuthData(user: any) {
-    if (!this.isBrowser) return;
-
     localStorage.setItem('token', user.tokeString);
 
     const theUser: TheUser = {
@@ -76,16 +69,13 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) return null;
     return localStorage.getItem('token');
   }
 
 
   logout() {
-    if (this.isBrowser) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.loggedIn.set(false);
     this.user.set(null);
     this.router.navigate(['/']);
