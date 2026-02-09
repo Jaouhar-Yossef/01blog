@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
+import com.dto.ValidationDTO;
 import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;
@@ -42,6 +43,18 @@ public class UserService implements UserDetailsService {
         this.blogRepository = blogRepository;
     }
 
+    public ValidationDTO getDataUser(UUID user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ValidationDTO dto = new ValidationDTO(
+                user.getUsername(),
+                user.getImageUrl(),
+                user.getRole());
+
+        return dto;
+    }
+
     @Transactional
     public void deleteUser(UUID userId) {
         List<Blog> blogs = blogRepository.findByCreatedById(userId);
@@ -71,8 +84,8 @@ public class UserService implements UserDetailsService {
 
         UserResponseDTO dto = new UserResponseDTO(
                 user.getUsername(),
-                user.getEmail(),
                 user.getImageUrl(),
+                user.getRole(),
                 token);
         return new Response<>(true, "User registered successfully", dto);
     }
@@ -95,8 +108,8 @@ public class UserService implements UserDetailsService {
 
         UserResponseDTO dto = new UserResponseDTO(
                 user.getUsername(),
-                user.getEmail(),
                 user.getImageUrl(),
+                user.getRole(),
                 token);
         return new Response<>(true, "Login successful", dto);
     }

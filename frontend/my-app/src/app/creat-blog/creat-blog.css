@@ -1,106 +1,117 @@
 .create-blog-container {
   background-color: rgb(1, 1, 44);
-  position: fixed;
-  top: 15%;
-  left: -99%;
-  height: 80vh;
-  width: 50%;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  opacity: 0;
-  transition: left 1s ease-in-out, opacity 1s ease-in-out;
+
+
+  height: 100%;
+  width: 100%;
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 40px;
-  gap: 20px;
+ 
+
+
 }
 
-.create-blog-container.showCreatBlog {
-  left: 1%;
-  opacity: 1;
+
+.divCreatblog {
+  width: 60%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 60px;
 }
+
 
 .create-blog-container h2 {
   text-align: center;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+
+/* mat-form-field container */
+.mat-mdc-form-field {
+  width: 100% !important;
 }
 
-.form-group input {
-  background-color: rgb(1, 1, 44);
-
-  border-radius: 15px;
-  color: white;
-  border: none;
-
-  outline: none;
-  box-shadow: none;
-
-  padding: 20px;
-
-  text-align: center;
-  border-top: 2px solid rgb(48, 1, 109);
-  border-bottom: 2px solid rgb(48, 1, 109);
-  cursor: pointer;
-
+/* الخلفية الحقيقية */
+.mat-mdc-text-field-wrapper {
+  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
+  border-radius: 16px !important;
 }
 
-.form-group textarea {
-  text-align: center;
+/* الطبقة اللي كانت كاتغطي بالبيض */
+.mat-mdc-form-field-flex {
+  background: transparent !important;
+}
 
-  align-content: center;
-  background-color: rgb(1, 1, 44);
-  margin-top: 5px;
-  padding: 20px;
-  border-radius: 15px;
-  cursor: pointer;
-  color: white;
-  border: none;
+/* input + textarea */
+.mdc-text-field__input {
+  color: white !important;
+  font-size: 16px !important;
+}
 
-  outline: none;
-  box-shadow: none;
+/* textarea خاص */
+textarea.mdc-text-field__input {
+  color: white !important;
+}
 
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+/* outline border */
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
+}
 
-  border-top: 2px solid rgb(48, 1, 109);
-  border-bottom: 2px solid rgb(48, 1, 109);
+/* focus border */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #1e90ff !important;
+  box-shadow: 0 0 12px rgba(30, 144, 255, 0.4);
+}
 
+/* label */
+.mat-mdc-floating-label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* focus label */
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #1e90ff !important;
+}
+
+/* hover */
+.mat-mdc-text-field-wrapper:hover {
+  background: linear-gradient(135deg, #0c1238, #070b24) !important;
+}
+
+/* textarea resize off */
+textarea {
   resize: none;
 }
 
-.form-group input:focus {
-  background-color: rgb(6, 6, 78);
-  color: white;
-  outline: none;
-  box-shadow: none;
+
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
+  border-radius: 16px !important;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+  background: transparent !important;
 }
 
 
-.form-group textarea:focus {
-  background-color: rgb(6, 6, 78);
-  color: white;
-  outline: none;
-  box-shadow: none;
-}
-
-.the-content::placeholder {
-  color: rgba(161, 161, 161, 0.7);
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 1;
-
-}
 
 
 .the-content {
-  height: 200px;
+  height: 100px;
   resize: none;
 }
 
@@ -108,6 +119,7 @@
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+
 }
 
 .form-group-media input[type="file"] {
@@ -246,7 +258,7 @@
 
 
 .divclearandcancel {
-  width: 25%;
+  width: 30%;
   display: flex;
   justify-content: space-between;
   align-content: center;

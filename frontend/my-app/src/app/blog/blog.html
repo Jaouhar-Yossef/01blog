@@ -1,97 +1,118 @@
 <div class="blogdiv">
 
   <ng-container *ngIf="blog$ | async as blog">
-    
+
     <div class="blog">
 
-         <div class="blogheader">
-          <div class="blogheader_left">
+      <div class="blogheader">
+        <div class="blogheader_left">
 
-             <img (click)="goToProfile(blog?.createdByUsername)"  class="imguser"
-                    *ngIf="blog.createdByUrlimg?.length > 0; else nophotouser"
-                    [src]="baseUrl +  blog?.createdByUrlimg"
-                    alt=""
-                  >
-                  
-              
-                  <ng-template #nophotouser>
-                    <img (click)="goToProfile(blog?.createdByUsername)" class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                  </ng-template>
-              
+          <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
+            *ngIf="blog.createdByUrlimg?.length > 0; else nophotouser" [src]="baseUrl +  blog?.createdByUrlimg" alt="">
 
-            <div class="blogheader_left_right">
-              <p class="creat-by" (click)="goToProfile(blog?.createdByUsername)"> {{ blog?.createdByUsername }} </p>
-              <p class="creat-at">18h</p>
+          <ng-template #nophotouser>
+            <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
+              src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+          </ng-template>
+
+
+          <div class="blogheader_left_right">
+            <p class="creat-by" (click)="goToProfile(blog?.createdByUsername)"> {{ blog?.createdByUsername }} </p>
+            <p class="creat-at"> {{ this.creat_at }}</p>
+          </div>
+        </div>
+
+        <div class="blogheader_right">
+          <mat-icon class="imgskip">report</mat-icon>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="titleAndDiscription">
+          <p class="title"> {{ blog?.title }} </p>
+
+          <div class="divcontent">
+            <p class="content">
+              {{
+              AllTheDiscription
+              ? blog?.content
+              : (blog?.content | slice:0:30)
+              }}
+
+              <span class="read-more" (click)="toggleDescription()" *ngIf="blog?.content?.length > 30">
+                {{ AllTheDiscription ? '... Read less' : '... Read more' }}
+              </span>
+            </p>
+          </div>
+
+
+          <div class="theMedia" *ngIf="blog.media?.length > 0; else nomedia">
+
+            <mat-icon class="big-mat-iconbtn" [class.showicon]="currentIndex != 0" (click)="minusCurrentIndex()"
+              *ngIf="blog.media?.length > 1">arrow_left</mat-icon>
+
+
+            <img *ngIf="theMedia[currentIndex].type === 'IMAGE'" [src]="baseUrl + theMedia[currentIndex].url"
+              class="realimg" />
+
+            <div *ngIf="theMedia[currentIndex].type === 'VIDEO'" class="divVideo">
+              <img *ngIf="videoNotPlay" class="play-icon"
+                src="./../../assets/playvideo.png" alt="">
+              <video  [src]="baseUrl + theMedia[currentIndex].url" loop
+                playsinline (click)="toggleVideo($event)" class="thevideo"></video>
             </div>
+
+
+
+
+            <mat-icon class="big-mat-icon" (click)="addCurrentIndex()"
+              *ngIf="blog.media?.length > 1 && (currentIndex == 0 || currentIndex >  0) ">arrow_right</mat-icon>
+
           </div>
 
-          <div class="blogheader_right">
-            <mat-icon class="imgskip">report</mat-icon>
 
+          <div class="styleimgs" *ngIf="blog.media?.length > 1">
+            <span *ngFor="let m of blog.media; let i = index" [class.active]="i === currentIndex"></span>
           </div>
-        </div>
 
-          <div class="card">
-            <div class="titleAndDiscription">
-              <p class="title"> {{ blog?.title }} </p>
-      
-              <div class="divcontent">
-                <p class="content">
-                  {{
-                  AllTheDiscription
-                  ? blog?.content
-                  : (blog?.content | slice:0:30)
-                  }}
-                  
-                  <span class="read-more" (click)="toggleDescription()" *ngIf="blog?.content?.length > 30">
-                    {{ AllTheDiscription ? '... Read less' : '... Read more' }}
-                  </span>
-                </p>
-              </div>
-      
-              
-              <div class="theMedia">
-                
-                <mat-icon class="big-mat-icon" >arrow_left</mat-icon>
-                <img class="realimg" src="../../assets/bmwg.jpg" alt="">
-                <mat-icon class="big-mat-icon" >arrow_right</mat-icon>
+          <ng-template #nomedia>
 
-             </div>
-      
-              <div class="blogbotoom">
-      
-               
-               
-                <button mat-fab extended (click)="toggleLike()" class="liked">
-                  <span>
-                    <img
-                      class="buttonheart"
-                      [src]="blog?.liked 
+            <div class="theNoMedia">
+              <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+            </div>
+          </ng-template>
+
+          <div class="blogbotoom">
+
+
+
+            <button mat-fab extended (click)="toggleLike()" class="liked">
+              <span>
+                <img class="buttonheart" [src]="blog?.liked 
                         ? './../../assets/heart.png' 
-                        : './../../assets/heart2.png'"
-                      alt=""
-                    />
-                    Like {{ blog?.numbLiked }}
-                  </span>
-                </button>
-                
-                <button mat-fab extended (click)="toggleSave()">
-                  <mat-icon>
-                    {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
-                  </mat-icon>
-                  <span>
-                    {{ blog?.saved ? 'Saved' : 'Save' }}
-                  </span>
-                </button>
-      
-              </div>  
+                        : './../../assets/heart2.png'" alt="" />
+                Like {{ blog?.numbLiked }}
+              </span>
+            </button>
+
+            <button mat-fab extended (click)="toggleSave()">
+              <mat-icon>
+                {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
+              </mat-icon>
+              <span>
+                {{ blog?.saved ? 'Saved' : 'Save' }}
+              </span>
+            </button>
 
           </div>
-          
-          
-        </div>
-        <app-comment></app-comment>
-        
-  
 
-</div>
+        </div>
+
+
+      </div>
+      <app-comment></app-comment>
+
+
+
+    </div>

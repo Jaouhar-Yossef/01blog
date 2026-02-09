@@ -35,7 +35,7 @@
       </button>
   
       @if (show) {
-        <button class="delete-account" (click)="deleteAccount()">
+        <button class="delete-account" *ngIf="showDelete" (click)="deleteAccount()">
           <img class="homeset" src="../../assets/deleteaccount.png" alt=""> Delete Account
         </button>
       }

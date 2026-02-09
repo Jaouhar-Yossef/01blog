@@ -1,5 +1,6 @@
 package com.dto;
 
+
 import lombok.*;
 
 @Data
@@ -7,9 +8,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO {
+public class ValidationDTO {
     private String username;
     private String imageUrl;
     private String role;
-    private String tokeString;
 }

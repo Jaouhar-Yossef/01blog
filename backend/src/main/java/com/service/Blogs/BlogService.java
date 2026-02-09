@@ -87,10 +87,10 @@ public class BlogService {
         blogRepository.delete(blog);
     }
 
-    private List<Blog> getBlogsPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
-        return blogRepository.findAll(pageable).getContent();
-    }
+//     private List<Blog> getBlogsPaginated(int page, int size) {
+//         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+//         return blogRepository.findAll(pageable).getContent();
+//     }
 
   
     public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
@@ -122,7 +122,9 @@ public class BlogService {
                             numbLike,
                             blog.getCreatedBy().getUsername(),
                             blog.getCreatedBy().getImageUrl(),
-                            mediaList);
+                            mediaList,
+                            blog.getUpdatedAt()
+                            );
 
                 })
                 .toList();
@@ -134,7 +136,7 @@ public class BlogService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size , Sort.by(Sort.Direction.DESC, "createdAt"));
         List<Saved> savedList = savedRepository.findSavedBlogsByUserId(user.getId(), pageable);
 
         List<Blog> savedBlogs = savedList.stream()
@@ -165,7 +167,9 @@ public class BlogService {
                             numbLike,
                             blog.getCreatedBy().getUsername(),
                             blog.getCreatedBy().getImageUrl(),
-                            mediaList);
+                            mediaList,
+                            blog.getUpdatedAt()
+                            );
 
                 })
                 .toList();
@@ -204,7 +208,9 @@ public class BlogService {
                             numbLike,
                             blog.getCreatedBy().getUsername(),
                             blog.getCreatedBy().getImageUrl(),
-                            mediaList);
+                            mediaList,
+                            blog.getUpdatedAt()
+                            );
                 })
                 .toList();
 
@@ -240,6 +246,7 @@ public class BlogService {
                 numbLike,
                 blog.getCreatedBy().getUsername(),
                 blog.getCreatedBy().getImageUrl(),
-                mediaList);
+                mediaList,
+                blog.getUpdatedAt());
     }
 }

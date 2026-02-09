@@ -29,6 +29,18 @@
   gap: 10px;
 }
 
+.dateAt {
+  width: 100%;
+  text-align: start;
+  color: gray;
+  display: flex;
+
+  align-items: center;
+
+  gap: 20%;
+
+}
+
 .titleBlog {
   font-size: 20px;
   color: white;

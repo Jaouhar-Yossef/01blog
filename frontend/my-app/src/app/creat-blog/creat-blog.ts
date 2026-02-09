@@ -4,7 +4,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { AuthService } from '../auth/auth.service';
-import { CreatBlogUiService } from './creat-blog-ui-service';
+import { Router } from '@angular/router';
+
+
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
 
 type MediaType = 'image' | 'video';
 
@@ -18,20 +23,19 @@ interface MediaFile {
 @Component({
   selector: 'app-creat-blog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , FormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './creat-blog.html',
   styleUrls: ['./creat-blog.css'],
 })
 export class CreatBlog {
-
-  ui = inject(CreatBlogUiService);
 
   form: FormGroup;
   files: MediaFile[] = [];
 
   isSubmitting= false;
 
-  constructor(private fb: FormBuilder, private errorService: ErrorService , private authService: AuthService , private blogService: ContentHomeService ) {
+  constructor(private fb: FormBuilder, private errorService: ErrorService , private router: Router,
+     private authService: AuthService , private blogService: ContentHomeService ) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2),  Validators.maxLength(20)]],
       content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
@@ -39,7 +43,7 @@ export class CreatBlog {
   }
 
   onCancel() {
-    this.ui.closeCreatBlog()
+
   }
 
   onFileSelected(event: Event) {
@@ -61,7 +65,6 @@ export class CreatBlog {
         return
       }
       const type: MediaType = file.type.startsWith('image') ? 'image' : 'video';
-      console.log("==> " , type )
       this.files.push({
         file,
         url: URL.createObjectURL(file),
@@ -101,7 +104,6 @@ export class CreatBlog {
     }
 
     this.clearForm();
-    this.onCancel();
 
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {

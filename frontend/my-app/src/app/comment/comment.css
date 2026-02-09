@@ -128,7 +128,7 @@
 
 .inputComment {
     border-radius: 15px;
-    color: white;
+    color: white !important;
     border: none;
     box-shadow: none;
     text-align: start;
@@ -150,6 +150,16 @@
     color: rgb(100, 149, 237) !important;
 }
 
+
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
+  border-radius: 16px !important;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+  background: transparent !important;
+}
 
 
 .commentuserbbottom {

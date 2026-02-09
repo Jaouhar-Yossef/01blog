@@ -6,7 +6,6 @@ import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
 
 import { MatIconModule } from '@angular/material/icon';
-import { UiService } from '../content-home/ui.service';
 
 
 
@@ -20,8 +19,8 @@ import { UiService } from '../content-home/ui.service';
 
 export class Setting {
   show: boolean = false;
+  showDelete: boolean = true;
   platformId = inject(PLATFORM_ID);
-  private ui = inject(UiService);
 
   constructor(
     private authService: AuthService,
@@ -31,6 +30,14 @@ export class Setting {
   ) { }
 
 
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const user = this.authService.getUser();
+    if (user != null && user.role  == "ADMIN") {
+      this.showDelete = false;
+    }
+
+  }
 
   home() {
     this.router.navigate(['/home']);
@@ -47,12 +54,12 @@ export class Setting {
 
   profile() {
     if (!isPlatformBrowser(this.platformId)) return;
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      const user = JSON.parse(userStr);
+    const user = this.authService.getUser();
+    if (user != null) {
       this.router.navigate([`/home/profile`, user.username]);
     }
   }
+
 
   savedBlog() {
     this.router.navigate([`/home/blogsSaved`]);
@@ -67,6 +74,9 @@ export class Setting {
   }
 
   deleteAccount() {
+    if (!this.showDelete) {
+      return
+    }
     this.confirmService.open(
       'Are you sure you want to delete your account?',
       () => {

@@ -1,5 +1,6 @@
 package com.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,4 +22,5 @@ public class BlogResponseDTO {
     private String createdByUsername;
     private String createdByUrlimg;
     private List<MediaDTO> media;
+    private LocalDateTime creat_at;  
 }

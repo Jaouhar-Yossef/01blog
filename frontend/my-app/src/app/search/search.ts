@@ -55,6 +55,8 @@ export class Search implements OnInit {
 
     if (this.isBlogs) {
       console.log("search blogs:", query);
+
+      
       
      
     } else {

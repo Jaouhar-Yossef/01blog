@@ -1,11 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges, OnDestroy, NgZone, inject } from '@angular/core';
+import { Component, Input, NgZone, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardBlogService } from './card-blog.service';
 import { ErrorService } from '../error/error.service';
 
-import { CreatBlogUiService } from '../creat-blog/creat-blog-ui-service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { TimeAgo } from '../content-home/content-home.service';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './card-blog.html',
   styleUrls: ['./card-blog.css'],
 })
-export class CardBlog implements OnChanges, OnDestroy {
+export class CardBlog  {
   @Input() blog!: any;
   
   baseUrl = 'http://localhost:8080';
@@ -23,46 +23,24 @@ export class CardBlog implements OnChanges, OnDestroy {
   intervalId: any;
   loading = false;
 
+  creat_at = "";
+
   showAllOfTheBlog = false;
 
-
-  private uiui = inject(CreatBlogUiService)
   
   private blogService = inject(CardBlogService);
   constructor(private ngZone: NgZone,private router: Router , private errorService: ErrorService) {}
 
 
+  ngOnInit() {
+    this.creat_at = TimeAgo(this.blog.creat_at);
+  }
+
   showTheBlog(id : string) {
     this.router.navigate(['/home/blog', id]);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['blog'] && this.blog?.media?.length > 1 && !this.intervalId) {
-      this.startSlideshow();
-    }
-  }
-
-  startSlideshow() {
-    this.ngZone.runOutsideAngular(() => {
-      this.intervalId = setInterval(() => {
-        this.ngZone.run(() => {
-          this.next();
-        });
-      }, 3000);
-    });
-  }
-
-  next() {
-    if (this.blog?.media?.length) {
-      this.currentIndex = (this.currentIndex + 1) % this.blog.media.length;
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
+  
 
   toggleSave() {
     if (this.loading) return;

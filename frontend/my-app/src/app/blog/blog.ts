@@ -4,7 +4,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContentHomeService } from '../content-home/content-home.service';
+import { ContentHomeService, TimeAgo } from '../content-home/content-home.service';
 import { ErrorService } from '../error/error.service';
 
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +17,11 @@ import { Comment } from '../comment/comment';
 import { CardBlogService } from '../card-blog/card-blog.service';
 
 
-
+export interface TheMediaBlog {
+  url: string;
+  filename: string;
+  type: string;
+}
 
 
 @Component({
@@ -43,10 +47,18 @@ export class Blog {
   blogSubject = new BehaviorSubject<any>(null);
   blog$ = this.blogSubject.asObservable();
 
+
+  theMedia: TheMediaBlog[] = [];
+
+  currentIndex = 0;
+
   id_blog: string = "";
+  creat_at: string = "";
   AllTheDiscription = false;
   loading = false;
   likedblog = false;
+
+  videoNotPlay = true;
 
   baseUrl = 'http://localhost:8080';
 
@@ -68,14 +80,46 @@ export class Blog {
     this.id_blog = id;
 
     this.contentHomeService.getBlogById(id).subscribe({
-      next: blog => this.blogSubject.next(blog),
+      next: blog => {
+        this.blogSubject.next(blog),
+          this.theMedia = this.blogSubject.value.media
+          this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
+      },
       error: () => {
         this.errorService.showMessage('Cannot load blog ):', 'error')
-      } 
+      }
     });
     this.loading = false
   }
 
+  toggleVideo(event: Event) {
+    const video = event.target as HTMLVideoElement;
+
+    if (video.paused) {
+      video.play();
+      this.videoNotPlay = false;
+    } else {
+      this.videoNotPlay = true;
+      video.pause();
+    }
+  }
+
+  addCurrentIndex() {
+    this.videoNotPlay = true;
+    if (this.theMedia.length - 1 == this.currentIndex) {
+      this.currentIndex = 0;
+      return;
+    }
+    this.currentIndex++;
+  }
+
+  minusCurrentIndex() {
+      this.videoNotPlay = true;
+    if (this.currentIndex == 0) {
+      return;
+    }
+    this.currentIndex--;
+  }
 
   toggleDescription() {
     this.AllTheDiscription = !this.AllTheDiscription;

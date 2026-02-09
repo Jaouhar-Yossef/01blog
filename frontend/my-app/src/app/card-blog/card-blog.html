@@ -2,9 +2,10 @@
 
   <div class="post-content">
     <div class="post-content-top">
+      <div class="dateAt"> {{creat_at}}   </div>
       <h2 class="titleBlog">{{ blog.title }}</h2>
       <p class="discription">
-        {{ blog.content | slice:0:100 }}
+        {{ blog.content | slice:0:20 }}
         <a class="read-more" (click)="showTheBlog(blog.id)">...Read more</a>
       </p>
     </div>  
@@ -51,6 +52,7 @@
         *ngIf="blog.media[currentIndex].type === 'VIDEO'"
         [src]="baseUrl + blog.media[currentIndex].url"
         muted
+        autoplay
         loop
         playsinline
         class="media-item"

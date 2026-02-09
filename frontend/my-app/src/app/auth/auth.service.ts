@@ -4,11 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ApiResponse } from '../content-home/content-home.service';
 
 interface TheUser {
   username: string;
-  email: string;
   imageUrl: string;
+  role: string;
 }
 
 
@@ -24,7 +25,8 @@ export class AuthService {
     return this.loggedIn();
   }
 
-  user: any = null;
+
+  user = signal<TheUser | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -36,13 +38,17 @@ export class AuthService {
 
     if (this.isBrowser) {
       const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
-      if (token && user) {
+      if (token) {
         this.loggedIn.set(true);
-        this.user = JSON.parse(user);
       }
     }
   }
+
+
+  getUser(): TheUser | null {
+    return this.user();
+  }
+
 
   saveAuthData(user: any) {
     if (!this.isBrowser) return;
@@ -51,13 +57,13 @@ export class AuthService {
 
     const theUser: TheUser = {
       username: user.username,
-      email: user.email,
-      imageUrl: user.imageUrl
+      role: user.role,
+      imageUrl: user.imageUrl,
     };
 
-    localStorage.setItem('user', JSON.stringify(theUser));
     this.loggedIn.set(true);
-    this.user = user;
+
+    this.user.set(theUser);
   }
 
   getToken(): string | null {
@@ -72,7 +78,7 @@ export class AuthService {
       localStorage.removeItem('user');
     }
     this.loggedIn.set(false);
-    this.user = null;
+    this.user.set(null);
     this.router.navigate(['/']);
   }
 
@@ -103,23 +109,22 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return of(false);
 
-    return this.http.post<boolean>(
+    return this.http.post<ApiResponse<TheUser>>(
       `${this.apiUrl}/validate-token`,
       {}
     ).pipe(
-      map(() => {
+      map((res) => {
+        this.user.set(res.anyData);
         this.loggedIn.set(true);
         return true;
       }),
       catchError((err) => {
         console.error('Auth error:  ', err);
-
+        this.user.set(null);
         this.loggedIn.set(false);
         return of(false);
       })
     );
   }
-
-
 
 }

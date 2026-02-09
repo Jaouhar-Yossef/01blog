@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.dto.LoginRequest;
 import com.dto.UserRequestDTO;
 import com.dto.UserResponseDTO;
+import com.dto.ValidationDTO;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
@@ -64,12 +65,24 @@ public class AuthController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<Boolean> validateToken(
+    public ResponseEntity<Response<?>> validateToken(
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response<>(false, null));
         }
-        return ResponseEntity.ok(true);
+        try {
+
+            UUID user_id = userDetails.getUser().getId();
+            ValidationDTO dataUser = userService.getDataUser(user_id);
+
+            return ResponseEntity.accepted().body(new Response<>(true, "successful", dataUser));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response<>(false, e.getMessage()));
+
+        }
+
     }
 
 }
