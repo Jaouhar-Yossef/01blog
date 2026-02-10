@@ -35,12 +35,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'admin', component: AdminComponent,
-    canActivate: [authGuard, adminGuard],
-    children: [
-      { path: '', component: AdminComponent },
-    ]
-  },
+    path: 'admin', component: AdminComponent, canActivate: [adminGuard]},
 
 
   { path: '', component: PageWelcome, canActivate: [loggedInGuard] },

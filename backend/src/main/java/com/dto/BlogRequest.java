@@ -6,7 +6,7 @@ import lombok.*;
 import jakarta.validation.constraints.*;
 
 
-@Data
+
 @Getter
 @Setter
 @NoArgsConstructor

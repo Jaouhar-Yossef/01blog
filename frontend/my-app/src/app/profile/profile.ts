@@ -33,7 +33,7 @@ export class Profile {
 
   constructor(
     private profileService: ProfileService,
-    private errorService: ErrorService,
+    private errorService: ErrorService, 
     private route: ActivatedRoute,
     private router: Router
   ) {

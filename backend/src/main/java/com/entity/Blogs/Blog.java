@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.entity.Report;
 import com.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

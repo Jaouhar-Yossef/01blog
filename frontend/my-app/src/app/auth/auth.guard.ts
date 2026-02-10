@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = () => {
   }
 
   const u = auth.getUser();
-  if (u == null) {
+  if (!u || u == null) {
     return auth.validateToken().pipe(
       map(isValid => {
         if (!isValid) {
