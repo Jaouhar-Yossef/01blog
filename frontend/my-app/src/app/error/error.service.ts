@@ -7,8 +7,7 @@ export type ErrorType = 'success' | 'error' | 'warning';
 })
 export class ErrorService {
   public message = signal(''); 
-  public type = signal<ErrorType>('error'); 
-
+  public type = signal<ErrorType>('error');
   showMessage(message: string, type: ErrorType = 'error', duration: number = 3000) {
     this.message.set(message);
     this.type.set(type);

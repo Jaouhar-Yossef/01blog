@@ -68,7 +68,6 @@ textarea.mdc-text-field__input {
   border-radius: 16px !important;
 }
 
-/* focus border */
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
@@ -76,22 +75,18 @@ textarea.mdc-text-field__input {
   box-shadow: 0 0 12px rgba(30, 144, 255, 0.4);
 }
 
-/* label */
 .mat-mdc-floating-label {
   color: rgba(255, 255, 255, 0.6) !important;
 }
 
-/* focus label */
 .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
   color: #1e90ff !important;
 }
 
-/* hover */
 .mat-mdc-text-field-wrapper:hover {
   background: linear-gradient(135deg, #0c1238, #070b24) !important;
 }
 
-/* textarea resize off */
 textarea {
   resize: none;
 }

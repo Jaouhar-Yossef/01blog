@@ -15,7 +15,6 @@ export class UiService {
   }
 
   openSearch() {
-    console.log("==> hhhhh")
     this.showSearchSubject.next(true);
   }
 

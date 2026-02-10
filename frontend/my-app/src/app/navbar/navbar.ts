@@ -24,8 +24,6 @@ export class Navbar {
     return this.router.url === '/';
   }
 
-
-
   searchHere() {
     this.router.navigate(['/home/Search']);
   }

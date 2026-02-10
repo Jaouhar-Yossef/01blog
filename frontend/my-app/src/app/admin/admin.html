@@ -1,0 +1,173 @@
+<div class="admin-layout">
+
+  <aside class="sidebar" [class.showSidebar]="show" (mouseenter)="show = true" (mouseleave)="show = false">
+
+    <div class="logo">
+      <button class="btnnor">
+        <img *ngIf="!show" class="homeset" src="./../../assets/sidebaropen.png" alt="">
+        <img *ngIf="show" class="homeset" src="./../../assets/sidebarclose.png" alt="">
+        <span [class.showtext]="show"> DashBoard </span>
+      </button>
+    </div>
+
+    <nav class="menu">
+
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/images/groups-icon.svg" alt=""> <span [class.showtext]="show">
+          Users</span>
+      </button>
+
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/blogging.png" alt=""> <span [class.showtext]="show"> Blogs</span>
+      </button>
+
+
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/reportnew.png" alt=""> <span [class.showtext]="show"> Reports</span>
+      </button>
+
+
+
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/home.svg" alt=""> <span [class.showtext]="show"> Home</span>
+      </button>
+
+      <button class="btnnor">
+        <img class="homeset" src="./../../assets/adminn.png" alt=""> <span [class.showtext]="show"> Admin </span>
+      </button>
+
+
+      <!-- 
+
+      <a class="menu-item">Comments</a>
+      <a class="menu-item">Reports</a>
+      <a class="menu-item">Analytics</a>
+      <a class="menu-item">Settings</a> -->
+
+    </nav>
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+      <h1>MyPlatform Admin</h1>
+      <div class="top-actions">
+        <div class="notif">🔔</div>
+        <div class="profile">Admin</div>
+      </div>
+    </header>
+    <!-- 
+    <section class="stats">
+      <div class="stat-card">
+        <div class="stat-title">Total Users</div>
+        <div class="stat-value">1,248</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Total Blogs</div>
+        <div class="stat-value">3,542</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Comments</div>
+        <div class="stat-value">12,430</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Reports</div>
+        <div class="stat-value danger">24</div>
+      </div>
+    </section>
+-->
+
+
+
+
+
+    <div class="admin-dashboard">
+
+      <mat-tab-group class="custom-tabs">
+
+        <mat-tab label="Analytics">
+
+          <section class="stats">
+            <div class="stat-card">
+              <div class="stat-title">Total Users</div>
+              <div class="stat-value">1,248</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Total Blogs</div>
+              <div class="stat-value">3,542</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Comments</div>
+              <div class="stat-value">12,430</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Reports</div>
+              <div class="stat-value danger">24</div>
+            </div>
+          </section>
+
+        </mat-tab>
+
+        <mat-tab label="Reports">
+          <div class="tab-content">
+            <h2>Reports</h2>
+            <ul>
+              <li>Report #1: User activity</li>
+              <li>Report #2: Content engagement</li>
+              <li>Report #3: Error logs</li>
+            </ul>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Users">
+          <div class="tab-content">
+            <h2>Users</h2>
+            <table>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Role</th>
+              </tr>
+              <tr>
+                <td>john_doe</td>
+                <td>john@example.com</td>
+                <td>Active</td>
+                <td>User</td>
+              </tr>
+              <tr>
+                <td>jane_smith</td>
+                <td>jane@example.com</td>
+                <td>Inactive</td>
+                <td>Admin</td>
+              </tr>
+            </table>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Blogs">
+          <div class="tab-content">
+            <h2>Latest Blogs</h2>
+            <ul>
+              <li>How to learn Angular quickly</li>
+              <li>10 Best practices for Clean Code</li>
+              <li>Understanding Design Patterns</li>
+            </ul>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+
+
+
+    <!-- 
+
+    <section class="content">
+
+
+    </section> -->
+
+  </main>
+</div>

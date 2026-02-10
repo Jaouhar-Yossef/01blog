@@ -52,6 +52,7 @@ export function TimeAgo(dateString: string): string {
 
 @Injectable({ providedIn: 'root' })
 export class ContentHomeService {
+  
   private apiUrl = 'http://localhost:8080/blogs';
   constructor(
     private http: HttpClient,

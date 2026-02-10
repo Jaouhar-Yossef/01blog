@@ -1,25 +1,12 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  Input,
-  OnInit,
-  PLATFORM_ID,
-  ViewChild
-} from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {AfterViewInit,Component,ElementRef,inject,Input,OnInit,ViewChild} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-
 import { CardBlog } from '../card-blog/card-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { BlogMode } from '../blog-list-component/blog-list-mode';
-
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,7 +43,6 @@ export class BlogListComponent implements OnInit, AfterViewInit {
 
   public ui = inject(BlogUiService);
   private postService = inject(ContentHomeService);
-  private platformId = inject(PLATFORM_ID);
 
   private errorService = inject(ErrorService)
 
@@ -66,8 +52,6 @@ export class BlogListComponent implements OnInit, AfterViewInit {
   @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-
     if (!this.mode || this.mode == 'home') {
       const view = this.route.snapshot.data['view'];
       this.mode = view === 'saved' ? 'saved' : 'home';
@@ -77,8 +61,6 @@ export class BlogListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-
     this.io = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&

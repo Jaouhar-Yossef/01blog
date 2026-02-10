@@ -13,7 +13,7 @@ import { Users } from './users/users';
 import { Search } from './search/search';
 import { CreatBlog } from './creat-blog/creat-blog';
 import { adminGuard } from './auth/admin.guard';
-import { AdminComponent } from './admin-component/admin-component';
+import { AdminComponent } from './admin/admin';
 
 
 export const routes: Routes = [
@@ -23,7 +23,6 @@ export const routes: Routes = [
     component: HomeComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'admin', component: AdminComponent, canActivate: [adminGuard], },
       { path: '', component: BlogListComponent },
       { path: 'blog/:id', component: Blog },
       { path: 'blogsSaved', component: BlogListComponent, data: { view: 'saved' } },
@@ -34,6 +33,15 @@ export const routes: Routes = [
 
     ]
   },
+
+  {
+    path: 'admin', component: AdminComponent,
+    canActivate: [authGuard, adminGuard],
+    children: [
+      { path: '', component: AdminComponent },
+    ]
+  },
+
 
   { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
   { path: 'account', component: AuthComponent, canActivate: [loggedInGuard] },

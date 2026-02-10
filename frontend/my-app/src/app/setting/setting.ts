@@ -1,5 +1,5 @@
-import { Component, inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AuthService } from './../auth/auth.service'
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
 import { ErrorService } from '../error/error.service';
@@ -20,7 +20,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class Setting {
   show: boolean = false;
   showDelete: boolean = true;
-  platformId = inject(PLATFORM_ID);
 
   constructor(
     private authService: AuthService,
@@ -31,9 +30,8 @@ export class Setting {
 
 
   ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
     const user = this.authService.getUser();
-    if (user != null && user.role  == "ADMIN") {
+    if (user != null && user.role == "ADMIN") {
       this.showDelete = false;
     }
 
@@ -43,6 +41,10 @@ export class Setting {
     this.router.navigate(['/home']);
   }
 
+
+  pageAdmin() {
+    this.router.navigate(['/admin']);
+  }
   SearchForAll() {
     this.router.navigate(['/home/Search']);
   }
@@ -53,7 +55,6 @@ export class Setting {
 
 
   profile() {
-    if (!isPlatformBrowser(this.platformId)) return;
     const user = this.authService.getUser();
     if (user != null) {
       this.router.navigate([`/home/profile`, user.username]);
@@ -64,6 +65,7 @@ export class Setting {
   savedBlog() {
     this.router.navigate([`/home/blogsSaved`]);
   }
+
   logout() {
     this.confirmService.open(
       'Are you sure you want to logout?',

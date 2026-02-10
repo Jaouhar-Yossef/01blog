@@ -1,5 +1,5 @@
-import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -65,13 +65,13 @@ export class Blog {
   private blogService = inject(CardBlogService);
 
 
-  constructor(private errorService: ErrorService, @Inject(PLATFORM_ID) private platformId: Object,
-    private route: ActivatedRoute, private router: Router, private contentHomeService: ContentHomeService) { }
+  constructor(private errorService: ErrorService,
+    private route: ActivatedRoute, private router: Router,
+    private contentHomeService: ContentHomeService) { }
 
 
 
   ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
     if (this.loading) return;
     this.loading = true
     const id = this.route.snapshot.paramMap.get('id');
@@ -83,7 +83,7 @@ export class Blog {
       next: blog => {
         this.blogSubject.next(blog),
           this.theMedia = this.blogSubject.value.media
-          this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
+        this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
       },
       error: () => {
         this.errorService.showMessage('Cannot load blog ):', 'error')
@@ -114,7 +114,7 @@ export class Blog {
   }
 
   minusCurrentIndex() {
-      this.videoNotPlay = true;
+    this.videoNotPlay = true;
     if (this.currentIndex == 0) {
       return;
     }

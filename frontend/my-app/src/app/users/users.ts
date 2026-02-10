@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ErrorService } from '../error/error.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ProfileService, User, UserMode } from '../profile/profile.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ApiResponse } from '../content-home/content-home.service';
@@ -21,8 +21,6 @@ export class Users implements OnInit, AfterViewInit {
   UsersSubject = new BehaviorSubject<User[]>([]);
   Users$ = this.UsersSubject.asObservable()
 
-  isBrowser: boolean;
-
   @Input() mode: UserMode = 'AllUsers';
   @Input() username: string = '';
 
@@ -34,19 +32,15 @@ export class Users implements OnInit, AfterViewInit {
 
   baseUrl = 'http://localhost:8080';
 
+  private profileService = inject(ProfileService);
   constructor(
-    private profileService: ProfileService,
     private errorService: ErrorService,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-  }
+  ) {}
 
 
   ngOnInit() {
-    if (!this.isBrowser) return;
     this.loadUsers();
   }
 
@@ -67,8 +61,6 @@ export class Users implements OnInit, AfterViewInit {
   @ViewChild('observer') observer!: ElementRef;
 
   ngAfterViewInit() {
-    if (!this.isBrowser) return;
-
     this.io = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&

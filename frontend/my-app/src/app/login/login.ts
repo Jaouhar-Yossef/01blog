@@ -74,6 +74,4 @@ export class LoginComponent {
       this.errorService.showMessage('Login successful!', 'success');
     });
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { Component, Input, NgZone, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardBlogService } from './card-blog.service';
 import { ErrorService } from '../error/error.service';
@@ -29,7 +29,7 @@ export class CardBlog  {
 
   
   private blogService = inject(CardBlogService);
-  constructor(private ngZone: NgZone,private router: Router , private errorService: ErrorService) {}
+  constructor(private router: Router , private errorService: ErrorService) {}
 
 
   ngOnInit() {

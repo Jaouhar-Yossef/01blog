@@ -1,8 +1,8 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component} from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
-import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ProfileService, UserMode, UserProfile } from './profile.service';
 import { BlogListComponent } from '../blog-list-component/blog-list-component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -25,8 +25,6 @@ export class Profile {
   ProfileSubject = new BehaviorSubject<any>(null);
   profile$ = this.ProfileSubject.asObservable();
 
-  isBrowser = false;
-
   loading = false;
   username!: string;
   isBlogs = true;
@@ -36,11 +34,9 @@ export class Profile {
   constructor(
     private profileService: ProfileService,
     private errorService: ErrorService,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
 
@@ -69,8 +65,6 @@ export class Profile {
 
 
   ngOnInit() {
-    if (!this.isBrowser) return;
-
     this.route.paramMap.subscribe((params) => {
       const username = params.get('name');
       if (!username) {
