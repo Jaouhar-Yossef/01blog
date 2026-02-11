@@ -67,7 +67,7 @@
 
     <div class="admin-dashboard">
 
-      <mat-tab-group class="custom-tabs">
+      <mat-tab-group class="custom-tabs" (selectedIndexChange)="onTabIndexChange($event)">
 
         <mat-tab label="Analytics">
           <ng-container *ngIf="analytics$ | async as analytics">
@@ -100,51 +100,74 @@
 
 
 
+
         <mat-tab label="Reports">
           <div class="tab-content">
 
+            <ng-container *ngIf="reports$ | async as reports">
 
-            <table mat-table [dataSource]="usersData" class="mat-elevation-z2 users-table">
+              <table mat-table [dataSource]="reports" class="mat-elevation-z2 users-table">
 
-              <!-- Username Column -->
-              <ng-container matColumnDef="username">
-                <th mat-header-cell *matHeaderCellDef> Username </th>
-                <td mat-cell *matCellDef="let user"> {{ user.username }} </td>
-              </ng-container>
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                  <th class="theadtable" mat-header-cell *matHeaderCellDef> Report Type </th>
+                  <td mat-cell class="reason" *matCellDef="let row"> {{ row.type }} </td>
+                </ng-container>
 
-              <!-- Email Column -->
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let user"> {{ user.email }} </td>
-              </ng-container>
+                <!-- Created By -->
+                <ng-container matColumnDef="created_by">
+                  <th class="theadtable" mat-header-cell *matHeaderCellDef> Created By </th>
+                  <td class="reason" mat-cell *matCellDef="let row"> {{ row.created_by }} </td>
+                </ng-container>
 
+                <!-- Reason -->
+                <ng-container matColumnDef="reason">
+                  <th class="theadtable" mat-header-cell *matHeaderCellDef> Reason </th>
+                  <td class="reason" mat-cell *matCellDef="let row"> {{ row.reason }} </td>
+                </ng-container>
 
+                <!-- Reported Target -->
+                <ng-container matColumnDef="reported">
+                  <th class="theadtable" mat-header-cell *matHeaderCellDef> Reported </th>
+                  <td mat-cell *matCellDef="let row">
+                    <span class="blogOrUser" *ngIf="row.type === 'BLOG'">
+                      📝 {{ row.reported_blog }}
+                    </span>
+                    <span  class="blogOrUser" *ngIf="row.type === 'USER'">
+                      👤 {{ row.reported_user }}
+                    </span>
+                  </td>
+                </ng-container>
 
-              <!-- Status Column -->
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let user">
-                  <span class="status" [class.active]="user.status === 'Active'"
-                    [class.inactive]="user.status === 'Inactive'">
-                    {{ user.status }}
-                  </span>
-                </td>
-              </ng-container>
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                  <th class="theadtable" mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let row">
 
-              <!-- Role Column -->
-              <ng-container matColumnDef="role">
-                <th mat-header-cell *matHeaderCellDef> Role </th>
-                <td mat-cell *matCellDef="let user"> {{ user.role }} </td>
-              </ng-container>
+                    <span class="status" [class.pending]="row.status === 'PENDING'"
+                      [class.resolved]="row.status === 'RESOLVED'" [class.declained]="row.status === 'DECLAINED'">
+                      {{ row.status }}
+                    </span>
+                  </td>
+                </ng-container>
 
-              <!-- Header + Rows -->
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <!-- Header & Rows -->
+                <tr mat-header-row *matHeaderRowDef="displayedReportsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedReportsColumns;"></tr>
 
-            </table>
+              </table>
+
+              <!-- Empty State -->
+              <div class="empty-state" *ngIf="reports.length === 0">
+                No reports found.
+              </div>
+
+            </ng-container>
 
           </div>
         </mat-tab>
+
+
 
 
 

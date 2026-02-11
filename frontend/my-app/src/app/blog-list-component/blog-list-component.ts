@@ -95,7 +95,7 @@ export class BlogListComponent implements OnInit, AfterViewInit {
           this.loading = false;
         },
         error: err => {
-          this.errorService.showMessage('Error geting Blogs ):', 'error');
+          this.errorService.showMessage('Error getting Blogs ):', 'error');
           this.loading = false
         }
       });

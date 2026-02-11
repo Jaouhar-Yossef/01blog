@@ -228,9 +228,30 @@ section {
   height: 100%;
 }
 
+::ng-deep .mat-mdc-table {
+  background: transparent  !important;
+}
+
+::ng-deep .mat-mdc-header-row .mdc-data-table__header-row .cdk-header-row {
+  /* background: transparent !important;
+   */
+
+   background-color: red !important;
+}
 
 
+.pending {
+  color: #008f1f !important;
+  opacity: 1;
+}
 
+::ng-deep .blogOrUser {
+    height: 100%;
+    display: flex;
+    color: rgb(255, 255, 255) !important;
+    opacity: 1 !important;
+    
+}
 .tab-content {
   padding: 20px;
 
@@ -355,8 +376,18 @@ td {
 th {
   color: #94a3b8;
   border-bottom: 1px solid #1e293b;
+  background-color: #008f1f;
 }
 
+.theadtable {
+  background: transparent !important;
+  border-bottom: 1px solid white;
+
+}
+
+.reason {
+  color: white !important;
+}
 tr:not(:first-child):hover {
   background: #020617;
 }
