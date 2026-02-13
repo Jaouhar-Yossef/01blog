@@ -38,7 +38,7 @@
                 <span>The last comment</span>
             </div>
         </ng-container>
-        <div #observer class="observer"> </div>
+        <div observeIntersection (visible)="loadComment()" class="observer"></div>
     </div>
 
     <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">

@@ -79,9 +79,7 @@
 
                                 <span class="status" [class.pending]="row.status === 'PENDING'"
                                     [class.resolved]="row.status === 'RESOLVED'"
-                                    [class.declained]="row.status === 'DECLAINED'"
-                                     [matMenuTriggerFor]="statusMenu"
-                                    >
+                                    [class.declained]="row.status === 'DECLAINED'" [matMenuTriggerFor]="statusMenu">
                                     {{ row.status }}
                                 </span>
 
@@ -107,9 +105,14 @@
                         <tr mat-header-row *matHeaderRowDef="displayedReportsColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedReportsColumns;"></tr>
 
-                    </table>
 
-                    <!-- Empty State -->
+                    </table>
+                    <div class="last_one">
+                        the last report
+                    </div>
+                    
+                    <div observeIntersection (visible)="loadReports()" class="observer"></div>
+
                     <div class="empty-state" *ngIf="reports.length === 0">
                         No reports found.
                     </div>
@@ -173,10 +176,17 @@
                         <tr mat-header-row *matHeaderRowDef="displayedUsersColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedUsersColumns;"></tr>
                     </table>
+
+                    <div class="last_one">
+                        the last user
+                    </div>
+
+                    <div observeIntersection (visible)="loadUsers()" class="observer"></div>
                 </ng-container>
 
             </div>
         </mat-tab>
+
 
         <mat-tab label="Blogs">
             <div class="tab-content">
@@ -228,7 +238,15 @@
                         <tr mat-header-row *matHeaderRowDef="displayedBlogsColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedBlogsColumns;"></tr>
                     </table>
+
+                    <div class="last_one">
+                        the last blog
+                    </div>
+
+                    <div observeIntersection (visible)="loadBlogs()" class="observer"></div>
+
                 </ng-container>
+
             </div>
         </mat-tab>
 

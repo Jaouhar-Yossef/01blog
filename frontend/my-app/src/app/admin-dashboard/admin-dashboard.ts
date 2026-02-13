@@ -3,7 +3,7 @@ import { AdminService } from './../admin/admin.service';
 import { ErrorService } from '../error/error.service';
 import { ProfileService } from '../profile/profile.service';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -19,6 +19,9 @@ import { MatMenu } from '@angular/material/menu';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
+
+
+import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 
 
 export interface Report {
@@ -66,7 +69,8 @@ enum AdminTabs {
     MatTableModule,
     MatMenu,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    ObserveIntersectionDirective
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -169,6 +173,8 @@ export class AdminDashboard {
 
 
 
+
+
   changeStatus(row: any, status: string) {
     if (this.loadingReports) return
     if (row.status == status) return
@@ -226,6 +232,7 @@ export class AdminDashboard {
     this.router.navigate(['/admin/blog', id]);
   }
 
+
   loadAnalytics() {
     if (this.loadingAnalytics) return;
     this.loadingAnalytics = true;
@@ -248,30 +255,14 @@ export class AdminDashboard {
 
   onTabIndexChange(index: number) {
     this.isReports = this.isUsers = this.isBlogs = false;
-
     switch (index) {
-
       case AdminTabs.Reports:
-        if (!this.reportsLoaded) {
-          this.loadReports();
-          this.reportsLoaded = true;
-        }
         this.isReports = true;
         break;
-
       case AdminTabs.Users:
-        if (!this.usersLoaded) {
-          this.loadUsers();
-          this.usersLoaded = true;
-        }
         this.isUsers = true;
         break;
-
       case AdminTabs.Blogs:
-        if (!this.blogsLoaded) {
-          this.loadBlogs()
-          this.blogsLoaded = true;
-        }
         this.isBlogs = true;
         break;
     }
@@ -281,7 +272,6 @@ export class AdminDashboard {
   loadReports() {
     if (this.loadingReports || !this.hasMoreReports) return;
     this.loadingReports = true;
-
     this.adminService.getReports(this.pageReports, this.sizeReports).subscribe({
       next: (res: ApiResponse<Report[]>) => {
         this.reportsSubject.next([

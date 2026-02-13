@@ -68,8 +68,7 @@
         </ng-container>
 
     </ng-container>
-    <div #observer class="observer"></div>
-
+    <div observeIntersection (visible)="loadUsers()" class="observer"></div>
     <ng-template #noContent>
         <div class="noContent">
             <div>

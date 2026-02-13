@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
+import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { ErrorService } from '../error/error.service';
   imports: [
     CommonModule, CardBlog, MatIconModule,
     MatFormFieldModule, MatInputModule,
-    MatButtonModule, ReactiveFormsModule
+    MatButtonModule, ReactiveFormsModule, ObserveIntersectionDirective
   ],
 
   templateUrl: './blog-list-component.html',
@@ -28,7 +29,7 @@ import { ErrorService } from '../error/error.service';
 })
 
 
-export class BlogListComponent implements OnInit, AfterViewInit {
+export class BlogListComponent implements OnInit {
 
   @Input() mode: BlogMode = 'home';
   @Input() username?: string;
@@ -56,22 +57,6 @@ export class BlogListComponent implements OnInit, AfterViewInit {
       const view = this.route.snapshot.data['view'];
       this.mode = view === 'saved' ? 'saved' : 'home';
     }
-    this.loadNextPage();
-
-  }
-
-  ngAfterViewInit() {
-    this.io = new IntersectionObserver(entries => {
-      if (
-        entries[0].isIntersecting &&
-        !this.loading &&
-        this.hasMore
-      ) {
-        this.loadNextPage();
-      }
-    });
-
-    this.io.observe(this.observer.nativeElement);
   }
 
   loadNextPage() {

@@ -6,10 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
 import { BehaviorSubject } from 'rxjs';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiResponse } from '../content-home/content-home.service';
+import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 
 
 export interface CreateCommentDto {
@@ -35,7 +36,8 @@ interface comment {
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    ObserveIntersectionDirective
   ],
   templateUrl: './comment.html',
   styleUrl: './comment.css',
@@ -66,8 +68,6 @@ export class Comment {
     });
   }
 
-  private io!: IntersectionObserver;
-  @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -77,25 +77,9 @@ export class Comment {
       return;
     }
     this.id_blog = id;
-    this.loadNextPage()
   }
 
-  ngAfterViewInit() {
-    this.io = new IntersectionObserver(entries => {
-      if (
-        entries[0].isIntersecting &&
-        !this.loading &&
-        this.hasMore
-      ) {
-        this.loadNextPage();
-      }
-    });
-    this.io.observe(this.observer.nativeElement);
-  }
-
-
-
-  loadNextPage() {
+  loadComment() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
     this.contentHomeService.getComment(this.id_blog, this.page, this.size)

@@ -3,7 +3,7 @@
     height: 100%;
     padding: 20px;
     display: flex;
-    justify-content: center;   
+    justify-content: center;
 }
 
 
@@ -46,7 +46,7 @@
 
 .Analytics {
     overflow-y: hidden;
-    height: 100% !important ;
+    height: 100% !important;
     background-color: red !important;
 }
 
@@ -129,7 +129,7 @@ section {
     color: #ff0000 !important;
     opacity: 1;
 }
-    
+
 
 ::ng-deep .blogOrUser {
     height: 100%;
@@ -309,4 +309,14 @@ tr:not(:first-child):hover {
 .main::-webkit-scrollbar-thumb {
     background: #1e293b;
     border-radius: 10px;
+}
+
+
+.last_one {
+    text-align: center;
+}
+
+.observer {
+    height: 2px;
+    width: 100%;
 }

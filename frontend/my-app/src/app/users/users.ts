@@ -6,17 +6,18 @@ import { ProfileService, User, UserMode } from '../profile/profile.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ApiResponse } from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule , ObserveIntersectionDirective],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
 
-export class Users implements OnInit, AfterViewInit {
+export class Users implements OnInit {
 
   UsersSubject = new BehaviorSubject<User[]>([]);
   Users$ = this.UsersSubject.asObservable()
@@ -46,7 +47,6 @@ export class Users implements OnInit, AfterViewInit {
     if (this.router.url.startsWith('/admin/profile')) {
       this.modeADMINorHOME = 'ADMIN'
     }
-    this.loadUsers();
   }
 
 
@@ -61,32 +61,9 @@ export class Users implements OnInit, AfterViewInit {
   }
 
 
-
-  private io!: IntersectionObserver;
-  @ViewChild('observer') observer!: ElementRef;
-
-  ngAfterViewInit() {
-    this.io = new IntersectionObserver(entries => {
-      if (
-        entries[0].isIntersecting &&
-        !this.loading &&
-        this.hasMore
-      ) {
-
-        this.loadUsers();
-      }
-    });
-
-    this.io.observe(this.observer.nativeElement);
-  }
-
-
   loadUsers() {
-    if (this.loading || !this.hasMore) {
-      return
-    }
+    if (this.loading || !this.hasMore) return;
     this.loading = true;
-
     this.profileService.getUsers(this.page, this.size, this.mode, this.username).subscribe({
       next: (res: ApiResponse<User[]>) => {
         this.UsersSubject.next([

@@ -12,11 +12,9 @@
         <span>The last Blog</span>
       </div>
     </div>
-  </ng-container>
+  </ng-container>  
 
-  <div #observer class="observer"></div>
-
-
+  <div observeIntersection (visible)="loadNextPage()" class="observer"></div>
 
   <ng-template #noContent>
     <div class="noContent">
