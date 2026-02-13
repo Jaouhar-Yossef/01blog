@@ -5,14 +5,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.entity.Report;
 import com.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-
 import java.util.UUID;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @NoArgsConstructor
@@ -21,18 +19,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "blogs")
 public class Blog {
-
-
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue
+    @UuidGenerator
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    
     private String title;
 
     @Column(length = 2000)
@@ -61,12 +53,9 @@ public class Blog {
     @JsonIgnore
     private List<LikeBlog> likedBlogs = new ArrayList<>();
 
-
-
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<CommentBlog> comentBlogs = new ArrayList<>();
-
 
     public void addMedia(MediaBlog media) {
         medias.add(media);

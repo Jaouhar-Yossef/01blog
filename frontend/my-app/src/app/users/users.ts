@@ -37,10 +37,15 @@ export class Users implements OnInit, AfterViewInit {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
+
+  modeADMINorHOME = ''
 
   ngOnInit() {
+    if (this.router.url.startsWith('/admin/profile')) {
+      this.modeADMINorHOME = 'ADMIN'
+    }
     this.loadUsers();
   }
 
@@ -109,6 +114,10 @@ export class Users implements OnInit, AfterViewInit {
 
 
   goToProfile(username: string) {
+    if (this.modeADMINorHOME = 'ADMIN') {
+      this.router.navigate(['/admin/profile', username]);
+      return
+    }
     this.router.navigate(['/home/profile', username]);
   }
 

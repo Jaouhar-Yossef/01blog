@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.CommentBlog;
@@ -19,20 +19,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-    name = "users",
-    uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "username")
-    }
-)
+})
 public class User {
+
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue
+    @UuidGenerator
     @Column(updatable = false, nullable = false)
     private UUID id;
 
@@ -60,7 +55,6 @@ public class User {
     @JsonIgnore
     private List<Blog> blogs = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Saved> savedBlogs = new ArrayList<>();
@@ -69,12 +63,9 @@ public class User {
     @JsonIgnore
     private List<LikeBlog> likedBlogs = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<CommentBlog> comentBlogs = new ArrayList<>();
-
-
 
     @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -83,7 +74,6 @@ public class User {
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Followers> following = new ArrayList<>();
-
 
     @PrePersist
     protected void onCreate() {

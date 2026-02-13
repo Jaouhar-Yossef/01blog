@@ -70,10 +70,15 @@ export class Blog {
     private contentHomeService: ContentHomeService) { }
 
 
+  modeADMINorHOME = '';
+
 
   ngOnInit() {
-    if (this.loading) return;
-    this.loading = true
+
+    if (this.router.url.startsWith('/admin/blog')) {
+      this.modeADMINorHOME = 'ADMIN'
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
@@ -89,7 +94,20 @@ export class Blog {
         this.errorService.showMessage('Cannot load blog ):', 'error')
       }
     });
-    this.loading = false
+  }
+
+
+  reportBlog(id: string) {
+    if (this.loading) return;
+    this.contentHomeService.ReportBlog(id).subscribe({
+      next: res => {
+        console.log(res)
+      },
+      error: () => {
+        this.errorService.showMessage('error report blog ):', 'error')
+      }
+    });
+    this.loading = false;
   }
 
   toggleVideo(event: Event) {
@@ -211,6 +229,11 @@ export class Blog {
   }
 
   goToProfile(creatBy: string) {
+
+    if (this.modeADMINorHOME = 'ADMIN') {
+      this.router.navigate(['/admin/profile', creatBy]);
+      return
+    }
     this.router.navigate(['/home/profile', creatBy]);
   }
 }

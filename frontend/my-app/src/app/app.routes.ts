@@ -14,6 +14,7 @@ import { Search } from './search/search';
 import { CreatBlog } from './creat-blog/creat-blog';
 import { adminGuard } from './auth/admin.guard';
 import { AdminComponent } from './admin/admin';
+import { AdminDashboard } from './admin-dashboard/admin-dashboard';
 
 
 export const routes: Routes = [
@@ -35,7 +36,17 @@ export const routes: Routes = [
   },
 
   {
-    path: 'admin', component: AdminComponent, canActivate: [adminGuard]},
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [adminGuard],
+    children: [
+
+      { path: '', component: AdminDashboard },
+      { path: 'profile/:name', component: Profile },
+      { path: 'blog/:id', component: Blog },
+    ]
+
+  },
 
 
   { path: '', component: PageWelcome, canActivate: [loggedInGuard] },

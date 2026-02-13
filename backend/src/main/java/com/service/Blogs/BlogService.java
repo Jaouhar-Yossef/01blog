@@ -87,10 +87,6 @@ public class BlogService {
         blogRepository.delete(blog);
     }
 
-//     private List<Blog> getBlogsPaginated(int page, int size) {
-//         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
-//         return blogRepository.findAll(pageable).getContent();
-//     }
 
   
     public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {

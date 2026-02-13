@@ -78,6 +78,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole("USER");
         user.setImageUrl("");
+        user.setStatus("ACTIVE");
         userRepository.save(user);
 
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());

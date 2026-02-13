@@ -11,13 +11,13 @@ import { TimeAgo } from '../content-home/content-home.service';
 @Component({
   selector: 'app-card-blog',
   standalone: true,
-  imports: [CommonModule , MatIconModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './card-blog.html',
   styleUrls: ['./card-blog.css'],
 })
-export class CardBlog  {
+export class CardBlog {
   @Input() blog!: any;
-  
+
   baseUrl = 'http://localhost:8080';
   currentIndex = 0;
   intervalId: any;
@@ -27,25 +27,34 @@ export class CardBlog  {
 
   showAllOfTheBlog = false;
 
-  
-  private blogService = inject(CardBlogService);
-  constructor(private router: Router , private errorService: ErrorService) {}
 
+  private blogService = inject(CardBlogService);
+  constructor(private router: Router, private errorService: ErrorService) { }
+
+  modeADMINorHOME = '';
 
   ngOnInit() {
+    if (this.router.url.startsWith('/admin/profile')) {
+      this.modeADMINorHOME = 'ADMIN'
+    }
+
     this.creat_at = TimeAgo(this.blog.creat_at);
   }
 
-  showTheBlog(id : string) {
+  showTheBlog(id: string) {
+    if (this.modeADMINorHOME == 'ADMIN') {
+      this.router.navigate(['/admin/blog', id]);
+      return
+    }
     this.router.navigate(['/home/blog', id]);
   }
 
-  
+
 
   toggleSave() {
     if (this.loading) return;
     this.loading = true;
-    
+
     const previousState = this.blog.saved;
     this.blog.saved = !previousState;
 
@@ -71,17 +80,17 @@ export class CardBlog  {
 
 
   toggleLike() {
-    if (this.loading) {return}
+    if (this.loading) { return }
     this.loading = true
-    
+
     const previousState = this.blog.liked;
     this.blog.liked = !previousState;
-   
+
     const request$ = previousState
       ? this.blogService.unliked_Blogs(this.blog.id)
       : this.blogService.liked_Blogs(this.blog.id);
 
-        
+
     request$.subscribe({
       next: () => {
         this.errorService.showMessage(
@@ -101,7 +110,11 @@ export class CardBlog  {
 
 
   goToProfile() {
-    this.router.navigate([`/home/profile` , this.blog.createdByUsername]);
+    if (this.modeADMINorHOME == 'ADMIN') {
+      this.router.navigate([`/admin/profile`, this.blog.createdByUsername]);
+      return
+    }
+    this.router.navigate([`/home/profile`, this.blog.createdByUsername]);
   }
 
 }

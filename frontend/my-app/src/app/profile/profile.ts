@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
@@ -29,24 +29,22 @@ export class Profile {
   username!: string;
   isBlogs = true;
 
+
   baseUrl = 'http://localhost:8080';
 
   constructor(
     private profileService: ProfileService,
-    private errorService: ErrorService, 
+    private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router
   ) {
   }
 
-
-
-
   usersMode: UserMode = 'followers';
 
 
   showFollowers() {
-    
+
     this.isBlogs = false;
     this.usersMode = 'followers';
   }
@@ -67,6 +65,7 @@ export class Profile {
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const username = params.get('name');
+
       if (!username) {
         this.errorService.showMessage('Profile not found ):', 'error');
         return;
@@ -85,7 +84,7 @@ export class Profile {
       next: (res: ApiResponse<UserProfile>) => {
         this.ProfileSubject.next(res.anyData)
         this.loading = false;
-        
+
       },
       error: (err) => {
         this.loading = false;

@@ -37,9 +37,9 @@ export function TimeAgo(dateString: string): string {
     if (diffDays == 1) {
       return `${diffDays} day`;
     }
-      return `${diffDays} days`;
+    return `${diffDays} days`;
 
-  } 
+  }
   if (diffWeeks < 4) return `${diffWeeks} weeks`;
 
   if (diffMonths == 1) {
@@ -52,12 +52,18 @@ export function TimeAgo(dateString: string): string {
 
 @Injectable({ providedIn: 'root' })
 export class ContentHomeService {
-  
+
   private apiUrl = 'http://localhost:8080/blogs';
+  private apiUrlReport = 'http://localhost:8080/Report';
   constructor(
     private http: HttpClient,
 
   ) {
+  }
+
+
+  ReportBlog(id: string): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.apiUrlReport}/creat` , {id});
   }
 
 

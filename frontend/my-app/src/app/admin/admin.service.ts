@@ -18,9 +18,32 @@ export class AdminService {
         return this.http.get<any>(`${this.apiUrl}/getAnalytics`);
     }
 
-    getReports(page:  number ,size: number): Observable<ApiResponse<any[]>> {
+    getReports(page: number, size: number): Observable<ApiResponse<any[]>> {
         let params = `page=${page}&size=${size}`;
         return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/getRports?${params}`);
+    }
+
+
+    getUsers(page: number, size: number): Observable<ApiResponse<any[]>> {
+        let params = `page=${page}&size=${size}`;
+        return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/getUsers?${params}`);
+    }
+
+    getBlogs(page: number, size: number): Observable<ApiResponse<any[]>> {
+        let params = `page=${page}&size=${size}`;
+        return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/getBlogs?${params}`);
+    }
+
+
+    updateReportStatus(report_id: number, status: string): Observable<ApiResponse<any>> {
+        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateReportStatus`  , {report_id , status}); 
+    }
+
+
+     deleteReport(report_id: number): Observable<ApiResponse<any>> {
+        return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/deleteReport` , {
+            body : {report_id}
+        }); 
     }
 
 }

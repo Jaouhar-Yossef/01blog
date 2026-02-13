@@ -6,9 +6,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO {
+public class UsersToAdminDTO {
     private String username;
-    private String imageUrl;
+    private String email;
     private String role;
-    private String tokeString;
+    private String status;
 }
