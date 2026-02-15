@@ -30,7 +30,8 @@ export const routes: Routes = [
       { path: 'profile/:name', component: Profile },
       { path: 'Users', component: Users },
       { path: 'Search', component: Search },
-      { path: 'CreatBlog', component: CreatBlog }
+      { path: 'blog/:id/edit', component: CreatBlog , data: { view: 'editBlog' } },
+      { path: 'CreatBlog', component: CreatBlog , data: { view: 'creatBlog' }}
 
     ]
   },

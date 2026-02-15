@@ -1,0 +1,60 @@
+::ng-deep .mat-mdc-dialog-surface {
+    background-color: rgb(22, 0, 51) !important;
+}
+
+.mat-mdc-dialog-title {
+    background-color: rgb(22, 0, 51) !important;
+    color: white !important;
+}
+
+.reason {
+    margin-top: 5px;
+    background-color: rgb(22, 0, 51) !important;
+}
+
+.insidereason {
+    width: 100%;
+}
+
+
+.plan {
+    color: gray !important;
+}
+
+
+.textarip {
+    color: white !important;
+    border: none !important;
+    resize: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+
+.textarip::-webkit-scrollbar {
+  width: 4px;
+}
+
+.textarip::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+.textarip::-webkit-scrollbar-thumb {
+  background: rgb(1, 94, 122);
+  border-radius: 10px;
+
+  border: 2px solid transparent;
+}
+
+.textarip::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+
+
+.mat-mdc-dialog-actions {
+    background-color: rgb(22, 0, 51) !important;
+
+}

@@ -18,6 +18,13 @@ export interface ApiResponse<T> {
 }
 
 
+interface ReportBlogOrUser {
+  type: string;
+  reason: string;
+  reportedBlog?: string;
+}
+
+
 
 export function TimeAgo(dateString: string): string {
   if (!dateString) return '';
@@ -62,8 +69,13 @@ export class ContentHomeService {
   }
 
 
-  ReportBlog(id: string): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any[]>>(`${this.apiUrlReport}/creat` , {id});
+  ReportBlog(type: string, reason: string, id: string): Observable<ApiResponse<any>> {
+    let data: ReportBlogOrUser = {
+      type: type,
+      reason: reason,
+      reportedBlog: id,
+    }
+    return this.http.post<ApiResponse<any[]>>(`${this.apiUrlReport}/creat`, data);
   }
 
 
@@ -92,6 +104,10 @@ export class ContentHomeService {
 
   creatBlogs(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/creat-blog`, formData);
+  }
+
+  updateBlogs(formData: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update-blog`, formData);
   }
 
 

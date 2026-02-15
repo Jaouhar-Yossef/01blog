@@ -12,10 +12,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Comment } from '../comment/comment';
 import { CardBlogService } from '../card-blog/card-blog.service';
 
+
+import { MatDialog } from '@angular/material/dialog';
+import { Report } from './../report/report';
+import { MatMenuModule } from '@angular/material/menu';
+import { AuthService } from '../auth/auth.service';
 
 export interface TheMediaBlog {
   url: string;
@@ -34,6 +39,7 @@ export interface TheMediaBlog {
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
+    MatMenuModule,
     FormsModule,
     Comment
   ],
@@ -54,9 +60,11 @@ export class Blog {
 
   id_blog: string = "";
   creat_at: string = "";
+  creat_by: string = "";
   AllTheDiscription = false;
   loading = false;
   likedblog = false;
+  iSmyBlog = false;
 
   videoNotPlay = true;
 
@@ -66,8 +74,8 @@ export class Blog {
 
 
   constructor(private errorService: ErrorService,
-    private route: ActivatedRoute, private router: Router,
-    private contentHomeService: ContentHomeService) { }
+    private route: ActivatedRoute, private router: Router, private authService: AuthService,
+    private contentHomeService: ContentHomeService, private dialog: MatDialog) { }
 
 
   modeADMINorHOME = '';
@@ -81,7 +89,6 @@ export class Blog {
 
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-
     this.id_blog = id;
 
     this.contentHomeService.getBlogById(id).subscribe({
@@ -89,6 +96,13 @@ export class Blog {
         this.blogSubject.next(blog),
           this.theMedia = this.blogSubject.value.media
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
+        this.creat_by = this.blogSubject.value.createdByUsername;
+
+        const user = this.authService.getUser();
+        if (user != null && user?.username == this.creat_by) {
+          this.iSmyBlog = true;
+        }
+
       },
       error: () => {
         this.errorService.showMessage('Cannot load blog ):', 'error')
@@ -97,18 +111,48 @@ export class Blog {
   }
 
 
-  reportBlog(id: string) {
+  editBlog(id :  string) {
+    this.router.navigate([`home/blog/${id}/edit`]);
+  }
+
+
+  reportBlog(id: string, type: string) {
     if (this.loading) return;
-    this.contentHomeService.ReportBlog(id).subscribe({
-      next: res => {
-        console.log(res)
-      },
-      error: () => {
-        this.errorService.showMessage('error report blog ):', 'error')
+    this.loading = true;
+
+    const dialogRef = this.dialog.open(Report, {
+      width: '700px',
+      data: { id }
+    });
+
+    dialogRef.afterClosed().subscribe(reason => {
+      if (reason) {
+        if (reason.length > 200) {
+          this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
+        }
+
+        if (reason.length < 5) {
+          this.errorService.showMessage(' ', 'error')
+        }
+
+        this.contentHomeService.ReportBlog(type, reason, id).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('Report Created', 'success')
+            }
+          },
+          error: () => {
+            this.errorService.showMessage('error report blog ):', 'error')
+          }
+        });
       }
     });
+
+
+
     this.loading = false;
   }
+
 
   toggleVideo(event: Event) {
     const video = event.target as HTMLVideoElement;
@@ -229,7 +273,6 @@ export class Blog {
   }
 
   goToProfile(creatBy: string) {
-
     if (this.modeADMINorHOME = 'ADMIN') {
       this.router.navigate(['/admin/profile', creatBy]);
       return

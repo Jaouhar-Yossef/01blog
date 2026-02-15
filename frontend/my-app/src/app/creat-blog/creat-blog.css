@@ -1,6 +1,4 @@
 .create-blog-container {
-  background-color: rgb(1, 1, 44);
-
 
   height: 100%;
   width: 100%;
@@ -11,7 +9,6 @@
   align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
- 
 
 
 }
@@ -21,46 +18,40 @@
   width: 60%;
   height: 100%;
 
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 60px;
+
 }
 
 
 .create-blog-container h2 {
   text-align: center;
+  user-select: none;
+  caret-color: transparent;
 }
 
 
-/* mat-form-field container */
 .mat-mdc-form-field {
   width: 100% !important;
 }
 
-/* الخلفية الحقيقية */
 .mat-mdc-text-field-wrapper {
-  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
   border-radius: 16px !important;
 }
 
-/* الطبقة اللي كانت كاتغطي بالبيض */
-.mat-mdc-form-field-flex {
-  background: transparent !important;
-}
-
-/* input + textarea */
 .mdc-text-field__input {
   color: white !important;
   font-size: 16px !important;
+  cursor: pointer;
 }
 
-/* textarea خاص */
 textarea.mdc-text-field__input {
   color: white !important;
 }
 
-/* outline border */
 .mdc-notched-outline__leading,
 .mdc-notched-outline__notch,
 .mdc-notched-outline__trailing {
@@ -105,16 +96,10 @@ textarea {
 
 
 
-.the-content {
-  height: 100px;
-  resize: none;
-}
-
 .form-group-media {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-
 }
 
 .form-group-media input[type="file"] {
@@ -144,13 +129,12 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select: none;
   cursor: pointer;
-
 }
 
 .selectmedia-input {
   display: none;
-
 }
 
 
@@ -179,9 +163,8 @@ textarea {
   gap: 12px;
   margin-top: 10px;
   width: 70%;
-
-
-  cursor: pointer;
+  user-select: none;
+  caret-color: transparent;
 }
 
 .preview-item {
@@ -189,7 +172,6 @@ textarea {
   width: 18%;
   height: 100px;
   cursor: pointer;
-
 }
 
 .preview-item img,
@@ -202,7 +184,6 @@ textarea {
 
 }
 
-/* Remove button */
 .remove-btn {
   position: absolute;
   top: 6px;
@@ -243,7 +224,6 @@ textarea {
 
 .botnpub {
   cursor: pointer;
-
   background: linear-gradient(90deg, #2b8cff, #6ea8ff);
 }
 
@@ -253,16 +233,277 @@ textarea {
 
 
 .divclearandcancel {
-  width: 30%;
+  width: 35%;
   display: flex;
   justify-content: space-between;
   align-content: center;
   cursor: pointer;
-
   padding: 5px;
 }
 
 .Cancel {
   width: 45%;
+  background-color: #070b24;
+  color: whitesmoke;
+  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.tohome {
+  font-size: 22px;
+  margin-right: 5px;
+}
+
+
+
+
+@media (max-width: 1430px) {
+  .divCreatblog {
+    gap: 20px;
+    width: 80%;
+  }
+}
+
+@media (max-width: 1230px) {
+  .divCreatblog {
+    width: 80%;
+    gap: 10px;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (max-width: 1070px) {
+  .divCreatblog {
+    width: 90%;
+    height: 90%;
+    overflow-y: auto;
+    gap: 5px;
+
+  }
+
+
+  .create-blog-container h2 {
+    font-size: 20px;
+  }
+
+
+  .selectmedia-divimgs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 0px;
+  }
+
+
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 0px;
+  }
+
+
+  .preview-item {
+    position: relative;
+    width: 28%;
+    height: 100px;
+    cursor: pointer;
+  }
+
+
+  .form-actions {
+    gap: 5px;
+
+    padding: 10px;
+  }
+
+
+  .divclearandcancel {
+    width: 65%;
+    padding: 0px;
+  }
+
+
+  .Cancel {
+    font-size: 14px;
+    width: 45%;
+  }
+
+
+}
+
+@media (max-width: 700px) {
+  .create-blog-container h2 {
+    font-size: 16px;
+  }
+
+  .mat-mdc-form-field {
+    width: 90% !important;
+  }
+
+  .form-group-media {
+    width: 90%;
+
+  }
+
+  .preview-item img,
+  .preview-item video {
+    width: 70px;
+    height: 90px;
+  }
+
+  .selectmedia {
+    padding: 5px 5px;
+    font-size: 13px;
+    width: 23%;
+
+  }
+
+  .selectmedia-label img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .selectmedia-label span {
+    font-size: 11px;
+  }
+
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 70%;
+    user-select: none;
+    caret-color: transparent;
+  }
+
+  .form-actions {
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .form-actions button {
+    padding: 8px 15px;
+    font-size: 15px;
+  }
+
+  .divclearandcancel {
+    width: 75%;
+  }
+
+  .Cancel {
+    font-size: 13px !important;
+  }
+
+  .tohome {
+    font-size: 19px;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 510px) {
+  .divCreatblog {
+    width: 100%;
+    height: 95%;
+  }
+
+
+  .create-blog-container h2 {
+    font-size: 14px;
+  }
+
+
+  .mat-mdc-form-field {
+    width: 100% !important;
+  }
+
+  .form-group-media {
+    width: 100%;
+
+  }
+
+
+
+  .preview-item img,
+  .preview-item video {
+    width: 65px;
+    height: 78px;
+  }
+
+
+
+  .selectmedia {
+    font-size: 12px;
+    width: 25%;
+  }
+
+
+  .selectmedia-label img {
+    width: 25px;
+    height: 25px;
+  }
+
+
+
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 73%;
+    user-select: none;
+    caret-color: transparent;
+  }
+
+
+
+  .form-actions {
+    gap: 4px;
+  }
+
+
+
+  .form-actions button {
+    padding: 7px 13px;
+    font-size: 14px;
+  }
+
+
+  .divclearandcancel {
+    width: 85%;
+  }
+
+
+  .Cancel {
+    font-size: 12px !important;
+    width: 40%;
+
+  }
+
+
+  .tohome {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+
+}
+
+
+@media (max-width: 400px) {
+
+  .divclearandcancel {
+    width: 100%;
+  }
+
+  .Cancel {
+    font-size: 10px !important;
+    width: 40%;
+  }
+  .tohome {
+    font-size: 17px;
+    margin-right: 3px;
+  }
+
 }

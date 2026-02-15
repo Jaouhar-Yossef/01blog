@@ -1,9 +1,6 @@
 <div class="blogdiv">
-
-  <ng-container *ngIf="blog$ | async as blog">
-
+<ng-container *ngIf="blog$ | async as blog" >
     <div class="blog">
-
       <div class="blogheader">
         <div class="blogheader_left">
 
@@ -23,7 +20,19 @@
         </div>
 
         <div class="blogheader_right">
-          <mat-icon class="imgskip" (click)="reportBlog(blog.id)"  >report</mat-icon>
+
+          <mat-icon class="imgskip" [matMenuTriggerFor]="statusMenu"> menu </mat-icon>
+
+          <mat-menu #statusMenu="matMenu">
+            <div *ngIf="iSmyBlog">
+              <button mat-menu-item (click)="editBlog(blog.id)"> <mat-icon> edit_document </mat-icon> Edit </button>
+              <button mat-menu-item> <mat-icon> delete </mat-icon> Delete </button>
+            </div>
+            <div *ngIf="!iSmyBlog">
+              <button mat-menu-item (click)="reportBlog(blog.id , 'BLOG')"> <mat-icon> flag </mat-icon> Report </button>
+            </div>
+          </mat-menu>
+
         </div>
       </div>
 
@@ -56,10 +65,9 @@
               class="realimg" />
 
             <div *ngIf="theMedia[currentIndex].type === 'VIDEO'" class="divVideo">
-              <img *ngIf="videoNotPlay" class="play-icon"
-                src="./../../assets/playvideo.png" alt="">
-              <video  [src]="baseUrl + theMedia[currentIndex].url" loop
-                playsinline (click)="toggleVideo($event)" class="thevideo"></video>
+              <img *ngIf="videoNotPlay" class="play-icon" src="./../../assets/playvideo.png" alt="">
+              <video [src]="baseUrl + theMedia[currentIndex].url" loop playsinline (click)="toggleVideo($event)"
+                class="thevideo"></video>
             </div>
 
 
@@ -107,11 +115,8 @@
           </div>
 
         </div>
-
-
       </div>
       <app-comment></app-comment>
-
-
-
     </div>
+  </ng-container>
+  </div>

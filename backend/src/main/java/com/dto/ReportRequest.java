@@ -16,12 +16,9 @@ public class ReportRequest {
     private String type;
 
     @NotBlank(message = "Reason cannot be empty")
-    @Size(max = 100, message = "Reason cannot exceed 100 characters")
+    @Size(max = 200, message = "Reason cannot exceed 200 characters")
     private String reason;
-    
-    private String reportedUser;
 
     private UUID reportedBlog;
-
-
+    private String reportedUser;
 }

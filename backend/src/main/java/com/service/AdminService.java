@@ -44,7 +44,7 @@ public class AdminService {
         Report r = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
         r.setStatus(request.getStatus());
-        reportRepository.save(r);
+        // reportRepository.save(r);
         return true;
     }
 

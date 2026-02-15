@@ -16,7 +16,7 @@ public class UploadExceptionHandler {
             .status(HttpStatus.BAD_REQUEST)
             .body(new Response<>(
                 false,
-                "File too large. Max size is 50MB",
+                "File too large (20MB), Or request too large (100MB)",
                 null
             ));
     }

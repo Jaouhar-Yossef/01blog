@@ -34,7 +34,6 @@ export class Setting {
     if (user != null && user.role == "ADMIN") {
       this.showDelete = false;
     }
-
   }
 
   home() {

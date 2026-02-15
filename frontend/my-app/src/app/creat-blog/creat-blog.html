@@ -3,12 +3,14 @@
 
 
     <h2>Create New Blog Post</h2>
+
+
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-group">
 
         <mat-form-field class="example-full-width">
           <mat-label>Enter blog title</mat-label>
-          <input matInput formControlName="title">
+          <input matInput maxlength="50" formControlName="title">
         </mat-form-field>
 
       </div>
@@ -19,7 +21,7 @@
 
         <mat-form-field class="example-full-width">
           <mat-label>Write your blog content</mat-label>
-          <textarea maxlength="1000" rows="3" matInput formControlName="content" ></textarea>
+          <textarea maxlength="2000" rows="3" matInput formControlName="content"></textarea>
         </mat-form-field>
 
       </div>
@@ -40,24 +42,57 @@
           </div>
         </div>
 
-        <div class="preview">
+        <div class="preview" *ngIf="!ModeEditblog">
           <div class="preview-item" *ngFor="let item of files; let i = index">
-            <img *ngIf="item.type === 'image'" [src]="item.url" />
-            <video *ngIf="item.type === 'video'" [src]="item.url" controls></video>
+            <img *ngIf="item.type === 'IMAGE'" [src]="item.url" />
+            <video *ngIf="item.type === 'VIDEO'" [src]="item.url" controls></video>
             <button class="remove-btn" type="button" (click)="removeFile(i)">✕</button>
           </div>
         </div>
+
+        <div class="preview" *ngIf="ModeEditblog">
+          <div class="preview-item" *ngFor="let item of imgsandvids; let i = index">
+            <img *ngIf="item.type === 'IMAGE'" [src]=" baseUrl + item.url" />
+            <video *ngIf="item.type === 'VIDEO'" [src]=" baseUrl + item.url" controls></video>
+            <button class="remove-btn" type="button" (click)="removeFileBlog(i)">✕</button>
+          </div>
+
+
+          <div class="preview-item" *ngFor="let item of files; let i = index">
+            <img *ngIf="item.type === 'IMAGE'" [src]="item.url" />
+            <video *ngIf="item.type === 'VIDEO'" [src]="item.url" controls></video>
+            <button class="remove-btn" type="button" (click)="removeFile(i)">✕</button>
+          </div>
+        </div>
+
       </div>
 
       <div class="form-actions">
-
-        <button type="submit" class="botnpub btn btn-primary" [disabled]="form.invalid">
+        <span *ngIf="isSubmitting">Uploading...</span>
+        <button type="submit" *ngIf="!ModeEditblog" class="botnpub btn btn-primary" [disabled]="form.invalid || this.isSubmitting">
           Publish Blog
         </button>
 
+        <button type="submit"  *ngIf="ModeEditblog" class="botnpub btn btn-primary" [disabled]="form.invalid || this.isSubmitting">
+          Edit Blog
+        </button>
+
         <div class="divclearandcancel">
-          <button type="button" class="btn btn-secondary Cancel" (click)="onCancel()"> Go Back </button>
-          <button type="button" class="btn btn-secondary Cancel" (click)="clearForm()"> clear </button>
+
+          <button mat-raised-button class="Cancel" (click)="clearForm()">
+            <mat-icon class="tohome"> cancel_schedule_send</mat-icon>
+            clear
+          </button>
+
+          <button mat-raised-button class="Cancel" *ngIf="!ModeEditblog" routerLink="/home">
+            <mat-icon class="tohome"> home </mat-icon>
+            Go Back
+          </button>
+
+          <button mat-raised-button class="Cancel" (click)="goback()" *ngIf="ModeEditblog">
+            <mat-icon class="tohome"> home </mat-icon>
+            Go Back
+          </button>
         </div>
       </div>
     </form>

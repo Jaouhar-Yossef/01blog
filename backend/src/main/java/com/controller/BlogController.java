@@ -171,21 +171,50 @@ public class BlogController {
     }
 
     @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response<BlogResponseDTO>> create_Blog(
+    public ResponseEntity<Response<?>> create_Blog(
             @Valid @ModelAttribute BlogRequest blogRequest,
             BindingResult bindingResult,
-            Authentication authentication) {
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         if (bindingResult.hasErrors()) {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg, null));
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
         }
 
-        String username = authentication.getName();
+        String username = userDetails.getUser().getUsername();
 
         try {
-            Response<BlogResponseDTO> dataa = blogService.createBlog(blogRequest, username);
-            return ResponseEntity.status(HttpStatus.CREATED).body(dataa);
+            boolean dataa = blogService.createBlog(blogRequest, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(dataa, "Blog created successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
+
+
+
+
+    @PutMapping(value = "/update-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response<?>> update_blog(
+            @Valid @ModelAttribute BlogRequest blogRequest,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
+        UUID user_id = userDetails.getUser().getId();
+
+        try {
+            boolean status = blogService.upDateBlog(blogRequest, user_id);
+            if (status) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "Blog upDated successfully!"));
+            } else {
+                return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(false, "Blog upDated successfully!"));
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }

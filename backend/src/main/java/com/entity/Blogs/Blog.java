@@ -62,6 +62,11 @@ public class Blog {
         media.setBlog(this);
     }
 
+    public void removeMedia(MediaBlog media) {
+        medias.remove(media);
+        media.setBlog(this);
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

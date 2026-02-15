@@ -1,6 +1,8 @@
 package com.dto;
 
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.web.multipart.MultipartFile;
 import lombok.*;
 import jakarta.validation.constraints.*;
@@ -23,4 +25,8 @@ public class BlogRequest {
 
     @Size(max = 5, message = "You can upload at most 5 files")
     private List<MultipartFile> files;
+
+    private List<String> filesupdated;
+
+    private UUID  idBlog_update;
 }

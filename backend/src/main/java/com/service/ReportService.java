@@ -36,10 +36,6 @@ public class ReportService {
         report.setReason(reportRequest.getReason());
         report.setStatus("PENDING");
 
-        if (reportRequest.getReportedBlog() != null && reportRequest.getReportedUser() != null) {
-            throw new RuntimeException("Cannot report both blog and user at the same time");
-        }
-
         if (reportRequest.getReportedBlog() != null) {
             Blog blogReported = blogRepository.findById(reportRequest.getReportedBlog())
                     .orElseThrow(() -> new RuntimeException("Blog not found"));

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Create Report</h2>
+
+
+
+<form [formGroup]="reasonForm">
+    <mat-dialog-content class="reason">
+        <mat-form-field class="insidereason" appearance="outline">
+            <mat-label class="plan">Reason</mat-label>
+
+            <textarea matInput class="textarip" rows="4" maxlength="200" formControlName="reason">
+      </textarea>
+
+            <mat-error *ngIf="reasonForm.get('reason')?.hasError('required')">
+                Reason is required
+            </mat-error>
+
+            <mat-error *ngIf="reasonForm.get('reason')?.hasError('minlength')">
+                Reason must be at least 5 characters
+            </mat-error>
+
+            <mat-error *ngIf="reasonForm.get('reason')?.hasError('maxlength')">
+                Reason cannot exceed 200 characters
+            </mat-error>
+
+        </mat-form-field>
+    </mat-dialog-content>
+
+</form>
+
+
+<mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="submit()">Report</button>
+</mat-dialog-actions>
