@@ -5,7 +5,6 @@ import com.dto.BlogResponseDTO;
 import com.dto.MediaDTO;
 import com.entity.User;
 import com.entity.Blogs.Blog;
-import com.entity.Blogs.MediaBlog;
 import com.entity.Blogs.Saved;
 import com.repository.FollowersRepository;
 import com.repository.UserRepository;
@@ -14,8 +13,6 @@ import com.repository.Blogs.SavedRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
-
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,7 +89,7 @@ public class BlogService {
                         try {
                                 mediaBlogService.saveMedia(blog, blogRequest, "update");
                         } catch (Exception e) {
-                                // System.out.println("  " + e.getMessage());
+                                // System.out.println(" " + e.getMessage());
                                 throw new RuntimeException("Error updating blog: " + e.getMessage());
                         }
 
@@ -106,10 +103,25 @@ public class BlogService {
         public void deleteBlog(UUID id) {
                 Blog blog = blogRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-                                
+
                 mediaBlogService.deleteBlogFiles(blog);
+                // System.out.println("iiiiiiiiiiiiiiiiiii");
 
                 blogRepository.delete(blog);
+        }
+
+        public Response<?> deleteOneBlog(UUID user_id, UUID blog_id) {
+                User user = userRepository.findById(user_id)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+                Blog blog = blogRepository.findById(blog_id)
+                                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                User checking_creat_by = blog.getCreatedBy();
+
+                if (checking_creat_by.getUsername().equals(user.getUsername())) {
+                        deleteBlog(blog_id);
+                        return new Response<>(true, "Blog deleted sucesfuly!");
+                }
+                return new Response<>(false, null);
         }
 
         public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {

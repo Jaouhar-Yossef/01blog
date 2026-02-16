@@ -20,7 +20,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +39,18 @@ public class BlogController {
         this.likeBlogService = likeBlogService;
         this.savedService = savedService;
         this.commentBlogService = commentBlogService;
+    }
+
+    @DeleteMapping("/deleteblog/{blogId}")
+    public ResponseEntity<Response<?>> deleteBlog(@PathVariable UUID blogId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            UUID user_id = userDetails.getUser().getId();
+            Response<?> blogstatus = blogService.deleteOneBlog(user_id, blogId);
+            return ResponseEntity.ok(blogstatus);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
     }
 
     @PostMapping("/creat-comment")
@@ -98,13 +109,12 @@ public class BlogController {
     // public ResponseEntity<List<BlogResponseDTO>> getBlogs(
     // @RequestParam(defaultValue = "0") int page,
     // @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal
-    // UserDetailsImpl userDetails
-    // ) {
+    // UserDetailsImpl userDetails) {
 
     // UUID userId = userDetails.getUser().getId();
-    // List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId , page ,
-    // size);
-    // return ResponseEntity.ok(blogDTOs);
+    // // List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId, page,
+    // // size);
+    // return ResponseEntity.ok(null);
     // }
 
     @GetMapping("/blogs")
@@ -119,13 +129,13 @@ public class BlogController {
 
             if ("home".equals(mode)) {
                 List<BlogResponseDTO> blogDTOs = blogService.blogsGetterHome(userId, page, size);
-                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOs));
             } else if ("profile".equals(mode)) {
                 List<BlogResponseDTO> blogDTOs = blogService.blogsGetterProfile(userId, page, size, username);
-                    return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOs));
             } else if ("saved".equals(mode)) {
                 List<BlogResponseDTO> blogDTOs = blogService.blogsGetterSaved(userId, page, size);
-                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly" ,blogDTOs));
+                return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOs));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
@@ -167,7 +177,7 @@ public class BlogController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
         blogService.deleteBlog(id);
-        return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly", null));
+        return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly!", null));
     }
 
     @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -191,10 +201,6 @@ public class BlogController {
         }
     }
 
-
-
-
-
     @PutMapping(value = "/update-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<?>> update_blog(
             @Valid @ModelAttribute BlogRequest blogRequest,
@@ -211,9 +217,11 @@ public class BlogController {
         try {
             boolean status = blogService.upDateBlog(blogRequest, user_id);
             if (status) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "Blog upDated successfully!"));
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new Response<>(true, "Blog upDated successfully!"));
             } else {
-                return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(false, "Blog upDated successfully!"));
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new Response<>(false, "Blog upDated successfully!"));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));

@@ -1,14 +1,11 @@
 .users-list {
     margin-top: 30px;
     width: 100%;
-    height:  95%;
-
+    height: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    gap: 20px;
-
+    gap: 30px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -16,33 +13,32 @@
 
 
 .users-list::-webkit-scrollbar {
-  width: 4px;
+    width: 4px;
 }
 
 .users-list::-webkit-scrollbar-track {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 .users-list::-webkit-scrollbar-thumb {
-  background: rgb(1, 94, 122);
-  border-radius: 10px;
+    background: rgb(1, 94, 122);
+    border-radius: 10px;
 
-  border: 2px solid transparent;
+    border: 2px solid transparent;
 }
 
 .users-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9);
 }
 
 
 
 
 .user {
-    width: 50%;
-    height: 160px;
+    width: 40%;
     display: flex;
     border-radius: 10px;
-    background-color: rgba(7, 0, 70, 0.479);
+    background-color: rgb(1, 24, 36);
 }
 
 .blogheader_left {
@@ -53,7 +49,7 @@
     align-items: center;
     padding: 5px;
 
-}   
+}
 
 .nameandnmbblogs {
     width: 30%;
@@ -70,13 +66,15 @@
 }
 
 .divuserimg {
-    height: 90%;
+    height: 100%;
+    width: 50%;
 }
+
 .imguser {
     cursor: pointer;
-    width: 100%;
-    height: 100%;
     border-radius: 60px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     filter: brightness(1) contrast(1);
 }
@@ -97,9 +95,8 @@
     background-color: rgb(0, 123, 172) !important;
     color: white !important;
     display: flex;
-    gap: 8px;
+    gap: 5px;
     cursor: pointer;
-
     justify-content: center;
 }
 
@@ -110,13 +107,13 @@
 .following {
     background-color: rgba(3, 81, 112, 0.815) !important;
     color: white !important;
-    
+
 }
 
 
 
 .btnmatang {
-    color: white !important;
+    color: rgb(128, 128, 128) !important;
     background-color: rgba(7, 0, 70, 0.164);
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
@@ -125,7 +122,6 @@
     border-radius: 10px;
     padding: 8px;
     cursor: pointer;
-
 }
 
 
@@ -142,7 +138,6 @@
     background-color: rgba(172, 103, 0, 0.884) !important;
     color: rgb(226, 226, 226) !important;
     cursor: pointer;
-
 }
 
 
@@ -180,28 +175,238 @@
 
 
 .noContent {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10%;
-  height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    height: 100%;
 }
 
 
 .noContent-img {
-  width: 40%;
-  height: 40%;
+    width: 40%;
+    height: 40%;
 }
 
 
 .noContent-text {
-  font-size: 24px;
-  font-weight: 700;
+    font-size: 24px;
+    font-weight: 700;
 }
 
 .noContent-subtext {
-  font-size: 20px;
-  font-weight: 500;
+    font-size: 20px;
+    font-weight: 500;
 }
+
+
+
+
+@media (max-width: 1300px) {
+
+    .user {
+        width: 60%;
+        display: flex;
+        border-radius: 10px;
+        background-color: rgb(1, 24, 36);
+    }
+
+    .btn {
+
+        gap: 3px;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    .user {
+        width: 70%;
+        display: flex;
+        border-radius: 10px;
+        background-color: rgb(1, 24, 36);
+    }
+
+    .nameandnmbblogs p {
+        font-size: 18px;
+    }
+
+    .btn {
+        font-size: 13px;
+        width: 55%;
+        gap: 3px;
+    }
+
+    .btnmatang {
+        font-size: 13px;
+    }
+
+    .btnn {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 750px) {
+    .user {
+        width: 75%;
+        display: flex;
+        border-radius: 10px;
+        background-color: rgb(1, 24, 36);
+    }
+
+    .nameandnmbblogs p {
+        font-size: 16px;
+    }
+
+
+
+    .btnmatang {
+        font-size: 12px;
+    }
+
+    .btnn {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 660px) {
+
+    .user {
+        width: 80%;
+        display: flex;
+        border-radius: 10px;
+        background-color: rgb(1, 24, 36);
+    }
+
+    .nameandnmbblogs p {
+        font-size: 13px;
+    }
+
+    .btn {
+        font-size: 12px;
+    }
+
+    .btnmatang {
+        font-size: 11px;
+    }
+
+    .btnn {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 560px) {
+
+
+
+    .nameandnmbblogs {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .nameandnmbblogs p {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+
+
+    .btnmatang {
+        font-size: 12px;
+        font-weight: 400;
+        padding: 1px;
+    }
+
+    .imguser {
+        border-radius: 60px;
+        width: 50px;
+        height: 50px;
+    }
+
+
+    .btnn span {
+        display: none;
+    }
+
+    .btnn {
+        width: 20%;
+        background-color: rgb(1, 24, 36) !important;
+        border: none;
+    }
+
+    .btn {
+        padding: 0%;
+        width: 60%;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .iconclass {
+        font-size: 17px !important;
+    }
+
+
+}
+
+
+
+@media (max-width: 470px) {
+    .btnn span {
+        display: none;
+    }
+
+    .user {
+        width: 95%;
+    }
+
+    .btn {
+        padding: 0%;
+        width: 60%;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .btnn {
+        width: 20%;
+        background-color: rgb(1, 24, 36) !important;
+        border: none;
+    }
+
+
+    .noContent-text {
+        font-size: 19px;
+        font-weight: 500;
+    }
+
+    .noContent-subtext {
+        font-size: 17px;
+        font-weight: 300;
+    }
+
+}
+
+
+
+@media (max-width: 400px) {
+    .nameandnmbblogs p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 300px) {
+    .btn {
+        width: 20%;
+    }
+
+    .btn span {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) {}
+
+@media (orientation: portrait) {}

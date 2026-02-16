@@ -1,10 +1,10 @@
 .divComment {
-    margin-top: 10px;
     height: auto;
     max-height: 70vh;
     width: 100%;
     background-color: rgb(1, 1, 44);
-
+    cursor: pointer;
+    user-select: none;
 }
 
 
@@ -36,6 +36,8 @@
     color: white;
     margin-top: 15px;
     margin-bottom: 15px;
+    margin-left: 10px;
+
 }
 
 .commenttitle span {
@@ -62,7 +64,7 @@
     height: 40px;
     border-radius: 20px;
     margin-right: 15px;
-    
+
     object-fit: contain;
 
     position: relative;
@@ -76,7 +78,7 @@
 .comment-fieldd {
     display: inline-block;
     max-width: 100%;
-    min-width: 50px;
+    min-width: 50%;
     padding: 10px;
     border-radius: 15px;
     background-color: #535252;
@@ -153,12 +155,12 @@
 
 
 ::ng-deep .mat-mdc-text-field-wrapper {
-  background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
-  border-radius: 16px !important;
+    background: linear-gradient(135deg, #0a0f2c, #05081a) !important;
+    border-radius: 16px !important;
 }
 
 ::ng-deep .mat-mdc-form-field-flex {
-  background: transparent !important;
+    background: transparent !important;
 }
 
 
@@ -231,4 +233,68 @@
     color: blue;
     color: gray;
     cursor: pointer;
+}
+
+
+@media (max-width: 1100px) {
+
+    .comment-form {
+        margin-bottom: 15px;
+        margin-top: 10px;
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .commenttitle {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .commenttitle span {
+        padding-left: 10px;
+        color: rgb(182, 182, 182);
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+
+
+
+
+    .creatbyAndComment {
+        max-width: 85%;
+        margin-right: 5px;
+    }
+
+
+
+
+    .comment-fieldd {
+        display: inline-block;
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 15px;
+        background-color: #535252;
+        color: aliceblue;
+        text-align: start;
+    }
+
+
+
+
+    .noContent-text {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .noContent-subtext {
+        font-size: 16px;
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+
+
 }

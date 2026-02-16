@@ -1,41 +1,40 @@
 <div class="setting" [class.expanded]="show" (mouseenter)="show = true" (mouseleave)="show = false">
   <div class="setting-item">
     <button class="btnnor" (click)="home()">
-      <img class="homeset" src="./../../assets/home.svg" alt=""> <span> Home</span>
+      <img class="homeset" src="./../../assets/home.svg" alt=""> <span *ngIf="show" > Home</span>
     </button>
 
-    <button class="btnnor" (click)="SearchForAll()">
-      <img class="homeset" src="./../../assets/images/search.svg" alt=""> <span> Search</span>
+    <button class="btnnor" *ngIf="!small" (click)="SearchForAll()">
+      <img class="homeset" src="./../../assets/images/search.svg" alt=""> <span *ngIf="show"> Search</span>
     </button>
+    
+        <button class="btnnor" *ngIf="!showDelete" (click)="pageAdmin()">
+          <img class="homeset" src="./../../assets/adminn.png" alt=""> <span *ngIf="show"> Admin </span>
+        </button>
 
     <button class="btnnor" (click)="profile()">
-      <img class="homeset" src="./../../assets/images/user.svg" alt=""> Profile
+      <img class="homeset" src="./../../assets/images/user.svg" alt=""> <span *ngIf="show"> Profile</span>
     </button>
 
     <button class="btnnor" (click)="savedBlog()">
-      <img class="homeset" src="./../../assets/saved.webp" alt=""> Saved
+      <img class="homeset" src="./../../assets/saved.webp" alt=""> <span *ngIf="show">Saved</span> 
     </button>
 
     <button class="btnnor" (click)="getUsers()">
-      <img class="homeset" src="../../assets/images/users.svg" alt=""> Users
+      <img class="homeset" src="../../assets/images/users.svg" alt=""> <span *ngIf="show">Users</span>
     </button>
 
-    <button class="btnnor">
-      <img class="homeset" src="../../assets/images/notification-icon.png" alt=""> Notification
+    <button class="btnnor" *ngIf="!small">
+      <img class="homeset" src="../../assets/images/notification-icon.png" alt=""> <span *ngIf="show">Notification</span>
     </button>
 
     <button class="btnnor" (click)="logout()">
-      <img class="homeset" src="../../assets/images/arrow-left.svg" alt=""> Log out
+      <img class="homeset" src="../../assets/images/arrow-left.svg" alt=""> <span *ngIf="show">Log out</span>
     </button>
 
-    @if (show) {
-    <button class="delete-account" *ngIf="showDelete" (click)="deleteAccount()">
-      <img class="homeset" src="../../assets/deleteaccount.png" alt=""> Delete Account
-    </button>
-    }
 
-    <button class="btnnor" *ngIf="!showDelete" (click)="pageAdmin()">
-      <img class="homeset" src="./../../assets/adminn.png" alt=""> <span> Admin </span>
+    <button class="delete-account" [class.showit]="show" *ngIf="showDelete" (click)="deleteAccount()">
+      <img class="homeset" src="../../assets/deleteaccount.png" alt=""> <span> delete account</span>
     </button>
 
   </div>

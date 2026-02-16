@@ -5,18 +5,15 @@
     justify-content: center;
     overflow-y: auto;
     margin-top: 30px;
-    margin-bottom: 100px;
+    /* margin-bottom: 100px; */
+    cursor: pointer;
+    user-select: none;
 }
 
-.blogedit {
-    width: 100%;
-    height: 100%;
-}
 .blog {
     background-color: rgb(1, 1, 44);
     height: 85vh;
-    width: 70%;
-    border-radius: 20px;
+    width: 65%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -46,10 +43,7 @@
 
 
 .blogheader {
-
     border-radius: 20px;
-
-
     position: sticky;
     top: 0;
     z-index: 6;
@@ -57,11 +51,8 @@
     align-items: center;
     justify-content: space-between;
     align-content: center;
-
     padding: 10px;
     background-color: rgb(1, 1, 44);
-
-
 }
 
 .blogheader_left {
@@ -160,7 +151,6 @@
     background-color: rgb(1, 1, 44);
     height: auto;
     padding: 10px;
-    border-radius: 20px;
 }
 
 .titleAndDiscription {
@@ -175,9 +165,11 @@
 
 .titleAndDiscription .title {
     margin: 0;
+    user-select: none;
+
     color: rgb(147, 128, 255);
-    font-size: 25px;
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
     padding: 0%;
 }
@@ -185,6 +177,7 @@
 
 .titleAndDiscription .divcontent {
     width: 100%;
+    user-select: none;
     overflow: visible;
     overflow-y: hidden;
 }
@@ -193,8 +186,8 @@
     padding: 0;
     margin: 0;
     color: white;
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 400;
     font-family: Arial, Helvetica, sans-serif;
     height: auto;
     overflow-x: hidden;
@@ -248,6 +241,10 @@
     position: relative;
     width: 80%;
     height: 95%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .thevideo {
@@ -301,7 +298,7 @@
 
 .realimg {
     color: gray;
-    width: 80%;
+    width: 55%;
     height: 95%;
     border-radius: 10px;
     display: block;
@@ -310,7 +307,7 @@
 }
 
 .realimg:hover {
-    width: 81%;
+    width: 56%;
     height: 96%;
 }
 
@@ -414,7 +411,6 @@
     align-items: center;
     margin: auto;
     height: auto;
-
     margin-top: 15px;
     border-radius: 25px;
     border: 2px solid rgba(0, 0, 0, 0.2);
@@ -446,3 +442,243 @@
 .blogbotoom button span span {
     color: rgb(182, 182, 182);
 }
+
+
+
+@media (max-width: 1600px) {
+    .blogheader_left {
+        width: 18%;
+    }
+
+    .realimg {
+        width: 60%;
+    }
+
+
+    .realimg:hover {
+        width: 61%;
+    }
+
+    .divVideo {
+        position: relative;
+        width: 70%;
+        height: 85%;
+    }
+
+
+    .thevideo {
+        width: 90%;
+        height: 90%;
+    }
+
+
+    .titleAndDiscription .title {
+        font-size: 20px;
+    }
+
+    .titleAndDiscription .divcontent .content {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 1300px) {
+
+
+    .blogheader_left {
+        width: 22%;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .blog {
+        width: 75%;
+    }
+
+    .realimg {
+        width: 65%;
+        height: 80%;
+    }
+
+
+    .realimg:hover {
+        width: 66%;
+        height: 81%;
+    }
+
+}
+
+@media (max-width: 1100px) {
+
+    .blogheader_left {
+        width: 22%;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .blog {
+        width: 85%;
+        height: 90vh;
+
+        overflow-y: auto;
+    }
+
+    .realimg {
+        width: 70%;
+        height: 80%;
+    }
+
+
+    .realimg:hover {
+        width: 71%;
+        height: 81%;
+    }
+
+
+    .divVideo {
+        position: relative;
+        width: 75%;
+        height: 85%;
+    }
+
+
+    .thevideo {
+        width: 95%;
+        height: 90%;
+    }
+
+    .titleAndDiscription .title {
+        font-size: 18px;
+    }
+
+    .titleAndDiscription .divcontent .content {
+        font-size: 16px;
+    }
+
+}
+
+@media (max-width: 900px) {
+
+
+    .blog {
+        width: 90%;
+    }
+
+    .blogheader_left {
+        width: 25%;
+        cursor: pointer;
+        user-select: none;
+    }
+
+
+
+    .realimg {
+        width: 80%;
+        height: 80%;
+    }
+
+
+    .realimg:hover {
+        width: 81%;
+        height: 81%;
+    }
+
+
+    .divVideo {
+        position: relative;
+        width: 85%;
+        height: 80%;
+    }
+
+
+    .thevideo {
+        width: 100%;
+        height: 85%;
+    }
+
+    .titleAndDiscription .title {
+        font-size: 16px;
+        max-width: 80%;
+        word-wrap: break-word;
+        text-align: start;
+    }
+
+    .titleAndDiscription .divcontent .content {
+        font-size: 14px;
+        max-width: 90%;
+        word-wrap: break-word;
+        text-align: start;
+
+    }
+
+}
+
+
+
+@media (max-width: 700px) {
+
+    .blog {
+        width: 95%;
+    }
+
+    .blogheader_left {
+        width: 30%;
+        cursor: pointer;
+        user-select: none;
+    }
+
+
+
+    .realimg {
+        width: 75%;
+        height: 66%;
+    }
+
+
+    .realimg:hover {
+        width: 76%;
+        height: 67%;
+    }
+
+
+
+    .titleAndDiscription .title {
+        font-size: 16px;
+
+    }
+
+    .titleAndDiscription .divcontent .content {
+        font-size: 14px;
+    }
+
+}
+
+@media (max-width: 660px) {
+
+    .blog {
+        width: 100%;
+    }
+
+    .blogbotoom button {
+        padding: 15px;
+    }
+
+
+    .titleAndDiscription .title {
+        font-size: 15px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .titleAndDiscription .divcontent .content {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .blogheader_left {
+        width: 35%;
+        cursor: pointer;
+        user-select: none;
+    }
+}
+

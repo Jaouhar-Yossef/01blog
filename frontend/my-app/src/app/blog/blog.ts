@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Report } from './../report/report';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../auth/auth.service';
+import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
 
 export interface TheMediaBlog {
   url: string;
@@ -73,7 +74,7 @@ export class Blog {
   private blogService = inject(CardBlogService);
 
 
-  constructor(private errorService: ErrorService,
+  constructor(private errorService: ErrorService, private confirmService: ServiceConfirmation,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
     private contentHomeService: ContentHomeService, private dialog: MatDialog) { }
 
@@ -110,19 +111,43 @@ export class Blog {
     });
   }
 
+  deleteBlog(id: string) {
+    if (this.loading) return
+    this.loading = true;
+    if (!id || id.length <= 0) return;
 
-  editBlog(id :  string) {
+    this.confirmService.open(
+      'Are you sure you want to delete this blog?',
+      () => {
+        this.contentHomeService.deleteOneBlog(id).subscribe({
+          next: (res) => {
+            this.errorService.showMessage(res.message, 'success')
+            this.router.navigate(['home']);
+          },
+          error: (err) => {
+            this.errorService.showMessage("Error delete Blog", 'error')
+          }
+        })
+      }
+    )
+
+
+
+  }
+
+  editBlog(id: string) {
     this.router.navigate([`home/blog/${id}/edit`]);
   }
 
 
-  reportBlog(id: string, type: string) {
-    if (this.loading) return;
+  reportBlog(id: string) {
+    if (this.loading || !id || id.length <=0 ) return;
+
     this.loading = true;
 
     const dialogRef = this.dialog.open(Report, {
       width: '700px',
-      data: { id }
+      data: { }
     });
 
     dialogRef.afterClosed().subscribe(reason => {
@@ -135,7 +160,7 @@ export class Blog {
           this.errorService.showMessage(' ', 'error')
         }
 
-        this.contentHomeService.ReportBlog(type, reason, id).subscribe({
+        this.contentHomeService.ReportUserOrBlog('BLOG', reason, id).subscribe({
           next: res => {
             if (res.success) {
               this.errorService.showMessage('Report Created', 'success')
@@ -273,7 +298,7 @@ export class Blog {
   }
 
   goToProfile(creatBy: string) {
-    if (this.modeADMINorHOME = 'ADMIN') {
+    if (this.modeADMINorHOME == 'ADMIN') {
       this.router.navigate(['/admin/profile', creatBy]);
       return
     }

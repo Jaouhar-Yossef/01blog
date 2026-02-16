@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './../auth/auth.service'
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
@@ -33,6 +33,26 @@ export class Setting {
     const user = this.authService.getUser();
     if (user != null && user.role == "ADMIN") {
       this.showDelete = false;
+    }
+
+    this.checkScreen();
+  }
+
+  small = false;
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkScreen();
+  }
+
+
+  checkScreen() {
+    if (window.innerWidth <= 930) {
+      this.show = true;
+      this.small = false;
+    }
+    if (window.innerWidth <= 530) {
+      this.small = true;
     }
   }
 

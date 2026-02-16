@@ -238,4 +238,12 @@
   .ishidden {
     display: none;
   }
+
+  .book {
+    width: 45px;
+    top: 10%;
+    left: 10%;
+  }
+
+
 }

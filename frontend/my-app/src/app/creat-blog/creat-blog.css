@@ -10,7 +10,6 @@
   overflow-y: auto;
   overflow-x: hidden;
 
-
 }
 
 
@@ -501,6 +500,7 @@ textarea {
     font-size: 10px !important;
     width: 40%;
   }
+
   .tohome {
     font-size: 17px;
     margin-right: 3px;

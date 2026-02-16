@@ -26,10 +26,10 @@
           <mat-menu #statusMenu="matMenu">
             <div *ngIf="iSmyBlog">
               <button mat-menu-item (click)="editBlog(blog.id)"> <mat-icon> edit_document </mat-icon> Edit </button>
-              <button mat-menu-item> <mat-icon> delete </mat-icon> Delete </button>
+              <button mat-menu-item (click)="deleteBlog(blog.id)"> <mat-icon> delete </mat-icon> Delete </button>
             </div>
             <div *ngIf="!iSmyBlog">
-              <button mat-menu-item (click)="reportBlog(blog.id , 'BLOG')"> <mat-icon> flag </mat-icon> Report </button>
+              <button mat-menu-item (click)="reportBlog(blog.id)"> <mat-icon> flag </mat-icon> Report </button>
             </div>
           </mat-menu>
 
@@ -91,9 +91,6 @@
           </ng-template>
 
           <div class="blogbotoom">
-
-
-
             <button mat-fab extended (click)="toggleLike()" class="liked">
               <span>
                 <img class="buttonheart" [src]="blog?.liked 

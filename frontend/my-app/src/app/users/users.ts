@@ -4,15 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProfileService, User, UserMode } from '../profile/profile.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse } from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService } from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { Report } from './../report/report';
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, MatIconModule , ObserveIntersectionDirective],
+  imports: [CommonModule, MatIconModule, ObserveIntersectionDirective],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
@@ -37,7 +39,9 @@ export class Users implements OnInit {
   constructor(
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private contentHomeService: ContentHomeService
   ) { }
 
 
@@ -49,6 +53,44 @@ export class Users implements OnInit {
     }
   }
 
+  ReportUsers(username: string) {
+    console.log("==> ", username)
+    if (this.loading || !username || username.length <= 0) return;
+    this.loading = true;
+
+
+    const dialogRef = this.dialog.open(Report, {
+      width: '700px',
+      data: {}
+    });
+
+
+    dialogRef.afterClosed().subscribe(reason => {
+      if (reason) {
+        if (reason.length > 200) {
+          this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
+        }
+
+        if (reason.length < 5) {
+          this.errorService.showMessage('wa  cherif', 'error')
+        }
+
+        this.contentHomeService.ReportUserOrBlog('USER', reason, username).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('Report Created', 'success')
+            }
+          },
+          error: () => {
+            this.errorService.showMessage('error report User ):', 'error')
+          }
+        });
+
+      }
+    });
+
+    this.loading = false;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if ((changes['mode'] && !changes['mode'].firstChange) ||
@@ -91,7 +133,7 @@ export class Users implements OnInit {
 
 
   goToProfile(username: string) {
-    if (this.modeADMINorHOME = 'ADMIN') {
+    if (this.modeADMINorHOME === 'ADMIN') {
       this.router.navigate(['/admin/profile', username]);
       return
     }

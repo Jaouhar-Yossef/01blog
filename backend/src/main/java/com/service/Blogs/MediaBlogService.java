@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,28 +36,19 @@ public class MediaBlogService {
 
     public void saveMedia(Blog blog, BlogRequest blogRequest, String mode) {
         if (mode.equals("update")) {
+
+            List<MediaBlog> oldMedia = new ArrayList<>(blog.getMedias());
+
             if (blogRequest.getFilesupdated() != null) {
-                List<MediaBlog> oldMedia = blog.getMedias();
-                oldMedia.stream()
-                        .forEach(m -> {
-                            if (!blogRequest.getFilesupdated().contains(m.getUrl())) {
-                                this.deleteMedia(m.getId());
-                            }
-                        });
-            }
-
-            if (blogRequest.getFilesupdated() == null) {
-
-                if (blog.getMedias() != null) {
-                    List<MediaBlog> oldMedia = blog.getMedias();
-                    oldMedia.stream()
-                            .forEach(m -> {
-
-                                this.deleteMedia(m.getId());
-
-                            });
-                }
-
+                oldMedia.forEach(m -> {
+                    if (!blogRequest.getFilesupdated().contains(m.getUrl())) {
+                        deleteMedia(m.getId());
+                    }
+                });
+            } else {
+                oldMedia.forEach(m -> {
+                    deleteMedia(m.getId());
+                });
             }
         }
 
@@ -126,12 +118,34 @@ public class MediaBlogService {
         }
     }
 
+    // public void deleteMedia(Long mediaId) {
+    // MediaBlog media = mediaBlogRepository.findById(mediaId)
+    // .orElseThrow(() -> new RuntimeException("Media not found with id: " +
+    // mediaId));
+
+    // Blog blog = media.getBlog();
+    // blog.getMedias().remove(media);
+
+    // String uploadDir = System.getProperty("user.dir") + File.separator +
+    // "uploads";
+    // Path filePath = Paths.get(uploadDir, media.getFileName());
+    // try {
+    // Files.deleteIfExists(filePath);
+    // } catch (IOException e) {
+    // System.out.println("Failed to delete file: " + media.getFileName());
+    // }
+
+    // blogRepository.save(blog);
+    // }
+
     public void deleteMedia(Long mediaId) {
         MediaBlog media = mediaBlogRepository.findById(mediaId)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + mediaId));
 
         Blog blog = media.getBlog();
-        blog.getMedias().remove(media);
+
+        blog.removeMedia(media);
+        blogRepository.save(blog);
 
         String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
         Path filePath = Paths.get(uploadDir, media.getFileName());
@@ -140,8 +154,6 @@ public class MediaBlogService {
         } catch (IOException e) {
             System.out.println("Failed to delete file: " + media.getFileName());
         }
-
-        blogRepository.save(blog);
     }
 
     public void deleteBlogFiles(Blog blog) {

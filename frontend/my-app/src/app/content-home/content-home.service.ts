@@ -22,6 +22,7 @@ interface ReportBlogOrUser {
   type: string;
   reason: string;
   reportedBlog?: string;
+  reportedUser?: string;
 }
 
 
@@ -68,12 +69,24 @@ export class ContentHomeService {
   ) {
   }
 
+  deleteOneBlog(blogId: string): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/deleteblog/${blogId}`);
+  }
 
-  ReportBlog(type: string, reason: string, id: string): Observable<ApiResponse<any>> {
-    let data: ReportBlogOrUser = {
-      type: type,
-      reason: reason,
-      reportedBlog: id,
+  ReportUserOrBlog(type: string, reason: string, username_or_blogId: string): Observable<ApiResponse<any>> {
+    let data : ReportBlogOrUser;
+    if (type == 'USER') {
+      data = {
+        type: type,
+        reason: reason,
+        reportedUser: username_or_blogId,
+      }
+    } else {
+      data = {
+        type: type,
+        reason: reason,
+        reportedBlog: username_or_blogId,
+      }
     }
     return this.http.post<ApiResponse<any[]>>(`${this.apiUrlReport}/creat`, data);
   }
