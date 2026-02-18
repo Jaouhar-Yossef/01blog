@@ -174,12 +174,11 @@ export class AdminDashboard {
 
 
 
-
-  changeStatus(row: any, status: string) {
-    if (this.loadingReports) return
+  changeStatusBlog(row: any, status: string) {
+    if (this.loadingBlogs) return
     if (row.status == status) return
-    row.status = status;
-    this.adminService.updateReportStatus(row.id, status).subscribe({
+
+    this.adminService.updateBlogStatus(row.blogId, status).subscribe({
       next: res => {
         if (res.success) {
           this.errorService.showMessage('update successfully ', 'success');
@@ -189,6 +188,25 @@ export class AdminDashboard {
         this.errorService.showMessage('Error update', 'error');
       }
     });
+
+    row.status = status
+  }
+
+
+  changeStatus(row: any, status: string) {
+    if (this.loadingReports) return
+    if (row.status == status) return
+    this.adminService.updateReportStatus(row.id, status).subscribe({
+      next: res => {
+        if (res.success) {
+          this.errorService.showMessage('update successfully!', 'success');
+        }
+      },
+      error: err => {
+        this.errorService.showMessage('Error update', 'error');
+      }
+    });
+    row.status = status;
   }
 
   deleteReport(id: number) {

@@ -38,7 +38,6 @@ export class AuthService {
     }
   }
 
-
   getUser(): TheUser | null {
     return this.user();
   }
@@ -102,6 +101,7 @@ export class AuthService {
   deleteAccount(): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deleteAccount`, {});
   }
+
 
   validateToken(): Observable<boolean> {
     const token = this.getToken();

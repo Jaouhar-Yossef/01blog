@@ -14,28 +14,6 @@ export const adminGuard: CanActivateFn = () => {
       router.navigate(['/home']);
       return false;
     }
-    return true;
   }
-
-  return auth.validateToken().pipe(
-    map(isValid => {
-      if (!isValid) {
-        auth.logout();
-        router.navigate(['/']);
-        return false;
-      }
-      const currentUser = auth.user();
-      if (!currentUser || currentUser.role !== 'ADMIN') {
-        router.navigate(['/home']);
-        return false;
-      }
-
-      return true;
-    }),
-    catchError(err => {
-      auth.logout();
-      router.navigate(['/']);
-      return of(false);
-    })
-  );
+  return true;
 };

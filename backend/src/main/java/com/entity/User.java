@@ -75,6 +75,11 @@ public class User {
     @JsonIgnore
     private List<Followers> following = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Report> reports = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

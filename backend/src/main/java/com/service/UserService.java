@@ -64,11 +64,11 @@ public class UserService implements UserDetailsService {
 
     public Response<UserResponseDTO> register(UserRequestDTO request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(request.getEmail().toLowerCase()).isPresent()) {
             return new Response<>(false, "Email already exists", null);
         }
 
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(request.getUsername().toLowerCase()).isPresent()) {
             return new Response<>(false, "Username already exists", null);
         }
 
@@ -164,5 +164,4 @@ public class UserService implements UserDetailsService {
             return new Response<>(false, "Error deleting user: " + e.getMessage());
         }
     }
-
 }

@@ -70,15 +70,22 @@ public class AdminController {
     @PutMapping("updateReportStatus")
     private ResponseEntity<Response<?>> updateReportStatus(@RequestBody UpdateReportsRequest request) {
         try {
-            boolean data = adminService.updateReport(request);
-            return ResponseEntity.accepted().body(new Response<>(data, ""));
+            Response<?> data = adminService.updateReport(request);
+            return ResponseEntity.accepted().body(data);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
     }
 
-
-    
+    @PutMapping("updateBlogStatus")
+    private ResponseEntity<Response<?>> updateBlogStatus(@RequestBody UpdateReportsRequest request) {
+        try {
+            Response<?> data = adminService.updateBlog(request);
+            return ResponseEntity.accepted().body(data);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
 
     @DeleteMapping("deleteReport")
     private ResponseEntity<Response<?>> deleteReport(@RequestBody UpdateReportsRequest request) {

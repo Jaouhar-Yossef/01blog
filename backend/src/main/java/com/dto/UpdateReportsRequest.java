@@ -1,5 +1,7 @@
 package com.dto;
 
+import java.util.UUID;
+
 import lombok.*;
 
 @Getter
@@ -7,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateReportsRequest {
+    private UUID blog_id;
     private Long report_id;
     private String status;
 }

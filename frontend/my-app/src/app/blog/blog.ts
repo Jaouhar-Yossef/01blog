@@ -68,6 +68,7 @@ export class Blog {
   iSmyBlog = false;
 
   videoNotPlay = true;
+  isblogishedden = false;
 
   baseUrl = 'http://localhost:8080';
 
@@ -95,9 +96,12 @@ export class Blog {
     this.contentHomeService.getBlogById(id).subscribe({
       next: blog => {
         this.blogSubject.next(blog),
-          this.theMedia = this.blogSubject.value.media
+        this.theMedia = this.blogSubject.value.media
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
         this.creat_by = this.blogSubject.value.createdByUsername;
+        if (blog.status == "hidden") {
+          this.isblogishedden = true;
+        }
 
         const user = this.authService.getUser();
         if (user != null && user?.username == this.creat_by) {

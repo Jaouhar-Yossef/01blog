@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.entity.Report;
 import com.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -56,6 +57,10 @@ public class Blog {
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<CommentBlog> comentBlogs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reportedBlog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Report> reports = new ArrayList<>();
 
     public void addMedia(MediaBlog media) {
         medias.add(media);

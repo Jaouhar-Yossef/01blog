@@ -89,8 +89,7 @@ public class BlogService {
                         try {
                                 mediaBlogService.saveMedia(blog, blogRequest, "update");
                         } catch (Exception e) {
-                                // System.out.println(" " + e.getMessage());
-                                throw new RuntimeException("Error updating blog: " + e.getMessage());
+                                        throw new RuntimeException("Error updating blog: " + e.getMessage());
                         }
 
                         return true;
@@ -104,9 +103,7 @@ public class BlogService {
                 Blog blog = blogRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                mediaBlogService.deleteBlogFiles(blog);
-                // System.out.println("iiiiiiiiiiiiiiiiiii");
-
+                mediaBlogService.deleteBlogFiles(blog); 
                 blogRepository.delete(blog);
         }
 
@@ -130,6 +127,7 @@ public class BlogService {
                 List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId, pageable);
 
                 List<BlogResponseDTO> blogDTOs = blogs.stream()
+                                .filter(b -> !"hidden".equals(b.getStatus()))
                                 .map(blog -> {
                                         boolean saved = savedService.isBlogSaved(userId, blog.getId());
                                         boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
@@ -174,6 +172,7 @@ public class BlogService {
                                 .toList();
 
                 List<BlogResponseDTO> blogDTOs = savedBlogs.stream()
+                                .filter(b -> !"hidden".equals(b.getStatus()))
                                 .map(blog -> {
                                         boolean saved = true;
                                         boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());

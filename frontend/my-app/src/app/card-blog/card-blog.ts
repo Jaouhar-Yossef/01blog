@@ -6,6 +6,7 @@ import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TimeAgo } from '../content-home/content-home.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class CardBlog {
 
 
   private blogService = inject(CardBlogService);
-  constructor(private router: Router, private errorService: ErrorService) { }
+  constructor(private router: Router,  private http: HttpClient, private errorService: ErrorService) { }
 
   modeADMINorHOME = '';
 
@@ -40,6 +41,16 @@ export class CardBlog {
 
     this.creat_at = TimeAgo(this.blog.creat_at);
   }
+
+
+  checkImage(url: string) : string {
+    this.http.get(this.baseUrl + url, { responseType: 'blob' }).subscribe({
+      next: () => { return this.baseUrl + url; },
+      error: () => { return './../../assets/no-picture.png'; }
+    });
+    return "";
+  }
+
 
   showTheBlog(id: string) {
     if (this.modeADMINorHOME == 'ADMIN') {

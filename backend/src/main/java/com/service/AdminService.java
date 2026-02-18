@@ -39,13 +39,34 @@ public class AdminService {
         this.likeBlogRepository = likeBlogRepository;
     }
 
-    public boolean updateReport(UpdateReportsRequest request) {
-
-        Report r = reportRepository.findById(request.getReport_id())
+    public Response<?> updateReport(UpdateReportsRequest request) {
+        Report report = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
-        r.setStatus(request.getStatus());
-        // reportRepository.save(r);
-        return true;
+
+        if (report.getStatus().equals(request.getStatus())) {
+            return new Response<>(true, "you don't change anything ??");
+        }
+        if (request.getStatus() != "DECLAINED" || request.getStatus() != "RESOLVED"
+                || request.getStatus() != "PENDING") {
+            new RuntimeException("status Report is PENDING or RESOLVED or DECLAINED");
+        }
+        report.setStatus(request.getStatus());
+        return new Response<>(true, "update successfully!");
+    }
+
+    public Response<?> updateBlog(UpdateReportsRequest request) {
+        Blog blog = blogRepository.findById(request.getBlog_id())
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+        if (blog.getStatus().equals(request.getStatus())) {
+            return new Response<>(true, "you don't change anything ??");
+        }
+        if (request.getStatus() != "show" || request.getStatus() != "hidden") {
+            new RuntimeException("status blog is show or hidden");
+        }
+
+        blog.setStatus(request.getStatus());
+        blogRepository.save(blog);
+        return new Response<>(true, "update successfully!");
     }
 
     public boolean deleteReport(UpdateReportsRequest request) {
