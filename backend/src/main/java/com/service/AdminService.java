@@ -6,13 +6,13 @@ import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import org.springframework.stereotype.Service;
 
 import com.dto.AnalyticsDTO;
 import com.dto.BlogsToAdminDTO;
 import com.dto.ReportsDTO;
 import com.dto.UpdateReportsRequest;
+import com.dto.UpdateStatusBlogRequest;
 import com.dto.UsersToAdminDTO;
 import com.repository.ReportRepository;
 import com.entity.Report;
@@ -22,6 +22,8 @@ import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
 import com.util.Response;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AdminService {
@@ -54,19 +56,39 @@ public class AdminService {
         return new Response<>(true, "update successfully!");
     }
 
+    @Transactional
     public Response<?> updateBlog(UpdateReportsRequest request) {
         Blog blog = blogRepository.findById(request.getBlog_id())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
         if (blog.getStatus().equals(request.getStatus())) {
-            return new Response<>(true, "you don't change anything ??");
+            return new Response<>(false, "you don't change anything ??");
         }
-        if (request.getStatus() != "show" || request.getStatus() != "hidden") {
-            new RuntimeException("status blog is show or hidden");
+        if (!request.getStatus().equals("show") && !request.getStatus().equals("hidden")) {
+            return new Response<>(false, "status blog must be show or hidden!");
         }
-
         blog.setStatus(request.getStatus());
-        blogRepository.save(blog);
         return new Response<>(true, "update successfully!");
+    }
+
+    @Transactional
+    public Response<?> updateStatusUser(UpdateStatusBlogRequest request) {
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.getStatus().equals(request.getStatus())) {
+            return new Response<>(false, "you don't change anything ??");
+        }
+        if (!request.getStatus().equals("ACTIVE") && !request.getStatus().equals("BANNED")) {
+            return new Response<>(false, "status User must be ACTIVE or BANNED!");
+        }
+        user.setStatus(request.getStatus());
+        return new Response<>(true, "update successfully!");
+    }
+
+    public boolean deleteUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
+        return true;
     }
 
     public boolean deleteReport(UpdateReportsRequest request) {
@@ -102,14 +124,11 @@ public class AdminService {
                             user.getStatus());
                 })
                 .toList();
-
         return new Response<>(true, "", data);
-
     }
 
     public Response<?> getReports(int page, int size) {
         List<Report> listReports = getReportsPaginated(page, size);
-
         List<ReportsDTO> data = listReports.stream()
                 .map(report -> {
                     boolean st = userRepository.existsById(report.getCreatedBy().getId());
@@ -117,7 +136,6 @@ public class AdminService {
                         return null;
                     }
                     String ReportCreatby = report.getCreatedBy().getUsername();
-
                     if (report.getType().equals("BLOG")) {
                         boolean existsBlog = blogRepository.existsById(report.getReportedBlog().getId());
                         if (!existsBlog) {

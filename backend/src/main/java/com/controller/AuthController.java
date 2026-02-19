@@ -55,8 +55,8 @@ public class AuthController {
 
     @DeleteMapping("/deleteAccount")
     public ResponseEntity<?> delete_Account(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UUID user_id = userDetails.getUser().getId();
         try {
+            UUID user_id = userDetails.getUser().getId();   
             Response<?> response = userService.deleteAccount(user_id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         } catch (Exception e) {

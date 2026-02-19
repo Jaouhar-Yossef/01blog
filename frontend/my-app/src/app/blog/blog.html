@@ -91,7 +91,7 @@
           </ng-template>
 
           <div class="blogbotoom">
-            <button mat-fab extended (click)="toggleLike()" class="liked">
+            <button mat-fab extended [disabled]="blog.status === 'hidden'"  (click)="toggleLike(blog.status)" class="liked">
               <span>
                 <img class="buttonheart" [src]="blog?.liked 
                         ? './../../assets/heart.png' 
@@ -100,7 +100,7 @@
               </span>
             </button>
 
-            <button mat-fab extended (click)="toggleSave()">
+            <button mat-fab extended [disabled]="blog.status === 'hidden'"  (click)="toggleSave(blog.status)">
               <mat-icon>
                 {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
               </mat-icon>
@@ -113,7 +113,7 @@
 
         </div>
       </div>
-      <app-comment></app-comment>
+      <app-comment [statuBlog]="blog.status"></app-comment>
     </div>
   </ng-container>
   </div>

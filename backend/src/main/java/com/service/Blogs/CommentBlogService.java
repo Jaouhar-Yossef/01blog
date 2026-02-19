@@ -22,24 +22,23 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CommentBlogService {
-    
-
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
     private final CommentBlogRepository commentRepository;
 
-
-    public CommentResponseDTO creatComment( UUID user_id,CommentRequestDTO dto) throws Exception {
+    public CommentResponseDTO creatComment(UUID user_id, CommentRequestDTO dto) throws Exception {
 
         Blog blog = blogRepository.findById(dto.getId_blog())
-            .orElseThrow(() -> new RuntimeException("Blog not found"));
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-        
         User user = userRepository.findById(user_id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-            
+        if ("hideen".equals(blog.getStatus())) {
+            new RuntimeException("This blog has been hidden by the admin.");
+        }
+        
         CommentBlog comment = new CommentBlog();
         comment.setComentblog(dto.getComment());
         comment.setBlog(blog);
@@ -51,42 +50,37 @@ public class CommentBlogService {
         data.setComment(comment.getComentblog());
         data.setCreatorUsername(user.getUsername());
         data.setUrlString(user.getImageUrl());
-        
+
         return data;
     }
 
-    private List<CommentBlog> getCommentPaginated(int page , int size , UUID id_blog) {
+    private List<CommentBlog> getCommentPaginated(int page, int size, UUID id_blog) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return commentRepository.findByBlogId(id_blog ,  pageable);
+        return commentRepository.findByBlogId(id_blog, pageable);
     }
 
-    public List<CommentResponseDTO>  getTheComment(UUID user_id , int page , int size , UUID  id_blog) throws Exception {
-        
-        userRepository.findById(user_id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public List<CommentResponseDTO> getTheComment(UUID user_id, int page, int size, UUID id_blog) throws Exception {
 
+        userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         blogRepository.findById(id_blog)
-            .orElseThrow(() -> new RuntimeException("Blog not found"));
-
-        List<CommentBlog> Comments = this.getCommentPaginated(page, size , id_blog);
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+        List<CommentBlog> Comments = this.getCommentPaginated(page, size, id_blog);
 
         List<CommentResponseDTO> CommentsDTO = Comments.stream()
-           .map(comment ->{
+                .map(comment -> {
 
-            return new CommentResponseDTO(
-                comment.getId(),
-                comment.getComentblog(),
-                comment.getUser().getImageUrl(),
-                comment.getUser().getUsername()
-            );
-           })
-            .toList();
+                    return new CommentResponseDTO(
+                            comment.getId(),
+                            comment.getComentblog(),
+                            comment.getUser().getImageUrl(),
+                            comment.getUser().getUsername());
+                })
+                .toList();
 
-
-           return CommentsDTO;
+        return CommentsDTO;
 
     }
 
 }
-

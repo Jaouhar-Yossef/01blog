@@ -1,9 +1,13 @@
 package com.controller;
 
+import java.util.UUID;
+
 import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.UpdateReportsRequest;
+import com.dto.UpdateStatusBlogRequest;
+import com.entity.UserDetailsImpl;
 import com.service.AdminService;
+import com.service.Blogs.BlogService;
 import com.util.Response;
 
 @RestController
@@ -19,9 +26,11 @@ import com.util.Response;
 public class AdminController {
 
     private AdminService adminService;
+    private final BlogService blogService;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, BlogService blogService) {
         this.adminService = adminService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/getRports")
@@ -87,6 +96,16 @@ public class AdminController {
         }
     }
 
+    @PutMapping("updateUserStatus")
+    private ResponseEntity<Response<?>> updateUserStatus(@RequestBody UpdateStatusBlogRequest request) {
+        try {
+            Response<?> data = adminService.updateStatusUser(request);
+            return ResponseEntity.accepted().body(data);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
     @DeleteMapping("deleteReport")
     private ResponseEntity<Response<?>> deleteReport(@RequestBody UpdateReportsRequest request) {
         try {
@@ -96,4 +115,28 @@ public class AdminController {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
     }
+
+    @DeleteMapping("deleteblog/{blogId}")
+    private ResponseEntity<Response<?>> deleteBlog(@PathVariable UUID blogId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            UUID user_id = userDetails.getUser().getId();
+            Response<?> data = blogService.deleteOneBlog(user_id, blogId);
+            return ResponseEntity.ok(data);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("deleteUser/{username}")
+    private ResponseEntity<Response<?>> deleteUser(@PathVariable String username,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            boolean data = adminService.deleteUser(username);
+            return ResponseEntity.ok(new Response<>(data, "Delete successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
 }

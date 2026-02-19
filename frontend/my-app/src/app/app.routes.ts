@@ -15,6 +15,7 @@ import { CreatBlog } from './creat-blog/creat-blog';
 import { adminGuard } from './auth/admin.guard';
 import { AdminComponent } from './admin/admin';
 import { AdminDashboard } from './admin-dashboard/admin-dashboard';
+import { UserBanned } from './auth/userBanned.guard';
 
 
 export const routes: Routes = [
@@ -25,13 +26,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', component: BlogListComponent },
-      { path: 'blog/:id', component: Blog },
+      { path: 'blog/:id', component: Blog , canActivate: [UserBanned]},
       { path: 'blogsSaved', component: BlogListComponent, data: { view: 'saved' } },
       { path: 'profile/:name', component: Profile },
       { path: 'Users', component: Users },
       { path: 'Search', component: Search },
-      { path: 'blog/:id/edit', component: CreatBlog , data: { view: 'editBlog' } },
-      { path: 'CreatBlog', component: CreatBlog , data: { view: 'creatBlog' }}
+      { path: 'blog/:id/edit', component: CreatBlog , data: { view: 'editBlog' , canActivate: [UserBanned]} },
+      { path: 'CreatBlog', component: CreatBlog , data: { view: 'creatBlog' } , canActivate: [UserBanned]}
 
     ]
   },
@@ -41,7 +42,6 @@ export const routes: Routes = [
     component: AdminComponent,
     canActivate: [adminGuard],
     children: [
-
       { path: '', component: AdminDashboard },
       { path: 'profile/:name', component: Profile },
       { path: 'blog/:id', component: Blog },

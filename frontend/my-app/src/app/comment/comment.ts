@@ -1,11 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, single } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,6 +44,8 @@ interface comment {
 })
 export class Comment {
   id_blog: string = "";
+
+  @Input() statuBlog: string = ""; 
 
   private CommentSubject = new BehaviorSubject<any[]>([]);
   comments$ = this.CommentSubject.asObservable();
@@ -104,6 +106,11 @@ export class Comment {
   }
 
   submitComment() {
+    if (this.statuBlog == "hidden") {
+      this.errorService.showMessage("You can't creat comment in this blog :(", 'warning');
+      this.commentForm.reset();
+      return;
+    }
     if (this.loading) return;
     this.loading = true;
     if (this.commentForm.valid) {

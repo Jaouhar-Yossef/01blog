@@ -134,14 +134,16 @@
                     <table mat-table [dataSource]="users" class="mat-elevation-z2 users-table">
                         <ng-container matColumnDef="username">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> username </th>
-                            <td mat-cell class="reason" *matCellDef="let row"> {{ row.username }} </td>
+                            <td mat-cell class="reason" (click)="goToProfile(row.username)" *matCellDef="let row"> {{
+                                row.username }} </td>
                         </ng-container>
 
 
 
                         <ng-container matColumnDef="email">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> email </th>
-                            <td mat-cell class="reason" *matCellDef="let row"> {{ row.email }} </td>
+                            <td mat-cell class="reason" (click)="goToProfile(row.username)" *matCellDef="let row"> {{
+                                row.email }} </td>
                         </ng-container>
 
 
@@ -155,17 +157,21 @@
                         <ng-container matColumnDef="status">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> status</th>
                             <td mat-cell *matCellDef="let row">
-                                <span class="status" [class.pending]="row.status === 'ACTIVE'"
-                                    [class.BAND]="row.status === 'BAND'">
+                                <span class="status" [class.resolved]="row.status === 'ACTIVE'"
+                                    [class.pending]="row.status === 'BANNED'" [matMenuTriggerFor]="statusMenuUser">
                                     {{ row.status }}
                                 </span>
+                                <mat-menu #statusMenuUser="matMenu">
+                                    <button mat-menu-item (click)="changeStatusUser(row, 'ACTIVE')">ACTIVE</button>
+                                    <button mat-menu-item (click)="changeStatusUser(row, 'BANNED')">BANNED</button>
+                                </mat-menu>
                             </td>
                         </ng-container>
 
 
                         <ng-container matColumnDef="Action">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let row">
+                            <td mat-cell *matCellDef="let row" (click)="deleteUser(row.username)">
 
                                 <span class="actionAdmin">
                                     DELETE
@@ -221,7 +227,8 @@
                         <ng-container matColumnDef="status">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> status</th>
                             <td mat-cell *matCellDef="let row">
-                                <span class="status" [class.declained]="row.status === 'hidden'" [class.pending]="row.status === 'show'" [matMenuTriggerFor]="statusMenublog">
+                                <span class="status" [class.declained]="row.status === 'hidden'"
+                                    [class.pending]="row.status === 'show'" [matMenuTriggerFor]="statusMenublog">
                                     {{ row.status }}
                                 </span>
                                 <mat-menu #statusMenublog="matMenu">
@@ -234,8 +241,7 @@
                         <ng-container matColumnDef="Action">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> Action </th>
                             <td mat-cell *matCellDef="let row">
-
-                                <span class="actionAdmin">
+                                <span class="actionAdmin" (click)="deleteBlog(row.blogId)">
                                     DELETE
                                 </span>
                             </td>

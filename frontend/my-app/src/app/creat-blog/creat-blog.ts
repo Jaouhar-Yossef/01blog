@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { MgsAdhmin } from '../mgs-admin/mgs-admin';
+import { MatDialog } from '@angular/material/dialog';
 
 
 type MediaType = 'IMAGE' | 'VIDEO';
@@ -54,7 +56,7 @@ export class CreatBlog {
   isSubmitting = false;
 
   constructor(private fb: FormBuilder, private errorService: ErrorService, private router: Router, private contentHomeService: ContentHomeService,
-    private authService: AuthService, private blogService: ContentHomeService, private route: ActivatedRoute) {
+    private dialog: MatDialog, private authService: AuthService, private blogService: ContentHomeService, private route: ActivatedRoute) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
@@ -62,7 +64,6 @@ export class CreatBlog {
   }
 
   blog_id: string = '';
-
 
   ngOnInit() {
     const view = this.route.snapshot.data['view'];
@@ -85,6 +86,14 @@ export class CreatBlog {
       });
     }
 
+  }
+
+  showAdminMessage() {
+    const dialogRef = this.dialog.open(MgsAdhmin, {
+      width: '400px',
+      disableClose: true,
+      data: { message: "You are banned from this platform. You can't perform any actions." }
+    });
   }
 
   goback() {

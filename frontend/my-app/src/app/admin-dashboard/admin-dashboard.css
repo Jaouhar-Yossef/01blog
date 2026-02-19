@@ -4,6 +4,7 @@
     padding: 20px;
     display: flex;
     justify-content: center;
+    user-select: none;
 }
 
 

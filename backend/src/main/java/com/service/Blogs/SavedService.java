@@ -28,14 +28,16 @@ public class SavedService {
         if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog already saved";
         }
-        
+
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-
+        if ("hideen".equals(blog.getStatus())) {
+            new RuntimeException("This blog has been hidden by the admin.");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        
+
         Saved saved = new Saved();
         saved.setUser(user);
         saved.setBlog(blog);
@@ -45,7 +47,6 @@ public class SavedService {
         return "Saved successfully!";
     }
 
-
     @Transactional
     public String unsaveBlog(UUID userId, UUID blogId) {
 
@@ -53,11 +54,17 @@ public class SavedService {
             return "Blog not saved";
         }
 
+        Blog blog = blogRepository.findById(blogId)
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                
+        if ("hideen".equals(blog.getStatus())) {
+            new RuntimeException("This blog has been hidden by the admin.");
+        }
+
         savedRepository.deleteByUserIdAndBlogId(userId, blogId);
 
         return "Unsaved successfully!";
     }
-    
 
     public boolean isBlogSaved(UUID userId, UUID blogId) {
         return savedRepository.existsByUserIdAndBlogId(userId, blogId);

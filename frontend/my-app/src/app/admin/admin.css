@@ -2,6 +2,7 @@
   height: 100%;
   width: 100%;
   display: flex;
+  user-select: none;
 }
 
 .sidebar {
@@ -126,12 +127,10 @@ span {
   padding: 25px;
   width: 100%;
   height: 100%;
-  
+
 }
 
 .content {
   width: 100%;
   height: 90%;
 }
-
-

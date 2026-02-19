@@ -172,12 +172,26 @@ export class AdminDashboard {
   }
 
 
+  changeStatusUser(row: any, status: string) {
+    if (this.loadingUsers) return
+    if (row.status == status) return
+    this.adminService.updateUserStatus(row.username, status).subscribe({
+      next: res => {
+        if (res.success) {
+          this.errorService.showMessage('update successfully!', 'success');
+        }
+      },
+      error: err => {
+        this.errorService.showMessage('Error update :(', 'error');
+      }
+    });
 
+    row.status = status
+  }
 
   changeStatusBlog(row: any, status: string) {
     if (this.loadingBlogs) return
     if (row.status == status) return
-
     this.adminService.updateBlogStatus(row.blogId, status).subscribe({
       next: res => {
         if (res.success) {
@@ -209,9 +223,50 @@ export class AdminDashboard {
     row.status = status;
   }
 
+  deleteUser(username: string) {
+
+    this.confirmService.open(
+      'Are you sure you want to delete this User?',
+      () => {
+        this.adminService.deleteOneUser(username).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('Delete successfully!', 'success');
+              const currentUsers = this.usersSubject.getValue();
+              const updatedUsers = currentUsers.filter(user => user.username !== username);
+              this.usersSubject.next(updatedUsers);
+            }
+          },
+          error: err => {
+            this.errorService.showMessage('Error DELETE User :(', 'error');
+          }
+        });
+      }
+    );
+  }
+
+  deleteBlog(id: string) {
+    this.confirmService.open(
+      'Are you sure you want to delete this Blog?',
+      () => {
+        this.adminService.deleteOneBlog(id).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('Delete successfully!', 'success');
+              const currentBlogs = this.blogsSubject.getValue();
+              const updatedBlogs = currentBlogs.filter(blog => blog.blogId !== id);
+              this.blogsSubject.next(updatedBlogs);
+            }
+          },
+          error: err => {
+            this.errorService.showMessage('Error DELETE Blog :(', 'error');
+          }
+        });
+
+      }
+    );
+  }
   deleteReport(id: number) {
-
-
     this.confirmService.open(
       'Are you sure you want to delete this Report?',
       () => {
@@ -219,7 +274,7 @@ export class AdminDashboard {
         this.adminService.deleteReport(id).subscribe({
           next: res => {
             if (res.success) {
-              this.errorService.showMessage('Delete successfully ', 'success');
+              this.errorService.showMessage('Delete successfully!', 'success');
 
               const currentReports = this.reportsSubject.getValue();
               const updatedReports = currentReports.filter(report => report.id !== id);
@@ -227,7 +282,7 @@ export class AdminDashboard {
             }
           },
           error: err => {
-            this.errorService.showMessage('Error DELETE', 'error');
+            this.errorService.showMessage('Error DELETE Report :(', 'error');
           }
         });
 

@@ -42,30 +42,24 @@ export class Profile {
 
   usersMode: UserMode = 'followers';
 
-
   showFollowers() {
 
     this.isBlogs = false;
     this.usersMode = 'followers';
   }
 
-
-
   showFollowing() {
     this.isBlogs = false;
     this.usersMode = 'following';
   }
 
-
   showBlogs() {
     this.isBlogs = true;
   }
 
-
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const username = params.get('name');
-
       if (!username) {
         this.errorService.showMessage('Profile not found ):', 'error');
         return;
@@ -76,7 +70,6 @@ export class Profile {
     });
   }
 
-
   loadProfile(username: string) {
     this.loading = true;
     this.ProfileSubject.next(null);
@@ -84,7 +77,6 @@ export class Profile {
       next: (res: ApiResponse<UserProfile>) => {
         this.ProfileSubject.next(res.anyData)
         this.loading = false;
-
       },
       error: (err) => {
         this.loading = false;
@@ -94,8 +86,6 @@ export class Profile {
       }
     });
   }
-
-
 
   ResponseFollow: Observable<ApiResponse<any>> = of(null as any);
 
@@ -128,7 +118,6 @@ export class Profile {
             }
           }
           this.ProfileSubject.next(profile);
-
           this.errorService.showMessage(`${res.message} (:`, 'success');
         }
         this.loading = false;
@@ -138,8 +127,5 @@ export class Profile {
         this.errorService.showMessage(`Error Follow ):`, 'error');
       }
     })
-
   }
-
-
 }

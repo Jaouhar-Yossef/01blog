@@ -105,7 +105,6 @@ export class ContentHomeService {
     if (mode === 'profile' && username) {
       params += `&username=${username}`;
     }
-
     return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/blogs?${params}`);
   }
 

@@ -45,10 +45,21 @@ export class AdminService {
         return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateBlogStatus`, { blog_id, status });
     }
 
+    updateUserStatus(username: string, status: string): Observable<ApiResponse<any>> {
+        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateUserStatus`, { username, status });
+    }
+
     deleteReport(report_id: number): Observable<ApiResponse<any>> {
         return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/deleteReport`, {
             body: { report_id }
         });
     }
 
+    deleteOneBlog(blogId: string): Observable<ApiResponse<any>> {
+        return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/deleteblog/${blogId}`);
+    }
+
+    deleteOneUser(username: string): Observable<ApiResponse<any>> {
+        return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/deleteUser/${username}`);
+    }
 }

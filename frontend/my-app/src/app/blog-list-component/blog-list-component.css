@@ -109,7 +109,8 @@
 .observer {
   height: 2px;
   width: 100%;
-  margin-bottom: 30px;
+  background-color: red;
+  margin-bottom: 40px;
 }
 
 

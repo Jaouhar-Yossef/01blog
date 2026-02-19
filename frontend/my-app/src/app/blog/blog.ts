@@ -22,6 +22,7 @@ import { Report } from './../report/report';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../auth/auth.service';
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
+import { MgsAdhmin } from '../mgs-admin/mgs-admin';
 
 export interface TheMediaBlog {
   url: string;
@@ -96,11 +97,12 @@ export class Blog {
     this.contentHomeService.getBlogById(id).subscribe({
       next: blog => {
         this.blogSubject.next(blog),
-        this.theMedia = this.blogSubject.value.media
+          this.theMedia = this.blogSubject.value.media
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
         this.creat_by = this.blogSubject.value.createdByUsername;
         if (blog.status == "hidden") {
           this.isblogishedden = true;
+          this.showAdminMessage();
         }
 
         const user = this.authService.getUser();
@@ -112,6 +114,14 @@ export class Blog {
       error: () => {
         this.errorService.showMessage('Cannot load blog ):', 'error')
       }
+    });
+  }
+
+  showAdminMessage() {
+    const dialogRef = this.dialog.open(MgsAdhmin, {
+      width: '400px',
+      disableClose: true,
+      data: { message: 'This blog has been hidden by the admin.' },
     });
   }
 
@@ -140,18 +150,21 @@ export class Blog {
   }
 
   editBlog(id: string) {
+    if (this.isblogishedden) {
+      this.errorService.showMessage('This blog has been hidden by the admin.', 'warning')
+      return;
+    }
     this.router.navigate([`home/blog/${id}/edit`]);
   }
 
 
   reportBlog(id: string) {
-    if (this.loading || !id || id.length <=0 ) return;
-
+    if (this.isblogishedden) return;
+    if (this.loading || !id || id.length <= 0) return;
     this.loading = true;
-
     const dialogRef = this.dialog.open(Report, {
       width: '700px',
-      data: { }
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(reason => {
@@ -159,7 +172,6 @@ export class Blog {
         if (reason.length > 200) {
           this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
         }
-
         if (reason.length < 5) {
           this.errorService.showMessage(' ', 'error')
         }
@@ -216,9 +228,17 @@ export class Blog {
     this.AllTheDiscription = !this.AllTheDiscription;
   }
 
+  private checkHidden(statusBlog: string): boolean {
+    if (statusBlog === "hidden") {
+      this.showAdminMessage();
+      return true;
+    }
+    return false;
+  }
 
 
-  toggleLike() {
+  toggleLike(statusBlog: string) {
+    if (this.checkHidden(statusBlog)) return;
     if (this.loading) return;
     const blog = this.blogSubject.value;
     if (!blog) return;
@@ -261,14 +281,12 @@ export class Blog {
     });
   }
 
-  toggleSave() {
+  toggleSave(statusBlog: string) {
+    if (this.checkHidden(statusBlog)) return;
     if (this.loading) return;
-
     const blog = this.blogSubject.value;
     if (!blog) return;
-
     this.loading = true;
-
     const previousState = blog.saved;
 
     this.blogSubject.next({

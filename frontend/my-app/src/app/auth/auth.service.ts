@@ -9,6 +9,7 @@ interface TheUser {
   username: string;
   imageUrl: string;
   role: string;
+  status: string;
 }
 
 
@@ -58,6 +59,7 @@ export class AuthService {
     const theUser: TheUser = {
       username: user.username,
       role: user.role,
+      status: user.status,
       imageUrl: user.imageUrl,
     };
 

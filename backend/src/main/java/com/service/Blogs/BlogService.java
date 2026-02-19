@@ -47,55 +47,43 @@ public class BlogService {
         }
 
         @Transactional
-        public boolean createBlog(BlogRequest blogRequest, String username) {
-                try {
-                        User user = userRepository.findByUsername(username)
-                                        .orElseThrow(() -> new RuntimeException("User not found"));
-                        Blog blog = new Blog();
-                        blog.setTitle(blogRequest.getTitle());
-                        blog.setStatus("show");
-                        blog.setContent(blogRequest.getContent());
-                        blog.setCreatedBy(user);
+        public boolean createBlog(BlogRequest blogRequest, String username) throws Exception {
 
-                        blogRepository.save(blog);
+                User user = userRepository.findByUsername(username)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+                Blog blog = new Blog();
+                blog.setTitle(blogRequest.getTitle());
+                blog.setStatus("show");
+                blog.setContent(blogRequest.getContent());
+                blog.setCreatedBy(user);
 
-                        try {
-                                mediaBlogService.saveMedia(blog, blogRequest, "Creat");
-                        } catch (Exception e) {
-                                throw new RuntimeException("Error creating blog: " + e.getMessage());
-                        }
-                        return true;
-                } catch (RuntimeException e) {
-                        throw new RuntimeException("Error creating blog: " + e.getMessage());
-                }
+                blogRepository.save(blog);
+
+                mediaBlogService.saveMedia(blog, blogRequest, "Creat");
+                return true;
         }
 
         @Transactional
         public boolean upDateBlog(BlogRequest blogRequest, UUID user_id) {
-                try {
-                        Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
-                                        .orElseThrow(() -> new RuntimeException("Blog not found"));
-                        UUID crtBy = blog.getCreatedBy().getId();
+                Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
+                                .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                        if (!user_id.equals(crtBy)) {
-                                throw new RuntimeException("Your not how creat this blog");
-                        }
-
-                        blog.setTitle(blogRequest.getTitle());
-                        blog.setContent(blogRequest.getContent());
-
-                        blogRepository.save(blog);
-
-                        try {
-                                mediaBlogService.saveMedia(blog, blogRequest, "update");
-                        } catch (Exception e) {
-                                        throw new RuntimeException("Error updating blog: " + e.getMessage());
-                        }
-
-                        return true;
-                } catch (RuntimeException e) {
-                        throw new RuntimeException("Error updating blog: " + e.getMessage());
+                if ("hidden".equals(blog.getStatus())) {
+                        throw new RuntimeException("This blog has been hidden by the admin.");
                 }
+                UUID crtBy = blog.getCreatedBy().getId();
+
+                if (!user_id.equals(crtBy)) {
+                        throw new RuntimeException("Your not how creat this blog");
+                }
+
+                blog.setTitle(blogRequest.getTitle());
+                blog.setContent(blogRequest.getContent());
+
+                blogRepository.save(blog);
+
+                mediaBlogService.saveMedia(blog, blogRequest, "update");
+                return true;
         }
 
         @Transactional
@@ -103,7 +91,7 @@ public class BlogService {
                 Blog blog = blogRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                mediaBlogService.deleteBlogFiles(blog); 
+                mediaBlogService.deleteBlogFiles(blog);
                 blogRepository.delete(blog);
         }
 
@@ -122,7 +110,6 @@ public class BlogService {
         }
 
         public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
-
                 Pageable pageable = PageRequest.of(page, size);
                 List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId, pageable);
 

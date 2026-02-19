@@ -105,18 +105,6 @@ public class BlogController {
         return ResponseEntity.ok(Map.of("message", msg));
     }
 
-    // @GetMapping("/blogs")
-    // public ResponseEntity<List<BlogResponseDTO>> getBlogs(
-    // @RequestParam(defaultValue = "0") int page,
-    // @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal
-    // UserDetailsImpl userDetails) {
-
-    // UUID userId = userDetails.getUser().getId();
-    // // List<BlogResponseDTO> blogDTOs = blogService.blogsGetter(userId, page,
-    // // size);
-    // return ResponseEntity.ok(null);
-    // }
-
     @GetMapping("/blogs")
     public ResponseEntity<Response<List<BlogResponseDTO>>> getBlogs(
             @RequestParam int page,

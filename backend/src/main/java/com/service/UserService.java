@@ -50,7 +50,8 @@ public class UserService implements UserDetailsService {
         ValidationDTO dto = new ValidationDTO(
                 user.getUsername(),
                 user.getImageUrl(),
-                user.getRole());
+                user.getRole(),
+                user.getStatus());
 
         return dto;
     }

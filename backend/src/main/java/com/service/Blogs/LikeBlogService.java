@@ -33,7 +33,9 @@ public class LikeBlogService {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-
+        if ("hideen".equals(blog.getStatus())) {
+            new RuntimeException("This blog has been hidden by the admin.");
+        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -44,13 +46,16 @@ public class LikeBlogService {
         return "liked blog successfully!";
     }
 
-
-
-
     @Transactional
     public String unLikedBlog(UUID userId, UUID blogId) {
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog not liked";
+        }
+        Blog blog = blogRepository.findById(blogId)
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+
+        if ("hideen".equals(blog.getStatus())) {
+            new RuntimeException("This blog has been hidden by the admin.");
         }
 
         likeBlogRepository.deleteByUserIdAndBlogId(userId, blogId);
@@ -65,9 +70,9 @@ public class LikeBlogService {
     public Long getNumbLike(UUID blogId) {
         return likeBlogRepository.countByBlogId(blogId);
     }
+
     public List<Saved> getLikeBlogs(UUID userId) {
         return likeBlogRepository.findByUserId(userId);
     }
 
 }
-
