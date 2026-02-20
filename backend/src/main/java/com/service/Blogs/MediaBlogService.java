@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dto.BlogRequest;
+import com.dto.Request.BlogRequest;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.MediaBlog;
 import com.repository.Blogs.BlogRepository;

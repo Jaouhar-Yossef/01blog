@@ -1,4 +1,4 @@
-package com.dto;
+package com.dto.Response;
 
 import com.util.TypeMedia;
 import lombok.*;

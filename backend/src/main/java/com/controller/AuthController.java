@@ -8,10 +8,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.dto.LoginRequest;
-import com.dto.UserRequestDTO;
-import com.dto.UserResponseDTO;
-import com.dto.ValidationDTO;
+import com.dto.Request.LoginRequest;
+import com.dto.Request.UserRequestDTO;
+import com.dto.Response.UserResponseDTO;
+import com.dto.Response.ValidationDTO;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 

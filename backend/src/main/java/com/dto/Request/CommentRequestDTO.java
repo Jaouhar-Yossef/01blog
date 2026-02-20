@@ -1,4 +1,4 @@
-package com.dto;
+package com.dto.Request;
 
 import java.util.UUID;
 import lombok.*;

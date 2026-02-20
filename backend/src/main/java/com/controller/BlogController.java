@@ -1,10 +1,10 @@
 package com.controller;
 
-import com.dto.BlogRequest;
-import com.dto.BlogResponseDTO;
-import com.dto.CommentRequestDTO;
-import com.dto.CommentResponseDTO;
-import com.dto.LikeOrSaveBlogRequest;
+import com.dto.Request.BlogRequest;
+import com.dto.Request.CommentRequestDTO;
+import com.dto.Request.LikeOrSaveBlogRequest;
+import com.dto.Response.BlogResponseDTO;
+import com.dto.Response.CommentResponseDTO;
 import com.entity.UserDetailsImpl;
 import com.service.Blogs.BlogService;
 import com.service.Blogs.CommentBlogService;

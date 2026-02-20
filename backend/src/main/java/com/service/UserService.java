@@ -2,9 +2,9 @@ package com.service;
 
 import org.springframework.stereotype.Service;
 
-import com.dto.UserRequestDTO;
-import com.dto.UserResponseDTO;
-import com.dto.ValidationDTO;
+import com.dto.Request.UserRequestDTO;
+import com.dto.Response.UserResponseDTO;
+import com.dto.Response.ValidationDTO;
 import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;

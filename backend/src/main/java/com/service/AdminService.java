@@ -8,12 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.dto.AnalyticsDTO;
-import com.dto.BlogsToAdminDTO;
-import com.dto.ReportsDTO;
-import com.dto.UpdateReportsRequest;
-import com.dto.UpdateStatusBlogRequest;
-import com.dto.UsersToAdminDTO;
+import com.dto.Request.UpdateReportsRequest;
+import com.dto.Request.UpdateStatusBlogRequest;
+import com.dto.Response.AnalyticsDTO;
+import com.dto.Response.BlogsToAdminDTO;
+import com.dto.Response.ReportsDTO;
+import com.dto.Response.UsersToAdminDTO;
 import com.repository.ReportRepository;
 import com.entity.Report;
 import com.entity.User;

@@ -16,7 +16,7 @@ import com.repository.Blogs.BlogRepository;
 
 import jakarta.transaction.Transactional;
 
-import com.dto.ProfileResponseDTO;
+import com.dto.Response.ProfileResponseDTO;
 import com.entity.Followers;
 import com.entity.User;
 

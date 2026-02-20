@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.dto.CommentRequestDTO;
-import com.dto.CommentResponseDTO;
+import com.dto.Request.CommentRequestDTO;
+import com.dto.Response.CommentResponseDTO;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.CommentBlog;

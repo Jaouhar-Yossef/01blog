@@ -1,8 +1,8 @@
 package com.service.Blogs;
 
-import com.dto.BlogRequest;
-import com.dto.BlogResponseDTO;
-import com.dto.MediaDTO;
+import com.dto.Request.BlogRequest;
+import com.dto.Response.BlogResponseDTO;
+import com.dto.Response.MediaDTO;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.Saved;

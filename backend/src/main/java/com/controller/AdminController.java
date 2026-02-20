@@ -2,7 +2,6 @@ package com.controller;
 
 import java.util.UUID;
 
-import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dto.UpdateReportsRequest;
-import com.dto.UpdateStatusBlogRequest;
+import com.dto.Request.UpdateReportsRequest;
+import com.dto.Request.UpdateStatusBlogRequest;
 import com.entity.UserDetailsImpl;
 import com.service.AdminService;
 import com.service.Blogs.BlogService;

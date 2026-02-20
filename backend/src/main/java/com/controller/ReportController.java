@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dto.ReportRequest;
+import com.dto.Request.ReportRequest;
 import com.entity.UserDetailsImpl;
 import com.service.ReportService;
 import com.util.Response;

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.dto.ReportRequest;
+import com.dto.Request.ReportRequest;
 import com.entity.Report;
 import com.entity.User;
 import com.entity.Blogs.Blog;

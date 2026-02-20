@@ -1,14 +1,16 @@
-package com.dto;
+package com.dto.Response;
+
 
 import lombok.*;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersToAdminDTO {
+public class ValidationDTO {
     private String username;
-    private String email;
+    private String imageUrl;
     private String role;
     private String status;
 }
