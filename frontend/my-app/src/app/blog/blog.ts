@@ -1,4 +1,4 @@
-import { Component, inject, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +22,7 @@ import { Report } from './../report/report';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../auth/auth.service';
 import { ServiceConfirmation } from '../service-confirmation/service-confirmation.service';
-import { MgsAdhmin } from '../mgs-admin/mgs-admin';
+import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service'
 
 export interface TheMediaBlog {
   url: string;
@@ -78,14 +78,15 @@ export class Blog {
 
   constructor(private errorService: ErrorService, private confirmService: ServiceConfirmation,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private contentHomeService: ContentHomeService, private dialog: MatDialog) { }
+    private contentHomeService: ContentHomeService, private dialog: MatDialog,
+    private showAdminMessage : ShowAdminMessage
+  ) { }
 
 
   modeADMINorHOME = '';
-
+  isUserBanned = false;
 
   ngOnInit() {
-
     if (this.router.url.startsWith('/admin/blog')) {
       this.modeADMINorHOME = 'ADMIN'
     }
@@ -102,14 +103,16 @@ export class Blog {
         this.creat_by = this.blogSubject.value.createdByUsername;
         if (blog.status == "hidden") {
           this.isblogishedden = true;
-          this.showAdminMessage();
+          this.showAdminMessage.showAdminMessageBlogHidden()
         }
 
         const user = this.authService.getUser();
         if (user != null && user?.username == this.creat_by) {
           this.iSmyBlog = true;
         }
-
+        if (user != null && user?.status == "BANNED") {
+          this.isUserBanned = true;
+        }
       },
       error: () => {
         this.errorService.showMessage('Cannot load blog ):', 'error')
@@ -117,15 +120,12 @@ export class Blog {
     });
   }
 
-  showAdminMessage() {
-    const dialogRef = this.dialog.open(MgsAdhmin, {
-      width: '400px',
-      disableClose: true,
-      data: { message: 'This blog has been hidden by the admin.' },
-    });
-  }
 
   deleteBlog(id: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading) return
     this.loading = true;
     if (!id || id.length <= 0) return;
@@ -150,8 +150,13 @@ export class Blog {
   }
 
   editBlog(id: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
+
     if (this.isblogishedden) {
-      this.errorService.showMessage('This blog has been hidden by the admin.', 'warning')
+        this.showAdminMessage.showAdminMessageBlogHidden()
       return;
     }
     this.router.navigate([`home/blog/${id}/edit`]);
@@ -159,6 +164,10 @@ export class Blog {
 
 
   reportBlog(id: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.isblogishedden) return;
     if (this.loading || !id || id.length <= 0) return;
     this.loading = true;
@@ -196,6 +205,7 @@ export class Blog {
 
 
   toggleVideo(event: Event) {
+
     const video = event.target as HTMLVideoElement;
 
     if (video.paused) {
@@ -230,7 +240,7 @@ export class Blog {
 
   private checkHidden(statusBlog: string): boolean {
     if (statusBlog === "hidden") {
-      this.showAdminMessage();
+      this.showAdminMessage.showAdminMessageBlogHidden();
       return true;
     }
     return false;
@@ -238,6 +248,10 @@ export class Blog {
 
 
   toggleLike(statusBlog: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.checkHidden(statusBlog)) return;
     if (this.loading) return;
     const blog = this.blogSubject.value;
@@ -282,6 +296,10 @@ export class Blog {
   }
 
   toggleSave(statusBlog: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.checkHidden(statusBlog)) return;
     if (this.loading) return;
     const blog = this.blogSubject.value;

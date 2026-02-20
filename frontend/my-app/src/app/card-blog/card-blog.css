@@ -67,15 +67,10 @@
 
 .post-content-bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   height: 50px;
-}
-
-.post-content-bottom-first {
-  display: flex;
-  gap: 15px;
-  align-items: center;
+  gap: 20px;
 }
 
 .creat-by {
@@ -104,15 +99,9 @@ button:hover {
   transform: scale(1.1);
 }
 
-.like-btn img, .comment-btn img {
+.like-btn img {
   width: 22px;
   height: 22px;
-}
-
-.post-content-bottom-last {
-  display: flex;
-  align-items: center;
-  gap: 15px;
 }
 
 .saved mat-icon {
@@ -120,25 +109,7 @@ button:hover {
   color: white;
 }
 
-.circle-line {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  position: relative;
-}
-.circle-line::after {
-  content: "";
-  position: absolute;
-  width: 50%;
-  height: 2px;
-  background-color: #fff;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
-/* صور وفيديو */
 .post-imgs {
   width: 45%;
   height: 200px;

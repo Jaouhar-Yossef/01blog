@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { Users } from '../users/users';
+import { AuthService } from '../auth/auth.service';
+import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
 
 @Component({
   selector: 'app-profile',
@@ -28,6 +30,7 @@ export class Profile {
   loading = false;
   username!: string;
   isBlogs = true;
+  isUserBanned = false;
 
 
   baseUrl = 'http://localhost:8080';
@@ -36,7 +39,9 @@ export class Profile {
     private profileService: ProfileService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private showAdminMessage: ShowAdminMessage
   ) {
   }
 
@@ -64,9 +69,13 @@ export class Profile {
         this.errorService.showMessage('Profile not found ):', 'error');
         return;
       }
-
       this.username = username;
       this.loadProfile(username);
+
+      const user = this.authService.getUser();
+      if (user != null && user?.status == "BANNED") {
+        this.isUserBanned = true;
+      }
     });
   }
 
@@ -87,9 +96,20 @@ export class Profile {
     });
   }
 
+  editProfile() {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
+  }
+
   ResponseFollow: Observable<ApiResponse<any>> = of(null as any);
 
   FollowTheUser(typeFollow: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading) return;
 
     this.loading = true;

@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { Report } from './../report/report';
+import { AuthService } from '../auth/auth.service';
+import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class Users implements OnInit {
   size = 10;
   loading = false;
   hasMore = true;
+  isUserBanned = false;
 
   baseUrl = 'http://localhost:8080';
 
@@ -41,7 +44,9 @@ export class Users implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private contentHomeService: ContentHomeService
+    private contentHomeService: ContentHomeService,
+    private authService: AuthService,
+    private showAdminMessage: ShowAdminMessage,
   ) { }
 
 
@@ -51,10 +56,18 @@ export class Users implements OnInit {
     if (this.router.url.startsWith('/admin/profile')) {
       this.modeADMINorHOME = 'ADMIN'
     }
+
+    const user = this.authService.getUser();
+    if (user != null && user?.status == "BANNED") {
+      this.isUserBanned = true;
+    }
   }
 
   ReportUsers(username: string) {
-    console.log("==> ", username)
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading || !username || username.length <= 0) return;
     this.loading = true;
 
@@ -144,6 +157,10 @@ export class Users implements OnInit {
   ResponseFollow: Observable<ApiResponse<any>> = of(null as any);
 
   FollowTheUser(username: string, typeFollow: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading) return;
     this.loading = true;
 

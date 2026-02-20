@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiResponse } from '../content-home/content-home.service';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
+import { AuthService } from '../auth/auth.service';
+import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
 
 
 export interface CreateCommentDto {
@@ -45,7 +47,7 @@ interface comment {
 export class Comment {
   id_blog: string = "";
 
-  @Input() statuBlog: string = ""; 
+  @Input() statuBlog: string = "";
 
   private CommentSubject = new BehaviorSubject<any[]>([]);
   comments$ = this.CommentSubject.asObservable();
@@ -56,6 +58,7 @@ export class Comment {
   loading = false;
   hasMore = true;
 
+  isUserBanned = false;
 
   commentForm: FormGroup;
 
@@ -64,6 +67,8 @@ export class Comment {
   constructor(private errorService: ErrorService,
     private route: ActivatedRoute, private router: Router,
     private contentHomeService: ContentHomeService,
+    private authService: AuthService,
+    private showAdminMessage : ShowAdminMessage,
     private fb: FormBuilder) {
     this.commentForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(300)]]
@@ -79,6 +84,12 @@ export class Comment {
       return;
     }
     this.id_blog = id;
+
+
+    const user = this.authService.getUser();
+    if (user != null && user?.status == "BANNED") {
+      this.isUserBanned = true;
+    }
   }
 
   loadComment() {
@@ -106,8 +117,13 @@ export class Comment {
   }
 
   submitComment() {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      this.commentForm.reset();
+      return
+    }
     if (this.statuBlog == "hidden") {
-      this.errorService.showMessage("You can't creat comment in this blog :(", 'warning');
+      this.showAdminMessage.showAdminMessageBlogHidden()
       this.commentForm.reset();
       return;
     }

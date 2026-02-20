@@ -7,7 +7,7 @@
 
 .sidebar {
   border-right: 1px solid #33496d;
-  background-color: rgb(1, 1, 44);
+  background-color: rgb(1, 24, 36);
   top: 0%;
   left: 0%;
   height: 100vh;
@@ -54,7 +54,7 @@
 }
 
 .btnnor {
-  background-color: rgb(1, 1, 44);
+  background-color: rgb(1, 24, 36);
   width: 100%;
 
   padding: 8px 14px;

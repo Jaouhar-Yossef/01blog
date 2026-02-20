@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TimeAgo } from '../content-home/content-home.service';
 import { HttpClient } from '@angular/common/http';
+import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
+import { AuthService } from '../auth/auth.service';
 
 
 @Component({
@@ -27,10 +29,11 @@ export class CardBlog {
   creat_at = "";
 
   showAllOfTheBlog = false;
-
+  isUserBanned = false;
 
   private blogService = inject(CardBlogService);
-  constructor(private router: Router,  private http: HttpClient, private errorService: ErrorService) { }
+  constructor(private router: Router, private http: HttpClient, private authService: AuthService,
+    private errorService: ErrorService, private showAdminMessage: ShowAdminMessage) { }
 
   modeADMINorHOME = '';
 
@@ -39,11 +42,15 @@ export class CardBlog {
       this.modeADMINorHOME = 'ADMIN'
     }
 
+    const user = this.authService.getUser();
+    if (user != null && user?.status == "BANNED") {
+      this.isUserBanned = true;
+    }
     this.creat_at = TimeAgo(this.blog.creat_at);
   }
 
 
-  checkImage(url: string) : string {
+  checkImage(url: string): string {
     this.http.get(this.baseUrl + url, { responseType: 'blob' }).subscribe({
       next: () => { return this.baseUrl + url; },
       error: () => { return './../../assets/no-picture.png'; }
@@ -63,6 +70,10 @@ export class CardBlog {
 
 
   toggleSave() {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading) return;
     this.loading = true;
 
@@ -91,6 +102,10 @@ export class CardBlog {
 
 
   toggleLike() {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
     if (this.loading) { return }
     this.loading = true
 

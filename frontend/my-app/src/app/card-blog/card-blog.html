@@ -11,7 +11,6 @@
     </div>  
 
     <div class="post-content-bottom">
-      <div class="post-content-bottom-first">
         
         <span class="creat-by">
           created by: 
@@ -23,19 +22,13 @@
           <img *ngIf="blog.liked" src="./../../assets/heart.png" alt="liked">
         </button>
 
-        <button class="comment-btn" (click)="showTheBlog(blog.id)">
-          <img src="./../../assets/images/chat-icon.svg" alt="comment">
-        </button>
-      </div>
-
-      <div class="post-content-bottom-last">
         <button class="saved" (click)="toggleSave()">
           <mat-icon>
             {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
           </mat-icon>
         </button>
-        <div class="circle-line"></div>
-      </div>
+
+     
     </div>
   </div>
 

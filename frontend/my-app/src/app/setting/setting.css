@@ -1,5 +1,5 @@
 .setting {
-    background-color: rgb(1, 1, 44);
+    background-color: rgb(1, 24, 36);
     position: fixed;
     top: 10%;
     right: 0%;
@@ -41,7 +41,7 @@
 }
 
 .setting-item .btnnor {
-    background-color: rgb(1, 1, 44);
+    background-color: rgb(1, 24, 36);
     background-color: rgb(1, 24, 36);
     width: 80%;
     margin-left: 10px;
@@ -248,7 +248,7 @@
 
 
     .setting-item .btnnor {
-        background-color: rgb(1, 1, 44);
+        background-color: rgb(1, 24, 36);
         width: 8%;
     }
 
