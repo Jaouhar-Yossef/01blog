@@ -86,23 +86,32 @@ public class BlogController {
     }
 
     @PostMapping("/save_blog")
-    public ResponseEntity<?> saveBlog(@RequestBody LikeOrSaveBlogRequest request,
+    public ResponseEntity<Response<?>> saveBlog(@RequestBody LikeOrSaveBlogRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UUID user_id = userDetails.getUser().getId();
-        String msg = this.savedService.saveBlog(user_id, request.getId_blog());
+        try {
+            this.savedService.saveBlog(user_id, request.getId_blog());
+            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "saved successfully!"));            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
 
-        return ResponseEntity.ok(Map.of("message", msg));
     }
 
     @PostMapping("/unsave_blog")
-    public ResponseEntity<?> unsaveBlog(@RequestBody LikeOrSaveBlogRequest request,
+    public ResponseEntity<Response<?>> unsaveBlog(@RequestBody LikeOrSaveBlogRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UUID user_id = userDetails.getUser().getId();
-        String msg = this.savedService.unsaveBlog(user_id, request.getId_blog());
 
-        return ResponseEntity.ok(Map.of("message", msg));
+        try {
+            this.savedService.unsaveBlog(user_id, request.getId_blog());
+            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "Unsaved successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+
     }
 
     @GetMapping("/blogs")
@@ -162,11 +171,12 @@ public class BlogController {
 
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
-        blogService.deleteBlog(id);
-        return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly!", null));
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
+    // blogService.deleteBlog(id);
+    // return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly!",
+    // null));
+    // }
 
     @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<?>> create_Blog(
@@ -182,8 +192,8 @@ public class BlogController {
         String username = userDetails.getUser().getUsername();
 
         try {
-            boolean dataa = blogService.createBlog(blogRequest, username);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(dataa, "Blog created successfully!"));
+            Response<?> dataa = blogService.createBlog(blogRequest, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(dataa);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
@@ -203,14 +213,8 @@ public class BlogController {
         UUID user_id = userDetails.getUser().getId();
 
         try {
-            boolean status = blogService.upDateBlog(blogRequest, user_id);
-            if (status) {
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new Response<>(true, "Blog upDated successfully!"));
-            } else {
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new Response<>(false, "Blog upDated successfully!"));
-            }
+            Response<?> data = blogService.upDateBlog(blogRequest, user_id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(data);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }

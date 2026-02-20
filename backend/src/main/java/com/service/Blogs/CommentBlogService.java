@@ -29,16 +29,20 @@ public class CommentBlogService {
 
     public CommentResponseDTO creatComment(UUID user_id, CommentRequestDTO dto) throws Exception {
 
-        Blog blog = blogRepository.findById(dto.getId_blog())
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
-
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if ("BANNED".equals(user.getStatus())) {
+            new RuntimeException("You are banned from this platform.");
+        }
+
+        Blog blog = blogRepository.findById(dto.getId_blog())
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if ("hideen".equals(blog.getStatus())) {
             new RuntimeException("This blog has been hidden by the admin.");
         }
-        
+
         CommentBlog comment = new CommentBlog();
         comment.setComentblog(dto.getComment());
         comment.setBlog(blog);

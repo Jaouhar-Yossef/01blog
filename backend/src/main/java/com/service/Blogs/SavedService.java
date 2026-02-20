@@ -23,10 +23,14 @@ public class SavedService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    public String saveBlog(UUID userId, UUID blogId) {
+    @Transactional
+    public void saveBlog(UUID userId, UUID blogId) {
 
-        if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            return "Blog already saved";
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if ("BANNED".equals(user.getStatus())) {
+            new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
@@ -35,35 +39,39 @@ public class SavedService {
             new RuntimeException("This blog has been hidden by the admin.");
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
+            new RuntimeException("Blog already saved");
+        }
 
         Saved saved = new Saved();
         saved.setUser(user);
         saved.setBlog(blog);
 
         savedRepository.save(saved);
-
-        return "Saved successfully!";
     }
 
     @Transactional
-    public String unsaveBlog(UUID userId, UUID blogId) {
+    public void unsaveBlog(UUID userId, UUID blogId) {
 
-        if (!savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            return "Blog not saved";
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if ("BANNED".equals(user.getStatus())) {
+            new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-                
+
         if ("hideen".equals(blog.getStatus())) {
             new RuntimeException("This blog has been hidden by the admin.");
         }
 
-        savedRepository.deleteByUserIdAndBlogId(userId, blogId);
+        if (!savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
+            new RuntimeException("Blog not saved");
+        }
 
-        return "Unsaved successfully!";
+        savedRepository.deleteByUserIdAndBlogId(userId, blogId);
     }
 
     public boolean isBlogSaved(UUID userId, UUID blogId) {

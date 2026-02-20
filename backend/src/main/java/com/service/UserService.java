@@ -116,30 +116,6 @@ public class UserService implements UserDetailsService {
         return new Response<>(true, "Login successful", dto);
     }
 
-    // public UserResponseDTO getUserFromToken(String token) {
-    // try {
-    // UUID id = jwtService.extractUserId(token);
-    // String username = jwtService.extractUsername(token);
-
-    // Optional<User> userOpt = userRepository.findById(id);
-    // if (userOpt.isEmpty()) return null;
-
-    // User user = userOpt.get();
-
-    // if (!user.getUsername().equals(username)) return null;
-
-    // return new UserResponseDTO(
-    // user.getUsername(),
-    // user.getEmail(),
-    // user.getImageUrl(),
-    // token
-    // );
-
-    // } catch (Exception e) {
-    // return null;
-    // }
-    // }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -148,21 +124,19 @@ public class UserService implements UserDetailsService {
     }
 
     public Response<?> deleteAccount(UUID user_id) {
-        try {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-            User user = userRepository.findById(user_id)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+        if ("ADMIN".equals(user.getStatus())) {
+            new RuntimeException("You are the ADMIN!!");
+        }   
 
-            List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
-
-            for (Blog blog : blogs) {
-                mediaBlogService.deleteBlogFiles(blog);
-            }
-
-            userRepository.delete(user);
-            return new Response<>(true, "Account deleted successful!");
-        } catch (Exception e) {
-            return new Response<>(false, "Error deleting user: " + e.getMessage());
+        List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
+        for (Blog blog : blogs) {
+            mediaBlogService.deleteBlogFiles(blog);
         }
+
+        userRepository.delete(user);
+        return new Response<>(true, "Account deleted successful!");
     }
 }

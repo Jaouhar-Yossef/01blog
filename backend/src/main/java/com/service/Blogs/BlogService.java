@@ -47,10 +47,13 @@ public class BlogService {
         }
 
         @Transactional
-        public boolean createBlog(BlogRequest blogRequest, String username) throws Exception {
+        public Response<?> createBlog(BlogRequest blogRequest, String username) throws Exception {
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+                if ("BANNED".equals(user.getStatus())) {
+                        return new Response<>(false, "You are banned from this platform.");
+                }
                 Blog blog = new Blog();
                 blog.setTitle(blogRequest.getTitle());
                 blog.setStatus("show");
@@ -60,17 +63,26 @@ public class BlogService {
                 blogRepository.save(blog);
 
                 mediaBlogService.saveMedia(blog, blogRequest, "Creat");
-                return true;
+                return new Response<>(true, "Blog created successfully!");
         }
 
         @Transactional
-        public boolean upDateBlog(BlogRequest blogRequest, UUID user_id) {
+        public Response<?> upDateBlog(BlogRequest blogRequest, UUID user_id) {
+
+                User user = userRepository.findById(user_id)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+
+                if ("BANNED".equals(user.getStatus())) {
+                        return new Response<>(false, "You are banned from this platform.");
+                }
+
                 Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
                 if ("hidden".equals(blog.getStatus())) {
                         throw new RuntimeException("This blog has been hidden by the admin.");
                 }
+
                 UUID crtBy = blog.getCreatedBy().getId();
 
                 if (!user_id.equals(crtBy)) {
@@ -80,34 +92,31 @@ public class BlogService {
                 blog.setTitle(blogRequest.getTitle());
                 blog.setContent(blogRequest.getContent());
 
-                blogRepository.save(blog);
-
                 mediaBlogService.saveMedia(blog, blogRequest, "update");
-                return true;
+                return new Response<>(true, "Blog upDated successfully!");
         }
 
         @Transactional
-        public void deleteBlog(UUID id) {
-                Blog blog = blogRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Blog not found"));
-
-                mediaBlogService.deleteBlogFiles(blog);
-                blogRepository.delete(blog);
-        }
-
         public Response<?> deleteOneBlog(UUID user_id, UUID blog_id) {
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+                if ("BANNED".equals(user.getStatus())) {
+                        return new Response<>(false, "You are banned from this platform.");
+                }
+
                 Blog blog = blogRepository.findById(blog_id)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
+
                 User checking_creat_by = blog.getCreatedBy();
 
-                if (checking_creat_by.getUsername().equals(user.getUsername())) {
-                        deleteBlog(blog_id);
+                if (checking_creat_by.getUsername().equals(user.getUsername()) || "ADMIN".equals(user.getStatus())) {
+                        mediaBlogService.deleteBlogFiles(blog);
+                        blogRepository.delete(blog);
                         return new Response<>(true, "Blog deleted sucesfuly!");
                 }
                 return new Response<>(false, null);
         }
+        
 
         public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
                 Pageable pageable = PageRequest.of(page, size);

@@ -20,6 +20,8 @@ import com.repository.Blogs.MediaBlogRepository;
 import com.security.FileValidator;
 import com.util.TypeMedia;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class MediaBlogService {
 
@@ -117,27 +119,8 @@ public class MediaBlogService {
             }
         }
     }
-
-    // public void deleteMedia(Long mediaId) {
-    // MediaBlog media = mediaBlogRepository.findById(mediaId)
-    // .orElseThrow(() -> new RuntimeException("Media not found with id: " +
-    // mediaId));
-
-    // Blog blog = media.getBlog();
-    // blog.getMedias().remove(media);
-
-    // String uploadDir = System.getProperty("user.dir") + File.separator +
-    // "uploads";
-    // Path filePath = Paths.get(uploadDir, media.getFileName());
-    // try {
-    // Files.deleteIfExists(filePath);
-    // } catch (IOException e) {
-    // System.out.println("Failed to delete file: " + media.getFileName());
-    // }
-
-    // blogRepository.save(blog);
-    // }
-
+    
+    @Transactional
     public void deleteMedia(Long mediaId) {
         MediaBlog media = mediaBlogRepository.findById(mediaId)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + mediaId));
@@ -145,7 +128,6 @@ public class MediaBlogService {
         Blog blog = media.getBlog();
 
         blog.removeMedia(media);
-        blogRepository.save(blog);
 
         String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
         Path filePath = Paths.get(uploadDir, media.getFileName());

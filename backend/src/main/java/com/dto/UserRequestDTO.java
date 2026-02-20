@@ -13,7 +13,7 @@ import lombok.*;
 public class UserRequestDTO {
     
     @NotBlank(message = "Username must not be blank")
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 15 , message = "Username must be At least 3 characters!")
     private String username;
 
     @NotBlank(message = "Email must not be blank")

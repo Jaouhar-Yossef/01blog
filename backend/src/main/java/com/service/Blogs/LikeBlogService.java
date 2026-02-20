@@ -1,6 +1,5 @@
 package com.service.Blogs;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.LikeBlog;
-import com.entity.Blogs.Saved;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
@@ -24,20 +22,26 @@ public class LikeBlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public String likeBlog(UUID userId, UUID blogId) {
 
-        if (this.likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            return "Blog already liked";
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if ("BANNED".equals(user.getStatus())) {
+            new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        if (this.likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
+            return "Blog already liked";
+        }
+
         if ("hideen".equals(blog.getStatus())) {
             new RuntimeException("This blog has been hidden by the admin.");
         }
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         LikeBlog likeBlog = new LikeBlog();
         likeBlog.setUser(user);
@@ -48,11 +52,20 @@ public class LikeBlogService {
 
     @Transactional
     public String unLikedBlog(UUID userId, UUID blogId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if ("BANNED".equals(user.getStatus())) {
+            new RuntimeException("You are banned from this platform.");
+        }
+
+        Blog blog = blogRepository.findById(blogId)
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+                
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog not liked";
         }
-        Blog blog = blogRepository.findById(blogId)
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if ("hideen".equals(blog.getStatus())) {
             new RuntimeException("This blog has been hidden by the admin.");
@@ -70,9 +83,4 @@ public class LikeBlogService {
     public Long getNumbLike(UUID blogId) {
         return likeBlogRepository.countByBlogId(blogId);
     }
-
-    public List<Saved> getLikeBlogs(UUID userId) {
-        return likeBlogRepository.findByUserId(userId);
-    }
-
 }
