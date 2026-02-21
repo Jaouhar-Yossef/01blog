@@ -88,6 +88,7 @@ public class UserService implements UserDetailsService {
                 user.getUsername(),
                 user.getImageUrl(),
                 user.getRole(),
+                user.getStatus(),
                 token);
         return new Response<>(true, "User registered successfully", dto);
     }
@@ -112,6 +113,7 @@ public class UserService implements UserDetailsService {
                 user.getUsername(),
                 user.getImageUrl(),
                 user.getRole(),
+                user.getStatus(),
                 token);
         return new Response<>(true, "Login successful", dto);
     }
@@ -128,7 +130,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("ADMIN".equals(user.getStatus())) {
-            new RuntimeException("You are the ADMIN!!");
+            throw new RuntimeException("You are the ADMIN!!");
         }   
 
         List<Blog> blogs = blogRepository.findByCreatedById(user.getId());

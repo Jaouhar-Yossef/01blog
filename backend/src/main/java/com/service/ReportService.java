@@ -29,7 +29,9 @@ public class ReportService {
     public void creatReport(UUID user_id, ReportRequest reportRequest) throws Exception {
         User userReq = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        if ("BANNED".equals(userReq.getStatus())) {
+            throw new RuntimeException("You are banned from this platform.");
+        }
         Report report = new Report();
 
         report.setCreatedBy(userReq);

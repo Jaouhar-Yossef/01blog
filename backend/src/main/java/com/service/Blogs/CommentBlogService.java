@@ -33,14 +33,14 @@ public class CommentBlogService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("BANNED".equals(user.getStatus())) {
-            new RuntimeException("You are banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(dto.getId_blog())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if ("hideen".equals(blog.getStatus())) {
-            new RuntimeException("This blog has been hidden by the admin.");
+            throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
         CommentBlog comment = new CommentBlog();

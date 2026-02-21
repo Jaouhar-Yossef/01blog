@@ -5,6 +5,15 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../content-home/content-home.service';
 
+
+interface dataFromBackend {
+  username: string;
+  imageUrl: string;
+  role: string;
+  status: string;
+  tokeString: string;
+}
+
 interface TheUser {
   username: string;
   imageUrl: string;
@@ -53,19 +62,16 @@ export class AuthService {
 
 
 
-  saveAuthData(user: any) {
-    localStorage.setItem('token', user.tokeString);
-
+  saveAuthData(userdata: dataFromBackend) {
+    localStorage.setItem('token', userdata.tokeString);
     const theUser: TheUser = {
-      username: user.username,
-      role: user.role,
-      status: user.status,
-      imageUrl: user.imageUrl,
+      username: userdata.username,
+      role: userdata.role,
+      status: userdata.status,
+      imageUrl: userdata.imageUrl,
     };
-
     this.loggedIn.set(true);
-
-    this.user.set(theUser);
+    this.setUser(theUser);
   }
 
   getToken(): string | null {
@@ -81,18 +87,18 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  login(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
+  login(data: any): Observable<ApiResponse<dataFromBackend>> {
+    return this.http.post<ApiResponse<dataFromBackend>>(`${this.apiUrl}/login`, data).pipe(
       tap(res => this.saveAuthData(res.anyData)),
       catchError(err => {
+        
         return of({
           success: false,
-          message: err.error?.message || 'Login failed'
-        });
+          message: err.error?.message || 'Login failed',
+        } as ApiResponse<dataFromBackend>);
       })
     );
   }
-
 
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);

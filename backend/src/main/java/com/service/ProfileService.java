@@ -69,10 +69,14 @@ public class ProfileService {
 
                 User follower = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+                if ("BANNED".equals(follower.getStatus())) {
+                        throw new RuntimeException("You are banned from this platform.");
+                }
                 User followed = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+                if ("BANNED".equals(followed.getStatus())) {
+                        throw new RuntimeException("This User banned from this platform.");
+                }
                 if (follower.getId().equals(followed.getId())) {
                         return;
                 }
@@ -98,9 +102,15 @@ public class ProfileService {
                 User follower = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+                if ("BANNED".equals(follower.getStatus())) {
+                        throw new RuntimeException("You are banned from this platform.");
+                }
                 User followed = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+                if ("BANNED".equals(followed.getStatus())) {
+                        throw new RuntimeException("This User banned from this platform.");
+                }
                 if (follower.getId().equals(followed.getId())) {
                         return;
                 }
@@ -178,7 +188,7 @@ public class ProfileService {
 
                 Pageable pageable = PageRequest.of(page, size);
 
-                List<Followers> follow = new ArrayList();
+                List<Followers> follow = new ArrayList<>();
 
                 if (mode.equals("followers")) {
                         follow = followersRepository.findByFollowed_Id(profileUser.getId(), pageable);

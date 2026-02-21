@@ -29,7 +29,7 @@ public class LikeBlogService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("BANNED".equals(user.getStatus())) {
-            new RuntimeException("You are banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
@@ -40,7 +40,7 @@ public class LikeBlogService {
         }
 
         if ("hideen".equals(blog.getStatus())) {
-            new RuntimeException("This blog has been hidden by the admin.");
+            throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
         LikeBlog likeBlog = new LikeBlog();
@@ -57,7 +57,7 @@ public class LikeBlogService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("BANNED".equals(user.getStatus())) {
-            new RuntimeException("You are banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
@@ -68,7 +68,7 @@ public class LikeBlogService {
         }
 
         if ("hideen".equals(blog.getStatus())) {
-            new RuntimeException("This blog has been hidden by the admin.");
+            throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
         likeBlogRepository.deleteByUserIdAndBlogId(userId, blogId);

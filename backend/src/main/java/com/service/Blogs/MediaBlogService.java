@@ -27,13 +27,12 @@ public class MediaBlogService {
 
     private final MediaBlogRepository mediaBlogRepository;
     private final FileValidator fileValidator;
-    private BlogRepository blogRepository;
 
-    public MediaBlogService(MediaBlogRepository mediaBlogRepository, BlogRepository blogRepository,
+    public MediaBlogService(MediaBlogRepository mediaBlogRepository,
             FileValidator fileValidator) throws Exception {
         this.mediaBlogRepository = mediaBlogRepository;
         this.fileValidator = fileValidator;
-        this.blogRepository = blogRepository;
+
     }
 
     public void saveMedia(Blog blog, BlogRequest blogRequest, String mode) {
@@ -119,7 +118,7 @@ public class MediaBlogService {
             }
         }
     }
-    
+
     @Transactional
     public void deleteMedia(Long mediaId) {
         MediaBlog media = mediaBlogRepository.findById(mediaId)

@@ -26,6 +26,7 @@ export class HomeComponent {
 
   ngOnInit() {
     const user = this.authService.getUser();
+    console.log("==> " , user)
     if (!user || user == null) {
       this.router.navigate(['/']);
       return

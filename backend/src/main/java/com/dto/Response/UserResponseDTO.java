@@ -10,5 +10,6 @@ public class UserResponseDTO {
     private String username;
     private String imageUrl;
     private String role;
+    private String status;
     private String tokeString;
 }

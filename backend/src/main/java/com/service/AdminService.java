@@ -50,7 +50,7 @@ public class AdminService {
         }
         if (request.getStatus() != "DECLAINED" || request.getStatus() != "RESOLVED"
                 || request.getStatus() != "PENDING") {
-            new RuntimeException("status Report is PENDING or RESOLVED or DECLAINED");
+            throw new RuntimeException("status Report is PENDING or RESOLVED or DECLAINED");
         }
         report.setStatus(request.getStatus());
         return new Response<>(true, "update successfully!");

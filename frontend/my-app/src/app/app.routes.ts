@@ -31,8 +31,8 @@ export const routes: Routes = [
       { path: 'profile/:name', component: Profile },
       { path: 'Users', component: Users },
       { path: 'Search', component: Search },
-      { path: 'blog/:id/edit', component: CreatBlog , data: { view: 'editBlog' , canActivate: [UserBanned]} },
-      { path: 'CreatBlog', component: CreatBlog , data: { view: 'creatBlog' } , canActivate: [UserBanned]}
+      { path: 'blog/:id/edit', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'editBlog' }  },
+      { path: 'CreatBlog', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'creatBlog' } }
 
     ]
   },

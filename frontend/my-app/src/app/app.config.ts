@@ -15,8 +15,7 @@ import {
 
 import { routes } from './app.routes';
 import { JwtInterceptor } from './auth/jwt.interceptor';
-import { AuthService } from './auth/auth.service';
-import { firstValueFrom } from 'rxjs';
+import { authInitializer } from './auth/auth.initializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,10 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-
-    provideAppInitializer(() => {
-      const auth = inject(AuthService);
-      return firstValueFrom(auth.validateToken());
-    })
+    provideAppInitializer(authInitializer)
   ]
 };

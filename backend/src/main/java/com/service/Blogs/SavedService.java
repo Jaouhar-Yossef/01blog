@@ -30,17 +30,17 @@ public class SavedService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("BANNED".equals(user.getStatus())) {
-            new RuntimeException("You are banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
         if ("hideen".equals(blog.getStatus())) {
-            new RuntimeException("This blog has been hidden by the admin.");
+            throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
         if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            new RuntimeException("Blog already saved");
+            throw new RuntimeException("Blog already saved");
         }
 
         Saved saved = new Saved();
@@ -57,18 +57,18 @@ public class SavedService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if ("BANNED".equals(user.getStatus())) {
-            new RuntimeException("You are banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if ("hideen".equals(blog.getStatus())) {
-            new RuntimeException("This blog has been hidden by the admin.");
+            throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
         if (!savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            new RuntimeException("Blog not saved");
+            throw new RuntimeException("Blog not saved");
         }
 
         savedRepository.deleteByUserIdAndBlogId(userId, blogId);
