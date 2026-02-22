@@ -1,15 +1,19 @@
 package com.dto.Request;
 
 import java.util.UUID;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class CommentRequestDTO {
-    private UUID Id_blog;
+
+    @NotNull(message = "blog id cannot be null")
+    private UUID id_blog;
+
+    @NotBlank(message = "comment cannot be empty")
+    @Size(max = 300, message = "comment cannot exceed 300 characters")
+    @Size(min = 1, message = "comment must be at least 1 character")
     private String comment;
 }

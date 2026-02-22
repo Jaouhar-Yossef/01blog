@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
 import { ContentHomeService } from '../content-home/content-home.service';
-import { BehaviorSubject, single } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -71,7 +71,7 @@ export class Comment {
     private showAdminMessage : ShowAdminMessage,
     private fb: FormBuilder) {
     this.commentForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(300)]]
+      comment: ['', [Validators.required, Validators.maxLength(300) , Validators.minLength(1)]]
     });
   }
 
@@ -84,8 +84,6 @@ export class Comment {
       return;
     }
     this.id_blog = id;
-
-
     const user = this.authService.getUser();
     if (user != null && user?.status == "BANNED") {
       this.isUserBanned = true;
@@ -102,7 +100,6 @@ export class Comment {
             ...this.CommentSubject.value,
             ...res.anyData
           ]);
-
           if (res.anyData.length < this.size) {
             this.hasMore = false;
           } else {
@@ -111,7 +108,10 @@ export class Comment {
 
           this.loading = false;
         },
-        error: () => this.loading = false
+        error: () => {
+          this.errorService.showMessage('Error getting comments', 'error')
+          this.loading = false
+        }
       });
 
   }
@@ -131,7 +131,7 @@ export class Comment {
     this.loading = true;
     if (this.commentForm.valid) {
       const payload = {
-        comment: this.commentForm.value.title,
+        comment: this.commentForm.value.comment,
         id_blog: this.id_blog
       };
 

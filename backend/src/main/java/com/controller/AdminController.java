@@ -20,17 +20,15 @@ import com.service.AdminService;
 import com.service.Blogs.BlogService;
 import com.util.Response;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 
     private AdminService adminService;
     private final BlogService blogService;
-
-    public AdminController(AdminService adminService, BlogService blogService) {
-        this.adminService = adminService;
-        this.blogService = blogService;
-    }
 
     @GetMapping("/getRports")
     private ResponseEntity<Response<?>> getAllReports(@RequestParam int page,

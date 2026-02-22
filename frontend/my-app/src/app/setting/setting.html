@@ -24,7 +24,7 @@
       <img class="homeset" src="../../assets/images/users.svg" alt=""> <span *ngIf="show">Users</span>
     </button>
 
-    <button class="btnnor" *ngIf="!small">
+    <button class="btnnor" *ngIf="!small" (click)="ToNotifications()">
       <img class="homeset" src="../../assets/images/notification-icon.png" alt=""> <span *ngIf="show">Notification</span>
     </button>
 

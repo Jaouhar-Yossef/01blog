@@ -80,6 +80,19 @@ public class User {
     @JsonIgnore
     private List<Report> reports = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Report> creatorreports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "creatorNf", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Notifications> creatorNotifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "Intended_User", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Notifications> IntendedUserNotifications = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

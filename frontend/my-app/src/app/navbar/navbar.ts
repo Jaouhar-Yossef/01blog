@@ -32,4 +32,9 @@ export class Navbar {
     this.router.navigate(['/home/CreatBlog']);
   }
 
+
+  ToNotifications() {
+    this.router.navigate(['/home/Notifications']);
+  }
+
 }

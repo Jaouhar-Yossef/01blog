@@ -17,22 +17,21 @@ import com.entity.UserDetailsImpl;
 import com.service.ProfileService;
 import com.util.Response;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private ProfileService ProfileService;
-
-    public ProfileController(ProfileService ProfileService) {
-        this.ProfileService = ProfileService;
-    }
+    private final ProfileService ProfileService;
 
     @GetMapping("{username}")
     private ResponseEntity<Response<?>> getProfile(@PathVariable String username,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
             UUID user_id = userDetails.getUser().getId();
-            ProfileResponseDTO userData = this.ProfileService.getProfileData(username, user_id);
+            ProfileResponseDTO userData = ProfileService.getProfileData(username, user_id);
             return ResponseEntity.ok(new Response<>(true, "get data Profile sucesfuly", userData));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));

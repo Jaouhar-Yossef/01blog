@@ -16,16 +16,14 @@ import com.service.ReportService;
 import com.util.Response;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/Report")
 public class ReportController {
 
     private ReportService reportService;
-
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
 
     @PostMapping("/creat")
     private ResponseEntity<Response<?>> creat(

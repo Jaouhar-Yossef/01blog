@@ -64,10 +64,16 @@ export class ContentHomeService {
 
   private apiUrl = 'http://localhost:8080/blogs';
   private apiUrlReport = 'http://localhost:8080/Report';
+  private apiUrlNotification = 'http://localhost:8080/Notifications';
   constructor(
     private http: HttpClient,
 
   ) {
+  }
+
+  getNotification(page: number,size: number): Observable<ApiResponse<any>> {
+    let params = `page=${page}&size=${size}`;
+    return this.http.get<ApiResponse<any>>(`${this.apiUrlNotification}/getNotifications?${params}`)
   }
 
   deleteOneBlog(blogId: string): Observable<ApiResponse<any>> {
@@ -75,7 +81,7 @@ export class ContentHomeService {
   }
 
   ReportUserOrBlog(type: string, reason: string, username_or_blogId: string): Observable<ApiResponse<any>> {
-    let data : ReportBlogOrUser;
+    let data: ReportBlogOrUser;
     if (type == 'USER') {
       data = {
         type: type,

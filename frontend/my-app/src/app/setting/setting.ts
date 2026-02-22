@@ -60,6 +60,10 @@ export class Setting {
     this.router.navigate(['/home']);
   }
 
+  ToNotifications() {
+    this.router.navigate(['/home/Notifications']);
+  }
+
 
   pageAdmin() {
     this.router.navigate(['/admin']);

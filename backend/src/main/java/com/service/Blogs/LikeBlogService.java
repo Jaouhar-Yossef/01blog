@@ -4,12 +4,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.entity.Notifications;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.LikeBlog;
+import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
+import com.util.TypeNotifications;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ public class LikeBlogService {
     private final LikeBlogRepository likeBlogRepository;
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+    private final NotificationsRepository notificationsRepository;
 
     @Transactional
     public String likeBlog(UUID userId, UUID blogId) {
@@ -47,6 +51,15 @@ public class LikeBlogService {
         likeBlog.setUser(user);
         likeBlog.setBlog(blog);
         likeBlogRepository.save(likeBlog);
+
+        Notifications notif = new Notifications();
+        notif.setCreatorNf(user);
+        notif.setIntended_Blog(blog);
+        notif.setIntended_User(blog.getCreatedBy());
+        notif.setType(TypeNotifications.LIKE);
+        notif.setMessage("liked your blog");
+        notificationsRepository.save(notif);
+
         return "liked blog successfully!";
     }
 
@@ -62,7 +75,7 @@ public class LikeBlogService {
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-                
+
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             return "Blog not liked";
         }

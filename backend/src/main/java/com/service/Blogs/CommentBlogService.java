@@ -10,12 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.dto.Request.CommentRequestDTO;
 import com.dto.Response.CommentResponseDTO;
+import com.entity.Notifications;
 import com.entity.User;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.CommentBlog;
+import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.CommentBlogRepository;
+import com.util.TypeNotifications;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +29,7 @@ public class CommentBlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
     private final CommentBlogRepository commentRepository;
+    private final NotificationsRepository notificationsRepository;
 
     public CommentResponseDTO creatComment(UUID user_id, CommentRequestDTO dto) throws Exception {
 
@@ -54,6 +58,14 @@ public class CommentBlogService {
         data.setComment(comment.getComentblog());
         data.setCreatorUsername(user.getUsername());
         data.setUrlString(user.getImageUrl());
+
+        Notifications notif = new Notifications();
+        notif.setCreatorNf(user);
+        notif.setIntended_Blog(blog);
+        notif.setIntended_User(blog.getCreatedBy());
+        notif.setType(TypeNotifications.COMMENT);
+        notif.setMessage("commented on your blog");
+        notificationsRepository.save(notif);
 
         return data;
     }

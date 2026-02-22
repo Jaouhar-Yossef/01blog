@@ -11,13 +11,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.repository.FollowersRepository;
+import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
+import com.util.TypeNotifications;
 
 import jakarta.transaction.Transactional;
 
 import com.dto.Response.ProfileResponseDTO;
 import com.entity.Followers;
+import com.entity.Notifications;
 import com.entity.User;
 
 @Service
@@ -27,12 +30,14 @@ public class ProfileService {
         private final FollowersRepository followersRepository;
         private final UserRepository userRepository;
         private final BlogRepository blogRepository;
+        private final NotificationsRepository notificationsRepository;
 
         public ProfileService(FollowersRepository followersRepository, UserRepository userRepository,
-                        BlogRepository blogRepository) {
+                        BlogRepository blogRepository, NotificationsRepository notificationsRepository) {
                 this.followersRepository = followersRepository;
                 this.userRepository = userRepository;
                 this.blogRepository = blogRepository;
+                this.notificationsRepository = notificationsRepository;
         }
 
         public ProfileResponseDTO getProfileData(String username, UUID user_id) throws Exception {
@@ -65,6 +70,7 @@ public class ProfileService {
                 return data;
         }
 
+        @Transactional
         public void followed(String username, UUID user_id) throws Exception {
 
                 User follower = userRepository.findById(user_id)
@@ -95,8 +101,15 @@ public class ProfileService {
 
                 followersRepository.save(followers);
 
+                Notifications notif = new Notifications();
+                notif.setCreatorNf(follower);
+                notif.setIntended_User(followed);
+                notif.setType(TypeNotifications.FOLLOW);
+                notif.setMessage("started following you");
+                notificationsRepository.save(notif);
         }
 
+        @Transactional
         public void unFollow(String username, UUID userId) {
 
                 User follower = userRepository.findById(userId)

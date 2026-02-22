@@ -40,7 +40,7 @@
     <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
         <mat-form-field appearance="fill" class="form-group">
             <mat-label>Write a Comment </mat-label>
-            <input matInput type="text" placeholder="Write Comment" formControlName="title" maxlength="300"
+            <input matInput type="text" placeholder="Write Comment" formControlName="comment" maxlength="300" minlength="1"
                 class="inputComment">
             <button mat-icon-button matSuffix type="submit">
                 <mat-icon>comment</mat-icon>

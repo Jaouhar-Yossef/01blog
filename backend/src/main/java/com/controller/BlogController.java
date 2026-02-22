@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import com.util.Response;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/blogs")
 public class BlogController {
@@ -33,14 +35,6 @@ public class BlogController {
     private final LikeBlogService likeBlogService;
     private final CommentBlogService commentBlogService;
 
-    public BlogController(BlogService blogService, CommentBlogService commentBlogService,
-            LikeBlogService likeBlogService, SavedService savedService) {
-        this.blogService = blogService;
-        this.likeBlogService = likeBlogService;
-        this.savedService = savedService;
-        this.commentBlogService = commentBlogService;
-    }
-
     @DeleteMapping("/deleteblog/{blogId}")
     public ResponseEntity<Response<?>> deleteBlog(@PathVariable UUID blogId,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -48,20 +42,6 @@ public class BlogController {
             UUID user_id = userDetails.getUser().getId();
             Response<?> blogstatus = blogService.deleteOneBlog(user_id, blogId);
             return ResponseEntity.ok(blogstatus);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
-        }
-    }
-
-    @PostMapping("/creat-comment")
-    public ResponseEntity<Response<?>> creatcomment(@RequestBody CommentRequestDTO request,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        try {
-            UUID user_id = userDetails.getUser().getId();
-            CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new Response<CommentResponseDTO>(true, "Comment created sucesfuly!", response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
@@ -92,7 +72,7 @@ public class BlogController {
         UUID user_id = userDetails.getUser().getId();
         try {
             this.savedService.saveBlog(user_id, request.getId_blog());
-            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "saved successfully!"));            
+            return ResponseEntity.status(HttpStatus.CREATED).body(new Response<>(true, "saved successfully!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
@@ -171,12 +151,23 @@ public class BlogController {
 
     }
 
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<Response<Void>> deleteBlog(@PathVariable UUID id) {
-    // blogService.deleteBlog(id);
-    // return ResponseEntity.ok(new Response<>(true, "Deleted the blog sucesfuly!",
-    // null));
-    // }
+    @PostMapping("/creat-comment")
+    public ResponseEntity<Response<?>> creatcomment(@Valid @RequestBody CommentRequestDTO request,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+        try {
+            UUID user_id = userDetails.getUser().getId();
+            CommentResponseDTO response = this.commentBlogService.creatComment(user_id, request);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new Response<CommentResponseDTO>(true, "Comment created sucesfuly!", response));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
 
     @PostMapping(value = "/creat-blog", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<?>> create_Blog(

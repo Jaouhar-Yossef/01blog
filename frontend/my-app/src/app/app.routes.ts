@@ -16,6 +16,7 @@ import { adminGuard } from './auth/admin.guard';
 import { AdminComponent } from './admin/admin';
 import { AdminDashboard } from './admin-dashboard/admin-dashboard';
 import { UserBanned } from './auth/userBanned.guard';
+import { Notifications } from './notifications/notifications';
 
 
 export const routes: Routes = [
@@ -31,9 +32,9 @@ export const routes: Routes = [
       { path: 'profile/:name', component: Profile },
       { path: 'Users', component: Users },
       { path: 'Search', component: Search },
+      { path: 'Notifications', component: Notifications },
       { path: 'blog/:id/edit', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'editBlog' }  },
       { path: 'CreatBlog', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'creatBlog' } }
-
     ]
   },
 
