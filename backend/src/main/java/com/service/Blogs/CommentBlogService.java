@@ -20,8 +20,10 @@ import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.CommentBlogRepository;
 import com.util.TypeNotifications;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class CommentBlogService {
@@ -82,11 +84,10 @@ public class CommentBlogService {
 
         blogRepository.findById(id_blog)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
+                
         List<CommentBlog> Comments = this.getCommentPaginated(page, size, id_blog);
-
         List<CommentResponseDTO> CommentsDTO = Comments.stream()
                 .map(comment -> {
-
                     return new CommentResponseDTO(
                             comment.getId(),
                             comment.getComentblog(),
@@ -94,9 +95,6 @@ public class CommentBlogService {
                             comment.getUser().getUsername());
                 })
                 .toList();
-
         return CommentsDTO;
-
     }
-
 }

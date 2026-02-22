@@ -24,7 +24,9 @@ import com.repository.Blogs.LikeBlogRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class AdminService {
 
@@ -32,14 +34,6 @@ public class AdminService {
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
     private final LikeBlogRepository likeBlogRepository;
-
-    public AdminService(BlogRepository blogRepository, UserRepository userRepository,
-            ReportRepository reportRepository, LikeBlogRepository likeBlogRepository) {
-        this.blogRepository = blogRepository;
-        this.userRepository = userRepository;
-        this.reportRepository = reportRepository;
-        this.likeBlogRepository = likeBlogRepository;
-    }
 
     public Response<?> updateReport(UpdateReportsRequest request) {
         Report report = reportRepository.findById(request.getReport_id())

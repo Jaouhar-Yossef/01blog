@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContentHomeService, TimeAgo } from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService, TimeAgo } from '../content-home/content-home.service';
 import { ErrorService } from '../error/error.service';
 
 import { MatInputModule } from '@angular/material/input';
@@ -96,12 +96,13 @@ export class Blog {
     this.id_blog = id;
 
     this.contentHomeService.getBlogById(id).subscribe({
-      next: blog => {
-        this.blogSubject.next(blog),
+      next: (res : ApiResponse<any>) => {
+        this.blogSubject.next(res.anyData),
           this.theMedia = this.blogSubject.value.media
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
         this.creat_by = this.blogSubject.value.createdByUsername;
-        if (blog.status == "hidden") {
+        const b = this.blogSubject.value;
+        if (b.status == "hidden") {
           this.isblogishedden = true;
           this.showAdminMessage.showAdminMessageBlogHidden()
         }
@@ -144,9 +145,6 @@ export class Blog {
         })
       }
     )
-
-
-
   }
 
   editBlog(id: string) {

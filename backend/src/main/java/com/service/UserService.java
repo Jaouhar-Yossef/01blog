@@ -24,7 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
@@ -33,15 +35,6 @@ public class UserService implements UserDetailsService {
     private final JwtService jwtService;
     private final BlogRepository blogRepository;
     private final MediaBlogService mediaBlogService;
-
-    public UserService(BlogRepository blogRepository, UserRepository userRepository, MediaBlogService mediaBlogService,
-            JwtService jwtService, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-        this.mediaBlogService = mediaBlogService;
-        this.passwordEncoder = passwordEncoder;
-        this.blogRepository = blogRepository;
-    }
 
     public ValidationDTO getDataUser(UUID user_id) {
         User user = userRepository.findById(user_id)

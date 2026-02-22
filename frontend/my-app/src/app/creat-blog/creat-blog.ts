@@ -73,12 +73,12 @@ export class CreatBlog {
       if (!id) return;
       this.blog_id = id;
       this.contentHomeService.getBlogById(id).subscribe({
-        next: blog => {
+        next: res => {
           this.form.patchValue({
-            title: blog.title,
-            content: blog.content,
+            title: res.anyData.title,
+            content: res.anyData.content,
           });
-          this.imgsandvids = blog.media;
+          this.imgsandvids = res.anyData.media;
         },
         error: () => {
           this.errorService.showMessage('Cannot load blog ):', 'error')

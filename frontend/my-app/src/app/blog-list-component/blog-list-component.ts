@@ -31,7 +31,7 @@ import { ObserveIntersectionDirective } from '../content-home/observe-intersecti
 
 export class BlogListComponent implements OnInit {
 
-  @Input() mode: BlogMode = 'home';
+  @Input() mode: BlogMode = 'HOME';
   @Input() username?: string;
 
   private blogsSubject = new BehaviorSubject<any[]>([]);
@@ -53,9 +53,9 @@ export class BlogListComponent implements OnInit {
   @ViewChild('observer') observer!: ElementRef;
 
   ngOnInit() {
-    if (!this.mode || this.mode == 'home') {
+    if (!this.mode || this.mode == 'HOME') {
       const view = this.route.snapshot.data['view'];
-      this.mode = view === 'saved' ? 'saved' : 'home';
+      this.mode = view === 'SAVED' ? 'SAVED' : 'HOME';
     }
   }
 

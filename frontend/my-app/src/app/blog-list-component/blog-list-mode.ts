@@ -1,1 +1,1 @@
-export type BlogMode = 'home' | 'profile' | 'saved';
+export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED';

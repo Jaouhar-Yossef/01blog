@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SavedService {
 
@@ -23,7 +24,6 @@ public class SavedService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    @Transactional
     public void saveBlog(UUID userId, UUID blogId) {
 
         User user = userRepository.findById(userId)
@@ -50,7 +50,6 @@ public class SavedService {
         savedRepository.save(saved);
     }
 
-    @Transactional
     public void unsaveBlog(UUID userId, UUID blogId) {
 
         User user = userRepository.findById(userId)

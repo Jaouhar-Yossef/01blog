@@ -13,6 +13,8 @@ import com.repository.Blogs.SavedRepository;
 import com.util.Response;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +23,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+@Transactional
+@RequiredArgsConstructor
 @Service
 public class BlogService {
 
@@ -29,24 +33,10 @@ public class BlogService {
         private final MediaBlogService mediaBlogService;
         private final SavedRepository savedRepository;
         private final FollowersRepository followersRepository;
-
         private final SavedService savedService;
         private final LikeBlogService likeBlogService;
 
-        public BlogService(BlogRepository blogRepository, UserRepository userRepository,
-                        LikeBlogService likeBlogService, SavedService savedService,
-                        MediaBlogService mediaBlogService, SavedRepository savedRepository,
-                        FollowersRepository followersRepository) {
-                this.blogRepository = blogRepository;
-                this.userRepository = userRepository;
-                this.likeBlogService = likeBlogService;
-                this.savedService = savedService;
-                this.mediaBlogService = mediaBlogService;
-                this.savedRepository = savedRepository;
-                this.followersRepository = followersRepository;
-        }
-
-        @Transactional
+        
         public Response<?> createBlog(BlogRequest blogRequest, String username) throws Exception {
 
                 User user = userRepository.findByUsername(username)
@@ -66,7 +56,6 @@ public class BlogService {
                 return new Response<>(true, "Blog created successfully!");
         }
 
-        @Transactional
         public Response<?> upDateBlog(BlogRequest blogRequest, UUID user_id) {
 
                 User user = userRepository.findById(user_id)
@@ -96,14 +85,12 @@ public class BlogService {
                 return new Response<>(true, "Blog upDated successfully!");
         }
 
-        @Transactional
         public Response<?> deleteOneBlog(UUID user_id, UUID blog_id) {
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
                 if ("BANNED".equals(user.getStatus())) {
                         return new Response<>(false, "You are banned from this platform.");
                 }
-
                 Blog blog = blogRepository.findById(blog_id)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 

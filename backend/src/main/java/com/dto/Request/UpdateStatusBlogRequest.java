@@ -7,6 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateStatusBlogRequest {
+    @NonNull
     private String status;
-    private String username;    
+    @NonNull
+    private String username;
 }

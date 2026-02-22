@@ -12,11 +12,13 @@ import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
+import com.util.Response;
 import com.util.TypeNotifications;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class LikeBlogService {
@@ -26,8 +28,7 @@ public class LikeBlogService {
     private final UserRepository userRepository;
     private final NotificationsRepository notificationsRepository;
 
-    @Transactional
-    public String likeBlog(UUID userId, UUID blogId) {
+    public Response<?> likeBlog(UUID userId, UUID blogId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -40,7 +41,7 @@ public class LikeBlogService {
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if (this.likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            return "Blog already liked";
+            throw new RuntimeException("Blog already liked");
         }
 
         if ("hideen".equals(blog.getStatus())) {
@@ -59,12 +60,10 @@ public class LikeBlogService {
         notif.setType(TypeNotifications.LIKE);
         notif.setMessage("liked your blog");
         notificationsRepository.save(notif);
-
-        return "liked blog successfully!";
+        return new Response<>(true, "liked blog successfully!");
     }
 
-    @Transactional
-    public String unLikedBlog(UUID userId, UUID blogId) {
+    public Response<?> unLikedBlog(UUID userId, UUID blogId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -77,7 +76,7 @@ public class LikeBlogService {
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
-            return "Blog not liked";
+            throw new RuntimeException("Blog already not liked");
         }
 
         if ("hideen".equals(blog.getStatus())) {
@@ -86,7 +85,7 @@ public class LikeBlogService {
 
         likeBlogRepository.deleteByUserIdAndBlogId(userId, blogId);
 
-        return "UnLiked successfully!";
+        return new Response<>(true, "UnLiked successfully!");
     }
 
     public boolean isBlogLiked(UUID userId, UUID blogId) {

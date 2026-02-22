@@ -49,7 +49,7 @@ export function TimeAgo(dateString: string): string {
     return `${diffDays} days`;
 
   }
-  if (diffWeeks < 4) return `${diffWeeks} weeks`;
+  if (diffWeeks < 4) return `${diffWeeks} w`;
 
   if (diffMonths == 1) {
     return `${diffMonths} month`;
@@ -109,15 +109,15 @@ export class ContentHomeService {
 
     let params = `page=${page}&size=${size}&mode=${mode}`;
 
-    if (mode === 'profile' && username) {
+    if (mode === 'PROFILE' && username) {
       params += `&username=${username}`;
     }
     return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/blogs?${params}`);
   }
 
 
-  getBlogById(blogId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/blog/${blogId}`);
+  getBlogById(blogId: string): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(`${this.apiUrl}/blog/${blogId}`);
   }
 
 

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.service.AdminService;
 import com.service.Blogs.BlogService;
 import com.util.Response;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -84,7 +86,12 @@ public class AdminController {
     }
 
     @PutMapping("updateBlogStatus")
-    private ResponseEntity<Response<?>> updateBlogStatus(@RequestBody UpdateReportsRequest request) {
+    private ResponseEntity<Response<?>> updateBlogStatus(@Valid @RequestBody UpdateReportsRequest request,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
         try {
             Response<?> data = adminService.updateBlog(request);
             return ResponseEntity.accepted().body(data);

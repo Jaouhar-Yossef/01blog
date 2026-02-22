@@ -16,7 +16,9 @@ import com.repository.Blogs.BlogRepository;
 import com.util.TypeNotifications;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class ReportService {
 
@@ -24,14 +26,6 @@ public class ReportService {
     private BlogRepository blogRepository;
     private ReportRepository reportRepository;
     private NotificationsRepository notificationsRepository;
-
-    public ReportService(UserRepository userRepository, BlogRepository blogRepository,
-            ReportRepository reportRepository, NotificationsRepository notificationsRepository) {
-        this.userRepository = userRepository;
-        this.blogRepository = blogRepository;
-        this.reportRepository = reportRepository;
-        this.notificationsRepository = notificationsRepository;
-    }
 
     @Transactional
     public void creatReport(UUID user_id, ReportRequest reportRequest) throws Exception {

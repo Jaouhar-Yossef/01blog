@@ -15,25 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dto.Request.BlogRequest;
 import com.entity.Blogs.Blog;
 import com.entity.Blogs.MediaBlog;
-import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.MediaBlogRepository;
 import com.security.FileValidator;
 import com.util.TypeMedia;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@Transactional
+@RequiredArgsConstructor
 @Service
 public class MediaBlogService {
 
     private final MediaBlogRepository mediaBlogRepository;
     private final FileValidator fileValidator;
-
-    public MediaBlogService(MediaBlogRepository mediaBlogRepository,
-            FileValidator fileValidator) throws Exception {
-        this.mediaBlogRepository = mediaBlogRepository;
-        this.fileValidator = fileValidator;
-
-    }
 
     public void saveMedia(Blog blog, BlogRequest blogRequest, String mode) {
         if (mode.equals("update")) {
@@ -119,7 +114,6 @@ public class MediaBlogService {
         }
     }
 
-    @Transactional
     public void deleteMedia(Long mediaId) {
         MediaBlog media = mediaBlogRepository.findById(mediaId)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + mediaId));
