@@ -156,7 +156,6 @@ public class BlogController {
 
                 default:
                     break;
-
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));

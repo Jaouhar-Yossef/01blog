@@ -19,11 +19,12 @@ import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.CommentBlogRepository;
 import com.util.TypeNotifications;
+import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@Transactional
+
 @Service
 @RequiredArgsConstructor
 public class CommentBlogService {
@@ -33,12 +34,12 @@ public class CommentBlogService {
     private final CommentBlogRepository commentRepository;
     private final NotificationsRepository notificationsRepository;
 
+    @Transactional
     public CommentResponseDTO creatComment(UUID user_id, CommentRequestDTO dto) throws Exception {
-
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("BANNED".equals(user.getStatus())) {
+        if (user.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
 
@@ -72,6 +73,7 @@ public class CommentBlogService {
         return data;
     }
 
+    @Transactional(readOnly = true)
     private List<CommentBlog> getCommentPaginated(int page, int size, UUID id_blog) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return commentRepository.findByBlogId(id_blog, pageable);

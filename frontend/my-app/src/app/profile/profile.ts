@@ -45,17 +45,17 @@ export class Profile {
   ) {
   }
 
-  usersMode: UserMode = 'followers';
+  usersMode: UserMode = 'FOLLOWERS';
 
   showFollowers() {
 
     this.isBlogs = false;
-    this.usersMode = 'followers';
+    this.usersMode = 'FOLLOWERS';
   }
 
   showFollowing() {
     this.isBlogs = false;
-    this.usersMode = 'following';
+    this.usersMode = 'FOLLOWING';
   }
 
   showBlogs() {

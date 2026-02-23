@@ -1,5 +1,7 @@
 package com.dto.Request;
 
+import com.util.UserStatus;
+
 import lombok.*;
 
 @Getter
@@ -8,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdateStatusBlogRequest {
     @NonNull
-    private String status;
+    private UserStatus status;
     @NonNull
     private String username;
 }

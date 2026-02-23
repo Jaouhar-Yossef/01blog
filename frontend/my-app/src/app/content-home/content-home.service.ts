@@ -28,6 +28,16 @@ interface ReportBlogOrUser {
 
 
 
+export interface User {
+  username: string;
+  imageUrl: string;
+  follower: boolean;
+  following: boolean;
+  yourProfile: boolean;
+  blogsCont: number;
+}
+
+
 export function TimeAgo(dateString: string): string {
   if (!dateString) return '';
   const createdDate: Date = new Date(dateString);
@@ -65,13 +75,14 @@ export class ContentHomeService {
   private apiUrl = 'http://localhost:8080/blogs';
   private apiUrlReport = 'http://localhost:8080/Report';
   private apiUrlNotification = 'http://localhost:8080/Notifications';
+    private apiUrlUsers = 'http://localhost:8080/users';
   constructor(
     private http: HttpClient,
 
   ) {
   }
 
-  getNotification(page: number,size: number): Observable<ApiResponse<any>> {
+  getNotification(page: number, size: number): Observable<ApiResponse<any>> {
     let params = `page=${page}&size=${size}`;
     return this.http.get<ApiResponse<any>>(`${this.apiUrlNotification}/getNotifications?${params}`)
   }
@@ -139,6 +150,11 @@ export class ContentHomeService {
     return this.http.get<ApiResponse<Comment[]>>(
       `${this.apiUrl}/comments/${id_blog}?page=${page}&size=${size}`
     );
+  }
+
+  getUsers(page: number, size: number, mode: string, username: string): Observable<ApiResponse<User[]>> {
+    let params = `page=${page}&size=${size}&mode=${mode}&username=${username}`;
+    return this.http.get<ApiResponse<User[]>>(`${this.apiUrlUsers}/gettingUsers?${params}`)
   }
 
 }

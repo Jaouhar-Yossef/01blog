@@ -1,22 +1,17 @@
 package com.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.repository.FollowersRepository;
 import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.util.TypeNotifications;
+import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 import com.dto.Response.ProfileResponseDTO;
@@ -26,13 +21,13 @@ import com.entity.User;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class ProfileService {
         private final FollowersRepository followersRepository;
         private final UserRepository userRepository;
         private final BlogRepository blogRepository;
         private final NotificationsRepository notificationsRepository;
 
+        @Transactional(readOnly = true)
         public ProfileResponseDTO getProfileData(String username, UUID user_id) throws Exception {
                 User userReq = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -47,8 +42,8 @@ public class ProfileService {
                 boolean isFollowing = followersRepository.existsByFollower_IdAndFollowed_Id(userReq.getId(),
                                 user.getId());
 
-                long followersCount = followersRepository.countByFollowed_Id(user.getId());
-                long followingCount = followersRepository.countByFollower_Id(user.getId());
+                long followersCount = followersRepository.countFollowerNotBanned(user.getId());
+                long followingCount = followersRepository.countFollowingNotBanned(user.getId());
 
                 boolean isYou = userReq.getId().equals(user.getId());
                 ProfileResponseDTO data = new ProfileResponseDTO(
@@ -63,16 +58,17 @@ public class ProfileService {
                 return data;
         }
 
+        @Transactional
         public void followed(String username, UUID user_id) throws Exception {
 
                 User follower = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-                if ("BANNED".equals(follower.getStatus())) {
+                if (follower.getStatus() == UserStatus.BANNED) {
                         throw new RuntimeException("You are banned from this platform.");
                 }
                 User followed = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-                if ("BANNED".equals(followed.getStatus())) {
+                if (followed.getStatus() == UserStatus.BANNED) {
                         throw new RuntimeException("This User banned from this platform.");
                 }
                 if (follower.getId().equals(followed.getId())) {
@@ -101,18 +97,19 @@ public class ProfileService {
                 notificationsRepository.save(notif);
         }
 
+        @Transactional
         public void unFollow(String username, UUID userId) {
 
                 User follower = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-                if ("BANNED".equals(follower.getStatus())) {
+                if (follower.getStatus() == UserStatus.BANNED) {
                         throw new RuntimeException("You are banned from this platform.");
                 }
                 User followed = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-                if ("BANNED".equals(followed.getStatus())) {
+                if (followed.getStatus() == UserStatus.BANNED) {
                         throw new RuntimeException("This User banned from this platform.");
                 }
                 if (follower.getId().equals(followed.getId())) {
@@ -132,100 +129,4 @@ public class ProfileService {
                                 followed.getId());
         }
 
-        private List<User> getUsersPaginated(int page, int size) {
-                Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-                return userRepository.findAll(pageable).getContent();
-        }
-
-        public List<ProfileResponseDTO> getAllUsers(int page, int size, UUID userId) {
-
-                if (!userRepository.existsById(userId)) {
-                        throw new RuntimeException("Invalid user context");
-                }
-
-                List<User> AllUser = this.getUsersPaginated(page, size)
-                                .stream()
-                                .filter(user -> !user.getId().equals(userId))
-                                .toList();
-
-                Set<UUID> followingIds = new HashSet<>(
-                                followersRepository.findFollowedIdsByFollowerId(userId));
-
-                Set<UUID> followerIds = new HashSet<>(
-                                followersRepository.findFollowerIdsByFollowedId(userId));
-
-                return AllUser.stream()
-                                .map(user -> {
-
-                                        boolean isFollowing = followingIds.contains(user.getId());
-                                        boolean isFollower = followerIds.contains(user.getId());
-                                        boolean isYourProfile = userId.equals(user.getId());
-                                        Long BlogsCont = blogRepository.countByCreatedBy_Id(user.getId());
-
-                                        return new ProfileResponseDTO(
-                                                        user.getUsername(),
-                                                        user.getImageUrl(),
-                                                        isYourProfile,
-                                                        isFollower,
-                                                        isFollowing,
-                                                        BlogsCont);
-                                })
-                                .toList();
-        }
-
-        public List<ProfileResponseDTO> getFollowersOrFollowing(int page, int size, String username, UUID userId,
-                        String mode) {
-                if (username == null || username.isEmpty()) {
-                        throw new RuntimeException("Invalid user");
-                }
-
-                if (mode == null || mode.isEmpty()) {
-                        throw new RuntimeException("Error Getting users");
-                }
-
-                if (!userRepository.existsById(userId)) {
-                        throw new RuntimeException("Invalid user context");
-                }
-
-                User profileUser = userRepository.findByUsername(username)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
-
-                Pageable pageable = PageRequest.of(page, size);
-
-                List<Followers> follow = new ArrayList<>();
-
-                if (mode.equals("followers")) {
-                        follow = followersRepository.findByFollowed_Id(profileUser.getId(), pageable);
-                } else if (mode.equals("following")) {
-                        follow = followersRepository.findByFollower_Id(profileUser.getId(), pageable);
-                }
-
-                Set<UUID> followingIds = new HashSet<>(followersRepository.findFollowedIdsByFollowerId(userId));
-
-                Set<UUID> followerIds = new HashSet<>(followersRepository.findFollowerIdsByFollowedId(userId));
-
-                return follow.stream()
-                                .map(f -> {
-                                        User u;
-                                        if (mode.equals("followers")) {
-                                                u = f.getFollower();
-                                        } else {
-                                                u = f.getFollowed();
-                                        }
-                                        boolean isFollowing = followingIds.contains(u.getId());
-                                        boolean isFollower = followerIds.contains(u.getId());
-                                        boolean isYourProfile = userId.equals(u.getId());
-                                        Long BlogsCont = blogRepository.countByCreatedBy_Id(u.getId());
-
-                                        return new ProfileResponseDTO(
-                                                        u.getUsername(),
-                                                        u.getImageUrl(),
-                                                        isYourProfile,
-                                                        isFollower,
-                                                        isFollowing,
-                                                        BlogsCont);
-                                })
-                                .toList();
-
-        }
 }

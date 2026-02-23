@@ -11,8 +11,9 @@ import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.SavedRepository;
 import com.util.Response;
+import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -36,12 +37,12 @@ public class BlogService {
         private final SavedService savedService;
         private final LikeBlogService likeBlogService;
 
-        
+        @Transactional
         public Response<?> createBlog(BlogRequest blogRequest, String username) throws Exception {
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-                if ("BANNED".equals(user.getStatus())) {
+                if (user.getStatus() == UserStatus.BANNED) {
                         return new Response<>(false, "You are banned from this platform.");
                 }
                 Blog blog = new Blog();
@@ -56,12 +57,13 @@ public class BlogService {
                 return new Response<>(true, "Blog created successfully!");
         }
 
+        @Transactional
         public Response<?> upDateBlog(BlogRequest blogRequest, UUID user_id) {
 
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-                if ("BANNED".equals(user.getStatus())) {
+                if (user.getStatus() == UserStatus.BANNED) {
                         return new Response<>(false, "You are banned from this platform.");
                 }
 
@@ -85,10 +87,11 @@ public class BlogService {
                 return new Response<>(true, "Blog upDated successfully!");
         }
 
+        @Transactional
         public Response<?> deleteOneBlog(UUID user_id, UUID blog_id) {
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
-                if ("BANNED".equals(user.getStatus())) {
+                if (user.getStatus() == UserStatus.BANNED) {
                         return new Response<>(false, "You are banned from this platform.");
                 }
                 Blog blog = blogRepository.findById(blog_id)
@@ -103,8 +106,8 @@ public class BlogService {
                 }
                 return new Response<>(false, null);
         }
-        
 
+        @Transactional(readOnly = true)
         public List<BlogResponseDTO> blogsGetterHome(UUID userId, int page, int size) {
                 Pageable pageable = PageRequest.of(page, size);
                 List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId, pageable);
@@ -143,6 +146,7 @@ public class BlogService {
                 return blogDTOs;
         }
 
+        @Transactional(readOnly = true)
         public List<BlogResponseDTO> blogsGetterSaved(UUID userId, int page, int size) {
 
                 User user = userRepository.findById(userId)
@@ -188,6 +192,7 @@ public class BlogService {
                 return blogDTOs;
         }
 
+        @Transactional(readOnly = true)
         public List<BlogResponseDTO> blogsGetterProfile(
                         UUID userId,
                         int page,
@@ -228,6 +233,7 @@ public class BlogService {
                 return blogDTOs;
         }
 
+        @Transactional(readOnly = true)
         public BlogResponseDTO getOneBlog(UUID user_id, UUID id_blog) {
                 Blog blog = blogRepository.findById(id_blog)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));

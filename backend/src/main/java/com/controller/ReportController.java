@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/Report")
 public class ReportController {
 
-    private ReportService reportService;
+    private final ReportService reportService;
 
     @PostMapping("/creat")
     private ResponseEntity<Response<?>> creat(

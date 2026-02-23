@@ -1,5 +1,7 @@
 package com.dto.Response;
 
+import com.util.UserStatus;
+
 import lombok.*;
 
 @Getter
@@ -10,6 +12,6 @@ public class UserResponseDTO {
     private String username;
     private String imageUrl;
     private String role;
-    private String status;
+    private UserStatus status;
     private String tokeString;
 }

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.entity.User;
 import com.repository.UserRepository;
+import com.util.UserStatus;
 
 @Configuration
 public class AdminInitializer {
@@ -29,7 +30,7 @@ public class AdminInitializer {
                 admin.setEmail(adminEmail);
                 admin.setPassword(passwordEncoder.encode(adminPassword));
                 admin.setRole("ADMIN");
-                admin.setStatus("ADMIN");
+                admin.setStatus(UserStatus.ADMIN);
                 admin.setImageUrl("/uploads/admin.jpeg");
                 userRepository.save(admin);
                 System.out.println("✅ Admin account created");

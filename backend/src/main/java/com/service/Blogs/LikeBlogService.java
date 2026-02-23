@@ -14,6 +14,7 @@ import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
 import com.util.Response;
 import com.util.TypeNotifications;
+import com.util.UserStatus;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class LikeBlogService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("BANNED".equals(user.getStatus())) {
+        if (user.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
 
@@ -68,7 +69,7 @@ public class LikeBlogService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("BANNED".equals(user.getStatus())) {
+        if (user.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
 

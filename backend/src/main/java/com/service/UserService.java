@@ -13,6 +13,7 @@ import com.repository.Blogs.BlogRepository;
 import com.service.Blogs.MediaBlogService;
 import com.config.JwtService;
 import com.util.Response;
+import com.util.UserStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final BlogRepository blogRepository;
     private final MediaBlogService mediaBlogService;
 
+   @Transactional(readOnly = true) 
     public ValidationDTO getDataUser(UUID user_id) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -56,6 +59,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(userId);
     }
 
+    @Transactional
     public Response<UserResponseDTO> register(UserRequestDTO request) {
 
         if (userRepository.findByEmail(request.getEmail().toLowerCase()).isPresent()) {
@@ -72,7 +76,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole("USER");
         user.setImageUrl("");
-        user.setStatus("ACTIVE");
+        user.setStatus(UserStatus.ACTIVE);
         userRepository.save(user);
 
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
@@ -86,6 +90,7 @@ public class UserService implements UserDetailsService {
         return new Response<>(true, "User registered successfully", dto);
     }
 
+    @Transactional
     public Response<UserResponseDTO> login(String identifier, String password) {
         identifier = identifier.toLowerCase();
         Optional<User> userOpt = userRepository.findByEmailOrUsername(identifier, identifier);
@@ -118,11 +123,12 @@ public class UserService implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 
+    @Transactional
     public Response<?> deleteAccount(UUID user_id) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("ADMIN".equals(user.getStatus())) {
+        if (user.getStatus() == UserStatus.ADMIN) {
             throw new RuntimeException("You are the ADMIN!!");
         }   
 

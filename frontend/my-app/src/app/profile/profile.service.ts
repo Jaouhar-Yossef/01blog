@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../content-home/content-home.service';
 
-export type UserMode = 'AllUsers' | 'followers' | 'following';
+export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING';
 
 
 export interface UserProfile {
@@ -17,16 +17,6 @@ export interface UserProfile {
     BlogsCont: number;
 }
 
-export interface User {
-    username: string;
-    imageUrl: string;
-    follower: boolean;    
-    following: boolean;  
-    yourProfile: boolean;
-    blogsCont: number;
-}
-
-
 
 @Injectable({
     providedIn: 'root'
@@ -38,13 +28,6 @@ export class ProfileService {
 
     getProfileByUsername(username: string): Observable<ApiResponse<UserProfile>> {
         return this.http.get<ApiResponse<UserProfile>>(`${this.baseUrl}/${username}`);
-    }
-
-    getUsers(page: number, size: number, mode: string, username: string): Observable<ApiResponse<User[]>> {
-
-        let params = `page=${page}&size=${size}&mode=${mode}&username=${username}`;
-
-        return this.http.get<ApiResponse<User[]>>(`${this.baseUrl}/users?${params}`)
     }
 
     follow(username: string): Observable<ApiResponse<any>> {

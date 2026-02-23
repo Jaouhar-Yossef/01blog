@@ -11,6 +11,7 @@ import com.entity.User;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.SavedRepository;
+import com.util.UserStatus;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class SavedService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("BANNED".equals(user.getStatus())) {
-            throw new RuntimeException("You are banned from this platform.");
+        if (user.getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("You are banned from this platform."); 
         }
 
         Blog blog = blogRepository.findById(blogId)
@@ -55,7 +56,7 @@ public class SavedService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if ("BANNED".equals(user.getStatus())) {
+        if (user.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
 

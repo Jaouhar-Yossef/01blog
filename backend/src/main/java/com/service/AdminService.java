@@ -22,6 +22,7 @@ import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
 import com.util.Response;
+import com.util.UserStatus;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +72,7 @@ public class AdminService {
         if (user.getStatus().equals(request.getStatus())) {
             return new Response<>(false, "you don't change anything ??");
         }
-        if (!request.getStatus().equals("ACTIVE") && !request.getStatus().equals("BANNED")) {
+        if (request.getStatus() != UserStatus.ACTIVE  && request.getStatus() != UserStatus.BANNED) {
             return new Response<>(false, "status User must be ACTIVE or BANNED!");
         }
         user.setStatus(request.getStatus());

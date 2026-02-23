@@ -15,16 +15,32 @@ import com.entity.Blogs.Blog;
 @Repository
 public interface FollowersRepository extends JpaRepository<Followers, Long> {
     List<Followers> findByFollowed_Id(UUID userId);
-    List<Followers> findByFollowed_Id(UUID userId , Pageable pageable);
+
+    List<Followers> findByFollowed_Id(UUID userId, Pageable pageable);
 
     List<Followers> findByFollower_Id(UUID userId);
+
     List<Followers> findByFollower_Id(UUID userId, Pageable pageable);
 
     boolean existsByFollower_IdAndFollowed_Id(UUID userId, UUID user_Id);
 
-    long countByFollowed_Id(UUID userId);
+    @Query("""
+            SELECT COUNT(f)
+            FROM Followers f
+            JOIN f.followed u
+            WHERE f.follower.id = :userId
+            AND u.status <> 'BANNED'
+            """)
+    long countFollowingNotBanned(UUID userId);
 
-    long countByFollower_Id(UUID userId);
+     @Query("""
+            SELECT COUNT(f)
+            FROM Followers f
+            JOIN f.follower u
+            WHERE f.followed.id = :userId
+            AND u.status <> 'BANNED'
+            """)
+    long countFollowerNotBanned(@Param("userId") UUID userId);
 
     void deleteByFollower_IdAndFollowed_Id(UUID followerId, UUID followedId);
 

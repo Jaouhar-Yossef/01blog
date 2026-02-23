@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ErrorService } from '../error/error.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProfileService, User, UserMode } from '../profile/profile.service';
+import { ProfileService, UserMode } from '../profile/profile.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse, ContentHomeService } from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService  , User} from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +26,7 @@ export class Users implements OnInit {
   UsersSubject = new BehaviorSubject<User[]>([]);
   Users$ = this.UsersSubject.asObservable()
 
-  @Input() mode: UserMode = 'AllUsers';
+  @Input() mode: UserMode = 'ALLUSERS';
   @Input() username: string = '';
 
 
@@ -119,7 +119,7 @@ export class Users implements OnInit {
   loadUsers() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
-    this.profileService.getUsers(this.page, this.size, this.mode, this.username).subscribe({
+    this.contentHomeService.getUsers(this.page, this.size, this.mode, this.username).subscribe({
       next: (res: ApiResponse<User[]>) => {
         this.UsersSubject.next([
           ...this.UsersSubject.value,

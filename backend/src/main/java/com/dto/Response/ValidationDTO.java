@@ -1,6 +1,8 @@
 package com.dto.Response;
 
 
+import com.util.UserStatus;
+
 import lombok.*;
 
 @Data
@@ -12,5 +14,5 @@ public class ValidationDTO {
     private String username;
     private String imageUrl;
     private String role;
-    private String status;
+    private UserStatus status;
 }

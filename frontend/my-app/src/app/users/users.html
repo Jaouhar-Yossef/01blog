@@ -1,6 +1,4 @@
 <div class="users-list">
-
-
     <ng-container *ngIf="Users$ | async as users">
         <ng-container *ngIf="users.length > 0 ; else noContent">
             <div class="user" *ngFor="let user of users; trackBy: trackById">

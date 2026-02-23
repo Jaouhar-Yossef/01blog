@@ -1,5 +1,7 @@
 package com.dto.Response;
 
+import com.util.UserStatus;
+
 import lombok.*;
 
 @Getter
@@ -10,5 +12,5 @@ public class UsersToAdminDTO {
     private String username;
     private String email;
     private String role;
-    private String status;
+    private UserStatus status;
 }

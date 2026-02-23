@@ -14,24 +14,25 @@ import com.repository.ReportRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.util.TypeNotifications;
+import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class ReportService {
 
-    private UserRepository userRepository;
-    private BlogRepository blogRepository;
-    private ReportRepository reportRepository;
-    private NotificationsRepository notificationsRepository;
+    private final UserRepository userRepository;
+    private final BlogRepository blogRepository;
+    private final ReportRepository reportRepository;
+    private final NotificationsRepository notificationsRepository;
 
     @Transactional
     public void creatReport(UUID user_id, ReportRequest reportRequest) throws Exception {
         User userReq = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if ("BANNED".equals(userReq.getStatus())) {
+        if (userReq.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
 

@@ -19,7 +19,7 @@ import com.repository.Blogs.MediaBlogRepository;
 import com.security.FileValidator;
 import com.util.TypeMedia;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Transactional

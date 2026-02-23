@@ -13,6 +13,8 @@ import com.entity.Blogs.CommentBlog;
 import com.entity.Blogs.LikeBlog;
 import com.entity.Blogs.Saved;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.util.UserStatus;
+
 import lombok.*;
 
 @Data
@@ -37,7 +39,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String status;
+    @Column(updatable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @Column(nullable = false)
     @JsonIgnore
