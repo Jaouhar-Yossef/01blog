@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationsControler {
 
-    private NotificationsService notificationsService;
+    private final NotificationsService notificationsService;
 
     @GetMapping("/getNotifications")
     private ResponseEntity<Response<?>> getTheNotifications(@RequestParam int page,
