@@ -18,6 +18,7 @@ import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.CommentBlogRepository;
+import com.util.BlogStatus;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
 
@@ -46,7 +47,7 @@ public class CommentBlogService {
         Blog blog = blogRepository.findById(dto.getId_blog())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-        if ("hideen".equals(blog.getStatus())) {
+        if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
@@ -64,8 +65,8 @@ public class CommentBlogService {
 
         Notifications notif = new Notifications();
         notif.setCreatorNf(user);
-        notif.setIntended_Blog(blog);
-        notif.setIntended_User(blog.getCreatedBy());
+        notif.setIntendedBlog(blog);
+        notif.setIntendedUser(blog.getCreatedBy());
         notif.setType(TypeNotifications.COMMENT);
         notif.setMessage("commented on your blog");
         notificationsRepository.save(notif);

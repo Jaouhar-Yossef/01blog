@@ -12,6 +12,7 @@ import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
+import com.util.BlogStatus;
 import com.util.Response;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
@@ -45,7 +46,7 @@ public class LikeBlogService {
             throw new RuntimeException("Blog already liked");
         }
 
-        if ("hideen".equals(blog.getStatus())) {
+        if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
@@ -54,10 +55,14 @@ public class LikeBlogService {
         likeBlog.setBlog(blog);
         likeBlogRepository.save(likeBlog);
 
+        if (userId.equals(blog.getCreatedBy().getId())) {
+            return new Response<>(true, "liked blog successfully!");
+        }
+
         Notifications notif = new Notifications();
         notif.setCreatorNf(user);
-        notif.setIntended_Blog(blog);
-        notif.setIntended_User(blog.getCreatedBy());
+        notif.setIntendedBlog(blog);
+        notif.setIntendedUser(blog.getCreatedBy());
         notif.setType(TypeNotifications.LIKE);
         notif.setMessage("liked your blog");
         notificationsRepository.save(notif);
@@ -80,7 +85,7 @@ public class LikeBlogService {
             throw new RuntimeException("Blog already not liked");
         }
 
-        if ("hideen".equals(blog.getStatus())) {
+        if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 

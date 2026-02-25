@@ -31,11 +31,11 @@ public class Notifications {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Intended_Blog_id", nullable = true)
-    private Blog Intended_Blog;
+    private Blog intendedBlog;
 
     @ManyToOne
     @JoinColumn(name = "Intended_User_id", nullable = false)
-    private User Intended_User;
+    private User intendedUser;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

@@ -10,6 +10,7 @@ import com.repository.FollowersRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.SavedRepository;
+import com.util.BlogStatus;
 import com.util.Response;
 import com.util.UserStatus;
 
@@ -47,7 +48,7 @@ public class BlogService {
                 }
                 Blog blog = new Blog();
                 blog.setTitle(blogRequest.getTitle());
-                blog.setStatus("show");
+                blog.setStatus(BlogStatus.SHOW);
                 blog.setContent(blogRequest.getContent());
                 blog.setCreatedBy(user);
 
@@ -70,7 +71,7 @@ public class BlogService {
                 Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                if ("hidden".equals(blog.getStatus())) {
+                if ( blog.getStatus() == BlogStatus.HIDDEN) {
                         throw new RuntimeException("This blog has been hidden by the admin.");
                 }
 
@@ -99,7 +100,7 @@ public class BlogService {
 
                 User checking_creat_by = blog.getCreatedBy();
 
-                if (checking_creat_by.getUsername().equals(user.getUsername()) || "ADMIN".equals(user.getStatus())) {
+                if (checking_creat_by.getUsername().equals(user.getUsername()) || user.getStatus() == UserStatus.ADMIN ) {
                         mediaBlogService.deleteBlogFiles(blog);
                         blogRepository.delete(blog);
                         return new Response<>(true, "Blog deleted sucesfuly!");
@@ -113,7 +114,7 @@ public class BlogService {
                 List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId, pageable);
 
                 List<BlogResponseDTO> blogDTOs = blogs.stream()
-                                .filter(b -> !"hidden".equals(b.getStatus()))
+                                .filter(b -> b.getStatus() != BlogStatus.HIDDEN)
                                 .map(blog -> {
                                         boolean saved = savedService.isBlogSaved(userId, blog.getId());
                                         boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
@@ -159,7 +160,7 @@ public class BlogService {
                                 .toList();
 
                 List<BlogResponseDTO> blogDTOs = savedBlogs.stream()
-                                .filter(b -> !"hidden".equals(b.getStatus()))
+                                .filter(b -> b.getStatus() != BlogStatus.HIDDEN)
                                 .map(blog -> {
                                         boolean saved = true;
                                         boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());

@@ -227,13 +227,13 @@
                         <ng-container matColumnDef="status">
                             <th class="theadtable" mat-header-cell *matHeaderCellDef> status</th>
                             <td mat-cell *matCellDef="let row">
-                                <span class="status" [class.declained]="row.status === 'hidden'"
-                                    [class.pending]="row.status === 'show'" [matMenuTriggerFor]="statusMenublog">
+                                <span class="status" [class.declained]="row.status === 'HIDDEN'"
+                                    [class.pending]="row.status === 'SHOW'" [matMenuTriggerFor]="statusMenublog">
                                     {{ row.status }}
                                 </span>
                                 <mat-menu #statusMenublog="matMenu">
-                                    <button mat-menu-item (click)="changeStatusBlog(row, 'show')">show</button>
-                                    <button mat-menu-item (click)="changeStatusBlog(row, 'hidden')">hidden</button>
+                                    <button mat-menu-item (click)="changeStatusBlog(row, 'SHOW')">SHOW</button>
+                                    <button mat-menu-item (click)="changeStatusBlog(row, 'HIDDEN')">HIDDEN</button>
                                 </mat-menu>
                             </td>
                         </ng-container>

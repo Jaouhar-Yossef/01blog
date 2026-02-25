@@ -1,14 +1,21 @@
 package com.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dto.Request.PageableDTO;
+import com.entity.UserDetailsImpl;
 import com.service.NotificationsService;
 import com.util.Response;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,10 +26,19 @@ public class NotificationsControler {
     private final NotificationsService notificationsService;
 
     @GetMapping("/getNotifications")
-    private ResponseEntity<Response<?>> getTheNotifications(@RequestParam int page,
-            @RequestParam int size) {
+    private ResponseEntity<Response<?>> getTheNotifications(
+            @ModelAttribute @Valid PageableDTO PageableDTO,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
         try {
-            notificationsService.getNotifications(page, size);
+            UUID userId = userDetails.getUser().getId();
+            notificationsService.getNotifications( userId ,PageableDTO.getPage(), PageableDTO.getSize());
             return ResponseEntity.accepted().body(null);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));

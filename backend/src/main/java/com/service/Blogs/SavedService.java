@@ -11,6 +11,7 @@ import com.entity.User;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.SavedRepository;
+import com.util.BlogStatus;
 import com.util.UserStatus;
 
 import jakarta.transaction.Transactional;
@@ -36,7 +37,7 @@ public class SavedService {
 
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-        if ("hideen".equals(blog.getStatus())) {
+        if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
@@ -63,7 +64,7 @@ public class SavedService {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-        if ("hideen".equals(blog.getStatus())) {
+        if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 

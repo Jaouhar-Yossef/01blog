@@ -31,6 +31,8 @@ export class CardBlog {
   showAllOfTheBlog = false;
   isUserBanned = false;
 
+  isblogishedden = false
+
   private blogService = inject(CardBlogService);
   constructor(private router: Router, private http: HttpClient, private authService: AuthService,
     private errorService: ErrorService, private showAdminMessage: ShowAdminMessage) { }
@@ -40,6 +42,11 @@ export class CardBlog {
   ngOnInit() {
     if (this.router.url.startsWith('/admin/profile')) {
       this.modeADMINorHOME = 'ADMIN'
+    }
+
+    if (this.blog.status == "HIDDEN") {
+      this.isblogishedden = true;
+      this.showAdminMessage.showAdminMessageBlogHidden()
     }
 
     const user = this.authService.getUser();
@@ -74,6 +81,10 @@ export class CardBlog {
       this.showAdminMessage.showAdminMessageUserBanned()
       return
     }
+    if (this.isblogishedden) {
+      this.showAdminMessage.showAdminMessageBlogHidden()
+      return
+    }
     if (this.loading) return;
     this.loading = true;
 
@@ -104,6 +115,10 @@ export class CardBlog {
   toggleLike() {
     if (this.isUserBanned) {
       this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
+    if (this.isblogishedden) {
+      this.showAdminMessage.showAdminMessageBlogHidden()
       return
     }
     if (this.loading) { return }

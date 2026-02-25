@@ -102,7 +102,7 @@ export class Blog {
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
         this.creat_by = this.blogSubject.value.createdByUsername;
         const b = this.blogSubject.value;
-        if (b.status == "hidden") {
+        if (b.status == "HIDDEN") {
           this.isblogishedden = true;
           this.showAdminMessage.showAdminMessageBlogHidden()
         }

@@ -3,7 +3,7 @@ import { AdminService } from './../admin/admin.service';
 import { ErrorService } from '../error/error.service';
 import { ProfileService } from '../profile/profile.service';
 import { Router } from '@angular/router';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -420,7 +420,5 @@ export class AdminDashboard {
         this.errorService.showMessage('Error getting blogs', 'error');
       }
     })
-
   }
-
 }

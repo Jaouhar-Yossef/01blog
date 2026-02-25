@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorService } from '../error/error.service';
 import { CommonModule } from '@angular/common';
-import { ProfileService, UserMode, UserProfile } from './profile.service';
+import { ProfileService, UserProfile } from './profile.service';
 import { BlogListComponent } from '../blog-list-component/blog-list-component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse } from '../content-home/content-home.service';
+import { ApiResponse , UserMode } from '../content-home/content-home.service';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';

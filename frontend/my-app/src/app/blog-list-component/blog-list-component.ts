@@ -1,10 +1,9 @@
-import {AfterViewInit,Component,ElementRef,inject,Input,OnInit,ViewChild} from '@angular/core';
+import { Component,ElementRef,inject,Input,OnInit,ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { CardBlog } from '../card-blog/card-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
-import { ContentHomeService } from '../content-home/content-home.service';
-import { BlogMode } from '../blog-list-component/blog-list-mode';
+import { ContentHomeService , BlogMode} from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';

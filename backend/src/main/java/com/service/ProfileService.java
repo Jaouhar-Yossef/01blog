@@ -91,7 +91,7 @@ public class ProfileService {
 
                 Notifications notif = new Notifications();
                 notif.setCreatorNf(follower);
-                notif.setIntended_User(followed);
+                notif.setIntendedUser(followed);
                 notif.setType(TypeNotifications.FOLLOW);
                 notif.setMessage("started following you");
                 notificationsRepository.save(notif);

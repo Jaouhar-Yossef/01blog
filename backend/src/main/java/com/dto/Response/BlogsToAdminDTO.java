@@ -3,6 +3,8 @@ package com.dto.Response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.util.BlogStatus;
+
 import lombok.*;
 
 @Getter
@@ -13,6 +15,6 @@ public class BlogsToAdminDTO {
     private UUID blogId;
     private String title;
     private String created_by;
-    private String status;
+    private BlogStatus status;
     private LocalDateTime updated_at;
 }

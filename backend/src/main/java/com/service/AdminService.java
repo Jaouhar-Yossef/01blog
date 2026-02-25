@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dto.Request.UpdateBlogsStatusRequestDTO;
 import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
 import com.dto.Response.AnalyticsDTO;
@@ -21,10 +22,12 @@ import com.entity.Blogs.Blog;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
+import com.util.BlogStatus;
 import com.util.Response;
 import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
+// import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -52,16 +55,21 @@ public class AdminService {
     }
 
     @Transactional
-    public Response<?> updateBlog(UpdateReportsRequest request) {
+    public Response<?> updateStatusBlog(UpdateBlogsStatusRequestDTO request) {
         Blog blog = blogRepository.findById(request.getBlog_id())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
         if (blog.getStatus().equals(request.getStatus())) {
-            return new Response<>(false, "you don't change anything ??");
+            throw new RuntimeException("you don't change anything ??");
         }
-        if (!request.getStatus().equals("show") && !request.getStatus().equals("hidden")) {
-            return new Response<>(false, "status blog must be show or hidden!");
+        System.out.println("the first  ==> " + blog.getStatus());
+        System.out.println("==> " + request.getStatus());
+        if (!request.getStatus().equals(BlogStatus.SHOW) && !request.getStatus().equals(BlogStatus.HIDDEN)) {
+            throw new RuntimeException("status blog must be show or hidden!");
         }
+
         blog.setStatus(request.getStatus());
+        System.out.println("the last ==> " + blog.getStatus());
+
         return new Response<>(true, "update successfully!");
     }
 
@@ -72,7 +80,7 @@ public class AdminService {
         if (user.getStatus().equals(request.getStatus())) {
             return new Response<>(false, "you don't change anything ??");
         }
-        if (request.getStatus() != UserStatus.ACTIVE  && request.getStatus() != UserStatus.BANNED) {
+        if (request.getStatus().equals(UserStatus.ACTIVE) && request.getStatus().equals(UserStatus.BANNED)) {
             return new Response<>(false, "status User must be ACTIVE or BANNED!");
         }
         user.setStatus(request.getStatus());
@@ -196,7 +204,6 @@ public class AdminService {
                 .map(blog -> {
 
                     User user = blog.getCreatedBy();
-
                     return new BlogsToAdminDTO(
                             blog.getId(),
                             blog.getTitle(),

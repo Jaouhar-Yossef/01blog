@@ -39,7 +39,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(updatable = false)
+    @Column(updatable = true , nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -93,7 +93,7 @@ public class User {
     @JsonIgnore
     private List<Notifications> creatorNotifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Intended_User", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "intendedUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Notifications> IntendedUserNotifications = new ArrayList<>();
 

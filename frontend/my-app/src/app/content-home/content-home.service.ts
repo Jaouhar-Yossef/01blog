@@ -1,8 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BlogMode } from '../blog-list-component/blog-list-mode';
 
+export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED';
+export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING';
 
 interface Comment {
   id: number;

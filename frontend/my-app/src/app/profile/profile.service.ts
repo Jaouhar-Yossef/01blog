@@ -3,9 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../content-home/content-home.service';
 
-export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING';
-
-
 export interface UserProfile {
     username: string;
     imageUrl: string;

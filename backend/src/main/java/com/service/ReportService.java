@@ -13,6 +13,7 @@ import com.repository.NotificationsRepository;
 import com.repository.ReportRepository;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
+import com.util.BlogStatus;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
 
@@ -55,24 +56,30 @@ public class ReportService {
         if (reportRequest.getReportedBlog() != null) {
             Blog blogReported = blogRepository.findById(reportRequest.getReportedBlog())
                     .orElseThrow(() -> new RuntimeException("Blog not found"));
+            if (blogReported.getStatus() == BlogStatus.HIDDEN) {
+                throw new RuntimeException("This blog has been hidden by the admin.");
+            }        
             report.setReportedBlog(blogReported);
             report.setType("BLOG");
 
-            notif.setIntended_Blog(blogReported);
+            notif.setIntendedBlog(blogReported);
             notif.setType(TypeNotifications.REPORTEDBLOG);
             notif.setMessage("Your blog has been reported.");
-            notif.setIntended_User(blogReported.getCreatedBy());
+            notif.setIntendedUser(blogReported.getCreatedBy());
         }
 
         if (reportRequest.getReportedUser() != null) {
             User userReported = userRepository.findByUsername(reportRequest.getReportedUser())
                     .orElseThrow(() -> new RuntimeException("User not found"));
+            if (userReported.getStatus() == UserStatus.BANNED ) {
+                throw new RuntimeException("This User banned from this platform.");
+            }        
             report.setReportedUser(userReported);
             report.setType("USER");
 
             notif.setType(TypeNotifications.REPORTEDACCOUNT);
             notif.setMessage("Your account has been reported.");
-            notif.setIntended_User(userReported);
+            notif.setIntendedUser(userReported);
         }
         reportRepository.save(report);
         notificationsRepository.save(notif);

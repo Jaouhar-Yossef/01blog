@@ -1,5 +1,6 @@
 package com.util;
 
-public class BlogStatus {
-    
+public enum BlogStatus {
+    SHOW,
+    HIDDEN
 }

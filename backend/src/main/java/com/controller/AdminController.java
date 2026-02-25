@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dto.Request.UpdateBlogsStatusRequestDTO;
 import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
 import com.entity.UserDetailsImpl;
@@ -86,14 +87,15 @@ public class AdminController {
     }
 
     @PutMapping("updateBlogStatus")
-    private ResponseEntity<Response<?>> updateBlogStatus(@Valid @RequestBody UpdateReportsRequest request,
+    private ResponseEntity<Response<?>> updateBlogStatus(@Valid @RequestBody UpdateBlogsStatusRequestDTO request,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
         }
         try {
-            Response<?> data = adminService.updateBlog(request);
+            
+            Response<?> data = adminService.updateStatusBlog(request);
             return ResponseEntity.accepted().body(data);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));

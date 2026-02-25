@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.util.BlogStatus;
+
 import lombok.*;
 
 @Data
@@ -14,7 +16,7 @@ import lombok.*;
 public class BlogResponseDTO {
     private UUID id;
     private String title;
-    private String status;
+    private BlogStatus status;
     private String content;
     private boolean saved;
     private boolean liked;
