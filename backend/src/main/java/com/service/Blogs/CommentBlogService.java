@@ -1,6 +1,7 @@
 package com.service.Blogs;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,6 @@ import com.util.UserStatus;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-
 
 @Service
 @RequiredArgsConstructor
@@ -63,13 +63,21 @@ public class CommentBlogService {
         data.setCreatorUsername(user.getUsername());
         data.setUrlString(user.getImageUrl());
 
-        Notifications notif = new Notifications();
-        notif.setCreatorNf(user);
-        notif.setIntendedBlog(blog);
-        notif.setIntendedUser(blog.getCreatedBy());
-        notif.setType(TypeNotifications.COMMENT);
-        notif.setMessage("commented on your blog");
-        notificationsRepository.save(notif);
+        List<Notifications> existing = notificationsRepository.findNotification(
+                TypeNotifications.COMMENT,
+                blog,
+                blog.getCreatedBy(),
+                user);
+
+        if (existing.isEmpty()) {
+            Notifications notif = new Notifications();
+            notif.setCreatorNf(user);
+            notif.setIntendedBlog(blog);
+            notif.setIntendedUser(blog.getCreatedBy());
+            notif.setType(TypeNotifications.COMMENT);
+            notif.setMessage("commented on your blog");
+            notificationsRepository.save(notif);
+        }
 
         return data;
     }
@@ -87,7 +95,7 @@ public class CommentBlogService {
 
         blogRepository.findById(id_blog)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-                
+
         List<CommentBlog> Comments = this.getCommentPaginated(page, size, id_blog);
         List<CommentResponseDTO> CommentsDTO = Comments.stream()
                 .map(comment -> {

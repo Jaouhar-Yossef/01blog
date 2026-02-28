@@ -1,5 +1,6 @@
 package com.service.Blogs;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -59,13 +60,20 @@ public class LikeBlogService {
             return new Response<>(true, "liked blog successfully!");
         }
 
-        Notifications notif = new Notifications();
-        notif.setCreatorNf(user);
-        notif.setIntendedBlog(blog);
-        notif.setIntendedUser(blog.getCreatedBy());
-        notif.setType(TypeNotifications.LIKE);
-        notif.setMessage("liked your blog");
-        notificationsRepository.save(notif);
+        List<Notifications> existing = notificationsRepository.findNotification(
+                TypeNotifications.LIKE,
+                blog,
+                blog.getCreatedBy(),
+                user);
+        if (existing.isEmpty()) {
+            Notifications notif = new Notifications();
+            notif.setCreatorNf(user);
+            notif.setIntendedBlog(blog);
+            notif.setIntendedUser(blog.getCreatedBy());
+            notif.setType(TypeNotifications.LIKE);
+            notif.setMessage("liked your blog");
+            notificationsRepository.save(notif);
+        }
         return new Response<>(true, "liked blog successfully!");
     }
 
@@ -88,6 +96,14 @@ public class LikeBlogService {
         if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
+
+        List<Notifications> existing = notificationsRepository.findNotification(
+                TypeNotifications.LIKE,
+                blog,
+                blog.getCreatedBy(),
+                user);
+
+        notificationsRepository.deleteAll(existing);
 
         likeBlogRepository.deleteByUserIdAndBlogId(userId, blogId);
 

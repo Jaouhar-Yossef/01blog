@@ -1,7 +1,51 @@
-<div class="notifications">
+<div class="notificationsList">
+    <ng-container *ngIf="Notification$ | async as Notification">
+        <ng-container *ngIf="Notification.length > 0 ; else noContent">
+            <div class="Notification" *ngFor="let Notification of Notification; trackBy: trackById">
 
+                <mat-card-content
+                    *ngIf="Notification?.type === 'LIKE' || Notification?.type === 'COMMENT' || Notification?.type === 'POSTED'">
+                    <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span> <span
+                            class="message"> {{ Notification?.message }} </span>
+                            <span> {{ Notification?.intended_Blog_title }}</span> </p>
+                </mat-card-content>
 
+                <mat-card-content *ngIf="Notification?.type === 'FOLLOW'">
+                    <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span><span
+                            class="message"> {{ Notification?.message }} </span></p>
+                </mat-card-content>
+
+                <mat-card-content
+                    *ngIf="Notification?.type === 'REPORTEDBLOG'">
+                    <p><span class="message"> {{ Notification?.message }} <span> {{ Notification?.intended_Blog_title }}</span> </span></p>
+                </mat-card-content>
+
+                <mat-card-content
+                    *ngIf="Notification?.type === 'REPORTEDACCOUNT'">
+                    <p><span class="message"> {{ Notification?.message }} </span></p>
+                </mat-card-content>
+
+                 <mat-card-content
+                    *ngIf="Notification?.type === 'BLOGHIDDEN'">
+                    <p><span class="message">Your blog {{ Notification?.intended_Blog_title }} <span></span> {{ Notification?.message }} </span></p>
+                </mat-card-content>
+                
+            </div>
+        </ng-container>
+    </ng-container>
     <div observeIntersection (visible)="loadNotification()" class="observer">gg</div>
+
+    <ng-template #noContent>
+        <div class="noContent">
+            <div>
+                <p class="noContent-text">Nothing here yet 👀</p>
+                <span class="noContent-subtext">Create a post to get started</span>
+            </div>
+            <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
+
+        </div>
+    </ng-template>
+
 </div>
 
 <!-- 

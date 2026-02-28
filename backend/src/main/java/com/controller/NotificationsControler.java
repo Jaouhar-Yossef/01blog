@@ -38,8 +38,8 @@ public class NotificationsControler {
 
         try {
             UUID userId = userDetails.getUser().getId();
-            notificationsService.getNotifications( userId ,PageableDTO.getPage(), PageableDTO.getSize());
-            return ResponseEntity.accepted().body(null);
+            Response<?> data = notificationsService.getNotifications( userId ,PageableDTO.getPage(), PageableDTO.getSize());
+            return ResponseEntity.accepted().body(data);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }

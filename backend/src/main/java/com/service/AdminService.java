@@ -1,6 +1,7 @@
 package com.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,9 @@ import com.dto.Response.AnalyticsDTO;
 import com.dto.Response.BlogsToAdminDTO;
 import com.dto.Response.ReportsDTO;
 import com.dto.Response.UsersToAdminDTO;
+import com.repository.NotificationsRepository;
 import com.repository.ReportRepository;
+import com.entity.Notifications;
 import com.entity.Report;
 import com.entity.User;
 import com.entity.Blogs.Blog;
@@ -24,6 +27,7 @@ import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
 import com.util.BlogStatus;
 import com.util.Response;
+import com.util.TypeNotifications;
 import com.util.UserStatus;
 
 // import jakarta.transaction.Transactional;
@@ -38,6 +42,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
     private final LikeBlogRepository likeBlogRepository;
+    private final NotificationsRepository notificationsRepository;
 
     public Response<?> updateReport(UpdateReportsRequest request) {
         Report report = reportRepository.findById(request.getReport_id())
@@ -61,14 +66,38 @@ public class AdminService {
         if (blog.getStatus().equals(request.getStatus())) {
             throw new RuntimeException("you don't change anything ??");
         }
-        System.out.println("the first  ==> " + blog.getStatus());
-        System.out.println("==> " + request.getStatus());
         if (!request.getStatus().equals(BlogStatus.SHOW) && !request.getStatus().equals(BlogStatus.HIDDEN)) {
             throw new RuntimeException("status blog must be show or hidden!");
         }
 
         blog.setStatus(request.getStatus());
-        System.out.println("the last ==> " + blog.getStatus());
+
+        Optional<Notifications> existing = notificationsRepository.findActiveNotification(
+                TypeNotifications.BLOGHIDDEN,
+                blog,
+                blog.getCreatedBy());
+
+        if (request.getStatus().equals(BlogStatus.HIDDEN)) {
+
+            if (existing.isEmpty()) {
+                Notifications notif = new Notifications();
+                notif.setIntendedBlog(blog);
+                notif.setIntendedUser(blog.getCreatedBy());
+                notif.setType(TypeNotifications.BLOGHIDDEN);
+                notif.setMessage("has been hidden by admin");
+                notificationsRepository.save(notif);
+            }
+        }
+
+        if (request.getStatus().equals(BlogStatus.SHOW)) {
+           existing.ifPresent(n ->
+                notificationsRepository.deleteByTypeAndIntendedBlogAndIntendedUser(
+                        TypeNotifications.BLOGHIDDEN,
+                        blog,
+                        blog.getCreatedBy()
+                )
+           );
+        }
 
         return new Response<>(true, "update successfully!");
     }
