@@ -38,11 +38,12 @@ public interface NotificationsRepository extends JpaRepository<Notifications, Lo
             @Param("blog") Blog intendedBlog,
             @Param("user") User intendedUser,
             @Param("creatorNf") User creatorNf);
-            
 
     void deleteByTypeAndIntendedBlogAndIntendedUser(
             TypeNotifications type,
             Blog intendedBlog,
             User intendedUser);
+
+    Optional<Notifications> findByIdAndIntendedUser_Id(Long id, UUID userId);
 
 }

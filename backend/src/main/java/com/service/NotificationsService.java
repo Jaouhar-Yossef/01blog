@@ -1,6 +1,7 @@
 package com.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.dto.Response.NotificationResponseDTO;
 import com.entity.Notifications;
-import com.entity.User;
 import com.repository.NotificationsRepository;
 import com.repository.UserRepository;
 import com.util.BlogStatus;
@@ -26,6 +26,21 @@ public class NotificationsService {
 
   private final UserRepository userRepository;
   private final NotificationsRepository notificationsRepository;
+
+  @Transactional
+  public Response<?> deleteNotification(Long Id, UUID userId) {
+    userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+        
+    Optional<Notifications> existing = notificationsRepository.findByIdAndIntendedUser_Id(Id, userId);
+    if (existing.isEmpty()) {
+      throw new RuntimeException("This notification not found");
+    }
+
+    notificationsRepository.deleteById(Id);
+
+    return new Response<>(true, "notification deleted");
+  }
 
   @Transactional
   public Response<?> getNotifications(UUID userId, int page, int size) {
@@ -49,7 +64,7 @@ public class NotificationsService {
             causeUser = f.getCreatorNf().getUsername();
           }
 
-          if (f.getType().equals(TypeNotifications.REPORTEDBLOG)) {
+          if (f.getType().equals(TypeNotifications.REPORTEDBLOG) || f.getType().equals(TypeNotifications.BLOGHIDDEN)) {
             blogid = f.getIntendedBlog().getId();
             Blog_title = f.getIntendedBlog().getTitle();
           }

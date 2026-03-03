@@ -83,6 +83,10 @@ export class ContentHomeService {
   ) {
   }
 
+  deleteOnenotification(Id: number): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrlNotification}/deleteOneNotification/${Id}`);
+  }
+
   getNotification(page: number, size: number): Observable<ApiResponse<any>> {
     let params = `page=${page}&size=${size}`;
     return this.http.get<ApiResponse<any>>(`${this.apiUrlNotification}/getNotifications?${params}`)
