@@ -2,13 +2,9 @@ package com.dto.Request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Data;
 
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginRequest {
     @NotBlank(message = "Email or username must not be blank")
     @Size(min = 3 , message = "Email or username must be at least 3 characters")

@@ -37,6 +37,10 @@ public class Notifications {
     @JoinColumn(name = "Intended_User_id", nullable = false)
     private User intendedUser;
 
+
+    @Column(nullable = false)
+    private boolean active;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 

@@ -4,10 +4,7 @@ import com.util.UserStatus;
 
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class UpdateStatusBlogRequest {
     @NonNull
     private UserStatus status;

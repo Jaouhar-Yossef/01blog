@@ -2,12 +2,9 @@ package com.dto.Request;
 
 import java.util.UUID;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class UpdateReportsRequest {
     private UUID blog_id;
     private Long report_id;

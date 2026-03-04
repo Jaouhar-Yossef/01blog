@@ -4,12 +4,9 @@ import java.util.UUID;
 
 import com.util.BlogStatus;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class  UpdateBlogsStatusRequestDTO {
     private UUID blog_id;
     private Long report_id;

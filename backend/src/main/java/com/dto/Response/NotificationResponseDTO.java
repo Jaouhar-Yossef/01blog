@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class NotificationResponseDTO {
     private Long id;
+    private boolean active;
     private String causativeUser_id;
     private String message;
     private LocalDateTime creat_at;

@@ -30,7 +30,6 @@ import com.util.Response;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
 
-// import jakarta.transaction.Transactional;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -81,6 +80,7 @@ public class AdminService {
 
             if (existing.isEmpty()) {
                 Notifications notif = new Notifications();
+                notif.setActive(true);
                 notif.setIntendedBlog(blog);
                 notif.setIntendedUser(blog.getCreatedBy());
                 notif.setType(TypeNotifications.BLOGHIDDEN);

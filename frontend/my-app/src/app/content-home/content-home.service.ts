@@ -18,16 +18,12 @@ export interface ApiResponse<T> {
   anyData: T;
 }
 
-
 interface ReportBlogOrUser {
   type: string;
   reason: string;
   reportedBlog?: string;
   reportedUser?: string;
 }
-
-
-
 
 export interface User {
   username: string;
@@ -38,6 +34,18 @@ export interface User {
   blogsCont: number;
 }
 
+
+export interface Notification {
+  id: number;
+  active: boolean;
+  causativeUser_id: string;
+  intendedUser_id: string;
+  intended_Blog_id: string;
+  intended_Blog_title: string;
+  message: string;
+  type: string;
+  creat_at: string;
+}
 
 export function TimeAgo(dateString: string): string {
   if (!dateString) return '';
@@ -76,20 +84,33 @@ export class ContentHomeService {
   private apiUrl = 'http://localhost:8080/blogs';
   private apiUrlReport = 'http://localhost:8080/Report';
   private apiUrlNotification = 'http://localhost:8080/Notifications';
-    private apiUrlUsers = 'http://localhost:8080/users';
+  private apiUrlUsers = 'http://localhost:8080/users';
   constructor(
     private http: HttpClient,
 
   ) {
   }
 
+
+  ReadAllNotifications(notificationIds: number[]): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrlNotification}/readAllNotifications`, { notificationIds });
+  }
+
+  ReadNotification(id_Notification: number): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrlNotification}/readNotification`, { id_Notification });
+  }
+
+  DeleteAllNotifications(notificationIds: number[]): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrlNotification}/deleteAllNotifications`, { notificationIds });
+  }
+
   deleteOnenotification(Id: number): Observable<ApiResponse<any>> {
     return this.http.delete<ApiResponse<any>>(`${this.apiUrlNotification}/deleteOneNotification/${Id}`);
   }
 
-  getNotification(page: number, size: number): Observable<ApiResponse<any>> {
+  getNotification(page: number, size: number): Observable<ApiResponse<Notification[]>> {
     let params = `page=${page}&size=${size}`;
-    return this.http.get<ApiResponse<any>>(`${this.apiUrlNotification}/getNotifications?${params}`)
+    return this.http.get<ApiResponse<Notification[]>>(`${this.apiUrlNotification}/getNotifications?${params}`)
   }
 
   deleteOneBlog(blogId: string): Observable<ApiResponse<any>> {

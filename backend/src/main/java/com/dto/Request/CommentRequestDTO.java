@@ -2,11 +2,9 @@ package com.dto.Request;
 
 import java.util.UUID;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CommentRequestDTO {
 
     @NotNull(message = "blog id cannot be null")

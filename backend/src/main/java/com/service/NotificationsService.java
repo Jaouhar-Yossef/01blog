@@ -17,7 +17,7 @@ import com.util.BlogStatus;
 import com.util.Response;
 import com.util.TypeNotifications;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,10 +28,38 @@ public class NotificationsService {
   private final NotificationsRepository notificationsRepository;
 
   @Transactional
+  public void ReadAllNotifications(List<Long> notificationIds, UUID userId) {
+    userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    notificationsRepository.markAllAsRead(notificationIds, userId);
+  }
+
+  @Transactional
+  public void ReadNotification(Long id_Ntf, UUID userId) {
+    userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+    Optional<Notifications> existing = notificationsRepository.findByIdAndIntendedUser_Id(id_Ntf, userId);
+    if (existing.isEmpty()) {
+      throw new RuntimeException("This notification not found");
+    }
+
+    Notifications notification = existing.get();
+    notification.setActive(false);
+  }
+
+  @Transactional
+  public void DeleteAllNotifications(List<Long> notificationIds, UUID userId) {
+    userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    notificationsRepository.deleteAllThoseNotifications(notificationIds, userId);
+  }
+
+  @Transactional
   public Response<?> deleteNotification(Long Id, UUID userId) {
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
-        
+
     Optional<Notifications> existing = notificationsRepository.findByIdAndIntendedUser_Id(Id, userId);
     if (existing.isEmpty()) {
       throw new RuntimeException("This notification not found");
@@ -42,7 +70,7 @@ public class NotificationsService {
     return new Response<>(true, "notification deleted");
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public Response<?> getNotifications(UUID userId, int page, int size) {
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
@@ -76,6 +104,7 @@ public class NotificationsService {
           }
           return new NotificationResponseDTO(
               f.getId(),
+              f.isActive(),
               causeUser,
               f.getMessage(),
               f.getCreatedAt(),
@@ -87,5 +116,4 @@ public class NotificationsService {
         .toList();
     return new Response<>(true, "", data);
   }
-
 }

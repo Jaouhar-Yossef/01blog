@@ -71,6 +71,7 @@ public class CommentBlogService {
 
         if (existing.isEmpty()) {
             Notifications notif = new Notifications();
+            notif.setActive(true);
             notif.setCreatorNf(user);
             notif.setIntendedBlog(blog);
             notif.setIntendedUser(blog.getCreatedBy());

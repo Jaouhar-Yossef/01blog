@@ -1,15 +1,12 @@
 package com.dto.Request;
 
-import lombok.*;
+import lombok.Data;
 
 import java.util.UUID;
 
 import jakarta.validation.constraints.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ReportRequest {
 
     @NotBlank(message = "type cannot be empty")

@@ -3,13 +3,9 @@ package com.dto.Request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Data;
 
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserRequestDTO {
     
     @NotBlank(message = "Username must not be blank")

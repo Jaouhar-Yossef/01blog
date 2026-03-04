@@ -90,6 +90,7 @@ public class ProfileService {
                 followersRepository.save(followers);
 
                 Notifications notif = new Notifications();
+                notif.setActive(true);
                 notif.setCreatorNf(follower);
                 notif.setIntendedUser(followed);
                 notif.setType(TypeNotifications.FOLLOW);

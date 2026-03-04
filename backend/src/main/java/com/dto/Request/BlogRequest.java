@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
-import lombok.*;
+import lombok.Data;
 import jakarta.validation.constraints.*;
 
 
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class BlogRequest {
 
     @NotBlank(message = "Title cannot be empty")

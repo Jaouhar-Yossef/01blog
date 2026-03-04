@@ -48,6 +48,7 @@ public class ReportService {
 
         Report report = new Report();
         Notifications notif = new Notifications();
+        notif.setActive(true);
 
         report.setCreatedBy(userReq);
         report.setReason(reportRequest.getReason());

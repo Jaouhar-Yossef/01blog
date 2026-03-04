@@ -11,38 +11,51 @@
                     <h2 class="title">Notifications</h2>
                 </div>
                 <div class="lastin_header">
-                    <mat-icon class="delete_all" click="deleteAll()">delete</mat-icon>
+                    <mat-icon class="imgskip" [matMenuTriggerFor]="statusMenu"> menu </mat-icon>
+                    <mat-menu #statusMenu="matMenu">
+                        <div>
+                            <button mat-menu-item (click)="makeAllAsRead()"> <mat-icon class="mark_as_read"> mark_email_read </mat-icon> All as
+                                Read
+                            </button>
+                            <button mat-menu-item (click)="deleteAll()"> <mat-icon class="delete_all">delete</mat-icon>
+                                Delete All
+                            </button>
+                        </div>
+                    </mat-menu>
                 </div>
-
-
             </div>
 
-            <div class="Notification" *ngFor="let Notification of Notification; trackBy: trackById">
+            <div class="Notification" *ngFor="let Notification of Notification; trackBy: trackById"
+                [class.active_Ntf]="Notification.active">
 
-                <mat-card-content *ngIf="Notification?.type === 'LIKE'">
+                <mat-card-content *ngIf="Notification.type === 'LIKE'">
                     <div class="cartfirst">
                         <span class="icons">
                             <mat-icon>favorite</mat-icon>
                         </span>
                         <div class="inside_cart">
-                            <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span><span
-                                    class="message"> {{ Notification?.message }} </span>
-                             <span class="intended_Blog_title"> {{ Notification?.intended_Blog_title | slice:0:6 }} </span>
+                            <p> <span class="causativeUser_id" (click)="goToProfile(Notification.causativeUser_id ,Notification.id)">
+                                    {{ Notification.causativeUser_id }}</span><span class="message"> {{
+                                    Notification.message }} </span>
+                                <span class="intended_Blog_title" (click)="showTheBlog(Notification.intended_Blog_id ,Notification.id)">
+                                    {{ Notification.intended_Blog_title | slice:0:6 }}
+                                </span>
                             </p>
                             <span class="time">
-                                {{ timeis(Notification?.creat_at)}}
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
 
                 </mat-card-content>
 
 
-                <mat-card-content *ngIf="Notification?.type === 'COMMENT'">
+                <mat-card-content *ngIf="Notification.type === 'COMMENT'">
 
                     <div class="cartfirst">
                         <span class="icons">
@@ -50,25 +63,29 @@
                         </span>
 
                         <div class="inside_cart">
-                            <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span><span
-                                    class="message"> {{ Notification?.message }} </span>
-                                <span class="intended_Blog_title"> {{ Notification?.intended_Blog_title | slice:0:6 }} </span>
+                            <p> <span class="causativeUser_id" (click)="goToProfile(Notification.causativeUser_id ,Notification.id)">
+                                    {{ Notification.causativeUser_id }}</span><span class="message"> {{
+                                    Notification.message }} </span>
+                                <span class="intended_Blog_title" (click)="showTheBlog(Notification.intended_Blog_id ,Notification.id )">
+                                    {{ Notification.intended_Blog_title | slice:0:6 }}
+                                </span>
                             </p>
 
-                            <span class="time" >
-                               {{ timeis(Notification?.creat_at)}}
+                            <span class="time">
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
 
                 </mat-card-content>
 
 
-                <mat-card-content *ngIf="Notification?.type === 'FOLLOW'">
+                <mat-card-content *ngIf="Notification.type === 'FOLLOW'">
 
                     <div class="cartfirst">
                         <span class="icons">
@@ -76,21 +93,23 @@
                         </span>
 
                         <div class="inside_cart">
-                            <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span><span
-                                    class="message"> {{ Notification?.message }} </span></p>
+                            <p> <span class="causativeUser_id" (click)="goToProfile(Notification.causativeUser_id ,Notification.id)">
+                                    {{ Notification.causativeUser_id }}</span><span class="message"> {{
+                                    Notification.message }} </span></p>
 
                             <span class="time">
-                                {{ timeis(Notification?.creat_at)}}
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
                 </mat-card-content>
 
-                <mat-card-content *ngIf="Notification?.type === 'REPORTEDBLOG'">
+                <mat-card-content *ngIf="Notification.type === 'REPORTEDBLOG'">
 
                     <div class="cartfirst">
                         <span class="icons_report">
@@ -98,24 +117,26 @@
                         </span>
 
                         <div class="inside_cart">
-                            <p> <span class="causativeUser_id"> {{ Notification?.causativeUser_id }}</span><span
-                                    class="message"> {{ Notification?.message }} </span>
-                                <span> <span class="intended_Blog_title"> {{ Notification?.intended_Blog_title | slice:0:6 }} </span> </span>
+                            <p> <span class="message"> {{ Notification.message }} </span>
+                                <span class="intended_Blog_title" (click)="showTheBlog(Notification.intended_Blog_id ,Notification.id )">
+                                    {{ Notification.intended_Blog_title |
+                                    slice:0:6 }} </span>
                             </p>
 
                             <span class="time">
-                                {{ timeis(Notification?.creat_at)}}
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
 
                 </mat-card-content>
 
-                <mat-card-content *ngIf="Notification?.type === 'REPORTEDACCOUNT'">
+                <mat-card-content *ngIf="Notification.type === 'REPORTEDACCOUNT'">
 
                     <div class="cartfirst">
                         <span class="icons_report">
@@ -124,57 +145,57 @@
 
                         <div class="inside_cart">
                             <p>
-                                <span class="message"> {{ Notification?.message  }} </span>
+                                <span class="message"> {{ Notification.message }} </span>
                             </p>
 
                             <span class="time">
-                                {{ timeis(Notification?.creat_at)}}
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
 
                 </mat-card-content>
 
-                <mat-card-content *ngIf="Notification?.type === 'BLOGHIDDEN'">
-                     <div class="cartfirst">
+                <mat-card-content *ngIf="Notification.type === 'BLOGHIDDEN'">
+                    <div class="cartfirst">
                         <span class="icons_report">
                             <mat-icon>flag</mat-icon>
                         </span>
 
                         <div class="inside_cart">
-                            <p><span class="message">Your blog <span class="intended_Blog_title"> {{ Notification?.intended_Blog_title | slice:0:6 }} </span>  <span></span> {{
-                            Notification?.message }} </span></p>
-
+                            <p><span class="message">Your blog
+                                    <span class="intended_Blog_title"
+                                        (click)="showTheBlog(Notification.intended_Blog_id ,Notification.id )"> {{
+                                        Notification.intended_Blog_title | slice:0:6 }} </span>
+                                    {{ Notification.message }}
+                                </span></p>
                             <span class="time">
-                                {{ timeis(Notification?.creat_at)}}
+                                {{ timeis(Notification.creat_at)}}
                             </span>
                         </div>
                     </div>
 
                     <div class="rmnf">
-                        <button class="remove-btn" type="button" click="deleteNotification(Notification?.id)">✕</button>
+                        <button class="remove-btn" type="button"
+                            (click)="deleteNotification(Notification.id)">✕</button>
                     </div>
 
-                    
+
                 </mat-card-content>
 
             </div>
         </ng-container>
     </ng-container>
-    <div observeIntersection (visible)="loadNotification()" class="observer">gg</div>
+    <div observeIntersection (visible)="loadNotification()" class="observer"></div>
 
     <ng-template #noContent>
         <div class="noContent">
-            <div>
-                <p class="noContent-text">Nothing here yet 👀</p>
-                <span class="noContent-subtext">Create a post to get started</span>
-            </div>
-            <img class="noContent-img" src="./../../assets/images/noContent.svg" alt="">
-
+            <img class="noContent-img" src="./../../assets/empty-notification2.webp" alt="">
         </div>
     </ng-template>
 
