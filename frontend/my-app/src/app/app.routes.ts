@@ -27,12 +27,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', component: BlogListComponent },
-      { path: 'blog/:id', component: Blog },
       { path: 'blogsSaved', component: BlogListComponent, data: { view: 'saved' } },
-      { path: 'profile/:name', component: Profile },
-      { path: 'Users', component: Users },
-      { path: 'Search', component: Search },
-      { path: 'Notifications', component: Notifications },
+      { path: 'blog/:id', component: Blog , canActivate: [UserBanned]},
+      { path: 'profile/:name', component: Profile , canActivate: [UserBanned] },
+      { path: 'Users', component: Users , canActivate: [UserBanned]},
+      { path: 'Search', component: Search  , canActivate: [UserBanned]},
+      { path: 'Notifications', component: Notifications , canActivate: [UserBanned] },
       { path: 'blog/:id/edit', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'editBlog' }  },
       { path: 'CreatBlog', component: CreatBlog , canActivate: [UserBanned] ,  data: { view: 'creatBlog' } }
     ]

@@ -1,7 +1,10 @@
 package com.service.Blogs;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -117,5 +120,27 @@ public class LikeBlogService {
 
     public Long getNumbLike(UUID blogId) {
         return likeBlogRepository.countByBlogId(blogId);
+    }
+
+    public Map<UUID, Long> getLikeCountMap(List<UUID> blogIds) {
+
+        List<Object[]> results = likeBlogRepository.countLikesByBlogIds(blogIds);
+        Map<UUID, Long> map = new HashMap<>();
+        for (Object[] row : results) {
+            UUID blogId = (UUID) row[0];
+            Long count = (Long) row[1];
+            map.put(blogId, count);
+        }
+
+        return map;
+    }
+
+    public Map<UUID, Boolean> getLikedMap(UUID userId, List<UUID> blogIds) {
+
+        List<UUID> likedIds = likeBlogRepository.findLikedBlogIds(userId, blogIds);
+        return likedIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> true));
     }
 }

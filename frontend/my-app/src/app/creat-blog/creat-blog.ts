@@ -172,9 +172,6 @@ export class CreatBlog {
         const file = this.imgsandvids[i];
         formData.append('filesupdated', file.url);
       }
-
-      console.log("--> ", this.imgsandvids)
-
       formData.append('idBlog_update', this.blog_id);
 
       this.blogService.updateBlogs(formData).subscribe({

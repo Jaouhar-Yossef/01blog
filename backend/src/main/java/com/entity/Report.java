@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.entity.Blogs.Blog;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.util.ReportType;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,8 +26,9 @@ public class Report {
     @JsonIgnore
     private User createdBy;
 
-    @Column(nullable = false)
-    private String type;
+    @Column(updatable = true , nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReportType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_user_id", nullable = true)

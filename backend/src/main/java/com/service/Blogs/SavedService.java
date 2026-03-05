@@ -1,7 +1,9 @@
 package com.service.Blogs;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class SavedService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (user.getStatus() == UserStatus.BANNED) {
-            throw new RuntimeException("You are banned from this platform."); 
+            throw new RuntimeException("You are banned from this platform.");
         }
 
         Blog blog = blogRepository.findById(blogId)
@@ -81,5 +83,15 @@ public class SavedService {
 
     public List<Saved> getSavedBlogs(UUID userId) {
         return savedRepository.findByUserId(userId);
+    }
+
+    public Map<UUID, Boolean> getSavedMap(UUID userId, List<UUID> blogIds) {
+
+        List<UUID> savedIds = savedRepository.findSavedBlogIds(userId, blogIds);
+
+        return savedIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> true));
     }
 }

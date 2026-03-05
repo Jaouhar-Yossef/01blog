@@ -26,6 +26,7 @@ import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
 import com.repository.Blogs.LikeBlogRepository;
 import com.util.BlogStatus;
+import com.util.ReportType;
 import com.util.Response;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
@@ -43,6 +44,7 @@ public class AdminService {
     private final LikeBlogRepository likeBlogRepository;
     private final NotificationsRepository notificationsRepository;
 
+    @Transactional
     public Response<?> updateReport(UpdateReportsRequest request) {
         Report report = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
@@ -90,13 +92,10 @@ public class AdminService {
         }
 
         if (request.getStatus().equals(BlogStatus.SHOW)) {
-           existing.ifPresent(n ->
-                notificationsRepository.deleteByTypeAndIntendedBlogAndIntendedUser(
-                        TypeNotifications.BLOGHIDDEN,
-                        blog,
-                        blog.getCreatedBy()
-                )
-           );
+            existing.ifPresent(n -> notificationsRepository.deleteByTypeAndIntendedBlogAndIntendedUser(
+                    TypeNotifications.BLOGHIDDEN,
+                    blog,
+                    blog.getCreatedBy()));
         }
 
         return new Response<>(true, "update successfully!");
@@ -112,10 +111,14 @@ public class AdminService {
         if (request.getStatus().equals(UserStatus.ACTIVE) && request.getStatus().equals(UserStatus.BANNED)) {
             return new Response<>(false, "status User must be ACTIVE or BANNED!");
         }
+        if (user.getStatus().equals(UserStatus.ADMIN)) {
+            return new Response<>(false, "You are the Admin :)");
+        }
         user.setStatus(request.getStatus());
         return new Response<>(true, "update successfully!");
     }
 
+    @Transactional
     public boolean deleteUser(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -123,6 +126,7 @@ public class AdminService {
         return true;
     }
 
+    @Transactional
     public boolean deleteReport(UpdateReportsRequest request) {
         Report r = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
@@ -140,6 +144,7 @@ public class AdminService {
         return userRepository.findAll(pageable).getContent();
     }
 
+    @Transactional(readOnly = true)
     public Response<?> getUsers(int page, int size) {
 
         List<User> AllUser = this.getUsersPaginated(page, size)
@@ -159,6 +164,7 @@ public class AdminService {
         return new Response<>(true, "", data);
     }
 
+    @Transactional(readOnly = true)
     public Response<?> getReports(int page, int size) {
         List<Report> listReports = getReportsPaginated(page, size);
         List<ReportsDTO> data = listReports.stream()
@@ -168,7 +174,7 @@ public class AdminService {
                         return null;
                     }
                     String ReportCreatby = report.getCreatedBy().getUsername();
-                    if (report.getType().equals("BLOG")) {
+                    if (report.getType().equals(ReportType.BLOG)) {
                         boolean existsBlog = blogRepository.existsById(report.getReportedBlog().getId());
                         if (!existsBlog) {
                             return null;
@@ -185,7 +191,7 @@ public class AdminService {
                                 report.getStatus());
                     }
 
-                    if (report.getType().equals("USER")) {
+                    if (report.getType().equals(ReportType.USER)) {
                         boolean existsUser = userRepository.existsById(report.getReportedUser().getId());
                         if (!existsUser) {
                             return null;
@@ -209,6 +215,7 @@ public class AdminService {
         return new Response<>(true, "", data);
     }
 
+    @Transactional(readOnly = true)
     public Response<?> getAnalytics() {
         Long contsBlogs = blogRepository.count();
         Long contsUsers = userRepository.count();
@@ -227,6 +234,7 @@ public class AdminService {
         return blogRepository.findAll(pageable).getContent();
     }
 
+    @Transactional(readOnly = true)
     public Response<?> getBlogs(int page, int size) {
         List<Blog> listBlogs = getBlogsPaginated(page, size);
         List<BlogsToAdminDTO> data = listBlogs.stream()
@@ -242,6 +250,5 @@ public class AdminService {
                 })
                 .toList();
         return new Response<>(true, "", data);
-
     }
 }

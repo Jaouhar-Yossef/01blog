@@ -1,6 +1,7 @@
 .observer {
     height: 2px;
     width: 100%;
+    margin-bottom: 30px;
 }
 
 .notificationsList {
@@ -13,7 +14,6 @@
     gap: 25px;
     overflow-y: auto;
     overflow-x: hidden;
-
 }
 
 
@@ -68,7 +68,7 @@
     color: red !important;
 }
 
-.mark_as_read{
+.mark_as_read {
     color: green !important;
 }
 
@@ -84,9 +84,10 @@
     padding: 5px;
     border-radius: 15px;
 }
+
 .homeset {
     width: 33px;
-    height: 32px;
+    height: 33px;
 }
 
 .Notification {
@@ -99,6 +100,7 @@
 .active_Ntf {
     background-color: rgba(69, 71, 197, 0.13);
 }
+
 .mat-mdc-card-content {
     width: 100%;
     display: flex;
@@ -112,24 +114,19 @@
 }
 
 .icons {
-
     padding-left: 18px;
     padding-right: 25px;
-
     padding-top: 10px;
-
 }
 
 .icons_report {
-      padding-left: 18px;
+    padding-left: 18px;
     padding-right: 25px;
-
     padding-top: 10px;
     color: rgb(240, 100, 100);
 }
 
 .inside_cart {
-
     display: flex;
     flex-direction: column;
 }
@@ -146,13 +143,14 @@
 .causativeUser_id:hover {
     color: rgb(88, 168, 238);
 }
+
 .message {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 17px;
     font-weight: 400;
 }
 
-.time{
+.time {
     text-align: start;
     font-size: 16px;
     color: gray;
@@ -165,18 +163,19 @@
     justify-content: center;
     align-items: center;
 }
+
 .remove-btn {
-  color: gray;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-  font-size: 18px;
+    color: gray;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    font-size: 18px;
 
 }
 
 .remove-btn:hover {
-  font-size: 21px;
-  color: rgb(218, 82, 82);
+    font-size: 21px;
+    color: rgb(218, 82, 82);
 
 }
 
@@ -189,5 +188,149 @@
 
 .intended_Blog_title:hover {
     color: rgb(80, 80, 180);
+
+}
+
+
+
+
+
+
+@media (max-width: 1490px) {
+    .headernf {
+        width: 55%;
+    }
+
+    .Notification {
+        width: 45%;
+    }
+}
+
+@media (max-width: 1300px) {
+    .headernf {
+        width: 60%;
+    }
+
+    .Notification {
+        width: 50%;
+    }
+}
+
+
+
+
+@media (max-width: 1150px) {
+    .headernf {
+        width: 70%;
+    }
+
+    .Notification {
+        width: 60%;
+    }
+}
+
+
+
+
+@media (max-width: 950px) {
+    .headernf {
+        width: 75%;
+    }
+
+    .Notification {
+        width: 65%;
+    }
+}
+
+
+
+@media (max-width: 930px) {
+    .notificationsList {
+        height: 95%;
+    }
+}
+
+@media (max-width: 880px) {
+    .headernf {
+        width: 80%;
+        padding: 18px;
+    }
     
+    .Notification {
+        width: 70%;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .theimg {
+        padding: 3px;
+    }
+
+    .homeset {
+        width: 30px;
+        height: 30px;
+    }
+
+    .causativeUser_id {
+        font-size: 15px
+    }
+
+    .message {
+        font-size: 15px;
+    }
+
+    .time {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 750px) {
+    .headernf {
+        width: 90%;
+        padding: 16px;
+    }
+
+    .Notification {
+        width: 80%;
+    }
+
+    .homeset {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .headernf {
+        width: 95%;
+        padding: 14px;
+    }
+
+    .Notification {
+        width: 85%;
+    }
+
+    .homeset {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 580px) {
+    .headernf {
+        width: 95%;
+        padding: 14px;
+    }
+
+    .Notification {
+        width: 90%;
+    }
+
+    .homeset {
+        width: 25px;
+        height: 25px;
+    }
 }

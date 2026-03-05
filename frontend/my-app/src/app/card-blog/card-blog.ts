@@ -46,7 +46,6 @@ export class CardBlog {
 
     if (this.blog.status == "HIDDEN") {
       this.isblogishedden = true;
-      this.showAdminMessage.showAdminMessageBlogHidden()
     }
 
     const user = this.authService.getUser();
@@ -73,8 +72,6 @@ export class CardBlog {
     }
     this.router.navigate(['/home/blog', id]);
   }
-
-
 
   toggleSave() {
     if (this.isUserBanned) {

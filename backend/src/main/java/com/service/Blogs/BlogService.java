@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
@@ -71,7 +72,7 @@ public class BlogService {
                 Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                if ( blog.getStatus() == BlogStatus.HIDDEN) {
+                if (blog.getStatus() == BlogStatus.HIDDEN) {
                         throw new RuntimeException("This blog has been hidden by the admin.");
                 }
 
@@ -100,7 +101,8 @@ public class BlogService {
 
                 User checking_creat_by = blog.getCreatedBy();
 
-                if (checking_creat_by.getUsername().equals(user.getUsername()) || user.getStatus() == UserStatus.ADMIN ) {
+                if (checking_creat_by.getUsername().equals(user.getUsername())
+                                || user.getStatus() == UserStatus.ADMIN) {
                         mediaBlogService.deleteBlogFiles(blog);
                         blogRepository.delete(blog);
                         return new Response<>(true, "Blog deleted sucesfuly!");
@@ -113,13 +115,21 @@ public class BlogService {
                 Pageable pageable = PageRequest.of(page, size);
                 List<Blog> blogs = followersRepository.findBlogsOfFollowedUsers(userId, pageable);
 
+                List<UUID> blogIds = blogs.stream()
+                                .map(Blog::getId)
+                                .toList();
+
+                Map<UUID, Boolean> savedMap = savedService.getSavedMap(userId, blogIds);
+                Map<UUID, Boolean> likedMap = likeBlogService.getLikedMap(userId, blogIds);
+                Map<UUID, Long> likeCountMap = likeBlogService.getLikeCountMap(blogIds);
+
                 List<BlogResponseDTO> blogDTOs = blogs.stream()
                                 .filter(b -> b.getStatus() != BlogStatus.HIDDEN)
                                 .map(blog -> {
-                                        boolean saved = savedService.isBlogSaved(userId, blog.getId());
-                                        boolean liked = this.likeBlogService.isBlogLiked(userId, blog.getId());
 
-                                        Long numbLike = this.likeBlogService.getNumbLike(blog.getId());
+                                        boolean saved = savedMap.getOrDefault(blog.getId(), false);
+                                        boolean liked = likedMap.getOrDefault(blog.getId(), false);
+                                        Long numbLike = likeCountMap.getOrDefault(blog.getId(), 0L);
 
                                         List<MediaDTO> mediaList = blog.getMedias().stream()
                                                         .map(m -> new MediaDTO(
@@ -159,13 +169,20 @@ public class BlogService {
                                 .map(Saved::getBlog)
                                 .toList();
 
+                List<UUID> blogIds = savedBlogs.stream()
+                                .map(Blog::getId)
+                                .toList();
+
+                Map<UUID, Boolean> savedMap = savedService.getSavedMap(userId, blogIds);
+                Map<UUID, Boolean> likedMap = likeBlogService.getLikedMap(userId, blogIds);
+                Map<UUID, Long> likeCountMap = likeBlogService.getLikeCountMap(blogIds);
+
                 List<BlogResponseDTO> blogDTOs = savedBlogs.stream()
                                 .filter(b -> b.getStatus() != BlogStatus.HIDDEN)
                                 .map(blog -> {
-                                        boolean saved = true;
-                                        boolean liked = this.likeBlogService.isBlogLiked(user.getId(), blog.getId());
-
-                                        Long numbLike = this.likeBlogService.getNumbLike(blog.getId());
+                                        boolean saved = savedMap.getOrDefault(blog.getId(), false);
+                                        boolean liked = likedMap.getOrDefault(blog.getId(), false);
+                                        Long numbLike = likeCountMap.getOrDefault(blog.getId(), 0L);
 
                                         List<MediaDTO> mediaList = blog.getMedias().stream()
                                                         .map(m -> new MediaDTO(
@@ -199,17 +216,31 @@ public class BlogService {
                         int page,
                         int size,
                         String username) {
-
+                if (!userRepository.existsById(userId)) {
+                        throw new RuntimeException("User not found");
+                }
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+
                 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+
                 List<Blog> blogs = blogRepository.findByCreatedById(user.getId(), pageable);
 
+                List<UUID> blogIds = blogs.stream()
+                                .map(Blog::getId)
+                                .toList();
+
+                Map<UUID, Boolean> savedMap = savedService.getSavedMap(userId, blogIds);
+                Map<UUID, Boolean> likedMap = likeBlogService.getLikedMap(userId, blogIds);
+                Map<UUID, Long> likeCountMap = likeBlogService.getLikeCountMap(blogIds);
+
                 List<BlogResponseDTO> blogDTOs = blogs.stream()
+                                .filter(b -> b.getCreatedBy().getId().equals(userId)
+                                                || !b.getStatus().equals(BlogStatus.HIDDEN))
                                 .map(blog -> {
-                                        boolean saved = savedService.isBlogSaved(userId, blog.getId());
-                                        boolean liked = likeBlogService.isBlogLiked(userId, blog.getId());
-                                        Long numbLike = likeBlogService.getNumbLike(blog.getId());
+                                        boolean saved = savedMap.getOrDefault(blog.getId(), false);
+                                        boolean liked = likedMap.getOrDefault(blog.getId(), false);
+                                        Long numbLike = likeCountMap.getOrDefault(blog.getId(), 0L);
 
                                         List<MediaDTO> mediaList = blog.getMedias().stream()
                                                         .map(m -> new MediaDTO(m.getUrl(), m.getFileName(),
