@@ -35,6 +35,10 @@ public class ProfileService {
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+                if (user.getStatus().equals(UserStatus.BANNED)) {
+                        throw new RuntimeException("This User banned from this platform.");
+                }
+
                 Long BlogsCont = blogRepository.countByCreatedBy_Id(user.getId());
 
                 boolean isFollower = followersRepository.existsByFollower_IdAndFollowed_Id(user.getId(),

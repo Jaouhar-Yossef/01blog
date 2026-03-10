@@ -50,6 +50,7 @@ public interface FollowersRepository extends JpaRepository<Followers, Long> {
                 JOIN f.followed u
                 JOIN u.blogs b
                 WHERE f.follower.id = :userId
+                AND f.followed.status <> 'BANNED'
                 ORDER BY b.createdAt DESC
             """)
     List<Blog> findBlogsOfFollowedUsers(

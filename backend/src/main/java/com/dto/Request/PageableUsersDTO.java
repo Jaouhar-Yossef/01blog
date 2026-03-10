@@ -15,5 +15,5 @@ public class PageableUsersDTO {
     @NotNull(message = "Mode cannot be null")
     private UsersMode mode;
     @NotNull(message = "username cannot be null")
-    private String username;
+    private String usernameOrSearchWord;
 }

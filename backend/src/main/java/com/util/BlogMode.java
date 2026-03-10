@@ -4,4 +4,5 @@ public enum BlogMode {
     HOME,
     PROFILE,
     SAVED,
+    SEARCH,
 }

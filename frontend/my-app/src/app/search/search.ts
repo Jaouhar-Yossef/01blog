@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { debounceTime } from 'rxjs/operators';
+import { BlogListComponent } from '../blog-list-component/blog-list-component';
+import { Users } from '../users/users';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +17,9 @@ import { debounceTime } from 'rxjs/operators';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    BlogListComponent, 
+    Users
   ],
   templateUrl: './search.html',
   styleUrls: ['./search.css'],
@@ -26,43 +29,37 @@ export class Search implements OnInit {
   searchControl = new FormControl<string>('');
   isBlogs = true;
 
-  results: any[] = [];
+  showTheBlogs = false;
+  showTheUsers = false;
 
   ngOnInit() {
     this.searchControl.valueChanges
-      .pipe(debounceTime(300))
       .subscribe(value => {
-        if (value !== null) this.onSearch(value);
+        if (!value || value?.trim().length == 0) {
+          this.showTheBlogs = false
+          this.showTheUsers = false
+        }
+        if (this.isBlogs) {
+          this.showTheBlogs = true
+          this.showTheUsers = false 
+        } else {
+          this.showTheBlogs = false
+          this.showTheUsers = true
+        }
       });
   }
 
   showBlogs() {
     this.isBlogs = true;
-    if (this.searchControl.value) this.onSearch(this.searchControl.value);
+    this.showTheBlogs = true;
+    this.showTheUsers = false;
   }
 
   showUsers() {
     this.isBlogs = false;
-    if (this.searchControl.value) this.onSearch(this.searchControl.value);
+    this.showTheBlogs = false;
+    this.showTheUsers = true;
   }
 
-  onSearch(query: string) {
-    query = query.trim(); 
-    if (!query) {
-      this.results = [];
-      return;
-    }
-
-    if (this.isBlogs) {
-      console.log("search blogs:", query);
-
-      
-      
-     
-    } else {
-      console.log("search users :", query);
-      
-    }
-  }
 
 }

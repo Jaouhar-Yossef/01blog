@@ -44,20 +44,25 @@ public class GettingUsersController {
             UUID user_id = userDetails.getUser().getId();
 
             if (pageableUsersDTO.getMode() == UsersMode.ALLUSERS) {
-
+                
                 List<ProfileResponseDTO> data = usersService.getAllUsers(pageableUsersDTO.getPage(), pageableUsersDTO.getSize(), user_id);
                 return ResponseEntity.ok().body(new Response<>(true, "sucesfuly", data));
 
             } else if ( pageableUsersDTO.getMode() == UsersMode.FOLLOWERS || pageableUsersDTO.getMode() == UsersMode.FOLLOWING) {
 
                 List<ProfileResponseDTO> data = usersService.getFollowersOrFollowing(pageableUsersDTO.getPage(), pageableUsersDTO.getSize(),
-                 pageableUsersDTO.getUsername(),  pageableUsersDTO.getMode() , user_id);
+                 pageableUsersDTO.getUsernameOrSearchWord(),  pageableUsersDTO.getMode() , user_id);
+                return ResponseEntity.ok().body(new Response<>(true, "sucesfuly", data));
+                
+            } else if ( pageableUsersDTO.getMode() == UsersMode.SEARCH) {
+
+                List<ProfileResponseDTO> data = usersService.getUsersBySearch(pageableUsersDTO.getPage(), pageableUsersDTO.getSize(),
+                 pageableUsersDTO.getUsernameOrSearchWord(),  pageableUsersDTO.getMode() , user_id);
                 return ResponseEntity.ok().body(new Response<>(true, "sucesfuly", data));
                 
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
-
         }
 
         return ResponseEntity.badRequest().body(new Response<>(false, "Error Get Users"));

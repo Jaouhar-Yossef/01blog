@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
         ORDER BY u.createdAt DESC
     """)
     List<User> findUsers(Pageable pageable);
+
+    List<User> findByUsernameContainingIgnoreCase( String searchWord ,  Pageable pageable);
 }

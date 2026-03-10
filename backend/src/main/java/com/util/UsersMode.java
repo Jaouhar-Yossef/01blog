@@ -4,4 +4,5 @@ public enum UsersMode {
     ALLUSERS,
     FOLLOWERS,
     FOLLOWING,
+    SEARCH,
 }

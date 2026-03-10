@@ -104,7 +104,9 @@ export class Blog {
         const b = this.blogSubject.value;
         if (b.status == "HIDDEN") {
           this.isblogishedden = true;
-          this.showAdminMessage.showAdminMessageBlogHidden()
+          if (this.modeADMINorHOME !== 'ADMIN') {
+            this.showAdminMessage.showAdminMessageBlogHidden()
+          }
         }
 
         const user = this.authService.getUser();

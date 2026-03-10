@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED';
-export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING';
+export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED' | 'SEARCH';
+export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING' | 'SEARCH';
 
 interface Comment {
   id: number;
@@ -141,13 +141,18 @@ export class ContentHomeService {
     page: number,
     size: number,
     mode: BlogMode,
-    username?: string
+    username?: string,
+    search_word?: string
   ): Observable<ApiResponse<any[]>> {
 
     let params = `page=${page}&size=${size}&mode=${mode}`;
 
     if (mode === 'PROFILE' && username) {
       params += `&username=${username}`;
+    }
+    
+    if (mode === 'SEARCH' && search_word) {
+      params += `&search_word=${search_word}`;
     }
     return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/blogs?${params}`);
   }
@@ -178,8 +183,8 @@ export class ContentHomeService {
     );
   }
 
-  getUsers(page: number, size: number, mode: string, username: string): Observable<ApiResponse<User[]>> {
-    let params = `page=${page}&size=${size}&mode=${mode}&username=${username}`;
+  getUsers(page: number, size: number, mode: string, UsernameOrSearchWord: string): Observable<ApiResponse<User[]>> {
+    let params = `page=${page}&size=${size}&mode=${mode}&UsernameOrSearchWord=${UsernameOrSearchWord}`;
     return this.http.get<ApiResponse<User[]>>(`${this.apiUrlUsers}/gettingUsers?${params}`)
   }
 

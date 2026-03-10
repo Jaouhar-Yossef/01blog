@@ -1,9 +1,9 @@
-import { Component,ElementRef,inject,Input,OnInit,ViewChild} from '@angular/core';
+import { Component, ElementRef, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { CardBlog } from '../card-blog/card-blog';
 import { BlogUiService } from '../blog/blog-ui.service';
-import { ContentHomeService , BlogMode} from '../content-home/content-home.service';
+import { ContentHomeService, BlogMode } from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,9 +32,28 @@ export class BlogListComponent implements OnInit {
 
   @Input() mode: BlogMode = 'HOME';
   @Input() username?: string;
+  @Input() search_word?: string;
+
 
   private blogsSubject = new BehaviorSubject<any[]>([]);
   blogs$ = this.blogsSubject.asObservable();
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['search_word']) {
+      setTimeout(()=> {} , 300)
+      this.page = 0;
+      this.hasMore = true;
+      this.blogsSubject.next([]);
+
+      if (!this.search_word || this.search_word.trim().length === 0) {
+        this.blogsSubject.next([]);
+        this.hasMore = false;
+      } else {
+        this.loadNextPage();
+      }
+    }
+  }
+
 
   page = 0;
   size = 10;
@@ -60,9 +79,15 @@ export class BlogListComponent implements OnInit {
 
   loadNextPage() {
     if (this.loading || !this.hasMore) return;
+
+    if (this.mode === 'SEARCH' && (!this.search_word || this.search_word.trim().length === 0)) {
+      this.blogsSubject.next([]);
+      return;
+    }
+
     this.loading = true;
     this.postService
-      .getBlogs(this.page, this.size, this.mode, this.username)
+      .getBlogs(this.page, this.size, this.mode, this.username, this.search_word?.trim())
       .subscribe({
         next: (res) => {
           this.blogsSubject.next([

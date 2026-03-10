@@ -1,18 +1,19 @@
 .post-list {
   width: 100%;
-
   margin-top: 15px;
-
   overflow-y: auto;
   height: 90vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 
-.profile-style {
+.PROFILE-style {
+  height: 65vh;
+}
+
+.SEARCH-style {
   height: 65vh;
 }
 
@@ -38,15 +39,17 @@
 }
 
 .blogsforuser {
-
   width: 50%;
-
 }
 
 
 
 
-.profile-blogsforuser-style {
+.PROFILE-blogsforuser-style {
+  width: 80%;
+}
+
+.SEARCH-blogsforuser-style {
   width: 80%;
 }
 
@@ -82,7 +85,6 @@
 .observer {
   height: 2px;
   width: 100%;
-  background-color: red;
   margin-bottom: 40px;
 }
 

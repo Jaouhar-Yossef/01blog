@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../profile/profile.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse, ContentHomeService  , User , UserMode} from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService, User, UserMode } from '../content-home/content-home.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,8 +27,7 @@ export class Users implements OnInit {
   Users$ = this.UsersSubject.asObservable()
 
   @Input() mode: UserMode = 'ALLUSERS';
-  @Input() username: string = '';
-
+  @Input() username_or_searchWord: string = '';
 
   page = 0;
   size = 10;
@@ -106,20 +105,42 @@ export class Users implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes['mode'] && !changes['mode'].firstChange) ||
-      (changes['username'] && !changes['username'].firstChange)) {
+
+    if (
+      changes['mode'] ||
+      changes['username_or_searchWord']
+    ) {
+      
       this.page = 0;
       this.hasMore = true;
       this.UsersSubject.next([]);
+
+      if (
+        this.mode === 'SEARCH' &&
+        (!this.username_or_searchWord || this.username_or_searchWord.trim().length === 0)
+      ) {
+        this.hasMore = false;
+        return;
+      }
+
       this.loadUsers();
     }
+
   }
 
 
   loadUsers() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
-    this.contentHomeService.getUsers(this.page, this.size, this.mode, this.username).subscribe({
+
+
+    if (this.mode === 'SEARCH' && this.username_or_searchWord.trim().length === 0) {
+      this.UsersSubject.next([]);
+      this.hasMore = false;
+      return
+    }
+
+    this.contentHomeService.getUsers(this.page, this.size, this.mode, this.username_or_searchWord).subscribe({
       next: (res: ApiResponse<User[]>) => {
         this.UsersSubject.next([
           ...this.UsersSubject.value,

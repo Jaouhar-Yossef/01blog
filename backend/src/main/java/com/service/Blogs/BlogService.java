@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -226,6 +227,60 @@ public class BlogService {
 
                 List<Blog> blogs = blogRepository.findByCreatedById(user.getId(), pageable);
 
+                List<UUID> blogIds = blogs.stream()
+                                .map(Blog::getId)
+                                .toList();
+
+                Map<UUID, Boolean> savedMap = savedService.getSavedMap(userId, blogIds);
+                Map<UUID, Boolean> likedMap = likeBlogService.getLikedMap(userId, blogIds);
+                Map<UUID, Long> likeCountMap = likeBlogService.getLikeCountMap(blogIds);
+
+                List<BlogResponseDTO> blogDTOs = blogs.stream()
+                                .filter(b -> b.getCreatedBy().getId().equals(userId)
+                                                || !b.getStatus().equals(BlogStatus.HIDDEN))
+                                .map(blog -> {
+                                        boolean saved = savedMap.getOrDefault(blog.getId(), false);
+                                        boolean liked = likedMap.getOrDefault(blog.getId(), false);
+                                        Long numbLike = likeCountMap.getOrDefault(blog.getId(), 0L);
+
+                                        List<MediaDTO> mediaList = blog.getMedias().stream()
+                                                        .map(m -> new MediaDTO(m.getUrl(), m.getFileName(),
+                                                                        m.getType()))
+                                                        .toList();
+
+                                        return new BlogResponseDTO(
+                                                        blog.getId(),
+                                                        blog.getTitle(),
+                                                        blog.getStatus(),
+                                                        blog.getContent(),
+                                                        saved,
+                                                        liked,
+                                                        numbLike,
+                                                        blog.getCreatedBy().getUsername(),
+                                                        blog.getCreatedBy().getImageUrl(),
+                                                        mediaList,
+                                                        blog.getUpdatedAt());
+                                })
+                                .toList();
+
+                return blogDTOs;
+        }
+
+        @Transactional(readOnly = true)
+        public List<BlogResponseDTO> blogsGetterSearch(
+                        UUID userId,
+                        int page,
+                        int size,
+                        String search_word) {
+                if (!userRepository.existsById(userId)) {
+                        throw new RuntimeException("User not found");
+                }
+
+                Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+
+                Page<Blog> blogs = blogRepository
+                                .findByTitleContainingIgnoreCase(search_word, pageable);
+                                
                 List<UUID> blogIds = blogs.stream()
                                 .map(Blog::getId)
                                 .toList();

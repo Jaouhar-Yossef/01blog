@@ -130,7 +130,8 @@ public class BlogController {
     @GetMapping("/blogs")
     public ResponseEntity<Response<List<BlogResponseDTO>>> getBlogs(
             @ModelAttribute @Valid PageableBlogsDTO pageableDTO, BindingResult bindingResult,
-            @RequestParam(required = false) String username, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @RequestParam(required = false) String username, @RequestParam(required = false) String search_word,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (bindingResult.hasErrors()) {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
@@ -145,6 +146,10 @@ public class BlogController {
                     return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOhome));
 
                 case PROFILE:
+                    if (username == null || username.length() == 0) {
+                        return ResponseEntity.badRequest()
+                                .body(new Response<>(false, "There is no username for the profile"));
+                    }
                     List<BlogResponseDTO> blogDTOprofile = blogService.blogsGetterProfile(userId, pageableDTO.getPage(),
                             pageableDTO.getSize(), username);
                     return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOprofile));
@@ -153,14 +158,23 @@ public class BlogController {
                     List<BlogResponseDTO> blogDTOsaved = blogService.blogsGetterSaved(userId, pageableDTO.getPage(),
                             pageableDTO.getSize());
                     return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOsaved));
-
+                case SEARCH:
+                    if (search_word == null || search_word.length() == 0) {
+                        return ResponseEntity.badRequest()
+                                .body(new Response<>(false, "There is no search_word for the search"));
+                    }
+                    List<BlogResponseDTO> blogDTOSearch = blogService.blogsGetterSearch(userId, pageableDTO.getPage(),
+                            pageableDTO.getSize(), search_word);
+                    return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOSearch));
                 default:
                     break;
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }
-        return ResponseEntity.badRequest().body(new Response<>(false, "Bad Request"));
+
+        return ResponseEntity.badRequest().body(new Response<>(false, ""));
+
     }
 
     @GetMapping("/blog/{id_blog}")
@@ -183,7 +197,7 @@ public class BlogController {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
         }
-        
+
         try {
             UUID user_id = userDetails.getUser().getId();
             List<CommentResponseDTO> CommentDTO = this.commentBlogService.getTheComment(user_id, pageableDTO.getPage(),
