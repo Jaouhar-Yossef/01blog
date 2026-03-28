@@ -79,7 +79,7 @@ export class RegisterComponent {
 
 
   checkUserName() {
-    if (this.username.trim().length >= 3) {
+    if (this.username.trim().length >= 3 || this.username.trim().length <= 20 ) {
       this.isusername = true;
     } else {
       this.isusername = false;

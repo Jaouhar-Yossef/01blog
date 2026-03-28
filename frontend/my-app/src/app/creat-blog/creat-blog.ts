@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component , Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
@@ -38,9 +38,6 @@ interface MediaOldFile {
   styleUrls: ['./creat-blog.css'],
 })
 export class CreatBlog {
-
-
-
 
   @Input() mode = '';
 

@@ -1,0 +1,47 @@
+<div class="edit-profile-container">
+    <mat-card class="profile-card">
+
+        <mat-card-header>
+            <mat-card-title>Edit Profile</mat-card-title>
+            <mat-card-subtitle>Update your personal information</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="profile-image">
+                <img [src]="baseUrl + theuser?.imageUrl" alt="Profile Image">
+                <input class="selectmedia-input" type="file" id="media"/>
+            </div>
+
+            <form>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput placeholder="Enter your username" [value]="theuser?.username">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" placeholder="Enter your email" [value]="theuser?.role">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>New Password</mat-label>
+                    <input matInput type="password" placeholder="Enter new password">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput type="password" placeholder="Confirm password">
+                </mat-form-field>
+
+            </form>
+
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-button color="warn">Cancel</button>
+            <button mat-raised-button color="primary">Save Changes</button>
+        </mat-card-actions>
+
+    </mat-card>
+</div>

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileService, UserProfile } from './profile.service';
 import { BlogListComponent } from '../blog-list-component/blog-list-component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse , UserMode } from '../content-home/content-home.service';
+import { ApiResponse, UserMode } from '../content-home/content-home.service';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -97,10 +97,13 @@ export class Profile {
   }
 
   editProfile() {
-    if (this.isUserBanned) {
-      this.showAdminMessage.showAdminMessageUserBanned()
+    const user = this.authService.getUser();
+    if (user != null && user.status === "ADMIN") {
+      this.router.navigate(['/admin/EditProfile']);
       return
     }
+    this.router.navigate(['/home/EditProfile']);
+
   }
 
   ResponseFollow: Observable<ApiResponse<any>> = of(null as any);

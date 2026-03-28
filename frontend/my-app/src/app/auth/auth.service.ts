@@ -14,7 +14,7 @@ interface dataFromBackend {
   tokeString: string;
 }
 
-interface TheUser {
+export interface TheUser {
   username: string;
   imageUrl: string;
   role: string;
@@ -50,6 +50,14 @@ export class AuthService {
 
   getUser(): TheUser | null {
     return this.user();
+  }
+
+  getname(): string {
+    const ii = this.user()?.username;
+    if (ii) {
+      return ii
+    } 
+    return ""
   }
 
 
