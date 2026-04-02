@@ -83,6 +83,7 @@ public class UserService implements UserDetailsService {
 
         UserResponseDTO dto = new UserResponseDTO(
                 user.getUsername(),
+                user.getEmail(),
                 user.getImageUrl(),
                 user.getRole(),
                 user.getStatus(),
@@ -109,6 +110,7 @@ public class UserService implements UserDetailsService {
 
         UserResponseDTO dto = new UserResponseDTO(
                 user.getUsername(),
+                user.getEmail(),
                 user.getImageUrl(),
                 user.getRole(),
                 user.getStatus(),

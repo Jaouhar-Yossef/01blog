@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UserResponseDTO {
     private String username;
+    private String email;
     private String imageUrl;
     private String role;
     private UserStatus status;

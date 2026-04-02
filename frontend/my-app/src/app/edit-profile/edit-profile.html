@@ -9,10 +9,12 @@
         <mat-card-content>
 
             <div class="profile-image">
-                <img [src]="baseUrl + theuser?.imageUrl" alt="Profile Image">
-                <input class="selectmedia-input" type="file" id="media"/>
+                <div class="imgprofile" *ngIf="imgUrl.length > 0">
+                    <img  [src]="imgUrl" alt="Profile Image">
+                    <button class="remove-btn" type="button">✕</button>
+                </div>
+                <input class="selectmedia-input" type="file" id="media" />
             </div>
-
             <form>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Username</mat-label>
@@ -21,7 +23,7 @@
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput type="email" placeholder="Enter your email" [value]="theuser?.role">
+                    <input matInput type="email" placeholder="Enter your email" [value]="theUserEmail">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">

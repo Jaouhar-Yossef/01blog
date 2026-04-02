@@ -8,6 +8,7 @@ import { ApiResponse } from '../content-home/content-home.service';
 
 interface dataFromBackend {
   username: string;
+  email: string;
   imageUrl: string;
   role: string;
   status: string;
@@ -16,6 +17,7 @@ interface dataFromBackend {
 
 export interface TheUser {
   username: string;
+  email: string;
   imageUrl: string;
   role: string;
   status: string;
@@ -74,6 +76,7 @@ export class AuthService {
     localStorage.setItem('token', userdata.tokeString);
     const theUser: TheUser = {
       username: userdata.username,
+      email: userdata.email,
       role: userdata.role,
       status: userdata.status,
       imageUrl: userdata.imageUrl,
@@ -99,7 +102,6 @@ export class AuthService {
     return this.http.post<ApiResponse<dataFromBackend>>(`${this.apiUrl}/login`, data).pipe(
       tap(res => this.saveAuthData(res.anyData)),
       catchError(err => {
-        
         return of({
           success: false,
           message: err.error?.message || 'Login failed',
