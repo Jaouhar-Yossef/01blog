@@ -24,22 +24,22 @@ import { CommonModule } from '@angular/common';
 export class EditProfile {
 
   form!: FormGroup;
-  
+
   file: File | null = null;
 
   emailRegex: RegExp = /^[^\s@]{3,}@[^\s@]{2,}\.[^\s@]{2,}$/;
 
-  name : string | null = ""
-  
-  theuser : TheUser | null = null;
+  name: string | null = ""
+
+  theuser: TheUser | null = null;
 
   baseUrl = 'http://localhost:8080';
 
   imgUrl = "";
   theUserEmail = "";
 
-  
-  constructor(private fb: FormBuilder , private authService: AuthService) {
+
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: ['', [
@@ -53,26 +53,65 @@ export class EditProfile {
 
   ngOnInit() {
     const u = this.authService.getUser();
+
     if (u) {
-      this.theuser = u 
-      this.name = this.theuser?.username || "";
-      if (this.theuser?.imageUrl && this.theuser?.imageUrl.length > 0) {
-        this.imgUrl = this.baseUrl + this.theuser.imageUrl;
+      this.theuser = u;
+
+      this.form.patchValue({
+        username: u.username,
+        email: u.email
+      });
+
+      if (u.imageUrl && u.imageUrl.length > 0) {
+        this.imgUrl = this.baseUrl + u.imageUrl;
       }
-      this.theUserEmail = this.theuser?.email || "";
-      console.log("==> " ,this.theuser?.email);
     }
-    
+  }
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imgUrl = URL.createObjectURL(file);
+      this.file = file;
+    }
+
+
   }
 
-  onFileSelected(event: any) {
-    this.file = event.target.files[0];
+  removeFile() {
+    this.imgUrl = ""
+    this.file = null;
   }
+
 
   submit() {
     if (this.form.invalid) return;
-    const data = this.form.value;
-    console.log(data);
-    console.log(this.file);
+
+    if (this.form.value.password !== this.form.value.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('username', this.form.value.username);
+    formData.append('email', this.form.value.email);
+
+    if (this.form.value.password) {
+      formData.append('password', this.form.value.password);
+    }
+
+    if (this.file) {
+      formData.append('image', this.file);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    this.authService.updateProfile(formData).subscribe({
+      next: (res) => console.log('Success:', res),
+      error: (err) => console.error('Error:', err)
+    });
   }
+
 }

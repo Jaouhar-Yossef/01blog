@@ -50,6 +50,11 @@ export class AuthService {
     }
   }
 
+  updateProfile(data: FormData) {
+    return this.http.put(`${this.apiUrl}/updateProfile`, data);
+  }
+
+
   getUser(): TheUser | null {
     return this.user();
   }
@@ -58,7 +63,7 @@ export class AuthService {
     const ii = this.user()?.username;
     if (ii) {
       return ii
-    } 
+    }
     return ""
   }
 

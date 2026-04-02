@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.dto.Request.LoginRequest;
+import com.dto.Request.UpdateProfile;
 import com.dto.Request.UserRequestDTO;
 import com.dto.Response.UserResponseDTO;
 import com.dto.Response.ValidationDTO;
@@ -20,13 +21,32 @@ import com.util.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
+
+    @PutMapping("/updateProfile")
+    private ResponseEntity<Response<?>> updateProfile(@Valid @ModelAttribute UpdateProfile updateProfile,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
+        try {
+
+            UUID user_id = userDetails.getUser().getId();
+            Response<?> response = userService.updateProfile(user_id , updateProfile);
+            return ResponseEntity.accepted().body(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Response<?>> register(@RequestBody @Valid UserRequestDTO request,

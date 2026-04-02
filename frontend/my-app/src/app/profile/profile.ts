@@ -103,7 +103,6 @@ export class Profile {
       return
     }
     this.router.navigate(['/home/EditProfile']);
-
   }
 
   ResponseFollow: Observable<ApiResponse<any>> = of(null as any);

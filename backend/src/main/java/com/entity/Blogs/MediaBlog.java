@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "blog_media")
-public class MediaBlog {
+public class    MediaBlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

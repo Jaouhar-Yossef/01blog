@@ -10,30 +10,31 @@
 
             <div class="profile-image">
                 <div class="imgprofile" *ngIf="imgUrl.length > 0">
-                    <img  [src]="imgUrl" alt="Profile Image">
-                    <button class="remove-btn" type="button">✕</button>
+                    <img [src]="imgUrl" alt="Profile Image">
+                    <button class="remove-btn" type="button" (click)="removeFile()">✕</button>
                 </div>
-                <input class="selectmedia-input" type="file" id="media" />
+                <input class="selectmedia-input" type="file" id="media" (change)="onFileSelected($event)" />
             </div>
-            <form>
+            <form [formGroup]="form">
+
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Username</mat-label>
-                    <input matInput placeholder="Enter your username" [value]="theuser?.username">
+                    <input matInput formControlName="username">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput type="email" placeholder="Enter your email" [value]="theUserEmail">
+                    <input matInput type="email" formControlName="email">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>New Password</mat-label>
-                    <input matInput type="password" placeholder="Enter new password">
+                    <input matInput type="password" formControlName="password">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Confirm Password</mat-label>
-                    <input matInput type="password" placeholder="Confirm password">
+                    <input matInput type="password" formControlName="confirmPassword">
                 </mat-form-field>
 
             </form>
@@ -42,7 +43,7 @@
 
         <mat-card-actions align="end">
             <button mat-button color="warn">Cancel</button>
-            <button mat-raised-button color="primary">Save Changes</button>
+            <button mat-raised-button color="primary" (click)="submit()">Save Changes</button>
         </mat-card-actions>
 
     </mat-card>

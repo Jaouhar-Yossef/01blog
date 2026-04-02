@@ -23,6 +23,7 @@ export class CardBlogService {
 
 
     liked_Blogs(id_blog: string) {
+      console.log("==> " , id_blog )  
       return this.http.post(
         `${this.apiUrl}/like_blog`,{id_blog});
     }

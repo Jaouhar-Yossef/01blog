@@ -2,6 +2,7 @@ package com.service;
 
 import org.springframework.stereotype.Service;
 
+import com.dto.Request.UpdateProfile;
 import com.dto.Request.UserRequestDTO;
 import com.dto.Response.UserResponseDTO;
 import com.dto.Response.ValidationDTO;
@@ -38,7 +39,20 @@ public class UserService implements UserDetailsService {
     private final BlogRepository blogRepository;
     private final MediaBlogService mediaBlogService;
 
-   @Transactional(readOnly = true) 
+    @Transactional
+    public Response<?> updateProfile(UUID user_id, UpdateProfile updateProfile) {
+
+        System.out.println("==>jj " + updateProfile.getUsername());
+
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUsername(updateProfile.getUsername());
+        userRepository.save(user);
+        return new Response<>(false, "");
+    }
+
+    @Transactional(readOnly = true)
     public ValidationDTO getDataUser(UUID user_id) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -132,7 +146,7 @@ public class UserService implements UserDetailsService {
 
         if (user.getStatus() == UserStatus.ADMIN) {
             throw new RuntimeException("You are the ADMIN!!");
-        }   
+        }
 
         List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
         for (Blog blog : blogs) {
