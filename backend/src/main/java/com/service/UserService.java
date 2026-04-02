@@ -11,11 +11,17 @@ import com.entity.UserDetailsImpl;
 import com.entity.Blogs.Blog;
 import com.repository.UserRepository;
 import com.repository.Blogs.BlogRepository;
+import com.security.ImgProfileValidator;
 import com.service.Blogs.MediaBlogService;
 import com.config.JwtService;
 import com.util.Response;
 import com.util.UserStatus;
 
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,8 +30,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,18 +44,106 @@ public class UserService implements UserDetailsService {
     private final JwtService jwtService;
     private final BlogRepository blogRepository;
     private final MediaBlogService mediaBlogService;
+    private final ImgProfileValidator imgProfileValidator;
 
     @Transactional
-    public Response<?> updateProfile(UUID user_id, UpdateProfile updateProfile) {
-
-        System.out.println("==>jj " + updateProfile.getUsername());
+    public Response<UserResponseDTO> updateProfile(UUID user_id, UpdateProfile updateProfile) {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setUsername(updateProfile.getUsername());
+        // Email update
+        if (!updateProfile.getEmail().equals(user.getEmail())) {
+            if (userRepository.findByEmail(updateProfile.getEmail().toLowerCase()).isPresent()) {
+                return new Response<>(false, "Email already exists", null);
+            }
+            user.setEmail(updateProfile.getEmail());
+        }
+
+        // Username update
+        if (!updateProfile.getUsername().equals(user.getUsername())) {
+            if (userRepository.findByUsername(updateProfile.getUsername().toLowerCase()).isPresent()) {
+                return new Response<>(false, "Username already exists", null);
+            }
+            user.setUsername(updateProfile.getUsername());
+        }
+
+        // Image update
+        if (updateProfile.getImage() != null) {
+            try {
+                updateImgProfile(updateProfile.getImage(), user);
+            } catch (Exception e) {
+                return new Response<>(false, e.getMessage(), null);
+            }
+        }
+
         userRepository.save(user);
-        return new Response<>(false, "");
+
+        String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
+
+        UserResponseDTO dto = new UserResponseDTO(
+                user.getUsername(),
+                user.getEmail(),
+                user.getImageUrl(),
+                user.getRole(),
+                user.getStatus(),
+                token);
+
+        return new Response<>(true, null, dto);
+    }
+
+    private void updateImgProfile(MultipartFile image, User user) throws Exception {
+
+        // 1. Delete old image
+        deleteImgProfile(user);
+
+        // 2. Validate size
+        if (image.getSize() > 2 * 1024 * 1024) {
+            throw new RuntimeException("File too large (max 2MB)");
+        }
+
+        // 3. Validate content
+        imgProfileValidator.validate(image);
+
+        // 4. Safe filename
+        String originalName = image.getOriginalFilename();
+        if (originalName == null) originalName = "file";
+
+        String fileName = UUID.randomUUID() + "_" + originalName;
+        fileName = fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+
+        // 5. Upload directory
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+        Path uploadPath = Paths.get(uploadDir);
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        // 6. Save file
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // 7. Update user
+        user.setImageUrl("/uploads/" + fileName);
+    }
+
+    private void deleteImgProfile(User user) throws Exception {
+
+        if (user.getImageUrl() == null || user.getImageUrl().isEmpty()) {
+            return;
+        }
+
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
+
+        String fileName = Paths.get(user.getImageUrl()).getFileName().toString();
+        File file = new File(uploadDir + fileName);
+
+        if (file.exists() && !file.delete()) {
+            throw new RuntimeException("Failed to delete Image Profile");
+        }
+
+        user.setImageUrl(null);
     }
 
     @Transactional(readOnly = true)
@@ -57,13 +151,11 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        ValidationDTO dto = new ValidationDTO(
+        return new ValidationDTO(
                 user.getUsername(),
                 user.getImageUrl(),
                 user.getRole(),
                 user.getStatus());
-
-        return dto;
     }
 
     @Transactional
@@ -91,6 +183,7 @@ public class UserService implements UserDetailsService {
         user.setRole("USER");
         user.setImageUrl("");
         user.setStatus(UserStatus.ACTIVE);
+
         userRepository.save(user);
 
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
@@ -102,11 +195,13 @@ public class UserService implements UserDetailsService {
                 user.getRole(),
                 user.getStatus(),
                 token);
+
         return new Response<>(true, "User registered successfully", dto);
     }
 
     @Transactional
     public Response<UserResponseDTO> login(String identifier, String password) {
+
         identifier = identifier.toLowerCase();
         Optional<User> userOpt = userRepository.findByEmailOrUsername(identifier, identifier);
 
@@ -129,6 +224,7 @@ public class UserService implements UserDetailsService {
                 user.getRole(),
                 user.getStatus(),
                 token);
+
         return new Response<>(true, "Login successful", dto);
     }
 
@@ -141,6 +237,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public Response<?> deleteAccount(UUID user_id) {
+
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -151,6 +248,12 @@ public class UserService implements UserDetailsService {
         List<Blog> blogs = blogRepository.findByCreatedById(user.getId());
         for (Blog blog : blogs) {
             mediaBlogService.deleteBlogFiles(blog);
+        }
+
+        try {
+            deleteImgProfile(user);
+        } catch (Exception e) {
+            return new Response<>(false, e.getMessage());
         }
 
         userRepository.delete(user);
