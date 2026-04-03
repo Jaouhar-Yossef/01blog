@@ -31,7 +31,6 @@ public class AdminInitializer {
                 admin.setPassword(passwordEncoder.encode(adminPassword));
                 admin.setRole("ADMIN");
                 admin.setStatus(UserStatus.ADMIN);
-                admin.setImageUrl("/uploads/admin.jpeg");
                 userRepository.save(admin);
                 System.out.println("✅ Admin account created");
             }
