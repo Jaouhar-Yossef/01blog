@@ -43,7 +43,7 @@
 
         <mat-card-actions align="end">
             <button mat-button color="warn">Cancel</button>
-            <button mat-raised-button color="primary" (click)="submit()">Save Changes</button>
+            <button mat-raised-button color="primary" (click)="submit()" [disabled]="!isFormChanged()  || form.invalid">Save Changes</button>
         </mat-card-actions>
 
     </mat-card>

@@ -52,7 +52,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Email update
         if (!updateProfile.getEmail().equals(user.getEmail())) {
             if (userRepository.findByEmail(updateProfile.getEmail().toLowerCase()).isPresent()) {
                 return new Response<>(false, "Email already exists", null);
@@ -60,7 +59,6 @@ public class UserService implements UserDetailsService {
             user.setEmail(updateProfile.getEmail());
         }
 
-        // Username update
         if (!updateProfile.getUsername().equals(user.getUsername())) {
             if (userRepository.findByUsername(updateProfile.getUsername().toLowerCase()).isPresent()) {
                 return new Response<>(false, "Username already exists", null);
@@ -68,7 +66,10 @@ public class UserService implements UserDetailsService {
             user.setUsername(updateProfile.getUsername());
         }
 
-        // Image update
+        if (!updateProfile.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updateProfile.getPassword()));
+        }
+
         if (updateProfile.getImage() != null) {
             try {
                 updateImgProfile(updateProfile.getImage(), user);
@@ -94,25 +95,21 @@ public class UserService implements UserDetailsService {
 
     private void updateImgProfile(MultipartFile image, User user) throws Exception {
 
-        // 1. Delete old image
         deleteImgProfile(user);
 
-        // 2. Validate size
         if (image.getSize() > 2 * 1024 * 1024) {
             throw new RuntimeException("File too large (max 2MB)");
         }
 
-        // 3. Validate content
         imgProfileValidator.validate(image);
 
-        // 4. Safe filename
         String originalName = image.getOriginalFilename();
-        if (originalName == null) originalName = "file";
+        if (originalName == null)
+            originalName = "file";
 
         String fileName = UUID.randomUUID() + "_" + originalName;
         fileName = fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
 
-        // 5. Upload directory
         String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
         Path uploadPath = Paths.get(uploadDir);
 
@@ -120,11 +117,9 @@ public class UserService implements UserDetailsService {
             Files.createDirectories(uploadPath);
         }
 
-        // 6. Save file
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // 7. Update user
         user.setImageUrl("/uploads/" + fileName);
     }
 

@@ -10,7 +10,7 @@
 
                 <img class="imgcreatblog" *ngIf="comment.urlString.length > 0" [src]=" baseUrl + comment.urlString"
                     alt="" (click)="goToProfile(comment?.creatorUsername)">
-                <img class="imgcreatblog" *ngIf="comment.urlString.length == 0"
+                <img class="imgcreatblog" *ngIf="!comment.urlString?.length"
                     src="./../../assets/blank-profile-picture-973460_640.webp" alt=""
                     (click)="goToProfile(comment?.creatorUsername)">
 

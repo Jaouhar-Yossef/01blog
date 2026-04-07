@@ -22,7 +22,7 @@ export class AdminComponent {
   show: boolean = false;
 
 
-  constructor(private router: Router , private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
 
   goToHome() {
@@ -30,13 +30,18 @@ export class AdminComponent {
   }
 
 
+  DashBoard() {
+    this.router.navigate(['/admin']);
+  }
+
+
   goToMyProfile() {
-    const user = this.authService.getUser(); 
-    if (!user || user == null ) {
+    const user = this.authService.getUser();
+    if (!user || user == null) {
       return
     }
     if (user.role == "ADMIN") {
-      this.router.navigate(['/admin/profile/' , user.username]);
+      this.router.navigate(['/admin/profile/', user.username]);
     }
   }
 }

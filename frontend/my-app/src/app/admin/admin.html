@@ -3,7 +3,7 @@
   <aside class="sidebar" [class.showSidebar]="show" (mouseenter)="show = true" (mouseleave)="show = false">
 
     <div class="logo">
-      <button class="btnnor">
+      <button class="btnnor" (click)="DashBoard()">
         <img *ngIf="!show" class="homeset" src="./../../assets/sidebaropen.png" alt="">
         <img *ngIf="show" class="homeset" src="./../../assets/sidebarclose.png" alt="">
         <span [class.showtext]="show"> DashBoard </span>

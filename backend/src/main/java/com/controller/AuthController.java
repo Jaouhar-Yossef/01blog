@@ -42,7 +42,11 @@ public class AuthController {
 
             UUID user_id = userDetails.getUser().getId();
             Response<?> response = userService.updateProfile(user_id , updateProfile);
-            return ResponseEntity.accepted().body(response);
+            if (response.isSuccess()) {
+                return ResponseEntity.accepted().body(response);
+            } else {
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
         }

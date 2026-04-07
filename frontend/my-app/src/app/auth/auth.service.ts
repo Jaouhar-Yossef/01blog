@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ApiResponse } from '../content-home/content-home.service';
 
 
-interface dataFromBackend {
+export interface dataFromBackend {
   username: string;
   email: string;
   imageUrl: string;
@@ -50,8 +50,8 @@ export class AuthService {
     }
   }
 
-  updateProfile(data: FormData) {
-    return this.http.put(`${this.apiUrl}/updateProfile`, data);
+  updateProfile(data: FormData): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateProfile`, data);
   }
 
 
@@ -75,9 +75,7 @@ export class AuthService {
     return;
   }
 
-
-
-  saveAuthData(userdata: dataFromBackend) {
+  saveAuthData(userdata: any) {
     localStorage.setItem('token', userdata.tokeString);
     const theUser: TheUser = {
       username: userdata.username,
@@ -97,7 +95,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
     this.loggedIn.set(false);
     this.user.set(null);
     this.router.navigate(['/']);

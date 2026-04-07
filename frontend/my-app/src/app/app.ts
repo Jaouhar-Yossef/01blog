@@ -21,7 +21,7 @@ export class App {
       const user = localStorage.getItem('user');
       if (token && user) {
         this.auth.loggedIn.set(true);
-        this.auth.user = JSON.parse(user);
+        this.auth.user.set(JSON.parse(user)); 
       }
     }
   }

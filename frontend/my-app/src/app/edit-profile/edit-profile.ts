@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService, TheUser } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { ErrorService } from '../error/error.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -39,7 +41,12 @@ export class EditProfile {
   theUserEmail = "";
 
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  originalFormValue: any = null;
+  originalImageUrl: string = '';
+
+
+  constructor(private fb: FormBuilder, private authService: AuthService,
+    private router: Router, private errorService: ErrorService) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: ['', [
@@ -62,11 +69,15 @@ export class EditProfile {
         email: u.email
       });
 
+      this.originalFormValue = this.form.value;
+
       if (u.imageUrl && u.imageUrl.length > 0) {
         this.imgUrl = this.baseUrl + u.imageUrl;
+        this.originalImageUrl = this.imgUrl;
       }
     }
   }
+
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -83,11 +94,69 @@ export class EditProfile {
   }
 
 
+  isFormChanged(): boolean {
+    const current = this.form.value;
+
+    const formChanged =
+      current.username !== this.originalFormValue.username ||
+      current.email !== this.originalFormValue.email ||
+      !!current.password ||
+      !!current.confirmPassword;
+
+
+      if (this.file != null) {
+        return  true;
+      }
+
+    return formChanged ;
+  }
+
+  isPasswordValid(): boolean {
+    const password = this.form.value.password;
+    const confirm = this.form.value.confirmPassword;
+
+    // allow empty (no change)
+    if (!password && !confirm) return true;
+
+    return password === confirm;
+  }
+
+  isImageValid(): boolean {
+    if (!this.file) return true;
+
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
+
+    return allowedTypes.includes(this.file.type);
+  }
+
+  isImageSafe(): boolean {
+    if (!this.file) return true;
+
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
+
+    const isTypeValid = allowedTypes.includes(this.file.type);
+    const isSizeValid = this.file.size < 5 * 1024 * 1024; // 5MB
+
+    return isTypeValid && isSizeValid;
+  }
+
   submit() {
     if (this.form.invalid) return;
 
-    if (this.form.value.password !== this.form.value.confirmPassword) {
-      alert("Passwords do not match");
+    if (this.form.invalid) return;
+
+    if (!this.isFormChanged()) {
+      this.errorService.showMessage('No changes detected', 'error');
+      return;
+    }
+
+    if (!this.isPasswordValid()) {
+      this.errorService.showMessage('Passwords do not match', 'error');
+      return;
+    }
+
+    if (!this.isImageValid()) {
+      this.errorService.showMessage('Invalid image type (png/jpeg/webp)', 'error');
       return;
     }
 
@@ -104,14 +173,17 @@ export class EditProfile {
       formData.append('image', this.file);
     }
 
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     this.authService.updateProfile(formData).subscribe({
-      next: (res) => console.log('Success:', res),
-      error: (err) => console.error('Error:', err)
+      next: (res) => {
+        this.authService.saveAuthData(res.anyData);
+        this.errorService.showMessage(`Edit profile successfully (:`, 'success');
+        this.router.navigate([`home`]);
+      },
+      error: (err) => {
+        this.errorService.showMessage(`Error edit profile ):`, 'error');
+      }
     });
   }
+
 
 }
