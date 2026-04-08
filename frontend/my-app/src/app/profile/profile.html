@@ -1,6 +1,6 @@
-<div class="profile">
+<div class="profile" >
     <ng-container *ngIf="profile$ | async as profile">
-        <div class="nameAndEdit">
+        <div class="nameAndEdit" [class]="modeClass">
             <div class="imgProfile">
 
                 <img class="imguser" *ngIf="profile.imageUrl?.length > 0; else nophotouser"

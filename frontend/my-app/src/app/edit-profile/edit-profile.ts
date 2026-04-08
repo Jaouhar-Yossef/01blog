@@ -60,7 +60,8 @@ export class EditProfile {
 
   ngOnInit() {
     const u = this.authService.getUser();
-
+    
+    console.log("==> dsf => ", u)
     if (u) {
       this.theuser = u;
 

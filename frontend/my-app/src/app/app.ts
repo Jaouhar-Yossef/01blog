@@ -18,10 +18,9 @@ export class App {
     if (isPlatformBrowser(this.platformId)) {
 
       const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
-      if (token && user) {
+    
+      if (token) {
         this.auth.loggedIn.set(true);
-        this.auth.user.set(JSON.parse(user)); 
       }
     }
   }

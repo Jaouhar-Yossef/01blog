@@ -79,7 +79,6 @@ public class UserService implements UserDetailsService {
         }
 
         userRepository.save(user);
-
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
         UserResponseDTO dto = new UserResponseDTO(
@@ -150,7 +149,8 @@ public class UserService implements UserDetailsService {
                 user.getUsername(),
                 user.getImageUrl(),
                 user.getRole(),
-                user.getStatus());
+                user.getStatus(),
+                user.getEmail());
     }
 
     @Transactional

@@ -32,6 +32,7 @@ export class Profile {
   isBlogs = true;
   isUserBanned = false;
 
+  mode = ""
 
   baseUrl = 'http://localhost:8080';
 
@@ -63,6 +64,13 @@ export class Profile {
   }
 
   ngOnInit() {
+
+
+    const user = this.authService.getUser();
+    if (user != null && user.status === "ADMIN") {
+      this.mode = "ADMIN"
+    }
+
     this.route.paramMap.subscribe((params) => {
       const username = params.get('name');
       if (!username) {
@@ -97,8 +105,8 @@ export class Profile {
   }
 
   editProfile() {
-    const user = this.authService.getUser();
-    if (user != null && user.status === "ADMIN") {
+   
+    if (this.mode && this.mode === "ADMIN") {
       this.router.navigate(['/admin/EditProfile']);
       return
     }
@@ -149,5 +157,11 @@ export class Profile {
         this.errorService.showMessage(`Error Follow ):`, 'error');
       }
     })
+  }
+
+
+
+  get modeClass(): string {
+    return this.mode + '-style';
   }
 }

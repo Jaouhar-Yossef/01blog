@@ -15,4 +15,5 @@ public class ValidationDTO {
     private String imageUrl;
     private String role;
     private UserStatus status;
+    private String email;
 }

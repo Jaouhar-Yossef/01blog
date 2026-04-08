@@ -13,6 +13,7 @@ import com.dto.Request.UpdateProfile;
 import com.dto.Request.UserRequestDTO;
 import com.dto.Response.UserResponseDTO;
 import com.dto.Response.ValidationDTO;
+import com.entity.User;
 import com.entity.UserDetailsImpl;
 import com.service.UserService;
 
@@ -28,6 +29,26 @@ public class AuthController {
 
     private final UserService userService;
 
+    @GetMapping("/getTheDataUser")
+    private ResponseEntity<Response<?>> getDataProfile(
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        try {
+
+            User user = userDetails.getUser();
+            UserResponseDTO Profile = new UserResponseDTO(
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getImageUrl(),
+                    user.getRole(),
+                    user.getStatus(),
+                    "");
+            return ResponseEntity.badRequest().body(new Response<>(true, "" , Profile));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
     @PutMapping("/updateProfile")
     private ResponseEntity<Response<?>> updateProfile(@Valid @ModelAttribute UpdateProfile updateProfile,
             BindingResult bindingResult,
@@ -41,7 +62,7 @@ public class AuthController {
         try {
 
             UUID user_id = userDetails.getUser().getId();
-            Response<?> response = userService.updateProfile(user_id , updateProfile);
+            Response<?> response = userService.updateProfile(user_id, updateProfile);
             if (response.isSuccess()) {
                 return ResponseEntity.accepted().body(response);
             } else {

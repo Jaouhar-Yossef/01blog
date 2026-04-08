@@ -59,15 +59,6 @@ export class AuthService {
     return this.user();
   }
 
-  getname(): string {
-    const ii = this.user()?.username;
-    if (ii) {
-      return ii
-    }
-    return ""
-  }
-
-
   setUser(dataUser: TheUser) {
     if (dataUser != null) {
       this.user.set(dataUser);
@@ -77,6 +68,7 @@ export class AuthService {
 
   saveAuthData(userdata: any) {
     localStorage.setItem('token', userdata.tokeString);
+
     const theUser: TheUser = {
       username: userdata.username,
       email: userdata.email,
