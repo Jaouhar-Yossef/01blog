@@ -52,6 +52,9 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (user.getStatus().equals(UserStatus.BANNED)) {
+            throw new RuntimeException("This User banned from this platform.");
+        }
         if (!updateProfile.getEmail().equals(user.getEmail())) {
             if (userRepository.findByEmail(updateProfile.getEmail().toLowerCase()).isPresent()) {
                 return new Response<>(false, "Email already exists", null);
@@ -66,7 +69,11 @@ public class UserService implements UserDetailsService {
             user.setUsername(updateProfile.getUsername());
         }
 
-        if (!updateProfile.getPassword().isEmpty()) {
+        if (updateProfile.getPassword() != null && updateProfile.getPassword() != "") {
+
+            if (updateProfile.getPassword().length() < 6) {
+                throw new RuntimeException("Password must be at least 6 characters");
+            }
             user.setPassword(passwordEncoder.encode(updateProfile.getPassword()));
         }
 
@@ -96,8 +103,8 @@ public class UserService implements UserDetailsService {
 
         deleteImgProfile(user);
 
-        if (image.getSize() > 2 * 1024 * 1024) {
-            throw new RuntimeException("File too large (max 2MB)");
+        if (image.getSize() > 20 * 1024 * 1024) {
+            throw new RuntimeException("File too large (max 20MB)");
         }
 
         imgProfileValidator.validate(image);

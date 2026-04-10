@@ -29,6 +29,10 @@ public class NotificationsService {
 
   @Transactional
   public void ReadAllNotifications(List<Long> notificationIds, UUID userId) {
+
+    if (userId == null) {
+      throw new RuntimeException("User ID cannot be null");
+    }
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
     notificationsRepository.markAllAsRead(notificationIds, userId);
@@ -36,6 +40,9 @@ public class NotificationsService {
 
   @Transactional
   public void ReadNotification(Long id_Ntf, UUID userId) {
+    if (userId == null) {
+      throw new RuntimeException("User ID cannot be null");
+    }
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -50,6 +57,9 @@ public class NotificationsService {
 
   @Transactional
   public void DeleteAllNotifications(List<Long> notificationIds, UUID userId) {
+    if (userId == null) {
+      throw new RuntimeException("User ID cannot be null");
+    }
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
     notificationsRepository.deleteAllThoseNotifications(notificationIds, userId);
@@ -57,6 +67,9 @@ public class NotificationsService {
 
   @Transactional
   public Response<?> deleteNotification(Long Id, UUID userId) {
+    if (userId == null) {
+      throw new RuntimeException("User ID cannot be null");
+    }
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -64,7 +77,6 @@ public class NotificationsService {
     if (existing.isEmpty()) {
       throw new RuntimeException("This notification not found");
     }
-
     notificationsRepository.deleteById(Id);
 
     return new Response<>(true, "notification deleted");
@@ -72,6 +84,10 @@ public class NotificationsService {
 
   @Transactional(readOnly = true)
   public Response<?> getNotifications(UUID userId, int page, int size) {
+    if (userId == null) {
+      throw new RuntimeException("User ID cannot be null");
+    }
+
     userRepository.findById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
 

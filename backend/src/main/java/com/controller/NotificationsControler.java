@@ -92,8 +92,8 @@ public class NotificationsControler {
     @DeleteMapping("/deleteOneNotification/{Id}")
     private ResponseEntity<Response<?>> deleteOneNotification(@PathVariable Long Id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                
         try {
-
             UUID userId = userDetails.getUser().getId();
             Response<?> data = notificationsService.deleteNotification(Id, userId);
             return ResponseEntity.accepted().body(data);

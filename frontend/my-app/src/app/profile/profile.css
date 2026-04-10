@@ -20,11 +20,6 @@
 
 }
 
-
-.ADMIN-style {
-    height: 24%;
-}
-
 .imgProfile {
     width: 25%;
     height: 100%;
@@ -36,7 +31,7 @@
     width: 130px;
     height: 130px;
     border-radius: 80px;
-    object-fit: cover;
+    object-fit: contain;
     filter: brightness(1.2) contrast(1.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }

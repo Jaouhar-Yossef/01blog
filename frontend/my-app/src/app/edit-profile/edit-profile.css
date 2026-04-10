@@ -29,8 +29,10 @@
   object-fit: contain;
 }
 
-.imgprofile img{
+.imgprofile img {
   object-fit: contain;
+  width: 130px;
+  height: 130px;
 }
 
 .profile-image img {
@@ -103,6 +105,7 @@
   background-color: #e8f5e9;
   border-color: #2e7d32;
 }
+
 .selectmedia-input:focus {
   outline: none;
   border-color: #1b5e20;

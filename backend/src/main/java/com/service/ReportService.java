@@ -33,8 +33,14 @@ public class ReportService {
 
     @Transactional
     public void creatReport(UUID user_id, ReportRequest reportRequest) throws Exception {
+
+        if (user_id == null) {
+            throw new RuntimeException("User ID cannot be null");
+        }
+
         User userReq = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         if (userReq.getStatus() == UserStatus.BANNED) {
             throw new RuntimeException("You are banned from this platform.");
         }
@@ -53,8 +59,10 @@ public class ReportService {
         report.setReason(reportRequest.getReason());
         report.setStatus("PENDING");
 
-        if (reportRequest.getReportedBlog() != null) {
-            Blog blogReported = blogRepository.findById(reportRequest.getReportedBlog())
+        UUID blogid = reportRequest.getReportedBlog();
+
+        if (blogid != null) {
+            Blog blogReported = blogRepository.findById(blogid)
                     .orElseThrow(() -> new RuntimeException("Blog not found"));
             if (blogReported.getStatus() == BlogStatus.HIDDEN) {
                 throw new RuntimeException("This blog has been hidden by the admin.");

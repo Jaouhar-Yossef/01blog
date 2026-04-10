@@ -40,10 +40,13 @@ export class EditProfile {
   imgUrl = "";
   theUserEmail = "";
 
+  hasImg = false;
+
 
   originalFormValue: any = null;
   originalImageUrl: string = '';
 
+  imageRemoved = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
     private router: Router, private errorService: ErrorService) {
@@ -60,8 +63,7 @@ export class EditProfile {
 
   ngOnInit() {
     const u = this.authService.getUser();
-    
-    console.log("==> dsf => ", u)
+
     if (u) {
       this.theuser = u;
 
@@ -75,6 +77,7 @@ export class EditProfile {
       if (u.imageUrl && u.imageUrl.length > 0) {
         this.imgUrl = this.baseUrl + u.imageUrl;
         this.originalImageUrl = this.imgUrl;
+        this.hasImg = true;
       }
     }
   }
@@ -88,14 +91,13 @@ export class EditProfile {
 
 
   }
-
   removeFile() {
-    this.imgUrl = ""
+    this.imgUrl = "";
     this.file = null;
+    this.imageRemoved = true;
   }
-
-
   isFormChanged(): boolean {
+
     const current = this.form.value;
 
     const formChanged =
@@ -104,14 +106,13 @@ export class EditProfile {
       !!current.password ||
       !!current.confirmPassword;
 
+    const imageChanged =
+      this.file !== null || this.imageRemoved;
 
-      if (this.file != null) {
-        return  true;
-      }
-
-    return formChanged ;
+    return formChanged || imageChanged;
   }
 
+  
   isPasswordValid(): boolean {
     const password = this.form.value.password;
     const confirm = this.form.value.confirmPassword;
@@ -144,8 +145,7 @@ export class EditProfile {
   submit() {
     if (this.form.invalid) return;
 
-    if (this.form.invalid) return;
-
+    // ❌ NEW: check no changes
     if (!this.isFormChanged()) {
       this.errorService.showMessage('No changes detected', 'error');
       return;
@@ -185,6 +185,5 @@ export class EditProfile {
       }
     });
   }
-
 
 }

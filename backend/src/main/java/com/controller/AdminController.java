@@ -77,7 +77,7 @@ public class AdminController {
     }
 
     @PutMapping("updateReportStatus")
-    private ResponseEntity<Response<?>> updateReportStatus(@RequestBody UpdateReportsRequest request) {
+    private ResponseEntity<Response<?>> updateReportStatus(@Valid @RequestBody UpdateReportsRequest request) {
         try {
             Response<?> data = adminService.updateReport(request);
             return ResponseEntity.accepted().body(data);
@@ -93,8 +93,8 @@ public class AdminController {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
         }
+
         try {
-            
             Response<?> data = adminService.updateStatusBlog(request);
             return ResponseEntity.accepted().body(data);
         } catch (Exception e) {
@@ -103,7 +103,13 @@ public class AdminController {
     }
 
     @PutMapping("updateUserStatus")
-    private ResponseEntity<Response<?>> updateUserStatus(@RequestBody UpdateStatusBlogRequest request) {
+    private ResponseEntity<Response<?>> updateUserStatus(@Valid @RequestBody UpdateStatusBlogRequest request,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
         try {
             Response<?> data = adminService.updateStatusUser(request);
             return ResponseEntity.accepted().body(data);
@@ -113,7 +119,14 @@ public class AdminController {
     }
 
     @DeleteMapping("deleteReport")
-    private ResponseEntity<Response<?>> deleteReport(@RequestBody UpdateReportsRequest request) {
+    private ResponseEntity<Response<?>> deleteReport(@Valid @RequestBody UpdateReportsRequest request,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
         try {
             boolean data = adminService.deleteReport(request);
             return ResponseEntity.accepted().body(new Response<>(data, ""));

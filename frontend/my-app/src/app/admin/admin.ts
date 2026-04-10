@@ -21,27 +21,13 @@ import { AuthService } from '../auth/auth.service';
 export class AdminComponent {
   show: boolean = false;
 
-
   constructor(private router: Router, private authService: AuthService) { }
-
 
   goToHome() {
     this.router.navigate(['/home']);
   }
 
-
   DashBoard() {
     this.router.navigate(['/admin']);
-  }
-
-
-  goToMyProfile() {
-    const user = this.authService.getUser();
-    if (!user || user == null) {
-      return
-    }
-    if (user.role == "ADMIN") {
-      this.router.navigate(['/admin/profile/', user.username]);
-    }
   }
 }

@@ -105,11 +105,6 @@ export class Profile {
   }
 
   editProfile() {
-   
-    if (this.mode && this.mode === "ADMIN") {
-      this.router.navigate(['/admin/EditProfile']);
-      return
-    }
     this.router.navigate(['/home/EditProfile']);
   }
 

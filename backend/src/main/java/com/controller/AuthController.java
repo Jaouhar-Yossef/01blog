@@ -60,7 +60,6 @@ public class AuthController {
         }
 
         try {
-
             UUID user_id = userDetails.getUser().getId();
             Response<?> response = userService.updateProfile(user_id, updateProfile);
             if (response.isSuccess()) {

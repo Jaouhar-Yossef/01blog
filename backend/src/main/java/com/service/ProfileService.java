@@ -29,6 +29,9 @@ public class ProfileService {
 
         @Transactional(readOnly = true)
         public ProfileResponseDTO getProfileData(String username, UUID user_id) throws Exception {
+                if (user_id == null) {
+                        throw new RuntimeException("User ID cannot be null");
+                }
                 User userReq = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -64,6 +67,10 @@ public class ProfileService {
 
         @Transactional
         public void followed(String username, UUID user_id) throws Exception {
+
+                if (user_id == null) {
+                        throw new RuntimeException("User ID cannot be null");
+                }
 
                 User follower = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -105,6 +112,9 @@ public class ProfileService {
         @Transactional
         public void unFollow(String username, UUID userId) {
 
+                if (userId == null) {
+                        throw new RuntimeException("User ID cannot be null");
+                }
                 User follower = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
