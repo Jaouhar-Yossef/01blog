@@ -1,99 +1,101 @@
-📝 01Blog
+01Blog
 
-A fullstack social blogging platform where students can share their learning journey, interact with posts, follow other users, and report inappropriate content.
-Built with Spring Boot (backend) and Angular (frontend).
+A modern social blogging platform for students to share knowledge, connect, and grow together.
 
-🚀 Overview
+🌐 Overview
 
-01Blog is a social platform designed for students to:
+01Blog is a fullstack social blogging platform designed for students to document their learning journey, share posts, interact with others, and build a learning community.
+
+Users can:
 
 Publish learning posts (text + media)
-Follow other users
-Like and comment on posts
-Receive notifications
+Follow other students
+Like & comment on posts
 Report inappropriate content
-Admins can moderate users, posts, and reports
-🧱 Tech Stack
+Receive notifications
 
-Backend
+Admins manage the platform through a powerful moderation dashboard.
+
+🚀 Tech Stack
+🖥 Backend
 Java 17+
 Spring Boot
 Spring Security (JWT)
 Spring Data JPA
 PostgreSQL / MySQL
-Frontend
+🎨 Frontend
 Angular
 Angular Material
-RxJS
 TypeScript
-Tools
+RxJS
+🛠 Tools
 Maven
 Node.js
 Git & GitHub
-
-📦 Features
-
-🔐 Authentication
-
+✨ Features
+🔐 Authentication & Security
 User registration & login
 JWT-based authentication
 Role-based access control (USER / ADMIN)
-Secure endpoints using Spring Security
+Secure endpoints with Spring Security
+Password encryption (BCrypt)
 👤 User System
-Public user profiles ("blocks")
-View other users' profiles
-Subscribe / unsubscribe to users
-Get notified of new posts from followed users
-📝 Posts
+Public user profiles (“Blocks”)
+Follow / unfollow users
+View user activity & posts
+Subscription-based feed system
+📝 Posts System
 Create / edit / delete posts
-Text + image/video support
-Timestamp on each post
-Like and comment system
-Real-time or refresh-based updates
+Support for images & videos
+Post timestamps & previews
+Like system ❤️
+Comment system 💬
 🔔 Notifications
 Notifications for:
-New posts from subscribed users
-Interactions (likes/comments)
+New posts from followed users
+Likes & comments
 Mark as read/unread
 Notification center UI
-🚨 Reports System
+🚨 Reporting System
+
 Users can report:
+
 Posts
-Profiles
+User profiles
+
 Each report includes:
-Reason
-Timestamp
+
+Reason (required)
+Timestamp (auto-generated)
+
 Reports are:
-Stored in database
+
+Stored securely in database
 Visible only to admins
+Used for moderation actions
 🛡️ Admin Panel
 
-Admins can:
+Admin can:
 
 View all users
 Manage posts (delete / hide)
-Handle reports
-Ban or delete users
+Review reports
+Ban / unblock users
 Moderate platform content
 
-All admin routes are protected with role-based access.
+All admin routes are protected by role-based authorization.
 
 🎨 Frontend Features
 Responsive UI (Angular Material / Bootstrap)
 Home feed (subscribed users posts)
-Profile pages
+User profile pages
 Post creation with media preview
-Like & comment system
-Report modal/dialog
-Admin dashboard UI
-🔐 Security
-JWT authentication
-Password encryption (BCrypt)
-Role-based route protection
-Admin-only endpoints secured
-🗄️ Database
+Report modal with confirmation dialog
+Admin dashboard interface
+Clean and modern UX
+🗄️ Database Design
 
-Relational database structure includes:
+Core entities:
 
 Users
 Posts
@@ -102,56 +104,68 @@ Likes
 Subscriptions
 Reports
 Notifications
+🔐 Security Architecture
+JWT authentication flow
+Secure route guards (frontend)
+Role-based access control (backend)
+Protected admin endpoints
+Input validation on both sides
 📁 Project Structure
 Backend
 backend/
  ├── controllers/
  ├── services/
  ├── repositories/
- ├── models/
+ ├── entities/
+ ├── dto/
  ├── security/
  └── config/
 Frontend
 frontend/
  ├── src/app/
- │   ├── components/
+ │   ├── core/
+ │   ├── shared/
+ │   ├── features/
  │   ├── services/
- │   ├── pages/
- │   └── guards/
-⚙️ Installation & Run
-Backend (Spring Boot)
+ │   ├── guards/
+ │   └── components/
+⚙️ Setup & Installation
+🔧 Backend (Spring Boot)
 cd backend
 ./mvnw spring-boot:run
-Frontend (Angular)
+💻 Frontend (Angular)
 cd frontend
 npm install
 ng serve
-🌐 Environment Variables
+🌍 Environment Configuration
 Backend (application.properties)
 spring.datasource.url=jdbc:postgresql://localhost:5432/01blog
-spring.datasource.username=your_user
+spring.datasource.username=your_username
 spring.datasource.password=your_password
 
 jwt.secret=your_secret_key
-🧪 Testing (optional)
-./mvnw test
-📌 Constraints
+📌 Project Rules
 JWT authentication required
 Role-based access control enforced
-No code generation tools (JHipster not allowed)
-Media stored locally or cloud (AWS S3 optional)
+No code generation tools (JHipster forbidden)
 All admin routes protected
+Media stored locally or cloud (optional AWS S3)
 🌟 Bonus Features
-WebSockets (real-time notifications/comments)
+Real-time notifications (WebSockets)
 Infinite scroll feed
-Dark mode
+Dark mode UI 🌙
 Admin analytics dashboard
 Markdown support for posts
-
+Activity tracking system
 👨‍💻 Author
 
-Built by Jaouhar Youssef as a fullstack learning project 🚀
+Youssef
+Fullstack Developer in training 🚀
+Built as part of a learning journey in Spring Boot + Angular
 
+📄 License
+
+Educational project – free to use for learning purposes.
 
 
 # Docker commands
