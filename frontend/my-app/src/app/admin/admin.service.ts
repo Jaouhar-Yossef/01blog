@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { ApiResponse } from "../content-home/content-home.service";
+import { log } from "console";
 
 
 
@@ -36,7 +37,9 @@ export class AdminService {
 
 
     updateReportStatus(report_id: number, status: string): Observable<ApiResponse<any>> {
-        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateReportStatus`, { report_id, status });
+        console.log("zzzzzzzzz=>",status);
+        
+        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateReportStatus`, { report_id, status: status.toUpperCase() });
     }
 
 

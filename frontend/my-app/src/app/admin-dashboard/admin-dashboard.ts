@@ -175,16 +175,22 @@ export class AdminDashboard {
   changeStatusUser(row: any, status: string) {
     if (this.loadingUsers) return
     if (row.status == status) return
-    this.adminService.updateUserStatus(row.username, status).subscribe({
-      next: res => {
-        if (res.success) {
-          this.errorService.showMessage('update successfully!', 'success');
-        }
-      },
-      error: err => {
-        this.errorService.showMessage('Error update :(', 'error');
+
+    this.confirmService.open(
+      'Are you sure you want to change status User?',
+      () => {
+        this.adminService.updateUserStatus(row.username, status).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('update successfully!', 'success');
+            }
+          },
+          error: err => {
+            this.errorService.showMessage('Error update :(', 'error');
+          }
+        });
       }
-    });
+    );
 
     row.status = status
   }
@@ -192,16 +198,23 @@ export class AdminDashboard {
   changeStatusBlog(row: any, status: string) {
     if (this.loadingBlogs) return
     if (row.status == status) return
-    this.adminService.updateBlogStatus(row.blogId, status).subscribe({
-      next: res => {
-        if (res.success) {
-          this.errorService.showMessage('update successfully ', 'success');
-        }
-      },
-      error: err => {
-        this.errorService.showMessage('Error update', 'error');
+
+    this.confirmService.open(
+      'Are you sure you want to change status Blog?',
+      () => {
+        this.adminService.updateBlogStatus(row.blogId, status).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('update successfully ', 'success');
+            }
+          },
+          error: err => {
+            this.errorService.showMessage('Error update', 'error');
+          }
+        });
+
       }
-    });
+    );
 
     row.status = status
   }
@@ -210,16 +223,27 @@ export class AdminDashboard {
   changeStatus(row: any, status: string) {
     if (this.loadingReports) return
     if (row.status == status) return
-    this.adminService.updateReportStatus(row.id, status).subscribe({
-      next: res => {
-        if (res.success) {
-          this.errorService.showMessage('update successfully!', 'success');
-        }
-      },
-      error: err => {
-        this.errorService.showMessage('Error update', 'error');
+
+    this.confirmService.open(
+      'Are you sure you want to change status report?',
+      () => {
+
+        this.adminService.updateReportStatus(row.id, status).subscribe({
+          next: res => {
+            if (res.success) {
+              this.errorService.showMessage('update successfully!', 'success');
+            }
+          },
+          error: err => {
+            console.log("===> ", err)
+            this.errorService.showMessage('Error update', 'error');
+          }
+        });
       }
-    });
+    );
+
+
+
     row.status = status;
   }
 

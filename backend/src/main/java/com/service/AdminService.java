@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dto.Request.DeleteReportsRequest;
 import com.dto.Request.UpdateBlogsStatusRequestDTO;
 import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
@@ -52,8 +53,7 @@ public class AdminService {
         if (report.getStatus().equals(request.getStatus())) {
             return new Response<>(true, "you don't change anything ??");
         }
-        if (request.getStatus() != "DECLAINED" || request.getStatus() != "RESOLVED"
-                || request.getStatus() != "PENDING") {
+        if (!(request.getStatus().equals("DECLAINED") || request.getStatus().equals("RESOLVED") || request.getStatus().equals("PENDING"))) {
             throw new RuntimeException("status Report is PENDING or RESOLVED or DECLAINED");
         }
         report.setStatus(request.getStatus());
@@ -127,7 +127,7 @@ public class AdminService {
     }
 
     @Transactional
-    public boolean deleteReport(UpdateReportsRequest request) {
+    public boolean deleteReport(DeleteReportsRequest request) {
         Report r = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
         reportRepository.delete(r);

@@ -70,7 +70,6 @@ export class Users implements OnInit {
     if (this.loading || !username || username.length <= 0) return;
     this.loading = true;
 
-
     const dialogRef = this.dialog.open(Report, {
       width: '700px',
       data: {}
@@ -78,29 +77,35 @@ export class Users implements OnInit {
 
 
     dialogRef.afterClosed().subscribe(reason => {
-      if (reason) {
-        if (reason.length > 200) {
-          this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
-        }
-
-        if (reason.length < 5) {
-          this.errorService.showMessage('wa  cherif', 'error')
-        }
-
-        this.contentHomeService.ReportUserOrBlog('USER', reason, username).subscribe({
-          next: res => {
-            if (res.success) {
-              this.errorService.showMessage('Report Created', 'success')
-            }
-          },
-          error: () => {
-            this.errorService.showMessage('error report User ):', 'error')
-          }
-        });
-
+      if (!reason) {
+        this.loading = false;
+        return
       }
-    });
+      if (reason.length > 200) {
+        this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
+        this.loading = false;
+        return
+      }
 
+      if (reason.length < 5) {
+        this.errorService.showMessage('wa  cherif', 'error')
+        this.loading = false;
+        return
+      }
+
+      this.contentHomeService.ReportUserOrBlog('USER', reason, username).subscribe({
+        next: res => {
+          if (res.success) {
+            this.errorService.showMessage('Report Created', 'success')
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.errorService.showMessage('error report User ):', 'error')
+          this.loading = false;
+        }
+      });
+    });
     this.loading = false;
   }
 
@@ -110,7 +115,7 @@ export class Users implements OnInit {
       changes['mode'] ||
       changes['username_or_searchWord']
     ) {
-      
+
       this.page = 0;
       this.hasMore = true;
       this.UsersSubject.next([]);

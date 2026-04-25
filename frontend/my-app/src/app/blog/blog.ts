@@ -79,7 +79,7 @@ export class Blog {
   constructor(private errorService: ErrorService, private confirmService: ServiceConfirmation,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
     private contentHomeService: ContentHomeService, private dialog: MatDialog,
-    private showAdminMessage : ShowAdminMessage
+    private showAdminMessage: ShowAdminMessage
   ) { }
 
 
@@ -96,7 +96,7 @@ export class Blog {
     this.id_blog = id;
 
     this.contentHomeService.getBlogById(id).subscribe({
-      next: (res : ApiResponse<any>) => {
+      next: (res: ApiResponse<any>) => {
         this.blogSubject.next(res.anyData),
           this.theMedia = this.blogSubject.value.media
         this.creat_at = TimeAgo(this.blogSubject.value.creat_at);
@@ -156,7 +156,7 @@ export class Blog {
     }
 
     if (this.isblogishedden) {
-        this.showAdminMessage.showAdminMessageBlogHidden()
+      this.showAdminMessage.showAdminMessageBlogHidden()
       return;
     }
     this.router.navigate([`home/blog/${id}/edit`]);
@@ -177,29 +177,35 @@ export class Blog {
     });
 
     dialogRef.afterClosed().subscribe(reason => {
-      if (reason) {
-        if (reason.length > 200) {
-          this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
-        }
-        if (reason.length < 5) {
-          this.errorService.showMessage(' ', 'error')
-        }
-
-        this.contentHomeService.ReportUserOrBlog('BLOG', reason, id).subscribe({
-          next: res => {
-            if (res.success) {
-              this.errorService.showMessage('Report Created', 'success')
-            }
-          },
-          error: () => {
-            this.errorService.showMessage('error report blog ):', 'error')
-          }
-        });
+      if (!reason) {
+        this.loading = false;
+        return
       }
+      if (reason.length > 200) {
+        this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
+        this.loading = false;
+        return
+      }
+      if (reason.length < 5) {
+        this.errorService.showMessage(' ', 'error')
+        this.loading = false;
+        return
+      }
+
+      this.contentHomeService.ReportUserOrBlog('BLOG', reason, id).subscribe({
+        next: res => {
+          if (res.success) {
+            this.errorService.showMessage('Report Created', 'success')
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.errorService.showMessage('error report blog ):', 'error')
+          this.loading = false;
+        }
+      });
+
     });
-
-
-
     this.loading = false;
   }
 

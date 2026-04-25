@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dto.Request.DeleteReportsRequest;
 import com.dto.Request.UpdateBlogsStatusRequestDTO;
 import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
@@ -44,7 +45,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("getAnalytics")
+    @GetMapping("/getAnalytics")
     private ResponseEntity<Response<?>> analytics() {
         try {
             Response<?> data = adminService.getAnalytics();
@@ -54,7 +55,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("getUsers")
+    @GetMapping("/getUsers")
     private ResponseEntity<Response<?>> getAllUsers(@RequestParam int page,
             @RequestParam int size) {
         try {
@@ -65,7 +66,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("getBlogs")
+    @GetMapping("/getBlogs")
     private ResponseEntity<Response<?>> getAllBlogs(@RequestParam int page,
             @RequestParam int size) {
         try {
@@ -76,8 +77,9 @@ public class AdminController {
         }
     }
 
-    @PutMapping("updateReportStatus")
+    @PutMapping("/updateReportStatus")
     private ResponseEntity<Response<?>> updateReportStatus(@Valid @RequestBody UpdateReportsRequest request) {
+        System.out.println("==>jj");
         try {
             Response<?> data = adminService.updateReport(request);
             return ResponseEntity.accepted().body(data);
@@ -86,7 +88,7 @@ public class AdminController {
         }
     }
 
-    @PutMapping("updateBlogStatus")
+    @PutMapping("/updateBlogStatus")
     private ResponseEntity<Response<?>> updateBlogStatus(@Valid @RequestBody UpdateBlogsStatusRequestDTO request,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -119,9 +121,8 @@ public class AdminController {
     }
 
     @DeleteMapping("deleteReport")
-    private ResponseEntity<Response<?>> deleteReport(@Valid @RequestBody UpdateReportsRequest request,
+    private ResponseEntity<Response<?>> deleteReport(@Valid @RequestBody DeleteReportsRequest request,
             BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
             return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));

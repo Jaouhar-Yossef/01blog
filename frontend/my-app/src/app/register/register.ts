@@ -160,6 +160,8 @@ export class RegisterComponent {
         this.router.navigate(['/home']);
       },
       error: (err) => {
+        console.log("eeeee====>",err);
+        
         this.isLoading = false;
         this.errorService.showMessage(err.error.message, 'error');
       }

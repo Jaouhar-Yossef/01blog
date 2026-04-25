@@ -4,11 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UpdateReportsRequest {
-    
+public class DeleteReportsRequest {
+
     @NotNull(message = "report_id must not be null")
     private Long report_id;
-
-    @NotNull(message = "status must not be null")
-    private String status;
 }
