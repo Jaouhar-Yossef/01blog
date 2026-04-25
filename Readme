@@ -1,3 +1,159 @@
+📝 01Blog
+
+A fullstack social blogging platform where students can share their learning journey, interact with posts, follow other users, and report inappropriate content.
+Built with Spring Boot (backend) and Angular (frontend).
+
+🚀 Overview
+
+01Blog is a social platform designed for students to:
+
+Publish learning posts (text + media)
+Follow other users
+Like and comment on posts
+Receive notifications
+Report inappropriate content
+Admins can moderate users, posts, and reports
+🧱 Tech Stack
+
+Backend
+Java 17+
+Spring Boot
+Spring Security (JWT)
+Spring Data JPA
+PostgreSQL / MySQL
+Frontend
+Angular
+Angular Material
+RxJS
+TypeScript
+Tools
+Maven
+Node.js
+Git & GitHub
+
+📦 Features
+
+🔐 Authentication
+
+User registration & login
+JWT-based authentication
+Role-based access control (USER / ADMIN)
+Secure endpoints using Spring Security
+👤 User System
+Public user profiles ("blocks")
+View other users' profiles
+Subscribe / unsubscribe to users
+Get notified of new posts from followed users
+📝 Posts
+Create / edit / delete posts
+Text + image/video support
+Timestamp on each post
+Like and comment system
+Real-time or refresh-based updates
+🔔 Notifications
+Notifications for:
+New posts from subscribed users
+Interactions (likes/comments)
+Mark as read/unread
+Notification center UI
+🚨 Reports System
+Users can report:
+Posts
+Profiles
+Each report includes:
+Reason
+Timestamp
+Reports are:
+Stored in database
+Visible only to admins
+🛡️ Admin Panel
+
+Admins can:
+
+View all users
+Manage posts (delete / hide)
+Handle reports
+Ban or delete users
+Moderate platform content
+
+All admin routes are protected with role-based access.
+
+🎨 Frontend Features
+Responsive UI (Angular Material / Bootstrap)
+Home feed (subscribed users posts)
+Profile pages
+Post creation with media preview
+Like & comment system
+Report modal/dialog
+Admin dashboard UI
+🔐 Security
+JWT authentication
+Password encryption (BCrypt)
+Role-based route protection
+Admin-only endpoints secured
+🗄️ Database
+
+Relational database structure includes:
+
+Users
+Posts
+Comments
+Likes
+Subscriptions
+Reports
+Notifications
+📁 Project Structure
+Backend
+backend/
+ ├── controllers/
+ ├── services/
+ ├── repositories/
+ ├── models/
+ ├── security/
+ └── config/
+Frontend
+frontend/
+ ├── src/app/
+ │   ├── components/
+ │   ├── services/
+ │   ├── pages/
+ │   └── guards/
+⚙️ Installation & Run
+Backend (Spring Boot)
+cd backend
+./mvnw spring-boot:run
+Frontend (Angular)
+cd frontend
+npm install
+ng serve
+🌐 Environment Variables
+Backend (application.properties)
+spring.datasource.url=jdbc:postgresql://localhost:5432/01blog
+spring.datasource.username=your_user
+spring.datasource.password=your_password
+
+jwt.secret=your_secret_key
+🧪 Testing (optional)
+./mvnw test
+📌 Constraints
+JWT authentication required
+Role-based access control enforced
+No code generation tools (JHipster not allowed)
+Media stored locally or cloud (AWS S3 optional)
+All admin routes protected
+🌟 Bonus Features
+WebSockets (real-time notifications/comments)
+Infinite scroll feed
+Dark mode
+Admin analytics dashboard
+Markdown support for posts
+
+👨‍💻 Author
+
+Built by Jaouhar Youssef as a fullstack learning project 🚀
+
+
+
 # Docker commands
 
 
