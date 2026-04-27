@@ -13,7 +13,6 @@ export class BlogUiService {
 
   openBlog(blog: any) {
     this.selectedBlog.set(blog);
-    console.log("==> " , blog )
   }
 
   closeBlog() {

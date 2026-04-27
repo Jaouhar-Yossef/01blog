@@ -68,10 +68,10 @@ export class Comment {
     private route: ActivatedRoute, private router: Router,
     private contentHomeService: ContentHomeService,
     private authService: AuthService,
-    private showAdminMessage : ShowAdminMessage,
+    private showAdminMessage: ShowAdminMessage,
     private fb: FormBuilder) {
     this.commentForm = this.fb.group({
-      comment: ['', [Validators.required, Validators.maxLength(300) , Validators.minLength(1)]]
+      comment: ['', [Validators.required, Validators.maxLength(300), Validators.minLength(1)]]
     });
   }
 
@@ -117,6 +117,7 @@ export class Comment {
   }
 
   submitComment() {
+
     if (this.isUserBanned) {
       this.showAdminMessage.showAdminMessageUserBanned()
       this.commentForm.reset();
@@ -159,6 +160,7 @@ export class Comment {
 
       this.commentForm.reset();
     }
+    this.loading = false;
   }
 
   trackById(_: number, comment: any) {

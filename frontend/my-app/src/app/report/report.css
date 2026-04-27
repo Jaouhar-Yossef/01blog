@@ -1,60 +1,99 @@
 ::ng-deep .mat-mdc-dialog-surface {
-    background-color: rgb(22, 0, 51) !important;
+  background-color: #160033;
+  color: white;
+  border-radius: 12px;
 }
 
-.mat-mdc-dialog-title {
-    background-color: rgb(22, 0, 51) !important;
-    color: white !important;
+.dialog-title {
+  color: white;
+  font-weight: 600;
 }
 
 .reason {
-    margin-top: 5px;
-    background-color: rgb(22, 0, 51) !important;
+  margin-top: 10px;
 }
 
 .insidereason {
-    width: 100%;
+  width: 100%;
 }
 
-
-.plan {
-    color: gray !important;
+::ng-deep .mat-mdc-form-field-label {
+  color: #aaa !important;
 }
 
-
-.textarip {
-    color: white !important;
-    border: none !important;
-    resize: none;
-    padding: 5px;
-    cursor: pointer;
+::ng-deep textarea.mat-mdc-input-element {
+  color: white !important;
+  caret-color: white;
 }
 
-
-
-.textarip::-webkit-scrollbar {
-  width: 4px;
+::ng-deep .mdc-notched-outline__leading,
+::ng-deep .mdc-notched-outline__notch,
+::ng-deep .mdc-notched-outline__trailing {
+  border-color: #444 !important;
 }
 
-.textarip::-webkit-scrollbar-track {
+::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #00bcd4 !important;
+}
+
+::ng-deep .mat-mdc-form-field-error {
+  color: #ff6b6b !important;
+}
+
+.dialog-actions {
+  padding: 16px;
+}
+
+button {
+  margin-left: 8px;
+}
+
+.btn-cancel {
+  color: #ccc;
+}
+
+.btn-back {
+  color: #00bcd4;
+}
+
+.confirm-box {
+  background: #1f0047;
+  padding: 14px;
   border-radius: 10px;
 }
 
-.textarip::-webkit-scrollbar-thumb {
-  background: rgb(1, 94, 122);
+.confirm-warning {
+  color: #ff6b6b;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.confirm-section {
+  margin-top: 10px;
+}
+
+.confirm-label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.confirm-reason {
+  margin-top: 6px;
+  background: #0d0024;
+  padding: 10px;
+  border-radius: 6px;
+  color: #ddd;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+textarea::-webkit-scrollbar {
+  width: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #00bcd4;
   border-radius: 10px;
-
-  border: 2px solid transparent;
-}
-
-.textarip::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.9);
-}
-
-
-
-
-.mat-mdc-dialog-actions {
-    background-color: rgb(22, 0, 51) !important;
-
 }

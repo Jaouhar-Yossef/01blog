@@ -1,34 +1,69 @@
-<h2 mat-dialog-title>Create Report</h2>
-
-
+<h2 mat-dialog-title class="dialog-title">Create Report</h2>
 
 <form [formGroup]="reasonForm">
-    <mat-dialog-content class="reason">
-        <mat-form-field class="insidereason" appearance="outline">
-            <mat-label class="plan">Reason</mat-label>
 
-            <textarea matInput class="textarip" rows="4" maxlength="200" formControlName="reason">
-      </textarea>
+  <mat-dialog-content class="reason">
 
-            <mat-error *ngIf="reasonForm.get('reason')?.hasError('required')">
-                Reason is required
-            </mat-error>
+    <!-- ✍️ INPUT STEP -->
+    <ng-container *ngIf="!confirming">
+      <mat-form-field class="insidereason" appearance="outline">
+        <mat-label>Reason</mat-label>
 
-            <mat-error *ngIf="reasonForm.get('reason')?.hasError('minlength')">
-                Reason must be at least 5 characters
-            </mat-error>
+        <textarea
+          matInput
+          rows="4"
+          maxlength="200"
+          formControlName="reason">
+        </textarea>
 
-            <mat-error *ngIf="reasonForm.get('reason')?.hasError('maxlength')">
-                Reason cannot exceed 200 characters
-            </mat-error>
+        <mat-error *ngIf="reasonForm.get('reason')?.hasError('required')">
+          Reason is required
+        </mat-error>
 
-        </mat-form-field>
-    </mat-dialog-content>
+        <mat-error *ngIf="reasonForm.get('reason')?.hasError('minlength')">
+          Reason must be at least 5 characters
+        </mat-error>
+
+        <mat-error *ngIf="reasonForm.get('reason')?.hasError('maxlength')">
+          Reason cannot exceed 200 characters
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container *ngIf="confirming">
+      <div class="confirm-box">
+
+        <div class="confirm-warning">
+          ⚠️ Are you sure you want to submit this report?
+        </div>
+
+        <div class="confirm-section">
+          <span class="confirm-label">Your reason:</span>
+
+          <div class="confirm-reason">
+            {{ reasonForm.value.reason }}
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+  </mat-dialog-content>
 
 </form>
 
+<mat-dialog-actions align="end" class="dialog-actions">
 
-<mat-dialog-actions>
-    <button mat-button (click)="close()">Cancel</button>
-    <button mat-raised-button color="warn" (click)="submit()">Report</button>
+  <button mat-button class="btn-cancel" (click)="close()">
+    Cancel
+  </button>
+
+  <button *ngIf="confirming" mat-button class="btn-back" (click)="back()">
+    Back
+  </button>
+
+  <button mat-raised-button color="warn" (click)="submit()">
+    {{ confirming ? 'Confirm Report' : 'Report' }}
+  </button>
+
 </mat-dialog-actions>

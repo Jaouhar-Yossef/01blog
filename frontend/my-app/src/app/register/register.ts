@@ -159,9 +159,7 @@ export class RegisterComponent {
         this.authService.saveAuthData(res.anyData);
         this.router.navigate(['/home']);
       },
-      error: (err) => {
-        console.log("eeeee====>",err);
-        
+      error: (err) => {        
         this.isLoading = false;
         this.errorService.showMessage(err.error.message, 'error');
       }

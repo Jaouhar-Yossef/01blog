@@ -112,12 +112,11 @@ export class EditProfile {
     return formChanged || imageChanged;
   }
 
-  
+
   isPasswordValid(): boolean {
     const password = this.form.value.password;
     const confirm = this.form.value.confirmPassword;
 
-    // allow empty (no change)
     if (!password && !confirm) return true;
 
     return password === confirm;
@@ -137,15 +136,25 @@ export class EditProfile {
     const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
 
     const isTypeValid = allowedTypes.includes(this.file.type);
-    const isSizeValid = this.file.size < 5 * 1024 * 1024; // 5MB
+    const isSizeValid = this.file.size < 5 * 1024 * 1024;
 
     return isTypeValid && isSizeValid;
+  }
+
+
+
+  CancelEdit() {
+    const user = this.authService.getUser();
+    if (user != null) {
+      this.router.navigate([`/home/profile`, user.username]);
+      return
+    }
+    this.router.navigate([`/home`]);
   }
 
   submit() {
     if (this.form.invalid) return;
 
-    // ❌ NEW: check no changes
     if (!this.isFormChanged()) {
       this.errorService.showMessage('No changes detected', 'error');
       return;

@@ -79,7 +79,6 @@ public class AdminController {
 
     @PutMapping("/updateReportStatus")
     private ResponseEntity<Response<?>> updateReportStatus(@Valid @RequestBody UpdateReportsRequest request) {
-        System.out.println("==>jj");
         try {
             Response<?> data = adminService.updateReport(request);
             return ResponseEntity.accepted().body(data);

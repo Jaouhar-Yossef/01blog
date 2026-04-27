@@ -42,7 +42,7 @@
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-button color="warn">Cancel</button>
+            <button mat-button color="warn" (click)="CancelEdit()">Cancel</button>
             <button mat-raised-button color="primary" (click)="submit()" [disabled]="!isFormChanged() || !isPasswordValid()">Save Changes</button>
         </mat-card-actions>
 

@@ -82,6 +82,7 @@ export class Setting {
     if (user != null) {
       this.router.navigate([`/home/profile`, user.username]);
     }
+    
   }
 
 

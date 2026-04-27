@@ -9,12 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-report-dialog',
   standalone: true,
   imports: [
-    CommonModule,       
+    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
@@ -25,12 +24,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './report.html',
   styleUrls: ['./report.css']
 })
-
-
-
 export class Report {
 
   reasonForm: FormGroup;
+
+  confirming = false;
 
   constructor(
     public dialogRef: MatDialogRef<Report>,
@@ -53,7 +51,16 @@ export class Report {
   submit() {
     if (this.reasonForm.invalid) return;
 
+    if (!this.confirming) {
+      this.confirming = true;
+      return;
+    }
+
     const reason = this.reasonForm.value.reason.trim();
     this.dialogRef.close(reason);
+  }
+
+  back() {
+    this.confirming = false;
   }
 }

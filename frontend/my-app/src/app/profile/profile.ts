@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileService, UserProfile } from './profile.service';
 import { BlogListComponent } from '../blog-list-component/blog-list-component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiResponse, UserMode } from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService, UserMode } from '../content-home/content-home.service';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Users } from '../users/users';
 import { AuthService } from '../auth/auth.service';
 import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Report } from '../report/report';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +40,8 @@ export class Profile {
 
   constructor(
     private profileService: ProfileService,
+    private contentHomeService: ContentHomeService,
+    private dialog: MatDialog,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -47,6 +51,55 @@ export class Profile {
   }
 
   usersMode: UserMode = 'FOLLOWERS';
+
+
+
+  ReportUser(username: string) {
+    if (this.isUserBanned) {
+      this.showAdminMessage.showAdminMessageUserBanned()
+      return
+    }
+    if (this.loading || !username || username.length <= 0) return;
+    this.loading = true;
+
+    const dialogRef = this.dialog.open(Report, {
+      width: '700px',
+      data: {}
+    });
+
+
+    dialogRef.afterClosed().subscribe(reason => {
+      if (!reason) {
+        this.loading = false;
+        return
+      }
+      if (reason.length > 200) {
+        this.errorService.showMessage('Reason cannot exceed 200 characters', 'error')
+        this.loading = false;
+        return
+      }
+
+      if (reason.length < 5) {
+        this.errorService.showMessage('wa  cherif', 'error')
+        this.loading = false;
+        return
+      }
+
+      this.contentHomeService.ReportUserOrBlog('USER', reason, username).subscribe({
+        next: res => {
+          if (res.success) {
+            this.errorService.showMessage('Report Created', 'success')
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.errorService.showMessage('error report User ):', 'error')
+          this.loading = false;
+        }
+      });
+    });
+    this.loading = false;
+  }
 
   showFollowers() {
 

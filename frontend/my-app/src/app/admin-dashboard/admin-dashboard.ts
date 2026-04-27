@@ -235,7 +235,6 @@ export class AdminDashboard {
             }
           },
           error: err => {
-            console.log("===> ", err)
             this.errorService.showMessage('Error update', 'error');
           }
         });

@@ -76,12 +76,7 @@
             clear
           </button>
 
-          <button mat-raised-button class="Cancel" *ngIf="!ModeEditblog" routerLink="/home">
-            <mat-icon class="tohome"> home </mat-icon>
-            Go Back
-          </button>
-
-          <button mat-raised-button class="Cancel" (click)="goback()" *ngIf="ModeEditblog">
+          <button mat-raised-button class="Cancel" (click)="goback()">
             <mat-icon class="tohome"> home </mat-icon>
             Go Back
           </button>

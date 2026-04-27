@@ -1,4 +1,4 @@
-import { Component , Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorService } from '../error/error.service';
@@ -12,7 +12,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { MgsAdhmin } from '../mgs-admin/mgs-admin';
 import { MatDialog } from '@angular/material/dialog';
-
 
 type MediaType = 'IMAGE' | 'VIDEO';
 
@@ -28,12 +27,18 @@ interface MediaOldFile {
   url: string;
 }
 
-
 @Component({
   selector: 'app-creat-blog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule,
-    MatIconModule, FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
   templateUrl: './creat-blog.html',
   styleUrls: ['./creat-blog.css'],
 })
@@ -45,48 +50,70 @@ export class CreatBlog {
 
   baseUrl = 'http://localhost:8080';
 
-
   form: FormGroup;
   files: MediaFile[] = [];
   imgsandvids: MediaOldFile[] = [];
 
   isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private errorService: ErrorService, private router: Router, private contentHomeService: ContentHomeService,
-    private dialog: MatDialog, private authService: AuthService, private blogService: ContentHomeService, private route: ActivatedRoute) {
+  blog_id: string = '';
+
+  originalTitle = '';
+  originalContent = '';
+  originalMedia: MediaOldFile[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private errorService: ErrorService,
+    private router: Router,
+    private contentHomeService: ContentHomeService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private blogService: ContentHomeService,
+    private route: ActivatedRoute
+  ) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000)]],
     });
   }
 
-  blog_id: string = '';
-
   ngOnInit() {
     const view = this.route.snapshot.data['view'];
+
     if (view == "editBlog") {
       this.ModeEditblog = true;
+
       const id = this.route.snapshot.paramMap.get('id');
       if (!id) return;
+
       this.blog_id = id;
+
       this.contentHomeService.getBlogById(id).subscribe({
         next: res => {
+          const data = res.anyData;
+
           this.form.patchValue({
-            title: res.anyData.title,
-            content: res.anyData.content,
+            title: data.title,
+            content: data.content,
           });
-          this.imgsandvids = res.anyData.media;
+
+          this.imgsandvids = data.media;
+
+          // ✅ SAVE ORIGINAL STATE
+          this.originalTitle = data.title;
+          this.originalContent = data.content;
+          this.originalMedia = [...data.media];
         },
         error: () => {
-          this.errorService.showMessage('Cannot load blog ):', 'error')
+          this.errorService.showMessage('Cannot load blog ):', 'error');
         }
       });
     }
-
   }
 
   showAdminMessage() {
-    const dialogRef = this.dialog.open(MgsAdhmin, {
+    this.dialog.open(MgsAdhmin, {
       width: '400px',
       disableClose: true,
       data: { message: "You are banned from this platform. You can't perform any actions." }
@@ -94,11 +121,22 @@ export class CreatBlog {
   }
 
   goback() {
-
+    window.history.back();
   }
 
-  onCancel() {
+  onCancel() { }
 
+  hasChanges(): boolean {
+
+    const titleChanged = this.form.value.title !== this.originalTitle;
+    const contentChanged = this.form.value.content !== this.originalContent;
+
+    const newFilesAdded = this.files.length > 0;
+
+    const mediaRemoved =
+      this.imgsandvids.length !== this.originalMedia.length;
+
+    return titleChanged || contentChanged || newFilesAdded || mediaRemoved;
   }
 
   onFileSelected(event: Event) {
@@ -113,19 +151,19 @@ export class CreatBlog {
       return;
     }
 
-
     selectedFiles.forEach(file => {
       if (file.size > 20 * 1024 * 1024) {
         this.errorService.showMessage('Video too large (max 20MB)', 'warning');
-        return
+        return;
       }
+
       const type: MediaType = file.type.startsWith('image') ? 'IMAGE' : 'VIDEO';
+
       this.files.push({
         file,
         url: URL.createObjectURL(file),
         type,
       });
-
     });
 
     input.value = '';
@@ -151,24 +189,27 @@ export class CreatBlog {
 
     this.isSubmitting = true;
 
-    const formData = new FormData();
-    formData.append('title', this.form.value.title);
-    formData.append('content', this.form.value.content);
-
-    for (let i = 0; i < this.files.length; i++) {
-      const file = this.files[i];
-      if (file.file.size > 20 * 1024 * 1024) {
-        this.errorService.showMessage('Video too large (max 20MB)', 'warning');
-        continue;
-      }
-      formData.append('files', file.file);
-    }
     if (this.ModeEditblog) {
 
-      for (let i = 0; i < this.imgsandvids.length; i++) {
-        const file = this.imgsandvids[i];
+      if (!this.hasChanges()) {
+        this.errorService.showMessage('No changes detected', 'warning');
+        this.isSubmitting = false;
+        return;
+      }
+
+      const formData = new FormData();
+
+      formData.append('title', this.form.value.title);
+      formData.append('content', this.form.value.content);
+
+      for (const file of this.files) {
+        formData.append('files', file.file);
+      }
+
+      for (const file of this.imgsandvids) {
         formData.append('filesupdated', file.url);
       }
+
       formData.append('idBlog_update', this.blog_id);
 
       this.blogService.updateBlogs(formData).subscribe({
@@ -178,11 +219,12 @@ export class CreatBlog {
             this.isSubmitting = false;
             return;
           }
-          this.errorService.showMessage('Blog updated (:', 'success');
+
+          this.errorService.showMessage('Blog updated :)', 'success');
           this.clearForm();
           this.isSubmitting = false;
         },
-        error: err => {
+        error: () => {
           this.errorService.showMessage('Error updateBlog blog', 'error');
           this.isSubmitting = false;
         }
@@ -191,6 +233,15 @@ export class CreatBlog {
       return;
     }
 
+ 
+    const formData = new FormData();
+
+    formData.append('title', this.form.value.title);
+    formData.append('content', this.form.value.content);
+
+    for (const file of this.files) {
+      formData.append('files', file.file);
+    }
 
     this.blogService.creatBlogs(formData).subscribe({
       next: res => {
@@ -199,11 +250,12 @@ export class CreatBlog {
           this.isSubmitting = false;
           return;
         }
-        this.errorService.showMessage('Blog Created (:', 'success');
+
+        this.errorService.showMessage('Blog Created :)', 'success');
         this.clearForm();
         this.isSubmitting = false;
       },
-      error: err => {
+      error: () => {
         this.errorService.showMessage('Error creating blog', 'error');
         this.isSubmitting = false;
       }
@@ -212,10 +264,10 @@ export class CreatBlog {
 
   clearForm() {
     this.form.reset();
+
     this.files.forEach(file => URL.revokeObjectURL(file.url));
     this.files = [];
-    this.imgsandvids = [];
-    this.onCancel()
-  }
 
+    this.imgsandvids = [];
+  }
 }
