@@ -75,6 +75,7 @@ export class BlogListComponent implements OnInit {
       const view = this.route.snapshot.data['view'];
       this.mode = view === 'SAVED' ? 'SAVED' : 'HOME';
     }
+      this.loadNextPage() 
   }
 
   loadNextPage() {

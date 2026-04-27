@@ -1,4 +1,4 @@
-<div class="profile" >
+<div class="profile">
     <ng-container *ngIf="profile$ | async as profile">
         <div class="nameAndEdit" [class]="modeClass">
             <div class="imgProfile">
@@ -12,9 +12,23 @@
 
             </div>
             <div class="nameAndInfo">
-                <p>
+
+                <p class="imgres">
+                    <img class="imguser22" *ngIf="profile.imageUrl?.length > 0; else nophotouser"
+                        [src]=" baseUrl  + profile.imageUrl" alt="">
+
+                    <ng-template #nophotouser>
+                        <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
+                    </ng-template>
+
+
                     {{ profile.username }}
                 </p>
+
+                <p class="namefirst">
+                    {{ profile.username }}
+                </p>
+
                 <div class="nmbInfo">
                     <button matButton="tonal" (click)="showBlogs()" class="btnmatang"> {{ profile.blogsCont }} Blogs
                     </button>
@@ -26,7 +40,8 @@
                     </button>
                 </div>
                 <div *ngIf="profile.yourProfile" class="FollowOrReport">
-                    <button type="button" (click)="editProfile()" matButton="tonal" class="btn">Edit Profile <mat-icon>edit_note</mat-icon>
+                    <button type="button" (click)="editProfile()" matButton="tonal" class="btn">Edit Profile
+                        <mat-icon>edit_note</mat-icon>
                     </button>
                 </div>
 
@@ -37,14 +52,14 @@
 
                     <button *ngIf="!profile.following && profile.follower" type="button" matButton="tonal" class="btn"
                         (click)="FollowTheUser('followBack')">
-                        follow-back  <mat-icon>person_add</mat-icon> </button>
+                        follow-back <mat-icon>person_add</mat-icon> </button>
 
 
                     <button *ngIf="profile.following" type="button" matButton="tonal" class="btn following"
                         (click)="FollowTheUser('unfollow')">
                         Following <mat-icon>how_to_reg</mat-icon> </button>
 
-                    <button type="button" matButton="tonal" class="btnn" (click)="ReportUser(profile.username)" >
+                    <button type="button" matButton="tonal" class="btnn" (click)="ReportUser(profile.username)">
                         Report <mat-icon>policy</mat-icon> </button>
                 </div>
             </div>

@@ -143,3 +143,116 @@ button:hover {
 .nomedia-item:hover {
   transform: scale(1.1);
 }
+
+
+/* ── Tablets (max 768px) ── */
+@media (max-width: 768px) {
+    .post-card {
+        height: auto;
+        flex-direction: column-reverse;
+        margin-top: 15px;
+    }
+
+    .post-content {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .post-imgs {
+        width: 100%;
+        height: 180px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .media-item {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .titleBlog {
+        font-size: 18px;
+    }
+
+    .discription {
+        font-size: 13px;
+    }
+
+    .dateAt {
+        gap: 10%;
+    }
+
+    .post-content-bottom {
+        gap: 15px;
+    }
+}
+
+/* ── Mobile (max 480px) ── */
+@media (max-width: 480px) {
+    .post-card {
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .post-content {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .post-imgs {
+        height: 150px;
+    }
+
+    .media-item {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .nomedia-item {
+        width: 60px;
+        height: 60px;
+    }
+
+    .titleBlog {
+        font-size: 16px;
+    }
+
+    .discription {
+        font-size: 12px;
+    }
+
+    .read-more {
+        font-size: 12px;
+    }
+
+    .read-more:hover {
+        font-size: 13px;
+    }
+
+    .creat-by {
+        font-size: 12px;
+    }
+
+    .dateAt {
+        font-size: 12px;
+        gap: 5%;
+        flex-wrap: wrap;
+    }
+
+    .post-content-bottom {
+        height: auto;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding-top: 4px;
+    }
+
+    .like-btn img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .saved mat-icon {
+        font-size: 20px;
+    }
+}

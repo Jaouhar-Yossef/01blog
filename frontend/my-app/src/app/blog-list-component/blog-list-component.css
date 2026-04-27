@@ -119,3 +119,109 @@
 .commentuserbbottom span {
   margin-left: 10px;
 }
+
+
+@media (max-width: 768px) {
+  .post-list {
+    height: 90vh;
+    margin-top: 10px;
+  }
+
+  .PROFILE-style {
+    height: 55vh;
+  }
+
+  .SEARCH-style {
+    height: 60vh;
+  }
+
+  .blogsforuser {
+    width: 75%;
+  }
+
+  .PROFILE-blogsforuser-style,
+  .SEARCH-blogsforuser-style {
+    width: 90%;
+  }
+
+  .noContent {
+    width: 80%;
+  }
+
+  .noContent-text {
+    font-size: 20px;
+  }
+
+  .noContent-subtext {
+    font-size: 17px;
+  }
+
+  .post-header {
+    width: 80%;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-list {
+    height: 90vh;
+    margin-top: 6px;
+  }
+
+  .PROFILE-style {
+    height: 50vh;
+  }
+
+  .SEARCH-style {
+    height: 55vh;
+  }
+
+  .blogsforuser {
+    width: 95%;
+  }
+
+  .PROFILE-blogsforuser-style,
+  .SEARCH-blogsforuser-style {
+    width: 98%;
+  }
+
+  .noContent {
+    width: 95%;
+    gap: 5%;
+  }
+
+  .noContent-img {
+    width: 65%;
+    height: auto;
+  }
+
+  .noContent-text {
+    font-size: 17px;
+    text-align: center;
+  }
+
+  .noContent-subtext {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .post-header {
+    width: 95%;
+    font-size: 14px;
+    height: auto;
+    padding-bottom: 6px;
+  }
+
+  .commentuserbbottom {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .commentuserbbottom span {
+    margin-left: 6px;
+  }
+
+  .observer {
+    margin-bottom: 20px;
+  }
+}

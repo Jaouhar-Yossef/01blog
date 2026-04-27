@@ -162,7 +162,6 @@ export class Users implements OnInit {
       },
 
       error: err => {
-        console.log(err)
         this.errorService.showMessage('Error getting Users ):', 'error');
         this.loading = false
       }

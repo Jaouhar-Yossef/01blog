@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../content-home/content-home.service';
+import { ErrorService } from '../error/error.service';
 
 
 export interface dataFromBackend {
@@ -29,7 +30,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
 
   loggedIn = signal<boolean>(false);
-
+  private errorService = inject(ErrorService);
 
   getloggedIn() {
     return this.loggedIn();
@@ -132,7 +133,7 @@ export class AuthService {
         return true;
       }),
       catchError((err) => {
-        console.error('Auth error:  ', err);
+        this.errorService.showMessage(`Auth error: ${err}`, 'error');
         this.user.set(null);
         this.loggedIn.set(false);
         return of(false);

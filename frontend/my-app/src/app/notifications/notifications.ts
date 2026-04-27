@@ -45,7 +45,6 @@ export class Notifications {
     this.loading = true;
     this.contentHomeService.getNotification(this.page, this.size).subscribe({
       next: (res: ApiResponse<Notification[]>) => {
-        console.log("=> ", res)
         this.NotificationSubject.next([
           ...this.NotificationSubject.value,
           ...res.anyData

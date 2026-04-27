@@ -36,9 +36,7 @@ export class AdminService {
     }
 
 
-    updateReportStatus(report_id: number, status: string): Observable<ApiResponse<any>> {
-        console.log("zzzzzzzzz=>",status);
-        
+    updateReportStatus(report_id: number, status: string): Observable<ApiResponse<any>> {        
         return this.http.put<ApiResponse<any>>(`${this.apiUrl}/updateReportStatus`, { report_id, status: status.toUpperCase() });
     }
 
