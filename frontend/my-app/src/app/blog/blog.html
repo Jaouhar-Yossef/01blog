@@ -1,16 +1,13 @@
 <div class="blogdiv">
-<ng-container *ngIf="blog$ | async as blog" >
+  <ng-container *ngIf="blog$ | async as blog">
     <div class="blog">
       <div class="blogheader">
         <div class="blogheader_left">
 
           <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
-            *ngIf="blog.createdByUrlimg?.length > 0; else nophotouser" [src]="baseUrl +  blog?.createdByUrlimg" alt="">
+            [src]="getUserImage(blog?.createdByUrlimg)" (error)="onImgError($event)" alt="">
 
-          <ng-template #nophotouser>
-            <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
-              src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-          </ng-template>
+
 
 
           <div class="blogheader_left_right">
@@ -61,8 +58,8 @@
               *ngIf="blog.media?.length > 1">arrow_left</mat-icon>
 
 
-            <img *ngIf="theMedia[currentIndex].type === 'IMAGE'" [src]="baseUrl + theMedia[currentIndex].url"
-              class="realimg" />
+            <img *ngIf="theMedia[currentIndex].type === 'IMAGE'" [src]="getUserImage(theMedia[currentIndex].url)"
+              (error)="onImgError($event)" class="realimg" />
 
             <div *ngIf="theMedia[currentIndex].type === 'VIDEO'" class="divVideo">
               <img *ngIf="videoNotPlay" class="play-icon" src="./../../assets/playvideo.png" alt="">
@@ -91,7 +88,8 @@
           </ng-template>
 
           <div class="blogbotoom">
-            <button mat-fab extended [disabled]="blog.status === 'hidden'"  (click)="toggleLike(blog.status)" class="liked">
+            <button mat-fab extended [disabled]="blog.status === 'hidden'" (click)="toggleLike(blog.status)"
+              class="liked">
               <span>
                 <img class="buttonheart" [src]="blog?.liked 
                         ? './../../assets/heart.png' 
@@ -100,7 +98,7 @@
               </span>
             </button>
 
-            <button mat-fab extended [disabled]="blog.status === 'hidden'"  (click)="toggleSave(blog.status)">
+            <button mat-fab extended [disabled]="blog.status === 'hidden'" (click)="toggleSave(blog.status)">
               <mat-icon>
                 {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
               </mat-icon>
@@ -116,4 +114,4 @@
       <app-comment [statuBlog]="blog.status"></app-comment>
     </div>
   </ng-container>
-  </div>
+</div>

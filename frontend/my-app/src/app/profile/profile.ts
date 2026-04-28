@@ -52,7 +52,9 @@ export class Profile {
 
   usersMode: UserMode = 'FOLLOWERS';
 
-
+  onImgError(event: any) {
+    event.target.src = "./../../assets/blank-profile-picture-973460_640.webp";
+  }
 
   ReportUser(username: string) {
     if (this.isUserBanned) {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export type   BlogMode = 'HOME' | 'PROFILE' | 'SAVED' | 'SEARCH';
+export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED' | 'SEARCH';
 export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING' | 'SEARCH';
 
 interface Comment {
@@ -47,6 +47,32 @@ export interface Notification {
   creat_at: string;
 }
 
+export const baseUrl = 'http://localhost:8080';
+export function getUserImage(imgUrl?: string): string {
+  if (!imgUrl || imgUrl.trim().length === 0) {
+    return "./../../assets/blank-profile-picture-973460_640.webp";
+  }
+
+  return baseUrl + imgUrl;
+}
+
+export function getBlogImage(imgUrl?: string): string {
+  if (!imgUrl || imgUrl.trim().length === 0) {
+    return "./../../assets/images/close.svg";
+  }
+
+  return baseUrl + imgUrl;
+}
+
+export function onImgUserError(event: any) {
+  event.target.src = "./../../assets/images/close.svg";
+}
+
+export function onImgBlogError(event: any) {
+  event.target.src = "./../../assets/images/close.svg";
+}
+
+
 export function TimeAgo(dateString: string): string {
   if (!dateString) return '';
   const createdDate: Date = new Date(dateString);
@@ -90,7 +116,6 @@ export class ContentHomeService {
 
   ) {
   }
-
 
   ReadAllNotifications(notificationIds: number[]): Observable<ApiResponse<any>> {
     return this.http.put<ApiResponse<any>>(`${this.apiUrlNotification}/readAllNotifications`, { notificationIds });
@@ -150,7 +175,7 @@ export class ContentHomeService {
     if (mode === 'PROFILE' && username) {
       params += `&username=${username}`;
     }
-    
+
     if (mode === 'SEARCH' && search_word) {
       params += `&search_word=${search_word}`;
     }

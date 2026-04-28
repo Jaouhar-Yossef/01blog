@@ -124,6 +124,8 @@ export class Blog {
   }
 
 
+
+
   deleteBlog(id: string) {
     if (this.isUserBanned) {
       this.showAdminMessage.showAdminMessageUserBanned()
