@@ -77,6 +77,11 @@ public class NotificationsService {
     if (existing.isEmpty()) {
       throw new RuntimeException("This notification not found");
     }
+
+    if (Id == null) {
+      throw new IllegalArgumentException("notification_id cannot be null");
+    }
+
     notificationsRepository.deleteById(Id);
 
     return new Response<>(true, "notification deleted");

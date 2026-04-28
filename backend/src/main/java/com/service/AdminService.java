@@ -35,6 +35,7 @@ import com.util.UserStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
+@SuppressWarnings("null")
 @RequiredArgsConstructor
 @Service
 public class AdminService {
@@ -53,7 +54,8 @@ public class AdminService {
         if (report.getStatus().equals(request.getStatus())) {
             return new Response<>(true, "you don't change anything ??");
         }
-        if (!(request.getStatus().equals("DECLAINED") || request.getStatus().equals("RESOLVED") || request.getStatus().equals("PENDING"))) {
+        if (!(request.getStatus().equals("DECLAINED") || request.getStatus().equals("RESOLVED")
+                || request.getStatus().equals("PENDING"))) {
             throw new RuntimeException("status Report is PENDING or RESOLVED or DECLAINED");
         }
         report.setStatus(request.getStatus());
@@ -62,6 +64,7 @@ public class AdminService {
 
     @Transactional
     public Response<?> updateStatusBlog(UpdateBlogsStatusRequestDTO request) {
+
         Blog blog = blogRepository.findById(request.getBlog_id())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
         if (blog.getStatus().equals(request.getStatus())) {
@@ -128,17 +131,20 @@ public class AdminService {
 
     @Transactional
     public boolean deleteReport(DeleteReportsRequest request) {
-        Report r = reportRepository.findById(request.getReport_id())
+
+        Report report = reportRepository.findById(request.getReport_id())
                 .orElseThrow(() -> new RuntimeException("Report not found"));
-        reportRepository.delete(r);
+        reportRepository.delete(report);
         return true;
     }
 
+    @Transactional(readOnly = true)
     private List<Report> getReportsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return reportRepository.findAll(pageable).getContent();
     }
 
+    @Transactional(readOnly = true)
     private List<User> getUsersPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return userRepository.findAll(pageable).getContent();
@@ -169,12 +175,14 @@ public class AdminService {
         List<Report> listReports = getReportsPaginated(page, size);
         List<ReportsDTO> data = listReports.stream()
                 .map(report -> {
+
                     boolean st = userRepository.existsById(report.getCreatedBy().getId());
                     if (!st) {
                         return null;
                     }
                     String ReportCreatby = report.getCreatedBy().getUsername();
                     if (report.getType().equals(ReportType.BLOG)) {
+
                         boolean existsBlog = blogRepository.existsById(report.getReportedBlog().getId());
                         if (!existsBlog) {
                             return null;
@@ -192,6 +200,7 @@ public class AdminService {
                     }
 
                     if (report.getType().equals(ReportType.USER)) {
+
                         boolean existsUser = userRepository.existsById(report.getReportedUser().getId());
                         if (!existsUser) {
                             return null;

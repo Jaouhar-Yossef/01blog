@@ -36,6 +36,11 @@ public class CommentBlogService {
 
     @Transactional
     public CommentResponseDTO creatComment(UUID user_id, CommentRequestDTO dto) throws Exception {
+
+        if (user_id == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
+
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -43,6 +48,7 @@ public class CommentBlogService {
             throw new RuntimeException("You are banned from this platform.");
         }
 
+        @SuppressWarnings("null")
         Blog blog = blogRepository.findById(dto.getId_blog())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
@@ -88,8 +94,16 @@ public class CommentBlogService {
         return commentRepository.findByBlogId(id_blog, pageable);
     }
 
+    @Transactional(readOnly = true)
     public List<CommentResponseDTO> getTheComment(UUID user_id, int page, int size, UUID id_blog) throws Exception {
 
+        if (id_blog == null) {
+            throw new IllegalArgumentException("blog_id cannot be null");
+        }
+
+        if (user_id == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
         userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

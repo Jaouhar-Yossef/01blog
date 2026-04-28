@@ -78,7 +78,14 @@ public class AdminController {
     }
 
     @PutMapping("/updateReportStatus")
-    private ResponseEntity<Response<?>> updateReportStatus(@Valid @RequestBody UpdateReportsRequest request) {
+    private ResponseEntity<Response<?>> updateReportStatus(@Valid @RequestBody UpdateReportsRequest request,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            String errorMsg = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(new Response<>(false, errorMsg));
+        }
+
         try {
             Response<?> data = adminService.updateReport(request);
             return ResponseEntity.accepted().body(data);

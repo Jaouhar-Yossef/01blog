@@ -21,10 +21,11 @@ import com.util.Response;
 import com.util.TypeNotifications;
 import com.util.UserStatus;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@Transactional
+import org.springframework.transaction.annotation.Transactional;
+
+@SuppressWarnings("null")
 @Service
 @RequiredArgsConstructor
 public class LikeBlogService {
@@ -34,7 +35,15 @@ public class LikeBlogService {
     private final UserRepository userRepository;
     private final NotificationsRepository notificationsRepository;
 
+    @Transactional
     public Response<?> likeBlog(UUID userId, UUID blogId) {
+        if (blogId == null) {
+            throw new IllegalArgumentException("blog_id cannot be null");
+        }
+
+        if (userId == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -81,7 +90,16 @@ public class LikeBlogService {
         return new Response<>(true, "liked blog successfully!");
     }
 
+    @Transactional
     public Response<?> unLikedBlog(UUID userId, UUID blogId) {
+
+        if (blogId == null) {
+            throw new IllegalArgumentException("blog_id cannot be null");
+        }
+
+        if (userId == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -114,14 +132,17 @@ public class LikeBlogService {
         return new Response<>(true, "UnLiked successfully!");
     }
 
+    @Transactional(readOnly = true)
     public boolean isBlogLiked(UUID userId, UUID blogId) {
         return likeBlogRepository.existsByUserIdAndBlogId(userId, blogId);
     }
 
+    @Transactional(readOnly = true)
     public Long getNumbLike(UUID blogId) {
         return likeBlogRepository.countByBlogId(blogId);
     }
 
+    @Transactional(readOnly = true)
     public Map<UUID, Long> getLikeCountMap(List<UUID> blogIds) {
 
         List<Object[]> results = likeBlogRepository.countLikesByBlogIds(blogIds);
@@ -135,6 +156,7 @@ public class LikeBlogService {
         return map;
     }
 
+    @Transactional(readOnly = true)
     public Map<UUID, Boolean> getLikedMap(UUID userId, List<UUID> blogIds) {
 
         List<UUID> likedIds = likeBlogRepository.findLikedBlogIds(userId, blogIds);

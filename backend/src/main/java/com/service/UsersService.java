@@ -30,160 +30,175 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UsersService {
 
-    private final FollowersRepository followersRepository;
-    private final UserRepository userRepository;
-    private final BlogRepository blogRepository;
+        private final FollowersRepository followersRepository;
+        private final UserRepository userRepository;
+        private final BlogRepository blogRepository;
 
-    private List<User> getUsersPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return userRepository.findUsers(pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProfileResponseDTO> getAllUsers(int page, int size, UUID userId) {
-
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("Invalid user context");
+        private List<User> getUsersPaginated(int page, int size) {
+                Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+                return userRepository.findUsers(pageable);
         }
 
-        List<User> AllUser = this.getUsersPaginated(page, size)
-                .stream()
-                .filter(user -> !user.getId().equals(userId))
-                .toList();
+        @Transactional(readOnly = true)
+        public List<ProfileResponseDTO> getAllUsers(int page, int size, UUID userId) {
 
-        Set<UUID> followingIds = new HashSet<>(
-                followersRepository.findFollowedIdsByFollowerId(userId));
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
 
-        Set<UUID> followerIds = new HashSet<>(
-                followersRepository.findFollowerIdsByFollowedId(userId));
+                if (!userRepository.existsById(userId)) {
+                        throw new RuntimeException("Invalid user context");
+                }
 
-        List<UUID> userIds = AllUser.stream().map(User::getId).toList();
-        List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
+                List<User> AllUser = this.getUsersPaginated(page, size)
+                                .stream()
+                                .filter(user -> !user.getId().equals(userId))
+                                .toList();
 
-        Map<UUID, Long> blogCountMap = blogCounts.stream()
-                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
+                Set<UUID> followingIds = new HashSet<>(
+                                followersRepository.findFollowedIdsByFollowerId(userId));
 
-        return AllUser.stream()
-                .map(user -> {
+                Set<UUID> followerIds = new HashSet<>(
+                                followersRepository.findFollowerIdsByFollowedId(userId));
 
-                    boolean isFollowing = followingIds.contains(user.getId());
-                    boolean isFollower = followerIds.contains(user.getId());
-                    boolean isYourProfile = userId.equals(user.getId());
-                    Long blogsCont = blogCountMap.getOrDefault(user.getId(), 0L);
+                List<UUID> userIds = AllUser.stream().map(User::getId).toList();
+                List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
 
-                    return new ProfileResponseDTO(
-                            user.getUsername(),
-                            user.getImageUrl(),
-                            isYourProfile,
-                            isFollower,
-                            isFollowing,
-                            blogsCont);
-                })
-                .toList();
-    }
+                Map<UUID, Long> blogCountMap = blogCounts.stream()
+                                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
 
-    @Transactional(readOnly = true)
-    public List<ProfileResponseDTO> getFollowersOrFollowing(int page, int size, String username,
-            UsersMode mode, UUID userId) {
-        if (username == null || username.isEmpty()) {
-            throw new RuntimeException("Invalid user");
+                return AllUser.stream()
+                                .map(user -> {
+
+                                        boolean isFollowing = followingIds.contains(user.getId());
+                                        boolean isFollower = followerIds.contains(user.getId());
+                                        boolean isYourProfile = userId.equals(user.getId());
+                                        Long blogsCont = blogCountMap.getOrDefault(user.getId(), 0L);
+
+                                        return new ProfileResponseDTO(
+                                                        user.getUsername(),
+                                                        user.getImageUrl(),
+                                                        isYourProfile,
+                                                        isFollower,
+                                                        isFollowing,
+                                                        blogsCont);
+                                })
+                                .toList();
         }
 
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("Invalid user context");
+        @Transactional(readOnly = true)
+        public List<ProfileResponseDTO> getFollowersOrFollowing(int page, int size, String username,
+                        UsersMode mode, UUID userId) {
+
+                if (username == null || username.trim().isEmpty()) {
+                        throw new IllegalArgumentException("Username cannot be empty");
+                }
+
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
+
+                if (!userRepository.existsById(userId)) {
+                        throw new RuntimeException("Invalid user context");
+                }
+
+                User profileUser = userRepository.findByUsername(username)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+
+                Pageable pageable = PageRequest.of(page, size);
+
+                List<Followers> follow = new ArrayList<>();
+
+                if (mode == UsersMode.FOLLOWERS) {
+                        follow = followersRepository.findByFollowed_Id(profileUser.getId(), pageable);
+                } else if (mode == UsersMode.FOLLOWING) {
+                        follow = followersRepository.findByFollower_Id(profileUser.getId(), pageable);
+                }
+
+                Set<UUID> followingIds = new HashSet<>(followersRepository.findFollowedIdsByFollowerId(userId));
+
+                Set<UUID> followerIds = new HashSet<>(followersRepository.findFollowerIdsByFollowedId(userId));
+
+                List<UUID> userIds = follow.stream()
+                                .map(f -> mode == UsersMode.FOLLOWERS ? f.getFollower().getId()
+                                                : f.getFollowed().getId())
+                                .toList();
+                List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
+                Map<UUID, Long> blogCountMap = blogCounts.stream()
+                                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
+
+                return follow.stream()
+                                .filter(f -> mode == UsersMode.FOLLOWERS
+                                                ? !f.getFollower().getStatus().equals(UserStatus.BANNED)
+                                                : !f.getFollowed().getStatus().equals(UserStatus.BANNED))
+                                .map(f -> {
+                                        User u;
+                                        if (mode == UsersMode.FOLLOWERS) {
+                                                u = f.getFollower();
+                                        } else {
+                                                u = f.getFollowed();
+                                        }
+                                        boolean isFollowing = followingIds.contains(u.getId());
+                                        boolean isFollower = followerIds.contains(u.getId());
+                                        boolean isYourProfile = userId.equals(u.getId());
+                                        Long BlogsCont = blogCountMap.getOrDefault(u.getId(), 0L);
+
+                                        return new ProfileResponseDTO(
+                                                        u.getUsername(),
+                                                        u.getImageUrl(),
+                                                        isYourProfile,
+                                                        isFollower,
+                                                        isFollowing,
+                                                        BlogsCont);
+                                })
+                                .toList();
         }
 
-        User profileUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        @Transactional(readOnly = true)
+        public List<ProfileResponseDTO> getUsersBySearch(int page, int size, String searchWord,
+                        UsersMode mode, UUID userId) {
 
-        Pageable pageable = PageRequest.of(page, size);
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
 
-        List<Followers> follow = new ArrayList<>();
+                if (!userRepository.existsById(userId)) {
+                        throw new RuntimeException("Invalid user context");
+                }
 
-        if (mode == UsersMode.FOLLOWERS) {
-            follow = followersRepository.findByFollowed_Id(profileUser.getId(), pageable);
-        } else if (mode == UsersMode.FOLLOWING) {
-            follow = followersRepository.findByFollower_Id(profileUser.getId(), pageable);
+                Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+                List<User> AllUser = userRepository.findByUsernameContainingIgnoreCase(searchWord, pageable);
+
+                Set<UUID> followingIds = new HashSet<>(
+                                followersRepository.findFollowedIdsByFollowerId(userId));
+
+                Set<UUID> followerIds = new HashSet<>(
+                                followersRepository.findFollowerIdsByFollowedId(userId));
+
+                List<UUID> userIds = AllUser.stream().map(User::getId).toList();
+                List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
+
+                Map<UUID, Long> blogCountMap = blogCounts.stream()
+                                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
+
+                return AllUser.stream()
+                                .filter(u -> !u.getStatus().equals(UserStatus.BANNED))
+                                .map(user -> {
+                                        boolean isFollowing = followingIds.contains(user.getId());
+                                        boolean isFollower = followerIds.contains(user.getId());
+                                        boolean isYourProfile = userId.equals(user.getId());
+                                        Long blogsCont = blogCountMap.getOrDefault(user.getId(), 0L);
+
+                                        return new ProfileResponseDTO(
+                                                        user.getUsername(),
+                                                        user.getImageUrl(),
+                                                        isYourProfile,
+                                                        isFollower,
+                                                        isFollowing,
+                                                        blogsCont);
+                                })
+                                .toList();
+
         }
-
-        Set<UUID> followingIds = new HashSet<>(followersRepository.findFollowedIdsByFollowerId(userId));
-
-        Set<UUID> followerIds = new HashSet<>(followersRepository.findFollowerIdsByFollowedId(userId));
-
-        List<UUID> userIds = follow.stream()
-                .map(f -> mode == UsersMode.FOLLOWERS ? f.getFollower().getId() : f.getFollowed().getId())
-                .toList();
-        List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
-        Map<UUID, Long> blogCountMap = blogCounts.stream()
-                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
-
-        return follow.stream()
-                .filter(f -> mode == UsersMode.FOLLOWERS ? !f.getFollower().getStatus().equals(UserStatus.BANNED)
-                        : !f.getFollowed().getStatus().equals(UserStatus.BANNED))
-                .map(f -> {
-                    User u;
-                    if (mode == UsersMode.FOLLOWERS) {
-                        u = f.getFollower();
-                    } else {
-                        u = f.getFollowed();
-                    }
-                    boolean isFollowing = followingIds.contains(u.getId());
-                    boolean isFollower = followerIds.contains(u.getId());
-                    boolean isYourProfile = userId.equals(u.getId());
-                    Long BlogsCont = blogCountMap.getOrDefault(u.getId(), 0L);
-
-                    return new ProfileResponseDTO(
-                            u.getUsername(),
-                            u.getImageUrl(),
-                            isYourProfile,
-                            isFollower,
-                            isFollowing,
-                            BlogsCont);
-                })
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProfileResponseDTO> getUsersBySearch(int page, int size, String searchWord,
-            UsersMode mode, UUID userId) {
-
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("Invalid user context");
-        }
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        List<User> AllUser = userRepository.findByUsernameContainingIgnoreCase(searchWord, pageable);
-
-        Set<UUID> followingIds = new HashSet<>(
-                followersRepository.findFollowedIdsByFollowerId(userId));
-
-        Set<UUID> followerIds = new HashSet<>(
-                followersRepository.findFollowerIdsByFollowedId(userId));
-
-        List<UUID> userIds = AllUser.stream().map(User::getId).toList();
-        List<UserBlogCount> blogCounts = blogRepository.countBlogsForUsers(userIds);
-
-        Map<UUID, Long> blogCountMap = blogCounts.stream()
-                .collect(Collectors.toMap(UserBlogCount::getUserId, UserBlogCount::getBlogCount));
-
-        return AllUser.stream()
-                .filter(u -> !u.getStatus().equals(UserStatus.BANNED))
-                .map(user -> {
-                    boolean isFollowing = followingIds.contains(user.getId());
-                    boolean isFollower = followerIds.contains(user.getId());
-                    boolean isYourProfile = userId.equals(user.getId());
-                    Long blogsCont = blogCountMap.getOrDefault(user.getId(), 0L);
-
-                    return new ProfileResponseDTO(
-                            user.getUsername(),
-                            user.getImageUrl(),
-                            isYourProfile,
-                            isFollower,
-                            isFollowing,
-                            blogsCont);
-                })
-                .toList();
-
-    }
 }

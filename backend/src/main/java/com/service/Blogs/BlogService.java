@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-@Transactional
+@SuppressWarnings("null")
 @RequiredArgsConstructor
 @Service
 public class BlogService {
@@ -63,17 +63,21 @@ public class BlogService {
         @Transactional
         public Response<?> upDateBlog(BlogRequest blogRequest, UUID user_id) {
 
+                if (user_id == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
+
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-                if (user.getStatus() == UserStatus.BANNED) {
+                if (user.getStatus().equals(UserStatus.BANNED)) {
                         return new Response<>(false, "You are banned from this platform.");
                 }
 
                 Blog blog = blogRepository.findById(blogRequest.getIdBlog_update())
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
-                if (blog.getStatus() == BlogStatus.HIDDEN) {
+                if (blog.getStatus().equals(BlogStatus.HIDDEN)) {
                         throw new RuntimeException("This blog has been hidden by the admin.");
                 }
 
@@ -92,6 +96,14 @@ public class BlogService {
 
         @Transactional
         public Response<?> deleteOneBlog(UUID user_id, UUID blog_id) {
+                if (blog_id == null) {
+                        throw new IllegalArgumentException("blog_id cannot be null");
+                }
+
+                if (user_id == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
+
                 User user = userRepository.findById(user_id)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
                 if (user.getStatus() == UserStatus.BANNED) {
@@ -161,6 +173,10 @@ public class BlogService {
         @Transactional(readOnly = true)
         public List<BlogResponseDTO> blogsGetterSaved(UUID userId, int page, int size) {
 
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
+
                 User user = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
                 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -217,6 +233,9 @@ public class BlogService {
                         int page,
                         int size,
                         String username) {
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
                 if (!userRepository.existsById(userId)) {
                         throw new RuntimeException("User not found");
                 }
@@ -272,6 +291,9 @@ public class BlogService {
                         int page,
                         int size,
                         String search_word) {
+                if (userId == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
                 if (!userRepository.existsById(userId)) {
                         throw new RuntimeException("User not found");
                 }
@@ -280,7 +302,7 @@ public class BlogService {
 
                 Page<Blog> blogs = blogRepository
                                 .findByTitleContainingIgnoreCase(search_word, pageable);
-                                
+
                 List<UUID> blogIds = blogs.stream()
                                 .map(Blog::getId)
                                 .toList();
@@ -322,6 +344,15 @@ public class BlogService {
 
         @Transactional(readOnly = true)
         public BlogResponseDTO getOneBlog(UUID user_id, UUID id_blog) {
+
+                if (id_blog == null) {
+                        throw new IllegalArgumentException("blog_id cannot be null");
+                }
+
+                if (user_id == null) {
+                        throw new IllegalArgumentException("user_id cannot be null");
+                }
+
                 Blog blog = blogRepository.findById(id_blog)
                                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 

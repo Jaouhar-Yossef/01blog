@@ -49,6 +49,10 @@ public class UserService implements UserDetailsService {
     @Transactional
     public Response<UserResponseDTO> updateProfile(UUID user_id, UpdateProfile updateProfile) {
 
+        if (user_id == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
+
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -85,6 +89,14 @@ public class UserService implements UserDetailsService {
             }
         }
 
+        if (updateProfile.getImage() == null && user.getImageUrl() != null) {
+            try {
+                this.deleteImgProfile(user);
+            } catch (Exception e) {
+                return new Response<>(false, e.getMessage(), null);
+            }
+        }
+
         userRepository.save(user);
         String token = jwtService.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
@@ -99,9 +111,10 @@ public class UserService implements UserDetailsService {
         return new Response<>(true, null, dto);
     }
 
-    private void updateImgProfile(MultipartFile image, User user) throws Exception {
+    @Transactional
+    public void updateImgProfile(MultipartFile image, User user) throws Exception {
 
-        deleteImgProfile(user);
+        this.deleteImgProfile(user);
 
         if (image.getSize() > 20 * 1024 * 1024) {
             throw new RuntimeException("File too large (max 20MB)");
@@ -129,7 +142,8 @@ public class UserService implements UserDetailsService {
         user.setImageUrl("/uploads/" + fileName);
     }
 
-    private void deleteImgProfile(User user) throws Exception {
+    @Transactional
+    public void deleteImgProfile(User user) throws Exception {
 
         if (user.getImageUrl() == null || user.getImageUrl().isEmpty()) {
             return;
@@ -144,11 +158,15 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Failed to delete Image Profile");
         }
 
-        user.setImageUrl(null);
+        user.setImageUrl("");
     }
 
     @Transactional(readOnly = true)
     public ValidationDTO getDataUser(UUID user_id) {
+        if (user_id == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
+
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -162,8 +180,17 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void deleteUser(UUID userId) {
+
+        if (userId == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
+
         List<Blog> blogs = blogRepository.findByCreatedById(userId);
-        blogRepository.deleteAll(blogs);
+
+        if (!blogs.isEmpty()) {
+            blogRepository.deleteAll(blogs);
+        }
+
         userRepository.deleteById(userId);
     }
 
@@ -239,6 +266,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public Response<?> deleteAccount(UUID user_id) {
+
+        if (user_id == null) {
+            throw new IllegalArgumentException("user_id cannot be null");
+        }
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));

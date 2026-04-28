@@ -17,3 +17,4 @@ public class PageableUsersDTO {
     @NotNull(message = "username cannot be null")
     private String usernameOrSearchWord;
 }
+    

@@ -7,7 +7,7 @@
                     <div class="divuserimg">
 
                         <img (click)="goToProfile(user.username)" class="imguser"
-                            *ngIf="user.imageUrl.length > 0; else nophotouser" [src]="baseUrl + user.imageUrl" alt="">
+                            *ngIf="user.imageUrl && user.imageUrl.length > 0; else nophotouser" [src]="baseUrl + user.imageUrl" alt="">
                         <ng-template #nophotouser>
                         <img (click)="goToProfile(user.username)" class="imguser"
                                 src="./../../assets/blank-profile-picture-973460_640.webp" alt="">

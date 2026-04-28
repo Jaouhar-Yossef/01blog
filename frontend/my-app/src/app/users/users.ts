@@ -147,12 +147,14 @@ export class Users implements OnInit {
 
     this.contentHomeService.getUsers(this.page, this.size, this.mode, this.username_or_searchWord).subscribe({
       next: (res: ApiResponse<User[]>) => {
+         const newUsers = res.anyData || [];
+
         this.UsersSubject.next([
           ...this.UsersSubject.value,
-          ...res.anyData
+          ...newUsers
         ])
 
-        if (res.anyData.length < 9) {
+        if (newUsers.length < 9) {
           this.hasMore = false;
         } else {
           this.page++;

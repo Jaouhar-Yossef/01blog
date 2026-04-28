@@ -22,7 +22,6 @@ import com.util.TypeMedia;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@Transactional
 @RequiredArgsConstructor
 @Service
 public class MediaBlogService {
@@ -30,6 +29,7 @@ public class MediaBlogService {
     private final MediaBlogRepository mediaBlogRepository;
     private final FileValidator fileValidator;
 
+    @Transactional
     public void saveMedia(Blog blog, BlogRequest blogRequest, String mode) {
         if (mode.equals("update")) {
 
@@ -114,7 +114,13 @@ public class MediaBlogService {
         }
     }
 
+    @Transactional
     public void deleteMedia(Long mediaId) {
+    
+        if (mediaId == null) {
+            throw new IllegalArgumentException("media_id cannot be null");
+        }
+
         MediaBlog media = mediaBlogRepository.findById(mediaId)
                 .orElseThrow(() -> new RuntimeException("Media not found with id: " + mediaId));
 
