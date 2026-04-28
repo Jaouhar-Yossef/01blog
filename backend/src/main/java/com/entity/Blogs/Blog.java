@@ -41,6 +41,7 @@ public class Blog {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

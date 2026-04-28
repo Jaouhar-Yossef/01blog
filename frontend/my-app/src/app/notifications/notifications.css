@@ -334,3 +334,19 @@
         height: 25px;
     }
 }
+
+
+
+/* Tablets */
+@media (max-width: 768px) {
+  .noContent-img {
+    width: 300px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .noContent-img {
+    width: 220px;
+  }
+}

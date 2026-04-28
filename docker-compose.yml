@@ -26,7 +26,7 @@ services:
     networks:
       - app-network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blog
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blogdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
 

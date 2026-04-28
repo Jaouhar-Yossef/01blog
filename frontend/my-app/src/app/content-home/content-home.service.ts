@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export type BlogMode = 'HOME' | 'PROFILE' | 'SAVED' | 'SEARCH';
+export type   BlogMode = 'HOME' | 'PROFILE' | 'SAVED' | 'SEARCH';
 export type UserMode = 'ALLUSERS' | 'FOLLOWERS' | 'FOLLOWING' | 'SEARCH';
 
 interface Comment {

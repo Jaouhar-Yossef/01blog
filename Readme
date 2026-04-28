@@ -168,6 +168,9 @@ Built as part of a learning journey in Spring Boot + Angular
 Educational project – free to use for learning purposes.
 
 
+
+# Spring Boot backend commands
+
 docker run --name blog-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=blogdb -p 5432:5432 -d postgres
 docker ps
 docker stop blog-postgres
@@ -176,7 +179,6 @@ docker exec -it blog-postgres psql -U postgres -d blogdb
 
 
 
-# Spring Boot backend commands
 cd backend-project-folder
 mvn clean install
 mvn spring-boot:run
@@ -191,15 +193,3 @@ npm install
 npm install baseline-browser-mapping@latest --save-dev
 npx ng serve
 
-
-
-
-
-src/main/java/com/
-├── config/       ← Spring configs & initializers
-├── controller/   ← REST endpoints (AuthController)
-├── entity/       ← User, Post, Comment entities
-├── repository/   ← JpaRepository interfaces
-├── service/      ← AuthService, PostService (business logic)
-├── security/     ← JwtUtil, JwtFilter, etc.
-├── util/         ← Response class, helper classes

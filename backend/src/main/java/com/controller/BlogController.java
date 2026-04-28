@@ -155,6 +155,7 @@ public class BlogController {
                     return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOprofile));
 
                 case SAVED:
+                  
                     List<BlogResponseDTO> blogDTOsaved = blogService.blogsGetterSaved(userId, pageableDTO.getPage(),
                             pageableDTO.getSize());
                     return ResponseEntity.ok(new Response<>(true, "getBlogs Sucesfuly", blogDTOsaved));

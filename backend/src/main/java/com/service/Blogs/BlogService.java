@@ -179,6 +179,8 @@ public class BlogService {
 
                 User user = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+                System.out.println("3aamouuu");
+
                 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
                 List<Saved> savedList = savedRepository.findSavedBlogsByUserId(user.getId(), pageable);
 
@@ -190,14 +192,13 @@ public class BlogService {
                                 .map(Blog::getId)
                                 .toList();
 
-                Map<UUID, Boolean> savedMap = savedService.getSavedMap(userId, blogIds);
                 Map<UUID, Boolean> likedMap = likeBlogService.getLikedMap(userId, blogIds);
                 Map<UUID, Long> likeCountMap = likeBlogService.getLikeCountMap(blogIds);
 
                 List<BlogResponseDTO> blogDTOs = savedBlogs.stream()
                                 .filter(b -> b.getStatus() != BlogStatus.HIDDEN)
                                 .map(blog -> {
-                                        boolean saved = savedMap.getOrDefault(blog.getId(), false);
+
                                         boolean liked = likedMap.getOrDefault(blog.getId(), false);
                                         Long numbLike = likeCountMap.getOrDefault(blog.getId(), 0L);
 
@@ -213,7 +214,7 @@ public class BlogService {
                                                         blog.getTitle(),
                                                         blog.getStatus(),
                                                         blog.getContent(),
-                                                        saved,
+                                                        true,
                                                         liked,
                                                         numbLike,
                                                         blog.getCreatedBy().getUsername(),

@@ -1,17 +1,12 @@
 #!/bin/bash
 
+set -e
 
-echo "Stopping containers..."
-docker stop $(docker ps -q)
+echo "🧹 Stopping containers..."
+docker ps -q | xargs -r docker stop
 
-echo "Removing containers..."
-docker rm $(docker ps -aq)
-
-echo "Removing images..."
-docker rmi -f 01blog-backend:latest 01blog-frontend:latest postgres:16 postgres:latest
-
-echo "Done."
+echo "🧹 Removing containers..."
+docker ps -aq | xargs -r docker rm
 
 echo "🚀 Starting full stack with Docker Compose..."
-
 docker compose up --build
