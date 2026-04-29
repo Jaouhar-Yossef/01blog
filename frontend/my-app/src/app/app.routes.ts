@@ -49,9 +49,7 @@ export const routes: Routes = [
       { path: 'profile/:name', component: Profile },
       { path: 'blog/:id', component: Blog },
       { path: 'EditProfile', component:  EditProfile }
-
     ]
-
   },
 
 

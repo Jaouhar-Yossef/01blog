@@ -31,9 +31,10 @@ export interface Report {
   reason: string;
   reported_blog: string | null;
   reported_user: string | null;
-  status: 'PENDING' | 'RESOLVED' | 'DECLAINED';
+  status: ReportStatus;
 }
 
+type ReportStatus = "PENDING" | "RESOLVED" | "DECLAINED";
 
 export interface Blogs {
   blogId: string;
@@ -172,7 +173,7 @@ export class AdminDashboard {
   }
 
 
-  changeStatusUser(row: any, status: string) {
+  changeStatusUser(row: any, status: string, username: string) {
     if (this.loadingUsers) return
     if (row.status == status) return
 
@@ -183,6 +184,14 @@ export class AdminDashboard {
           next: res => {
             if (res.success) {
               this.errorService.showMessage('update successfully!', 'success');
+
+              const currentUsers = this.usersSubject.getValue();
+              const updatedUsers = currentUsers.map(user =>
+                user.username === username
+                  ? { ...user, status }
+                  : user
+              );
+              this.usersSubject.next(updatedUsers);
             }
           },
           error: err => {
@@ -191,8 +200,6 @@ export class AdminDashboard {
         });
       }
     );
-
-    row.status = status
   }
 
   changeStatusBlog(row: any, status: string) {
@@ -206,6 +213,17 @@ export class AdminDashboard {
           next: res => {
             if (res.success) {
               this.errorService.showMessage('update successfully ', 'success');
+
+              const currentBlogs = this.blogsSubject.getValue();
+
+              const updatedBlogs = currentBlogs.map(blog =>
+                blog.blogId === row.blogId
+                  ? { ...blog, status }
+                  : blog
+              );
+
+              this.blogsSubject.next(updatedBlogs);
+
             }
           },
           error: err => {
@@ -216,11 +234,10 @@ export class AdminDashboard {
       }
     );
 
-    row.status = status
   }
 
 
-  changeStatus(row: any, status: string) {
+  changeStatus(row: any, status: ReportStatus) {
     if (this.loadingReports) return
     if (row.status == status) return
 
@@ -232,6 +249,18 @@ export class AdminDashboard {
           next: res => {
             if (res.success) {
               this.errorService.showMessage('update successfully!', 'success');
+
+
+             const currentReports = this.reportsSubject.getValue();
+
+              const updatedReports = currentReports.map(report =>
+                report.id === row.id
+                  ? { ...report, status }
+                  : report
+              );
+
+              this.reportsSubject.next(updatedReports);
+
             }
           },
           error: err => {
@@ -240,10 +269,6 @@ export class AdminDashboard {
         });
       }
     );
-
-
-
-    row.status = status;
   }
 
   deleteUser(username: string) {

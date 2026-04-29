@@ -15,8 +15,10 @@ import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
 import com.dto.Response.AnalyticsDTO;
 import com.dto.Response.BlogsToAdminDTO;
+import com.dto.Response.ProfileResponseDTO;
 import com.dto.Response.ReportsDTO;
 import com.dto.Response.UsersToAdminDTO;
+import com.repository.FollowersRepository;
 import com.repository.NotificationsRepository;
 import com.repository.ReportRepository;
 import com.entity.Notifications;
@@ -45,6 +47,42 @@ public class AdminService {
     private final ReportRepository reportRepository;
     private final LikeBlogRepository likeBlogRepository;
     private final NotificationsRepository notificationsRepository;
+    private final FollowersRepository followersRepository;
+
+    @Transactional(readOnly = true)
+    public ProfileResponseDTO getProfileData(String username, UUID user_id) throws Exception {
+        if (user_id == null) {
+            throw new RuntimeException("User ID cannot be null");
+        }
+        User userReq = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+        Long BlogsCont = blogRepository.countByCreatedBy_Id(user.getId());
+
+        boolean isFollower = followersRepository.existsByFollower_IdAndFollowed_Id(user.getId(),
+                userReq.getId());
+        boolean isFollowing = followersRepository.existsByFollower_IdAndFollowed_Id(userReq.getId(),
+                user.getId());
+
+        long followersCount = followersRepository.countFollowerNotBanned(user.getId());
+        long followingCount = followersRepository.countFollowingNotBanned(user.getId());
+
+        boolean isYou = userReq.getId().equals(user.getId());
+        ProfileResponseDTO data = new ProfileResponseDTO(
+                user.getUsername(),
+                user.getImageUrl(),
+                isYou,
+                isFollower,
+                isFollowing,
+                followersCount,
+                followingCount,
+                BlogsCont);
+        return data;
+    }
 
     @Transactional
     public Response<?> updateReport(UpdateReportsRequest request) {

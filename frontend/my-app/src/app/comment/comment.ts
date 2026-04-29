@@ -119,13 +119,12 @@ export class Comment {
   }
 
   submitComment() {
-
     if (this.isUserBanned) {
       this.showAdminMessage.showAdminMessageUserBanned()
       this.commentForm.reset();
       return
     }
-    if (this.statuBlog == "hidden") {
+    if (this.statuBlog == "HIDDEN") {
       this.showAdminMessage.showAdminMessageBlogHidden()
       this.commentForm.reset();
       return;

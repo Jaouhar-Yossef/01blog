@@ -41,7 +41,7 @@ export class Profile {
 
   constructor(
     private profileService: ProfileService,
-    public imageService : ImageService,
+    public imageService: ImageService,
     private contentHomeService: ContentHomeService,
     private dialog: MatDialog,
     private errorService: ErrorService,
@@ -53,10 +53,6 @@ export class Profile {
   }
 
   usersMode: UserMode = 'FOLLOWERS';
-
-  onImgError(event: any) {
-    event.target.src = "./../../assets/blank-profile-picture-973460_640.webp";
-  }
 
   ReportUser(username: string) {
     if (this.isUserBanned) {
@@ -121,8 +117,6 @@ export class Profile {
   }
 
   ngOnInit() {
-
-
     const user = this.authService.getUser();
     if (user != null && user.status === "ADMIN") {
       this.mode = "ADMIN"
@@ -147,6 +141,24 @@ export class Profile {
   loadProfile(username: string) {
     this.loading = true;
     this.ProfileSubject.next(null);
+
+    if (this.mode == "ADMIN") {
+      this.profileService.getProfileByUsernameToTheAdmin(username).subscribe({
+        next: (res: ApiResponse<UserProfile>) => {
+          this.ProfileSubject.next(res.anyData)
+          this.loading = false;
+        },
+        error: (err) => {
+          this.loading = false;
+          this.ProfileSubject.next(null);
+          this.errorService.showMessage(`Profile not found ):`, 'error');
+          this.router.navigate(['/home']);
+        }
+      });
+
+      return
+    }
+
     this.profileService.getProfileByUsername(username).subscribe({
       next: (res: ApiResponse<UserProfile>) => {
         this.ProfileSubject.next(res.anyData)

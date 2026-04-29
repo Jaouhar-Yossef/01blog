@@ -18,6 +18,7 @@ import com.dto.Request.DeleteReportsRequest;
 import com.dto.Request.UpdateBlogsStatusRequestDTO;
 import com.dto.Request.UpdateReportsRequest;
 import com.dto.Request.UpdateStatusBlogRequest;
+import com.dto.Response.ProfileResponseDTO;
 import com.entity.UserDetailsImpl;
 import com.service.AdminService;
 import com.service.Blogs.BlogService;
@@ -33,6 +34,21 @@ public class AdminController {
 
     private final AdminService adminService;
     private final BlogService blogService;
+
+
+
+    @GetMapping("profile/{username}")
+    private ResponseEntity<Response<?>> getProfile(@PathVariable String username,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            UUID user_id = userDetails.getUser().getId();
+            ProfileResponseDTO userData = adminService.getProfileData(username, user_id);
+            return ResponseEntity.ok(new Response<>(true, "get data Profile sucesfuly", userData));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response<>(false, e.getMessage()));
+        }
+    }
+
 
     @GetMapping("/getRports")
     private ResponseEntity<Response<?>> getAllReports(@RequestParam int page,

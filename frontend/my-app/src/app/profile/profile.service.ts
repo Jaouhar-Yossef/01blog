@@ -21,11 +21,17 @@ export interface UserProfile {
 export class ProfileService {
 
     private baseUrl = 'http://localhost:8080/profile';
+    private baseUrl_admin = 'http://localhost:8080/admin';
     constructor(private http: HttpClient,) { }
 
     getProfileByUsername(username: string): Observable<ApiResponse<UserProfile>> {
         return this.http.get<ApiResponse<UserProfile>>(`${this.baseUrl}/${username}`);
     }
+
+     getProfileByUsernameToTheAdmin(username: string): Observable<ApiResponse<UserProfile>> {
+        return this.http.get<ApiResponse<UserProfile>>(`${this.baseUrl_admin}/profile/${username}`);
+    }
+
 
     follow(username: string): Observable<ApiResponse<any>> {
         return this.http.post<ApiResponse<any>>(`${this.baseUrl}/${username}/follow`, {});

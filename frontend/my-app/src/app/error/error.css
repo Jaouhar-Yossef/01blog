@@ -1,6 +1,6 @@
 .error-box {
   position: fixed;
-  top: 90%;
+  bottom: 5%;        
   right: 4%;
   padding: 10px 20px;
   border-radius: 5px;
@@ -11,7 +11,10 @@
   animation: slideInFromRight 0.5s forwards;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bolder;
-  font-size: 17px;
+  font-size: clamp(13px, 2vw, 17px); 
+  max-width: min(90vw, 400px);    
+  word-break: break-word;
+  box-sizing: border-box;
 }
 
 @keyframes slideInFromRight {
@@ -25,14 +28,29 @@
   }
 }
 
-.error-box.error {
-  background-color: #f44336; 
+@media (max-width: 480px) {
+  .error-box {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 5px 5px 0 0;
+    max-width: 100%;
+    text-align: center;
+    animation: slideInFromBottom 0.4s forwards;
+  }
+
+  @keyframes slideInFromBottom {
+    0% {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
-.error-box.success {
-  background-color: #4caf50;
-}
-
-.error-box.warning {
-  background-color: #cc4b00;
-}
+.error-box.error   { background-color: #f44336; }
+.error-box.success { background-color: #4caf50; }
+.error-box.warning { background-color: #cc4b00; }
