@@ -202,8 +202,8 @@ export class Blog {
             this.loading = false;
           }
         },
-        error: () => {
-          this.errorService.showMessage('error report blog ):', 'error')
+        error: (err) => {
+          this.errorService.showMessage(`${err.error.message}`, 'error')
           this.loading = false;
         }
       });

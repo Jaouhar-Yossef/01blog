@@ -51,6 +51,10 @@ public class SavedService {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }
 
+        if (blog.getCreatedBy().getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("This user banned from this platform.");
+        }
+
         if (this.savedRepository.existsByUserIdAndBlogId(userId, blogId)) {
             throw new RuntimeException("Blog already saved");
         }
@@ -83,6 +87,10 @@ public class SavedService {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        if (blog.getCreatedBy().getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("This user banned from this platform.");
+        }
+        
         if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }

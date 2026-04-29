@@ -16,9 +16,7 @@ import { ConfirmationComponent } from './service-confirmation/ConfirmationCompon
 export class App {
   constructor( private auth: AuthService, @Inject(PLATFORM_ID) private platformId: Object ) {
     if (isPlatformBrowser(this.platformId)) {
-
       const token = localStorage.getItem('token');
-    
       if (token) {
         this.auth.loggedIn.set(true);
       }

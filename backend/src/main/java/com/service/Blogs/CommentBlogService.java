@@ -52,6 +52,10 @@ public class CommentBlogService {
         Blog blog = blogRepository.findById(dto.getId_blog())
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        if (blog.getCreatedBy().getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("This user banned from this platform.");
+        }
+        
         if (blog.getStatus() == BlogStatus.HIDDEN) {
             throw new RuntimeException("This blog has been hidden by the admin.");
         }

@@ -143,7 +143,8 @@ export class CardBlog {
       error: (err) => {
         this.blog.liked = previousState;
         this.loading = false;
-        this.errorService.showMessage('Something went wrong 😢', 'error');
+        // this.errorService.showMessage('Something went wrong 😢', 'error');
+        this.errorService.showMessage(`${err.error.message}`, 'error');
       }
     });
   }

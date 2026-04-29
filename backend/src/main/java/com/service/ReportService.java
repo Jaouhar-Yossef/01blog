@@ -67,6 +67,11 @@ public class ReportService {
             if (blogReported.getStatus() == BlogStatus.HIDDEN) {
                 throw new RuntimeException("This blog has been hidden by the admin.");
             }
+
+            if (blogReported.getCreatedBy().getStatus() == UserStatus.BANNED) {
+                throw new RuntimeException("This user banned from this platform.");
+            }
+
             report.setReportedBlog(blogReported);
             report.setType(ReportType.BLOG);
 

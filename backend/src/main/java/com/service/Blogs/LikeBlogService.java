@@ -55,6 +55,10 @@ public class LikeBlogService {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        if (blog.getCreatedBy().getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("This user banned from this platform.");
+        }
+
         if (this.likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             throw new RuntimeException("Blog already liked");
         }
@@ -111,6 +115,10 @@ public class LikeBlogService {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        if (blog.getCreatedBy().getStatus() == UserStatus.BANNED) {
+            throw new RuntimeException("This user banned from this platform.");
+        }
+        
         if (!likeBlogRepository.existsByUserIdAndBlogId(userId, blogId)) {
             throw new RuntimeException("Blog already not liked");
         }

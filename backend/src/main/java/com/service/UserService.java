@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (user.getStatus().equals(UserStatus.BANNED)) {
-            throw new RuntimeException("This User banned from this platform.");
+            throw new RuntimeException("You are banned from this platform.");
         }
         if (!updateProfile.getEmail().equals(user.getEmail())) {
             if (userRepository.findByEmail(updateProfile.getEmail().toLowerCase()).isPresent()) {

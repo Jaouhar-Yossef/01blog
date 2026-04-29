@@ -92,8 +92,8 @@ export class Profile {
             this.loading = false;
           }
         },
-        error: () => {
-          this.errorService.showMessage('error report User ):', 'error')
+        error: (err) => {
+          this.errorService.showMessage(`${err.error.message}`, 'error');
           this.loading = false;
         }
       });
@@ -218,7 +218,7 @@ export class Profile {
       },
       error: (err) => {
         this.loading = false;
-        this.errorService.showMessage(`Error Follow ):`, 'error');
+        this.errorService.showMessage(`${err.error.message}`, 'error');
       }
     })
   }

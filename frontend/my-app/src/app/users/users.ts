@@ -102,8 +102,9 @@ export class Users implements OnInit {
             this.loading = false;
           }
         },
-        error: () => {
-          this.errorService.showMessage('error report User ):', 'error')
+        error: (err) => {
+          // this.errorService.showMessage('error report User ):', 'error')
+          this.errorService.showMessage(`${err.error.message}`, 'error')
           this.loading = false;
         }
       });
