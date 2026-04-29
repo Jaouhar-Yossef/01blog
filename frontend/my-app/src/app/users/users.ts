@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Report } from './../report/report';
 import { AuthService } from '../auth/auth.service';
 import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
+import { ImageService } from '../content-home/ImageService.service';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class Users implements OnInit {
     private contentHomeService: ContentHomeService,
     private authService: AuthService,
     private showAdminMessage: ShowAdminMessage,
+    public imageService : ImageService
   ) { }
 
 

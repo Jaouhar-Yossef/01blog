@@ -5,10 +5,8 @@
         <div class="blogheader_left">
 
           <img (click)="goToProfile(blog?.createdByUsername)" class="imguser"
-            [src]="getUserImage(blog?.createdByUrlimg)" (error)="onImgError($event)" alt="">
-
-
-
+            [src]="imageService.getUserImage(blog?.createdByUrlimg)" (error)="imageService.onImgUserError($event)"
+            alt="">
 
           <div class="blogheader_left_right">
             <p class="creat-by" (click)="goToProfile(blog?.createdByUsername)"> {{ blog?.createdByUsername }} </p>
@@ -58,8 +56,9 @@
               *ngIf="blog.media?.length > 1">arrow_left</mat-icon>
 
 
-            <img *ngIf="theMedia[currentIndex].type === 'IMAGE'" [src]="getUserImage(theMedia[currentIndex].url)"
-              (error)="onImgError($event)" class="realimg" />
+            <img *ngIf="theMedia[currentIndex].type === 'IMAGE'"
+              [src]="imageService.getBlogImage(theMedia[currentIndex].url)"
+              (error)="imageService.onImgBlogError($event)" class="realimg" />
 
             <div *ngIf="theMedia[currentIndex].type === 'VIDEO'" class="divVideo">
               <img *ngIf="videoNotPlay" class="play-icon" src="./../../assets/playvideo.png" alt="">
@@ -67,7 +66,7 @@
                 class="thevideo"></video>
             </div>
 
-
+1
 
 
             <mat-icon class="big-mat-icon" (click)="addCurrentIndex()"

@@ -44,7 +44,7 @@
 
         <div class="preview" *ngIf="ModeEditblog">
           <div class="preview-item" *ngFor="let item of imgsandvids; let i = index">
-            <img *ngIf="item.type === 'IMAGE'" [src]=" baseUrl + item.url" />
+            <img *ngIf="item.type === 'IMAGE'" [src]=" baseUrl + item.url" (error)="imageService.onImgBlogError($event)" />
             <video *ngIf="item.type === 'VIDEO'" [src]=" baseUrl + item.url" controls></video>
             <button class="remove-btn" type="button" (click)="removeFileBlog(i)">✕</button>
           </div>

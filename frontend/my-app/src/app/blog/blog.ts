@@ -4,8 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ApiResponse, ContentHomeService, TimeAgo } from '../content-home/content-home.service';
+import { ApiResponse, ContentHomeService, TimeAgo} from '../content-home/content-home.service';
 import { ErrorService } from '../error/error.service';
+import { ImageService } from '../content-home/ImageService.service';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -79,7 +80,7 @@ export class Blog {
   constructor(private errorService: ErrorService, private confirmService: ServiceConfirmation,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
     private contentHomeService: ContentHomeService, private dialog: MatDialog,
-    private showAdminMessage: ShowAdminMessage
+    private showAdminMessage: ShowAdminMessage , public imageService : ImageService
   ) { }
 
 

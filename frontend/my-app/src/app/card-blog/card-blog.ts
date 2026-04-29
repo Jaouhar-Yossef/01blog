@@ -9,6 +9,7 @@ import { TimeAgo } from '../content-home/content-home.service';
 import { HttpClient } from '@angular/common/http';
 import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
 import { AuthService } from '../auth/auth.service';
+import { ImageService } from '../content-home/ImageService.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class CardBlog {
 
   private blogService = inject(CardBlogService);
   constructor(private router: Router, private http: HttpClient, private authService: AuthService,
-    private errorService: ErrorService, private showAdminMessage: ShowAdminMessage) { }
+    private errorService: ErrorService, private showAdminMessage: ShowAdminMessage,
+    public imageService: ImageService) { }
 
   modeADMINorHOME = '';
 

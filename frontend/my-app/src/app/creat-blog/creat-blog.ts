@@ -12,6 +12,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { MgsAdhmin } from '../mgs-admin/mgs-admin';
 import { MatDialog } from '@angular/material/dialog';
+import { ImageService } from '../content-home/ImageService.service';
 
 type MediaType = 'IMAGE' | 'VIDEO';
 
@@ -70,7 +71,8 @@ export class CreatBlog {
     private dialog: MatDialog,
     private authService: AuthService,
     private blogService: ContentHomeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public imageService: ImageService
   ) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],

@@ -7,12 +7,9 @@
                     <div class="divuserimg">
 
                         <img (click)="goToProfile(user.username)" class="imguser"
-                            *ngIf="user.imageUrl && user.imageUrl.length > 0; else nophotouser" [src]="baseUrl + user.imageUrl" alt="">
-                        <ng-template #nophotouser>
-                        <img (click)="goToProfile(user.username)" class="imguser"
-                                src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                        </ng-template>
-
+                            [src]="imageService.getUserImage(user.imageUrl)"
+                            (error)="imageService.onImgUserError($event)" alt="">
+                            
                     </div>
                     <div class="nameandnmbblogs">
                         <p class="creat-by" (click)="goToProfile(user.username)">
@@ -37,7 +34,7 @@
                     <!-- Following -->
                     <button *ngIf="user.following" type="button" matButton="tonal" class="btn following"
                         (click)="FollowTheUser(user.username , 'unfollow')">
-                        <span>Following</span>  <mat-icon class="iconclass">how_to_reg</mat-icon>
+                        <span>Following</span> <mat-icon class="iconclass">how_to_reg</mat-icon>
                     </button>
 
                     <!-- Follow -->

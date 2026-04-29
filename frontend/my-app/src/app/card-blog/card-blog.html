@@ -2,63 +2,48 @@
 
   <div class="post-content">
     <div class="post-content-top">
-      <div class="dateAt"> {{creat_at}}   </div>
+      <div class="dateAt"> {{creat_at}} </div>
       <h2 class="titleBlog">{{ blog.title }}</h2>
       <p class="discription">
         {{ blog.content | slice:0:20 }}
         <a class="read-more" (click)="showTheBlog(blog.id)">...Read more</a>
       </p>
-    </div>  
+    </div>
 
     <div class="post-content-bottom">
-        
-        <span class="creat-by">
-          created by: 
-          <span class="name-auther" (click)="goToProfile()">{{ blog.createdByUsername }}</span>
-        </span>
 
-        <button class="like-btn" (click)="toggleLike()">
-          <img *ngIf="!blog.liked" src="./../../assets/heart2.png" alt="like">
-          <img *ngIf="blog.liked" src="./../../assets/heart.png" alt="liked">
-        </button>
+      <span class="creat-by">
+        created by:
+        <span class="name-auther" (click)="goToProfile()">{{ blog.createdByUsername }}</span>
+      </span>
 
-        <button class="saved" (click)="toggleSave()">
-          <mat-icon>
-            {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
-          </mat-icon>
-        </button>
+      <button class="like-btn" (click)="toggleLike()">
+        <img *ngIf="!blog.liked" src="./../../assets/heart2.png" alt="like">
+        <img *ngIf="blog.liked" src="./../../assets/heart.png" alt="liked">
+      </button>
 
-     
+      <button class="saved" (click)="toggleSave()">
+        <mat-icon>
+          {{ blog?.saved ? 'bookmark_added' : 'bookmark_border' }}
+        </mat-icon>
+      </button>
+
+
     </div>
   </div>
 
   <div class="post-imgs">
     <ng-container *ngIf="blog.media?.length > 0; else noMedia">
-      <img
-        *ngIf="blog.media[currentIndex].type === 'IMAGE'"
-        [src]="baseUrl + blog.media[currentIndex].url"
-        class="media-item"
-        (click)="showTheBlog(blog.id)"
-      />
+      <img *ngIf="blog.media[currentIndex].type === 'IMAGE'"
+        [src]="imageService.getBlogImage(blog.media[currentIndex].url)" (error)="imageService.onImgBlogError($event)"
+        class="media-item" (click)="showTheBlog(blog.id)" />
 
-      <video
-        *ngIf="blog.media[currentIndex].type === 'VIDEO'"
-        [src]="baseUrl + blog.media[currentIndex].url"
-        muted
-        autoplay
-        loop
-        playsinline
-        class="media-item"
-        (click)="showTheBlog(blog.id)"
-      ></video>
+      <video *ngIf="blog.media[currentIndex].type === 'VIDEO'" [src]="baseUrl + blog.media[currentIndex].url" muted
+        autoplay loop playsinline class="media-item" (click)="showTheBlog(blog.id)"></video>
     </ng-container>
 
     <ng-template #noMedia>
-      <img
-        src="./../../assets/no-picture.png"
-        class="nomedia-item"
-        (click)="showTheBlog(blog.id)"
-      />
+      <img src="./../../assets/no-picture.png" class="nomedia-item" (click)="showTheBlog(blog.id)" />
     </ng-template>
   </div>
 </div>

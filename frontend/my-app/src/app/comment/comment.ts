@@ -13,6 +13,7 @@ import { ApiResponse } from '../content-home/content-home.service';
 import { ObserveIntersectionDirective } from '../content-home/observe-intersection.directive';
 import { AuthService } from '../auth/auth.service';
 import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
+import { ImageService } from '../content-home/ImageService.service';
 
 
 export interface CreateCommentDto {
@@ -69,6 +70,7 @@ export class Comment {
     private contentHomeService: ContentHomeService,
     private authService: AuthService,
     private showAdminMessage: ShowAdminMessage,
+    public imageService : ImageService,
     private fb: FormBuilder) {
     this.commentForm = this.fb.group({
       comment: ['', [Validators.required, Validators.maxLength(300), Validators.minLength(1)]]

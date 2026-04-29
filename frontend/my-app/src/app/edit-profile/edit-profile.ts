@@ -8,6 +8,7 @@ import { AuthService, TheUser } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from '../error/error.service';
 import { Router } from '@angular/router';
+import { ImageService } from '../content-home/ImageService.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -42,14 +43,13 @@ export class EditProfile {
 
   hasImg = false;
 
-
   originalFormValue: any = null;
   originalImageUrl: string = '';
 
   imageRemoved = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
-    private router: Router, private errorService: ErrorService) {
+    private router: Router, private errorService: ErrorService, public imageService : ImageService) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: ['', [

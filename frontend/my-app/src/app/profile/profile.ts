@@ -16,6 +16,7 @@ import { AuthService } from '../auth/auth.service';
 import { ShowAdminMessage } from '../content-home/ui.showAdminMsg.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Report } from '../report/report';
+import { ImageService } from '../content-home/ImageService.service';
 
 @Component({
   selector: 'app-profile',
@@ -40,6 +41,7 @@ export class Profile {
 
   constructor(
     private profileService: ProfileService,
+    public imageService : ImageService,
     private contentHomeService: ContentHomeService,
     private dialog: MatDialog,
     private errorService: ErrorService,

@@ -10,7 +10,7 @@
 
             <div class="profile-image">
                 <div class="imgprofile" *ngIf="imgUrl.length > 0">
-                    <img [src]="imgUrl" alt="Profile Image">
+                    <img [src]="imgUrl" (error)="imageService.onImgUserError($event)" alt="Profile Image">
                     <button class="remove-btn" type="button" (click)="removeFile()">✕</button>
                 </div>
                 <input class="selectmedia-input" type="file" id="media" (change)="onFileSelected($event)" />

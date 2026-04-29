@@ -3,25 +3,16 @@
         <div class="nameAndEdit" [class]="modeClass">
             <div class="imgProfile">
 
-                <img class="imguser" *ngIf="profile.imageUrl?.length > 0; else nophotouser"
-                    [src]=" baseUrl  + profile.imageUrl" alt=""  (error)="onImgError($event)">
+                <img class="imguser" alt="" [src]="imageService.getUserImage(profile.imageUrl)"
+                    (error)="imageService.onImgUserError($event)">
 
-                <ng-template #nophotouser>
-                    <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                </ng-template>
 
             </div>
             <div class="nameAndInfo">
 
                 <p class="imgres">
-                    <img class="imguser22" *ngIf="profile.imageUrl?.length > 0; else nophotouser"
-                        [src]=" baseUrl  + profile.imageUrl" alt="">
-
-                    <ng-template #nophotouser>
-                        <img class="imguser" src="./../../assets/blank-profile-picture-973460_640.webp" alt="">
-                    </ng-template>
-
-
+                    <img class="imguser22" [src]="imageService.getUserImage(profile.imageUrl)"
+                        (error)="imageService.onImgUserError($event)" alt="">
                     {{ profile.username }}
                 </p>
 

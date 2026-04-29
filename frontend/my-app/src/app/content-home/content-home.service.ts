@@ -47,30 +47,6 @@ export interface Notification {
   creat_at: string;
 }
 
-export const baseUrl = 'http://localhost:8080';
-export function getUserImage(imgUrl?: string): string {
-  if (!imgUrl || imgUrl.trim().length === 0) {
-    return "./../../assets/blank-profile-picture-973460_640.webp";
-  }
-
-  return baseUrl + imgUrl;
-}
-
-export function getBlogImage(imgUrl?: string): string {
-  if (!imgUrl || imgUrl.trim().length === 0) {
-    return "./../../assets/images/close.svg";
-  }
-
-  return baseUrl + imgUrl;
-}
-
-export function onImgUserError(event: any) {
-  event.target.src = "./../../assets/images/close.svg";
-}
-
-export function onImgBlogError(event: any) {
-  event.target.src = "./../../assets/images/close.svg";
-}
 
 
 export function TimeAgo(dateString: string): string {
