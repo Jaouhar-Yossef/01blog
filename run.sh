@@ -2,11 +2,11 @@
 
 set -e
 
-echo "🧹 Stopping containers..."
+echo " Stopping containers..."
 docker ps -q | xargs -r docker stop
 
-echo "🧹 Removing containers..."
+echo " Removing containers..."
 docker ps -aq | xargs -r docker rm
 
-echo "🚀 Starting full stack with Docker Compose..."
+echo " Starting full stack with Docker Compose..."
 docker compose up --build
