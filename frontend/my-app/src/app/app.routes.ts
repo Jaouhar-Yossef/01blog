@@ -18,6 +18,7 @@ import { AdminDashboard } from './admin-dashboard/admin-dashboard';
 import { UserBanned } from './auth/userBanned.guard';
 import { Notifications } from './notifications/notifications';
 import { EditProfile } from './edit-profile/edit-profile';
+import { NotFoundComponent } from './not-found-component/not-found-component';
 
 
 export const routes: Routes = [
@@ -55,5 +56,5 @@ export const routes: Routes = [
 
   { path: '', component: PageWelcome, canActivate: [loggedInGuard] },
   { path: 'account', component: AuthComponent, canActivate: [loggedInGuard] },
-  { path: '**', component: AuthComponent, canActivate: [loggedInGuard] },
+  { path: '**', component: NotFoundComponent },
 ];
