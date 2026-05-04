@@ -1,0 +1,9 @@
+# Tell GitHub to ignore frontend files for language detection
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+*.scss linguist-detectable=false
+src/app/**/*.ts linguist-detectable=false
+
+# Force Spring Boot Java to show
+*.java linguist-detectable=true
+pom.xml linguist-detectable=true
